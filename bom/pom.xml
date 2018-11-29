@@ -13,7 +13,7 @@
   <artifactId>dunwu-bom</artifactId>
   <packaging>pom</packaging>
   <name>Dunwu - Bom</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <description>maven dependency management</description>
 
   <properties>
@@ -22,6 +22,7 @@
     <jetty.version>9.4.12.v20180830</jetty.version>
     <shiro.version>1.4.0</shiro.version>
     <fasterxml.jackson>2.9.5</fasterxml.jackson>
+    <kafka.version>2.1.0</kafka.version>
   </properties>
 
   <dependencyManagement>
@@ -95,6 +96,11 @@
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo</artifactId>
         <version>2.5.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.4.12</version>
       </dependency>
       <!-- DUBBO END -->
 
@@ -176,7 +182,7 @@
       </dependency>
       <!-- JETTY END -->
 
-      <!-- json begin -->
+      <!-- JSON BEGIN -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
@@ -242,6 +248,24 @@
       </dependency>
       <!-- LOG END -->
 
+      <!-- MQ BEGIN -->
+      <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-clients</artifactId>
+        <version>${kafka.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-streams</artifactId>
+        <version>${kafka.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-client</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+      <!-- MQ END -->
+
       <!-- ORM BEGIN -->
       <dependency>
         <groupId>org.mybatis</groupId>
@@ -305,6 +329,13 @@
       <!-- TEMPLATE END -->
 
       <!-- TEST BEGIN -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.3.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
