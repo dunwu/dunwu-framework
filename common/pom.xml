@@ -13,7 +13,7 @@
   <artifactId>dunwu-common</artifactId>
   <packaging>jar</packaging>
   <name>Dunwu - Common</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,6 +31,10 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
     </dependency>
     <!-- UTILS end -->
 
@@ -74,6 +78,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
@@ -95,7 +114,7 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-bom</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -145,6 +164,11 @@
     <profile>
       <id>sonatype</id>
       <build>
+        <resources>
+          <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+          </resource>
+        </resources>
         <plugins>
           <plugin>
             <groupId>org.sonatype.plugins</groupId>

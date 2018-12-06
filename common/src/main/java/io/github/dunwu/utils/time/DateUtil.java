@@ -1,11 +1,16 @@
 package io.github.dunwu.utils.time;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import io.github.dunwu.utils.base.annotation.NotNull;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
+
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 日期工具类.
@@ -409,5 +414,31 @@ public class DateUtil {
         }
 
         return MONTH_LENGTH[month];
+    }
+
+    public static boolean verify(String date, String pattern) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            sdf.setLenient(false);//此处指定日期/时间解析是否不严格，在true是不严格，false时为严格
+            sdf.parse(date);//从给定字符串的开始解析文本，以生成一个日期
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static LocalDateTime date2LocalDateTime(Date date) {
+        //A time-zone ID, such as {@code Europe/Paris}.(时区)
+        Instant instant = date.toInstant();
+        //A time-zone ID, such as {@code Europe/Paris}.(时区)
+        ZoneId zoneId = ZoneId.systemDefault();
+        return instant.atZone(zoneId).toLocalDateTime();
+    }
+
+    public static Date localDateTime2Date(LocalDateTime localDateTime) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zdt = localDateTime.atZone(zoneId);
+        return Date.from(zdt.toInstant());
     }
 }
