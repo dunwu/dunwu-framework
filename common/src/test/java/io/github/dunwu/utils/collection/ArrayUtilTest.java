@@ -1,14 +1,14 @@
 package io.github.dunwu.utils.collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.junit.Assert.*;
+import io.github.dunwu.utils.number.RandomUtil;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import io.github.dunwu.utils.number.RandomUtil;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ArrayUtilTest {
 
@@ -19,11 +19,11 @@ public class ArrayUtilTest {
         Arrays.sort(arrays);
         assertThat(arrays).containsExactly("a", "b", "c", "d", "e", "g", "i");
         ArrayUtil.shuffle(arrays);
-        assertFalse("should not be equal to origin array", Arrays.equals(arrays, arraysClone));
+        Assertions.assertFalse(Arrays.equals(arrays, arraysClone), "should not be equal to origin array");
         // System.out.println(Arrays.toString(arrays));
         Arrays.sort(arrays);
         ArrayUtil.shuffle(arrays, RandomUtil.secureRandom());
-        assertFalse("should not be equal to origin array", Arrays.equals(arrays, arraysClone));
+        Assertions.assertFalse(Arrays.equals(arrays, arraysClone), "should not be equal to origin array");
     }
 
     @Test

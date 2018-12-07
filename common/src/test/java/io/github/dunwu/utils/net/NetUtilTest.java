@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 import javax.net.ServerSocketFactory;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.io.IOUtil;
 
 public class NetUtilTest {

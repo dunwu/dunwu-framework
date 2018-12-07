@@ -2,7 +2,7 @@ package io.github.dunwu.utils.reflect;
 
 import io.github.dunwu.utils.base.type.UncheckedException;
 import io.github.dunwu.utils.collection.ListUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

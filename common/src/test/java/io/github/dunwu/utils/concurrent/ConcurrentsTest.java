@@ -2,7 +2,7 @@ package io.github.dunwu.utils.concurrent;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.concurrent.jsr166e.LongAdder;
 
 public class ConcurrentsTest {

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.base.type.CloneableException;
 import io.github.dunwu.utils.base.type.CloneableRuntimeException;
 import io.github.dunwu.utils.base.type.UncheckedException;

@@ -1,12 +1,12 @@
 package io.github.dunwu.utils.reflect;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClassUtilTest {
 
@@ -28,27 +28,27 @@ public class ClassUtilTest {
     @Test
     public void getAllClass() {
 
-        assertThat(ClassUtil.getAllInterfaces(BClass.class)).hasSize(4)
-            .contains(AInterface.class, BInterface.class, CInterface.class, DInterface.class);
+        assertThat(ClassUtil.getAllInterfaces(BClass.class)).hasSize(4).contains(AInterface.class, BInterface.class,
+            CInterface.class, DInterface.class);
 
         assertThat(ClassUtil.getAllSuperclasses(BClass.class)).hasSize(2).contains(AClass.class, Object.class);
 
         assertThat(AnnotationUtil.getAllAnnotations(BClass.class)).hasSize(4);
 
-        assertThat(AnnotationUtil.getAnnotatedPublicFields(BClass.class, AAnnotation.class)).hasSize(2)
-            .contains(ReflectionUtil.getField(BClass.class, "sfield"), ReflectionUtil.getField(BClass.class, "tfield"));
+        assertThat(AnnotationUtil.getAnnotatedPublicFields(BClass.class, AAnnotation.class)).hasSize(2).contains(
+            ReflectionUtil.getField(BClass.class, "sfield"), ReflectionUtil.getField(BClass.class, "tfield"));
 
-        assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, EAnnotation.class)).hasSize(3)
-            .contains(ReflectionUtil.getField(BClass.class, "bfield"), ReflectionUtil.getField(BClass.class, "efield"),
-                ReflectionUtil.getField(AClass.class, "afield"));
+        assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, EAnnotation.class)).hasSize(3).contains(
+            ReflectionUtil.getField(BClass.class, "bfield"), ReflectionUtil.getField(BClass.class, "efield"),
+            ReflectionUtil.getField(AClass.class, "afield"));
 
-        assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, FAnnotation.class)).hasSize(1)
-            .contains(ReflectionUtil.getField(AClass.class, "dfield"));
+        assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, FAnnotation.class)).hasSize(1).contains(
+            ReflectionUtil.getField(AClass.class, "dfield"));
 
-        assertThat(AnnotationUtil.getAnnotatedPublicMethods(BClass.class, FAnnotation.class)).hasSize(3)
-            .contains(ReflectionUtil.getAccessibleMethodByName(BClass.class, "hello"),
-                ReflectionUtil.getAccessibleMethodByName(BClass.class, "hello3"),
-                ReflectionUtil.getAccessibleMethodByName(AClass.class, "hello4"));
+        assertThat(AnnotationUtil.getAnnotatedPublicMethods(BClass.class, FAnnotation.class)).hasSize(3).contains(
+            ReflectionUtil.getAccessibleMethodByName(BClass.class, "hello"),
+            ReflectionUtil.getAccessibleMethodByName(BClass.class, "hello3"),
+            ReflectionUtil.getAccessibleMethodByName(AClass.class, "hello4"));
     }
 
     @Test
@@ -75,14 +75,10 @@ public class ClassUtilTest {
      */
     @Test
     public void testIsSubClassOrInterfaceOf() {
-        assertTrue("TestBean should be subclass of ParentBean",
-            ClassUtil.isSubClassOrInterfaceOf(BClass.class, AClass.class));
-        assertTrue("BInterface should be subinterface of AInterface",
-            ClassUtil.isSubClassOrInterfaceOf(BInterface.class, AInterface.class));
-        assertTrue("BClass should be an implementation of BInterface",
-            ClassUtil.isSubClassOrInterfaceOf(BClass.class, BInterface.class));
-        assertTrue("BClass should be an implementation of AInterface",
-            ClassUtil.isSubClassOrInterfaceOf(BClass.class, AInterface.class));
+        Assertions.assertTrue(ClassUtil.isSubClassOrInterfaceOf(BClass.class, AClass.class));
+        Assertions.assertTrue(ClassUtil.isSubClassOrInterfaceOf(BInterface.class, AInterface.class));
+        Assertions.assertTrue(ClassUtil.isSubClassOrInterfaceOf(BClass.class, BInterface.class));
+        Assertions.assertTrue(ClassUtil.isSubClassOrInterfaceOf(BClass.class, AInterface.class));
     }
 
     public static class ParentBean<T, ID> {}
@@ -145,15 +141,19 @@ public class ClassUtilTest {
     @DAnnotation
     public static class AClass implements DInterface {
 
-        @EAnnotation private int afield;
+        @EAnnotation
+        private int afield;
 
         private int cfield;
 
-        @FAnnotation private int dfield;
+        @FAnnotation
+        private int dfield;
 
-        @AAnnotation public int tfield;
+        @AAnnotation
+        public int tfield;
 
-        @AAnnotation protected int vfield;
+        @AAnnotation
+        protected int vfield;
 
         // not counted as public annotated method
         public void hello2(int i) {
@@ -190,13 +190,17 @@ public class ClassUtilTest {
     @BAnnotation
     public static class BClass extends AClass implements CInterface, BInterface {
 
-        @EAnnotation private int bfield;
+        @EAnnotation
+        private int bfield;
 
-        @EAnnotation private int efield;
+        @EAnnotation
+        private int efield;
 
-        @AAnnotation public int sfield;
+        @AAnnotation
+        public int sfield;
 
-        @AAnnotation protected int ufield;
+        @AAnnotation
+        protected int ufield;
 
         // counted as public annotated method, BInterface
         @Override

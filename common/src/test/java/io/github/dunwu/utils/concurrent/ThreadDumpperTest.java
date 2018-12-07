@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.test.log.LogbackListAppender;
 import io.github.dunwu.utils.concurrent.threadpool.ThreadPoolBuilder;
 

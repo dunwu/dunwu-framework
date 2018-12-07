@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.time.ClockUtil.DummyClock;
 
 public class ClockUtilTest {

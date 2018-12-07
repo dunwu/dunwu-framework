@@ -3,7 +3,7 @@ package io.github.dunwu.utils.concurrent;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.concurrent.type.ThreadLocalContext;
 import io.github.dunwu.utils.number.RandomUtil;
 

@@ -9,7 +9,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.concurrent.threadpool.QueuableCachedThreadPool.ControllableQueue;
 
 public class ThreadPoolBuilderTest {

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.concurrent.ThreadUtil;
 
 public class QueuableCachedThreadPoolTest {

@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.base.Platforms;
 import io.github.dunwu.utils.number.RandomUtil;
 import io.github.dunwu.utils.text.Charsets;

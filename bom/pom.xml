@@ -23,6 +23,7 @@
     <shiro.version>1.4.0</shiro.version>
     <fasterxml.jackson>2.9.5</fasterxml.jackson>
     <kafka.version>2.1.0</kafka.version>
+    <junit-jupiter.version>5.3.1</junit-jupiter.version>
   </properties>
 
   <dependencyManagement>
@@ -35,6 +36,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <!-- BOM BEGIN -->
 
       <!-- BEAN BEGIN -->
@@ -340,6 +342,24 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit-jupiter.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

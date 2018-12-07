@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class QueueUtilTest {
 

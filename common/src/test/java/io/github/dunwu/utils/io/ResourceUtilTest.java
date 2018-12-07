@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.io.Files;
 

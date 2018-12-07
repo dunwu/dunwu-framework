@@ -2,7 +2,7 @@ package io.github.dunwu.utils.mock;
 
 import io.github.dunwu.utils.regex.RegexUtil;
 import io.github.dunwu.utils.time.DateUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class MockUtilTest {
 
         String date = MockUtil.date(min, max, DATE_PATTERN);
         log.info("random date: {}", date);
-        Assert.assertTrue(DateUtil.verify(date, DATE_PATTERN));
+        Assertions.assertTrue(DateUtil.verify(date, DATE_PATTERN));
 
         Date date2 = MockUtil.date(min, max);
         log.info("random date2: {}", date2);
@@ -38,7 +38,7 @@ public class MockUtilTest {
     void testIpv4() {
         String ip = MockUtil.ipv4();
         log.info("random ipv4: {}", ip);
-        Assert.assertTrue(RegexUtil.isValidateIpv4(ip));
+        Assertions.assertTrue(RegexUtil.isValidateIpv4(ip));
     }
 
     @RepeatedTest(10)

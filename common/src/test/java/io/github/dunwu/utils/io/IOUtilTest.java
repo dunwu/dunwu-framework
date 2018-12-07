@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.io.type.StringBuilderWriter;
 import io.github.dunwu.utils.text.Charsets;
 

@@ -3,7 +3,7 @@ package io.github.dunwu.utils.text;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class StringBuilderHolderTest {
 

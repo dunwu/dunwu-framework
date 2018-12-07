@@ -2,7 +2,7 @@ package io.github.dunwu.utils.misc;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.github.dunwu.utils.concurrent.Sampler;
 import io.github.dunwu.utils.concurrent.Sampler.AlwaysSampler;
 import io.github.dunwu.utils.concurrent.Sampler.NeverSampler;

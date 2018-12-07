@@ -5,7 +5,7 @@
  *******************************************************************************/
 package io.github.dunwu.utils.misc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IdGeneratorTest {
 

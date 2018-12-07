@@ -2,7 +2,7 @@ package io.github.dunwu.utils.net;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IPUtilTest {
 
