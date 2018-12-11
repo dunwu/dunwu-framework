@@ -3,6 +3,7 @@ package io.github.dunwu.utils.mock;
 import io.github.dunwu.utils.time.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.time.LocalDateTime;
@@ -23,15 +24,15 @@ public class MockUtil {
 
     private static final String defaultDateFormat = "yyyy-MM-dd HH:mm:ss";
 
-    public static String date(final Date min, final Date max) {
-        return date(min, max, defaultDateFormat);
+    public static String anyDate(final Date min, final Date max) {
+        return anyDate(min, max, defaultDateFormat);
     }
 
-    public static String date(final Date min, final Date max, String pattern) {
-        return date(DateUtil.date2LocalDateTime(min), DateUtil.date2LocalDateTime(max), pattern);
+    public static String anyDate(final Date min, final Date max, String pattern) {
+        return anyDate(DateUtil.date2LocalDateTime(min), DateUtil.date2LocalDateTime(max), pattern);
     }
 
-    public static String date(final LocalDateTime min, final LocalDateTime max, final String pattern) {
+    public static String anyDate(final LocalDateTime min, final LocalDateTime max, final String pattern) {
         long minSeconds = min.toEpochSecond(ZoneOffset.UTC);
         long maxSeconds = max.toEpochSecond(ZoneOffset.UTC);
         long random = ThreadLocalRandom.current().nextLong(minSeconds, maxSeconds);
@@ -39,7 +40,7 @@ public class MockUtil {
         return localDate.format(DateTimeFormatter.ofPattern(pattern));
     }
 
-    public static Date date(final LocalDateTime min, final LocalDateTime max) {
+    public static Date anyDate(final LocalDateTime min, final LocalDateTime max) {
         long minSeconds = min.toEpochSecond(ZoneOffset.UTC);
         long maxSeconds = max.toEpochSecond(ZoneOffset.UTC);
         long random = ThreadLocalRandom.current().nextLong(minSeconds, maxSeconds);
@@ -47,7 +48,7 @@ public class MockUtil {
         return DateUtil.localDateTime2Date(localDate);
     }
 
-    public static String ipv4() {
+    public static String anyIPv4() {
         int[][] range = {{607649792, 608174079}, // 36.56.0.0-36.63.255.255
             {1038614528, 1039007743}, // 61.232.0.0-61.237.255.255
             {1783627776, 1784676351}, // 106.80.0.0-106.95.255.255
@@ -66,13 +67,20 @@ public class MockUtil {
         return ip;
     }
 
-    public static String mac() {
-        final String SEPARATOR_OF_MAC = ":";
+    public static String anyMac() {
         Random random = new Random();
         String[] mac = {String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
             String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
             String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
-        return String.join(SEPARATOR_OF_MAC, mac);
+        return StringUtils.join(mac);
+    }
+
+    public static String anyMac(String separator) {
+        Random random = new Random();
+        String[] mac = {String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
+        return String.join(separator, mac);
     }
 
     private static String num2ip(int ip) {
@@ -87,7 +95,7 @@ public class MockUtil {
         return result;
     }
 
-    public static String domain() {
+    public static String anyDomain() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
         //使用字母a-z，生成20个code point(维基百科称之为'码位')的随机字符串
         RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
@@ -96,10 +104,135 @@ public class MockUtil {
         return new StringBuilder().append(domain1.toLowerCase()).append(".").append(domain2.toLowerCase()).toString();
     }
 
-    public static String email() {
+    public static String anyEmail() {
         RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
         String name = generator.generate(RandomUtils.nextInt(2, 11));
-        return new StringBuilder().append(name.toLowerCase()).append("@").append(domain()).toString();
+        return new StringBuilder().append(name.toLowerCase()).append("@").append(anyDomain()).toString();
+    }
+
+    public static String anyFirstName() {
+        boolean isGirl = RandomUtils.nextBoolean();
+        return anyFirstName(isGirl);
+    }
+
+    public static String anyFirstName(boolean isGirl) {
+        if (isGirl) {
+            return anyGirlFirstName();
+        } else {
+            return anyBoyFirstName();
+        }
+    }
+
+    public static String anyBoyFirstName() {
+        String dictionary =
+            "Dylan,Jacob,Ethan,Gabriel,Nicholas,Jack,Joshua,Caleb,Ryan,Andrew,Caden,Tyler,Michael,Jaden,Zachary,"
+                + "Connor,Logan,Aiden,Noah,Alexande,Jackson,Brayden,Lucas,William,Nathan,Joseph,Justin,Daniel,"
+                + "Benjamin,Christopher,James,Gavin,Evan,Austin,Cameron,Brandon,Mason,Luke,Anthony,Christian,"
+                + "Jonathan,Owen,David,John,Matthew,Samuel,Sean,Hunter,Elijah,Thomas";
+        String[] names = StringUtils.splitByWholeSeparator(dictionary, ",");
+        return mock(names);
+    }
+
+    public static String anyGirlFirstName() {
+        String dictionary =
+            "Lily,Emily,Sophia,Isabella,Ava,Emma,Kaitlyn,Hannah,Hailey,Olivia,Sarah,Abigail,Madeline,Madison,Kaylee,"
+                + "Ella,Riley,Alexis,Alyssa,Samantha,Lauren,Mia,Grace,Chloe,Ashley,Brianna,Jessica,Elizabeth,Taylor,"
+                + "Makayla,Makenzie,Anna,Zoe,Kayla,Sydney,Megan,Natalie,Kylie,ulia,Avery,Katherine,Isabel,Victoria,"
+                + "Morgan,Kyra,Jasmine,Allison,Savannah,JRachel,Jordan";
+        String[] names = StringUtils.splitByWholeSeparator(dictionary, ",");
+        return mock(names);
+    }
+
+    public static String anyLastName() {
+        String dictionary =
+            "Smith,Jones,Williams,Taylor,Brown,Davies,Evans,Wilson,Thomas,Johnson,Roberts,Robinson,Thompson,Wright,"
+                + "Walker,White,Edwards,Hughes,Green,Hall,Lewis,Harris,Clarke,Patel,Jackson";
+        String[] names = StringUtils.splitByWholeSeparator(dictionary, ",");
+        return mock(names);
+    }
+
+    public static String anyCLastName() {
+        String dictionary =
+            "李,王,张,刘,陈,杨,黄,赵,周,吴,徐,孙,朱,马,胡,郭,林,何,高,梁,郑,罗,宋,谢,唐,韩,曹,许,邓,萧,冯,曾,程,蔡,彭,潘,袁,于,董,余,苏,叶,吕,魏,蒋,田,杜,丁,沈,姜,范,江,"
+                + "傅,钟,卢,汪,戴,崔,任,陆,廖,姚,方,金,邱,夏,谭,韦,贾,邹,石,熊,孟,秦,阎,薛,侯,雷,白,龙,段,郝,孔,邵,史,毛,常,万,顾,赖,武,康,贺,严,尹,钱,施,牛,洪,龚,汤,"
+                + "陶,黎,温,莫,易,樊,乔,文,安,殷,颜,庄,章,鲁,倪,庞,邢,俞,翟,蓝,聂,齐,向,申,葛,岳";
+        String[] names = StringUtils.splitByWholeSeparator(dictionary, ",");
+        return mock(names);
+    }
+
+    public static String anyCBoyFirstName() {
+        int count = RandomUtils.nextInt(2, 4);
+
+        if (2 == count) {
+            String secondDictionary = "睿,浩,博,瑞,昊,杰,刚,伟,勇,林,驰,俊,明,清,正,云,鹏,晨,强";
+            String[] names = StringUtils.splitByWholeSeparator(secondDictionary, ",");
+            return mock(names);
+        } else if (3 == count) {
+            String secondDictionary = "子,梓,浩,宇,俊,文,志,晓,小,大";
+            String thirdDictionary = "轩,宇,泽,杰,豪,刚,伟,勇,明,然,涵,蔼,仁,容,德,轩,贤,良,伦,正,清,义,诚,直,道,达,耀,兴,荣,华,丰,余,昌,盛,涛";
+            String[] seconds = StringUtils.splitByWholeSeparator(secondDictionary, ",");
+            String[] thirds = StringUtils.splitByWholeSeparator(thirdDictionary, ",");
+            return mock(seconds) + mock(thirds);
+        } else {
+            return "";
+        }
+    }
+
+    public static String anyCGirlFirstName() {
+        int count = RandomUtils.nextInt(2, 4);
+
+        if (2 == count) {
+            String secondDictionary = "悦,妍,玥,蕊,欣,洁,雪,静,慧,晴,娜,玟,倩,柔,雅,丽,萍,娟";
+            String[] names = StringUtils.splitByWholeSeparator(secondDictionary, ",");
+            return mock(names);
+        } else if (3 == count) {
+            String secondDictionary = "雨,梓,欣,子,语,馨,思,婉,涵,婷,文,梦,玉,安";
+            String thirdDictionary = "涵,萱,怡,彤,琪,文,宁,雪,彤,柔,雅,丽,曼,云,晴,琴,娜";
+            String[] seconds = StringUtils.splitByWholeSeparator(secondDictionary, ",");
+            String[] thirds = StringUtils.splitByWholeSeparator(thirdDictionary, ",");
+            return mock(seconds) + mock(thirds);
+        } else {
+            return "";
+        }
+    }
+
+    public static String anyCBoyName() {
+        return anyCLastName() + anyCBoyFirstName();
+    }
+
+    public static String anyCGirlName() {
+        return anyCLastName() + anyCGirlFirstName();
+    }
+
+    public static String anyCName() {
+        boolean isGirl = RandomUtils.nextBoolean();
+        return anyCName(isGirl);
+    }
+
+    public static String anyCName(boolean isGirl) {
+        if (isGirl) {
+            return anyCGirlName();
+        } else {
+            return anyCBoyName();
+        }
+    }
+
+    public static String anyLetterString(int minLen, int maxLen) {
+        String dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        RandomStringGenerator generator =
+            new RandomStringGenerator.Builder().selectFrom(dictionary.toCharArray()).build();
+        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
+    }
+
+    public static String anyCLetterString(int minLen, int maxLen) {
+        String dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('一', '龥').build();
+        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
+    }
+
+    public static String anyNumString(int minLen, int maxLen) {
+        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
+        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
     }
 
     public static String mock(String[] list) {
@@ -114,10 +247,6 @@ public class MockUtil {
         return list.get(index);
     }
 
-    public static String anyString(int minLen, int maxLen) {
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('A', 'z').build();
-        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
-    }
 }
 
 
