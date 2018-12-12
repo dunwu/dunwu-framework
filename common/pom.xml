@@ -23,6 +23,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+    </dependency>
+
     <!-- UTILS begin -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -212,4 +217,28 @@
       </build>
     </profile>
   </profiles>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.json</include>
+          <include>**/*.xml</include>
+          <include>**/*.tld</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.json</include>
+          <include>**/*.xml</include>
+          <include>**/*.tld</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
 </project>
