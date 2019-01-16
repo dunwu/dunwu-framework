@@ -1,6 +1,6 @@
 package io.github.dunwu.utils.mock;
 
-import io.github.dunwu.utils.regex.RegexUtil;
+import io.github.dunwu.utils.regex.RegexHelper;
 import io.github.dunwu.utils.time.DateUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +39,7 @@ public class MockUtilTest {
     void anyIPv4() {
         String ip = MockUtil.anyIPv4();
         log.info("MockUtil.anyIPv4(): {}", ip);
-        Assertions.assertTrue(RegexUtil.isValidateIpv4(ip));
+        Assertions.assertTrue(RegexHelper.Checker.isValidIpv4(ip));
     }
 
     @RepeatedTest(10)
