@@ -247,4 +247,16 @@ public class RegexHelperTests {
             Assertions.assertEquals(false, RegexHelper.Checker.isMToNDigitNumber("0123456789", 11, 20));
         }
     }
+
+    @Nested
+    @DisplayName("校验Markdonw")
+    class CheckMarkdown {
+        @Test
+        @DisplayName("校验含有 Markdonw ![]() ")
+        public void isMarkdownImageTag() {
+            String newstr = RegexHelper.replaceAllMatchContent("![asgad](http://www.baidu.com/test.png)",
+                                                          RegexHelper.Checker.REGEX_MARKDOWN_IMAGE_TAG, "![](");
+            System.out.println(newstr);
+        }
+    }
 }
