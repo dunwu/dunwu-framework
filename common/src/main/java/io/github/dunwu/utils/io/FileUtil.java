@@ -1,27 +1,21 @@
 package io.github.dunwu.utils.io;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
-
-import org.apache.commons.lang3.Validate;
 import io.github.dunwu.utils.base.Platforms;
 import io.github.dunwu.utils.base.annotation.NotNull;
 import io.github.dunwu.utils.base.annotation.Nullable;
 import io.github.dunwu.utils.text.Charsets;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
+import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * 关于文件的工具集.
@@ -501,5 +495,76 @@ public class FileUtil {
      */
     public static String getFileExtension(String fullName) {
         return com.google.common.io.Files.getFileExtension(fullName);
+    }
+
+    public static Long getFileCreateTime(String fullName) {
+        Path path = Paths.get(fullName);
+        BasicFileAttributeView basicview =
+            Files.getFileAttributeView(path, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        try {
+            BasicFileAttributes attr = basicview.readAttributes();
+            FileTime createTime = attr.creationTime();
+            System.out.println("createTime = [" + createTime.toString() + "]");
+            return createTime.toMillis();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getFileCreateTimeString(String fullName, String pattern) {
+        if (StringUtils.isEmpty(pattern)) {
+            pattern = "yyyy-MM-dd";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        Long time = getFileCreateTime(fullName);
+        if (time == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        return sdf.format(calendar.getTime());
+    }
+
+    /**
+     * 将文件名中的空白去除，并将文件名转为小写
+     * @param filePath
+     */
+    public static void changeFileNameToStandard(String filePath) {
+        File file = new File(filePath);
+        changeFileNameToStandard(file);
+    }
+
+    public static void changeFileNameToStandard(File file) {
+        if (!file.exists()) {
+            return;
+        }
+
+        String path = file.getParent();
+        String name = file.getName();
+        name = name.replaceAll(" - ", "-");
+        name = name.replaceAll(" ", "-");
+        String newPath = path + File.separator + name.toLowerCase();
+        file.renameTo(new File(newPath));
+    }
+
+    public static void changeFileNameToStandardInFolder(File root) {
+        if (!root.exists()) {
+            return;
+        }
+
+        if (!root.isDirectory()) {
+            changeFileNameToStandard(root);
+        }
+
+        File[] files = root.listFiles();
+        for (File f : files) {
+            if (f.isDirectory()) {
+                changeFileNameToStandardInFolder(f);
+            } else {
+                changeFileNameToStandard(f);
+            }
+        }
     }
 }

@@ -13,16 +13,19 @@ import java.io.File;
 @Disabled
 public class MarkdownFormatHelperTest {
 
-    public static final String SRC_DIR_PATH = "D:\\Codes\\ZP\\Others\\notes";
-    public static final String DEST_DIR_PATH = "D:\\Codes\\ZP\\Others\\notes";
+    public static final String SRC_DIR_PATH = "D:\\Codes\\ZP\\Others\\blog\\source\\_posts";
+    public static final String DEST_DIR_PATH = "D:\\Codes\\ZP\\Others\\blog\\source\\_posts";
 
-    public static final String SRC_FILE_PATH = "D:\\Codes\\ZP\\Others\\notes\\docs\\network\\physical\\README.md";
-    public static final String DEST_FILE_PATH = "D:\\Codes\\ZP\\Others\\notes\\docs\\network\\physical\\README.md";
+    public static final String SRC_FILE_PATH = "D:\\Codes\\ZP\\Others\\blog\\source\\_posts\\web\\nginx\\README.md";
+    public static final String DEST_FILE_PATH = "D:\\Codes\\ZP\\Others\\blog\\source\\_posts\\web\\nginx\\README.md";
 
     public void convertMdFilesInDir(File root) {
         File[] files = root.listFiles();
         for (File f : files) {
             if (f.isDirectory()) {
+                if (f.getName().contains("node_modules")) {
+                    continue;
+                }
                 convertMdFilesInDir(f);
             } else {
                 String fileExtension = FileUtil.getFileExtension(f);

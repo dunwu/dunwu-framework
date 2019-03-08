@@ -253,4 +253,15 @@ public class FileUtilTest {
         assertThat(FileUtil.isDirExists(dir.toString())).isTrue();
         assertThat(FileUtil.isDirExists(dir.toFile())).isTrue();
     }
+
+    @Test
+    public void changeFileNameToStandard(){
+        FileUtil.changeFileNameToStandard("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor\\Change Bidirectional Association to Unidirectional - After.png");
+    }
+
+    @Test
+    public void changeFileNameToStandardInFolder(){
+        FileUtil.changeFileNameToStandardInFolder(new File("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor"));
+    }
+
 }

@@ -1,8 +1,13 @@
 package io.github.dunwu.utils.md;
 
+import io.github.dunwu.utils.io.FileUtil;
 import io.github.dunwu.utils.regex.RegexHelper;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,6 +16,8 @@ import java.util.List;
  * @date 2019-02-25
  */
 public class MarkdownFormatHelper {
+    public static final String FRONT_MATTER_TAG = "---";
+
     public static void convertToGFM(String srcFilePath, String detFilePath) {
 
         List<String> contents = TxtFileUtil.readLineByLine(srcFilePath);
@@ -21,6 +28,10 @@ public class MarkdownFormatHelper {
 
         for (String text : contents) {
             text = replaceSpecialChars(text, isCode);
+
+            if (RegexHelper.Checker.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
+                text = text.replaceAll("/", "-");
+            }
 
             if (text.contains("```")) {
                 isCode = !isCode;
@@ -34,10 +45,7 @@ public class MarkdownFormatHelper {
         }
 
         newContents = TOC.changeTOCToGeneratedCatalogue(newContents);
-
-        for (String str : newContents) {
-            System.out.println(str);
-        }
+        newContents = addFrontMatter(srcFilePath, newContents);
 
         TxtFileUtil.writeLineByLine(newContents, detFilePath);
     }
@@ -55,8 +63,7 @@ public class MarkdownFormatHelper {
     }
 
     public static String convertImgTag(final String text) {
-        String newstr = RegexHelper.replaceAllMatchContent(text,
-                                                           RegexHelper.Checker.REGEX_MARKDOWN_IMAGE_TAG, "![]");
+        String newstr = RegexHelper.replaceAllMatchContent(text, RegexHelper.Checker.REGEX_MARKDOWN_IMAGE_TAG, "![]");
 
         boolean hasPic = newstr.contains("![]");
         if (!hasPic) {
@@ -180,5 +187,34 @@ public class MarkdownFormatHelper {
         }
         idx = text.indexOf(str, idx + 3);
         return idx != -1;
+    }
+
+    private static List<String> addFrontMatter(String srcFilePath, List<String> contents) {
+        if (CollectionUtils.isEmpty(contents)) {
+            return contents;
+        }
+
+        String firstLine = contents.get(0);
+        if (StringUtils.equals(firstLine, FRONT_MATTER_TAG)) {
+            return contents;
+        }
+
+        String title = "";
+        for (String line : contents) {
+            if (line.startsWith("# ")) {
+                title = StringUtils.substringAfter(line, "# ");
+                break;
+            }
+        }
+
+        String date = FileUtil.getFileCreateTimeString(srcFilePath, "yyyy-MM-dd");
+        List<String> newContents = new ArrayList<>();
+        newContents.add("---");
+        newContents.add("title: " + title);
+        newContents.add("date: " + date);
+        // newContents.add("tags: ");
+        newContents.add("---\n");
+        newContents.addAll(contents);
+        return newContents;
     }
 }
