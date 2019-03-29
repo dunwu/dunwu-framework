@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  * 随机测试数据生成工具类.
- * @author calvin
+ * @author Zhang Peng
  */
 public class RandomData {
 

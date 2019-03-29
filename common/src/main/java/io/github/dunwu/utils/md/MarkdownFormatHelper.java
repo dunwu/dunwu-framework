@@ -152,8 +152,9 @@ public class MarkdownFormatHelper {
 
             String leftPartContent = text.substring(0, startIdx);
 
-            while (startIdx < text.length() && text.charAt(startIdx) == '$')
+            while (startIdx < text.length() && text.charAt(startIdx) == '$') {
                 startIdx++;
+            }
             String mathJaxContent = text.substring(startIdx, endIdx);
             mathJaxContent = mathJaxContent.replaceAll(" ", "");
             mathJaxContent = "<img src=\"https://latex.codecogs.com/gif.latex?" + mathJaxContent + "\"/>";
@@ -162,8 +163,9 @@ public class MarkdownFormatHelper {
                 mathJaxContent = "<div align=\"center\">" + mathJaxContent + "</div> <br>";
             }
 
-            while (endIdx < text.length() && text.charAt(endIdx) == '$')
+            while (endIdx < text.length() && text.charAt(endIdx) == '$') {
                 endIdx++;
+            }
             sb.append(leftPartContent).append(mathJaxContent);
             text = text.substring(endIdx);
         }

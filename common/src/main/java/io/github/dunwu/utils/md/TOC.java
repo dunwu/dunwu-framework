@@ -36,13 +36,16 @@ public class TOC {
                 }
                 continue;
             }
-            if (hasGenerated) ret.add(text);
-            else if (text.contains(tocTagAfter)) {
+            if (hasGenerated) {
+                ret.add(text);
+            } else if (text.contains(tocTagAfter)) {
                 isInOldCatalogue = true;
             } else if (text.contains(tocTagBefore)) {
                 ret.add(generateCatalogue(contents));
                 hasGenerated = true;
-            } else ret.add(text);
+            } else {
+                ret.add(text);
+            }
         }
 
         return ret;

@@ -15,7 +15,7 @@ import io.github.dunwu.utils.base.MoreValidate;
  * 2. 保证没有负数陷阱，也能更精确设定范围的nextInt/nextLong/nextDouble
  * (copy from Common Lang RandomUtils，但默认使用性能较优的ThreadLocalRandom，并可配置其他的Random)
  * 3. 随机字符串 (via Common Lang RandomStringUtils)
- * @author calvin
+ * @author Zhang Peng
  */
 public class RandomUtil {
 

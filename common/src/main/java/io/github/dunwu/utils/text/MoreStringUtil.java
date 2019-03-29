@@ -16,7 +16,7 @@ import com.google.common.base.Utf8;
  * 本类仅补充少量额外方法, 尤其是针对char的运算
  * 1. split char/chars
  * 2. 针对char的replace first/last, startWith,endWith 等
- * @author calvin
+ * @author Zhang Peng
  */
 public class MoreStringUtil {
 

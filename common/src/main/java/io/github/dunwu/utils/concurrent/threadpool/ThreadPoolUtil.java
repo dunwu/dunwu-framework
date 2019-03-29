@@ -18,7 +18,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  * 1. 优雅关闭线程池的(via guava)
  * 2. 创建可自定义线程名的ThreadFactory(via guava)
  * 3. 防止第三方Runnable未捕捉异常导致线程跑飞
- * @author calvin
+ * @author Zhang Peng
  */
 public class ThreadPoolUtil {
 

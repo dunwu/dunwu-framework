@@ -13,7 +13,7 @@
   <artifactId>dunwu-bom</artifactId>
   <packaging>pom</packaging>
   <name>Dunwu - Bom</name>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <description>maven dependency management</description>
 
   <properties>
@@ -41,9 +41,9 @@
 
       <!-- BEAN BEGIN -->
       <dependency>
-        <groupId>net.sf.dozer</groupId>
-        <artifactId>dozer</artifactId>
-        <version>5.5.1</version>
+        <groupId>com.github.dozermapper</groupId>
+        <artifactId>dozer-core</artifactId>
+        <version>6.4.1</version>
       </dependency>
       <!-- BEAN BEGIN -->
 
@@ -386,11 +386,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>3.8.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>

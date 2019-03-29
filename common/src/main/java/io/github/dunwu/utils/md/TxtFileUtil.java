@@ -84,8 +84,11 @@ public class TxtFileUtil {
         File dir = new File(dirPath);
 
         for (File file : dir.listFiles()) {
-            if (file.isFile()) file.delete();
-            else deleteDirectory(file.toString());
+            if (file.isFile()) {
+                file.delete();
+            } else {
+                deleteDirectory(file.toString());
+            }
         }
 
         dir.delete();

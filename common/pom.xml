@@ -13,7 +13,7 @@
   <artifactId>dunwu-common</artifactId>
   <packaging>jar</packaging>
   <name>Dunwu - Common</name>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,12 +23,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-    </dependency>
-
-    <!-- UTILS begin -->
+    <!-- UTILS BEGIN -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -41,28 +36,43 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
     </dependency>
-    <!-- UTILS end -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+    </dependency>
+    <!-- UTILS END -->
 
-    <!-- LOGGING begin -->
+    <!-- LOG BEGIN -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    <!-- LOGGING end -->
-
-    <!-- optional for BeanMapper -->
     <dependency>
-      <groupId>net.sf.dozer</groupId>
-      <artifactId>dozer</artifactId>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
     </dependency>
+    <!-- LOG END -->
 
-    <!-- for JsonMapper -->
+    <!-- BEAN BEGIN -->
+    <dependency>
+      <groupId>com.github.dozermapper</groupId>
+      <artifactId>dozer-core</artifactId>
+    </dependency>
+    <!-- BEAN END -->
+
+    <!-- JSON BEGIN -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+    </dependency>
+    <!-- JSON END -->
 
-    <!-- Java API To Access Microsoft Format Files -->
+    <!-- OFFICE BEGIN -->
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
@@ -75,8 +85,9 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-scratchpad</artifactId>
     </dependency>
+    <!-- OFFICE END -->
 
-    <!-- TEST begin -->
+    <!-- TEST BEGIN -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -102,19 +113,14 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!-- TEST end -->
+    <!-- TEST END -->
   </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-bom</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

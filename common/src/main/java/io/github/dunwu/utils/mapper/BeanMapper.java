@@ -1,22 +1,19 @@
 package io.github.dunwu.utils.mapper;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
+import io.github.dunwu.utils.collection.ArrayUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.dunwu.utils.collection.ArrayUtil;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-
 /**
- * 实现深度的BeanOfClasssA<->BeanOfClassB复制
- * 不要是用Apache Common BeanUtils进行类复制，每次就行反射查询对象的属性列表, 非常缓慢.
- * orika性能更好，也不需要Getter函数与无参构造函数，但有潜在bug还没在社区版修复
- * Dozer有6.0版，但only for JDK8
- * 注意: 需要参考POM文件，显式引用Dozer.
+ * 实现深度的BeanOfClasssA<->BeanOfClassB复制 不要是用Apache Common BeanUtils进行类复制，每次就行反射查询对象的属性列表, 非常缓慢.
+ * orika性能更好，也不需要Getter函数与无参构造函数，但有潜在bug还没在社区版修复 Dozer有6.0版，但only for JDK8 注意: 需要参考POM文件，显式引用Dozer.
  */
 public class BeanMapper {
 
-    private static Mapper mapper = new DozerBeanMapper();
+    private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
     /**
      * 简单的复制出新类型对象.

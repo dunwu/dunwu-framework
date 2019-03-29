@@ -192,8 +192,9 @@ public abstract class Striped64 extends Number {
             threadHashCode.set(hc = new int[1]); // Initialize randomly
             int r = rng.nextInt(); // Avoid zero to allow xorShift rehash
             h = hc[0] = (r == 0) ? 1 : r;
-        } else
+        } else {
             h = hc[0];
+        }
         boolean collide = false;                // True if last slot nonempty
         for (; ; ) {
             Cell[] as;
@@ -216,26 +217,29 @@ public abstract class Striped64 extends Number {
                             } finally {
                                 busy = 0;
                             }
-                            if (created)
+                            if (created) {
                                 break;
+                            }
                             continue;           // Slot is now non-empty
                         }
                     }
                     collide = false;
                 } else if (!wasUncontended)       // CAS already known to fail
+                {
                     wasUncontended = true;      // Continue after rehash
-                else if (a.cas(v = a.value, fn(v, x)))
+                } else if (a.cas(v = a.value, fn(v, x))) {
                     break;
-                else if (n >= NCPU || cells != as)
+                } else if (n >= NCPU || cells != as) {
                     collide = false;            // At max size or stale
-                else if (!collide)
+                } else if (!collide) {
                     collide = true;
-                else if (busy == 0 && casBusy()) {
+                } else if (busy == 0 && casBusy()) {
                     try {
                         if (cells == as) {      // Expand table unless stale
                             Cell[] rs = new Cell[n << 1];
-                            for (int i = 0; i < n; ++i)
+                            for (int i = 0; i < n; ++i) {
                                 rs[i] = as[i];
+                            }
                             cells = rs;
                         }
                     } finally {
@@ -260,10 +264,12 @@ public abstract class Striped64 extends Number {
                 } finally {
                     busy = 0;
                 }
-                if (init)
+                if (init) {
                     break;
-            } else if (casBase(v = base, fn(v, x)))
+                }
+            } else if (casBase(v = base, fn(v, x))) {
                 break;                          // Fall back on using base
+            }
         }
     }
 
@@ -278,8 +284,9 @@ public abstract class Striped64 extends Number {
             int n = as.length;
             for (int i = 0; i < n; ++i) {
                 Cell a = as[i];
-                if (a != null)
+                if (a != null) {
                     a.value = initialValue;
+                }
             }
         }
     }
@@ -312,13 +319,15 @@ public abstract class Striped64 extends Number {
         try {
             return java.security.AccessController
                 .doPrivileged(new java.security.PrivilegedExceptionAction<sun.misc.Unsafe>() {
+                    @Override
                     public sun.misc.Unsafe run() throws Exception {
                         Class<sun.misc.Unsafe> k = sun.misc.Unsafe.class;
                         for (java.lang.reflect.Field f : k.getDeclaredFields()) {
                             f.setAccessible(true);
                             Object x = f.get(null);
-                            if (k.isInstance(x))
+                            if (k.isInstance(x)) {
                                 return k.cast(x);
+                            }
                         }
                         throw new NoSuchFieldError("the Unsafe");
                     }

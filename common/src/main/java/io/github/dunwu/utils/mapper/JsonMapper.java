@@ -1,28 +1,27 @@
 package io.github.dunwu.utils.mapper;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-
-import io.github.dunwu.utils.base.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import io.github.dunwu.utils.base.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
 
 /**
- * 简单封装Jackson，实现JSON String<->Java Object转换的Mapper.
- * 可以直接使用公共示例JsonMapper.INSTANCE, 也可以使用不同的builder函数创建实例，封装不同的输出风格,
- * 不要使用GSON, 在对象稍大时非常缓慢.
- * 注意: 需要参考本模块的POM文件，显式引用jackson.
- * @author calvin
+ * 简单封装Jackson，实现JSON String<->Java Object转换的Mapper. 可以直接使用公共示例JsonMapper.INSTANCE, 也可以使用不同的builder函数创建实例，封装不同的输出风格,
+ * 不要使用GSON, 在对象稍大时非常缓慢. 注意: 需要参考本模块的POM文件，显式引用jackson.
+ * @author Zhang Peng
  */
 public class JsonMapper {
 
@@ -36,7 +35,7 @@ public class JsonMapper {
         this(null);
     }
 
-    public JsonMapper(Include include) {
+    public JsonMapper(JsonInclude.Include include) {
         mapper = new ObjectMapper();
         // 设置输出时包含属性的风格
         if (include != null) {
@@ -50,15 +49,14 @@ public class JsonMapper {
      * 创建只输出非Null的属性到Json字符串的Mapper.
      */
     public static JsonMapper nonNullMapper() {
-        return new JsonMapper(Include.NON_NULL);
+        return new JsonMapper(JsonInclude.Include.NON_NULL);
     }
 
     /**
-     * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper.
-     * 注意，要小心使用, 特别留意empty的情况.
+     * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper. 注意，要小心使用, 特别留意empty的情况.
      */
     public static JsonMapper nonEmptyMapper() {
-        return new JsonMapper(Include.NON_EMPTY);
+        return new JsonMapper(JsonInclude.Include.NON_EMPTY);
     }
 
     /**
@@ -82,8 +80,7 @@ public class JsonMapper {
     }
 
     /**
-     * 反序列化POJO或简单Collection如List<String>.
-     * 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
+     * 反序列化POJO或简单Collection如List<String>. 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
      * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String, JavaType)
      * @see #fromJson(String, JavaType)
      */
@@ -102,7 +99,6 @@ public class JsonMapper {
 
     /**
      * 反序列化复杂Collection如List<Bean>, contructCollectionType()或contructMapType()构造类型, 然后调用本函数.
-     * @see #createCollectionType(Class, Class...)
      */
     public <T> T fromJson(@Nullable String jsonString, JavaType javaType) {
         if (StringUtils.isEmpty(jsonString)) {
