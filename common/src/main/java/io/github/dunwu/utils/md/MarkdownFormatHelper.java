@@ -74,7 +74,7 @@ public class MarkdownFormatHelper {
         int endIdx = newstr.indexOf(")", startIdx);
         String picPath = newstr.substring(startIdx + 4, endIdx);
         newstr = "<img src=\"" + picPath + "\"/>";
-        newstr = "<br><div align=\"center\">" + newstr + "</div><br>";
+        newstr = "<div align=\"center\">" + newstr + "</div>";
 
         return newstr;
     }
