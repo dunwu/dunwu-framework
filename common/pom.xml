@@ -42,6 +42,19 @@
     </dependency>
     <!-- UTILS END -->
 
+    <!-- JAVAX BEGIN -->
+    <dependency>
+      <groupId>eu.medsea.mimeutil</groupId>
+      <artifactId>mime-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JAVAX END -->
+
     <!-- LOG BEGIN -->
     <dependency>
       <groupId>org.slf4j</groupId>

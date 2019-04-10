@@ -2,10 +2,13 @@ package io.github.dunwu.utils.number;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.Validate;
 import io.github.dunwu.utils.base.MoreValidate;
 
@@ -300,5 +303,11 @@ public class RandomUtil {
      */
     public static String randomAsciiRandomLength(Random random, int minLength, int maxLength) {
         return RandomStringUtils.random(nextInt(random, minLength, maxLength), 32, 127, false, false, null, random);
+    }
+
+    public static <E extends Enum<E>> E randomEnum(final Class<E> enumClass) {
+        List<E> enumList = EnumUtils.getEnumList(enumClass);
+        int index = RandomUtils.nextInt(0, enumList.size());
+        return enumList.get(index);
     }
 }
