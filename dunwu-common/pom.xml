@@ -4,20 +4,24 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-parent</artifactId>
-    <version>0.0.5</version>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>9</version>
   </parent>
+
+  <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-common</artifactId>
   <packaging>jar</packaging>
   <name>Dunwu - Common</name>
-  <version>0.0.5</version>
+  <description>Dunwu 基础工具包</description>
+  <version>${dunwu.version}</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+    <dunwu.version>0.1.0</dunwu.version>
   </properties>
 
   <dependencies>
@@ -100,21 +104,47 @@
 
     <!-- TEST BEGIN -->
     <dependency>
-      <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-test</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
     <!-- TEST END -->
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-external</artifactId>
+        <version>${dunwu.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 
-  <developers>
-    <developer>
-      <name>Zhang Peng</name>
-      <url>https://github.com/dunwu</url>
-      <email>forbreak@163.com</email>
-      <timezone>+8</timezone>
-    </developer>
-  </developers>
+  <url>https://github.com/dunwu/dunwu</url>
+  <inceptionYear>2018</inceptionYear>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -123,6 +153,24 @@
       <comments>A business-friendly OSS license</comments>
     </license>
   </licenses>
+  <scm>
+    <url>https://github.com/dunwu/dunwu</url>
+    <connection>git@github.com:dunwu/dunwu.git</connection>
+    <developerConnection>https://github.com/dunwu</developerConnection>
+  </scm>
+  <developers>
+    <developer>
+      <name>Zhang Peng</name>
+      <url>https://github.com/dunwu</url>
+      <email>forbreak@163.com</email>
+      <timezone>+8</timezone>
+    </developer>
+  </developers>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/dunwu/dunwu/issues</url>
+  </issueManagement>
+
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-snapshots</id>
@@ -133,7 +181,63 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
   </distributionManagement>
+  <profiles>
+    <profile>
+      <id>sonatype</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.7</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>sonatype-snapshots</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
+            <configuration>
+              <failOnError>false</failOnError>
+              <quiet>true</quiet>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
 
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <build>
     <resources>
       <resource>
