@@ -13,6 +13,7 @@
   <artifactId>dunwu-web</artifactId>
   <packaging>jar</packaging>
   <name>Dunwu - Web</name>
+  <description>Dunwu Web 工具包</description>
   <version>${dunwu.version}</version>
 
   <properties>
@@ -20,28 +21,36 @@
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <dunwu.version>0.1.0</dunwu.version>
+    <dunwu.version>0.1.1</dunwu.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common</artifactId>
+      <version>${dunwu.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-test</artifactId>
+      <version>${dunwu.version}</version>
     </dependency>
+
+    <!-- JAVAX BEGIN -->
+    <dependency>
+      <groupId>eu.medsea.mimeutil</groupId>
+      <artifactId>mime-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JAVAX END -->
   </dependencies>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-bom</artifactId>
-        <version>${dunwu.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-external</artifactId>

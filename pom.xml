@@ -15,10 +15,11 @@
     <module>dunwu-external</module>
     <module>dunwu-test</module>
     <module>dunwu-common</module>
+    <module>dunwu-web</module>
   </modules>
 
   <properties>
-    <dunwu.version>0.1.0</dunwu.version>
+    <dunwu.version>0.1.1</dunwu.version>
   </properties>
 
   <licenses>

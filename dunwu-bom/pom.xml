@@ -17,7 +17,7 @@
   <description>Dunwu 工具集版本管理</description>
 
   <properties>
-    <dunwu.version>0.1.0</dunwu.version>
+    <dunwu.version>0.1.1</dunwu.version>
   </properties>
 
   <dependencyManagement>
@@ -35,6 +35,11 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common</artifactId>
+        <version>${dunwu.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-web</artifactId>
         <version>${dunwu.version}</version>
       </dependency>
     </dependencies>
