@@ -48,7 +48,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
     /**
      * Constructs a new instance with the specified {@link StringBuilder}.
      * <p>
-     * If {@code builder} is null a new instance with default capacity will be created.
+     * If {@link builder} is null a new instance with default capacity will be created.
      * </p>
      * @param builder The String builder. May be null.
      */

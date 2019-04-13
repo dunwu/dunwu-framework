@@ -429,9 +429,9 @@ public class DateUtil {
     }
 
     public static LocalDateTime date2LocalDateTime(Date date) {
-        //A time-zone ID, such as {@code Europe/Paris}.(时区)
+        //A time-zone ID, such as {@link Europe/Paris}.(时区)
         Instant instant = date.toInstant();
-        //A time-zone ID, such as {@code Europe/Paris}.(时区)
+        //A time-zone ID, such as {@link Europe/Paris}.(时区)
         ZoneId zoneId = ZoneId.systemDefault();
         return instant.atZone(zoneId).toLocalDateTime();
     }

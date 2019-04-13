@@ -17,7 +17,7 @@
   <description>Dunwu 工具集版本管理</description>
 
   <properties>
-    <dunwu.version>0.1.1</dunwu.version>
+    <dunwu.version>0.1.2</dunwu.version>
   </properties>
 
   <dependencyManagement>

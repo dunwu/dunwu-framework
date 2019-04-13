@@ -8,7 +8,7 @@ import org.apache.commons.lang3.EnumUtils;
  * 枚举工具集
  * 1. 将多个枚举值按bit与long的转换
  * 2. 与String的转换
- * 封装 {@code org.apache.commons.lang3.EnumUtils}
+ * 封装 {@link org.apache.commons.lang3.EnumUtils}
  */
 public class EnumUtil {
 

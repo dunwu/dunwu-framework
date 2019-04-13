@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
 
-public class ServletUtils {
+public class ServletUtil {
     /**
      * 设置让浏览器弹出下载对话框的Header,不同浏览器使用不同的编码方式.
      * @param fileName 下载后的文件名.

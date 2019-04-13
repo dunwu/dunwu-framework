@@ -1,24 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2014 springside.github.io
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- *******************************************************************************/
 package io.github.dunwu.test.log;
-
-import java.util.List;
-
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
- * 在List中保存日志的Appender, 用于测试Logback的日志输出.
- * 在测试开始前, 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
+ * 在List中保存日志的Appender, 用于测试Logback的日志输出. 在测试开始前, 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
  * @author Zhang Peng
  */
 public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {

@@ -328,7 +328,7 @@ public class LongObjectHashMap<V> implements LongObjectMap<V> {
     /**
      * Locates the index for the given key. This method probes using double hashing.
      * @param key the key for an entry in the map.
-     * @return the index where the key was found, or {@code -1} if no entry is found for that key.
+     * @return the index where the key was found, or {@link -1} if no entry is found for that key.
      */
     private int indexOf(long key) {
         int startIndex = hashIndex(key);
@@ -366,7 +366,7 @@ public class LongObjectHashMap<V> implements LongObjectMap<V> {
     }
 
     /**
-     * Get the next sequential index after {@code index} and wraps if necessary.
+     * Get the next sequential index after {@link index} and wraps if necessary.
      */
     private int probeNext(int index) {
         // The array lengths are always a power of two, so we can use a bitmask to stay inside the array bounds.
@@ -393,7 +393,7 @@ public class LongObjectHashMap<V> implements LongObjectMap<V> {
      * Removes entry at the given index position. Also performs opportunistic, incremental rehashing if necessary to not
      * break conflict chains.
      * @param index the index position of the element to remove.
-     * @return {@code true} if the next item was moved back. {@code false} otherwise.
+     * @return {@link true} if the next item was moved back. {@link false} otherwise.
      */
     private boolean removeAt(final int index) {
         --size;

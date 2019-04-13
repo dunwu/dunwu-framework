@@ -1,26 +1,18 @@
 package io.github.dunwu.util.io;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.github.dunwu.util.text.Charsets;
-
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
+import io.github.dunwu.util.text.Charsets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.List;
 
 /**
- * IO Stream/Reader相关工具集. 固定encoding为UTF8.
- * 建议使用Apache Commons IO和Guava关于IO的工具类(com.google.common.io.*), 在未引入Commons IO时可以用本类做最基本的事情.
+ * IO Stream/Reader相关工具集. 固定encoding为UTF8. 建议使用Apache Commons IO和Guava关于IO的工具类(com.google.common.io.*), 在未引入Commons
+ * IO时可以用本类做最基本的事情.
  * <p>
  * 1. 安静关闭Closeable对象
  * <p>
@@ -117,5 +109,10 @@ public class IOUtil {
 
     public static BufferedReader toBufferedReader(final Reader reader) {
         return reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
+    }
+
+
+    public static final InputStream bytes2InputStream(byte[] bytes) {
+        return new ByteArrayInputStream(bytes);
     }
 }
