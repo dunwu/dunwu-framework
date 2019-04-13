@@ -367,7 +367,7 @@ public class ImageUtil {
     /**
      * 水印位置枚举
      */
-    enum WaterMarkPositionsEnum {
+    public enum WaterMarkPositionsEnum {
         TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
     }
 
@@ -375,7 +375,7 @@ public class ImageUtil {
     /**
      * 文件类型枚举
      */
-    enum ImageTypeEnum {
+    public enum ImageTypeEnum {
         png, jpg, jpeg, bmp, gif
     }
 }

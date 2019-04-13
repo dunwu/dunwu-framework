@@ -17,16 +17,11 @@
   <description>Dunwu 工具集版本管理</description>
 
   <properties>
-    <dunwu.version>0.1.2</dunwu.version>
+    <dunwu.version>0.2.0</dunwu.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-external</artifactId>
-        <version>${dunwu.version}</version>
-      </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-test</artifactId>

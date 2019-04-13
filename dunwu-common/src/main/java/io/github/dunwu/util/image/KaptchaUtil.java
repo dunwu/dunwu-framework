@@ -96,7 +96,7 @@ public class KaptchaUtil {
         ImageUtil.toOutputStream(kaptcha.getImage(), output, null);
     }
 
-    static class Kaptcha implements Serializable {
+    public static class Kaptcha implements Serializable {
         private String code;
         private BufferedImage image;
 
