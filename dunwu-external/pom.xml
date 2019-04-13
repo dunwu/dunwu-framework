@@ -13,10 +13,11 @@
   <artifactId>dunwu-external</artifactId>
   <packaging>pom</packaging>
   <name>Dunwu - External</name>
-  <version>0.1.1</version>
+  <version>${dunwu.version}</version>
   <description>常用依赖包版本管理</description>
 
   <properties>
+    <dunwu.version>0.1.1</dunwu.version>
     <spring.version>5.1.3.RELEASE</spring.version>
     <poi.version>4.0.0</poi.version>
     <jetty.version>9.4.12.v20180830</jetty.version>
@@ -44,6 +45,13 @@
         <groupId>com.github.dozermapper</groupId>
         <artifactId>dozer-core</artifactId>
         <version>6.4.1</version>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.6</version>
+        <optional>true</optional>
       </dependency>
       <!-- BEAN BEGIN -->
 
@@ -267,6 +275,15 @@
         <version>4.2.0</version>
       </dependency>
       <!-- MQ END -->
+
+      <!-- MEDIA BEGIN -->
+      <dependency>
+        <groupId>net.coobird</groupId>
+        <artifactId>thumbnailator</artifactId>
+        <version>[0.4, 0.5)</version>
+        <optional>true</optional>
+      </dependency>
+      <!-- MEDIA END -->
 
       <!-- ORM BEGIN -->
       <dependency>

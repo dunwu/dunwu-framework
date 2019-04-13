@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 应答工具类
  * @author Zhang Peng
- * @date 2019-04-11
+ * @since 2019-04-11
  */
 public class ResultUtil {
 

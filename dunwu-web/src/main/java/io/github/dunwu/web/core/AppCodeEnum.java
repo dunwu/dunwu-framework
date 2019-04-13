@@ -3,7 +3,7 @@ package io.github.dunwu.web.core;
 /**
  * 系统应答状态码
  * @author Zhang Peng
- * @date 2019-04-11
+ * @since 2019-04-11
  */
 public enum AppCodeEnum {
     /**

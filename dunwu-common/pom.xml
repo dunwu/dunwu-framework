@@ -102,6 +102,14 @@
     </dependency>
     <!-- OFFICE END -->
 
+    <!-- MEDIA BEGIN -->
+    <dependency>
+      <groupId>net.coobird</groupId>
+      <artifactId>thumbnailator</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <!-- MEDIA END -->
+
     <!-- TEST BEGIN -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
