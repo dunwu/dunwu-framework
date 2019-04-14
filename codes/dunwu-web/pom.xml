@@ -4,35 +4,29 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu-parent</artifactId>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-web</artifactId>
   <packaging>jar</packaging>
+  <version>${dunwu.version}</version>
   <name>Dunwu - Web</name>
   <description>Dunwu Web 工具包</description>
-  <version>${dunwu.version}</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <dunwu.version>0.2.0</dunwu.version>
+    <dunwu.version>0.2.2-SNAPSHOT</dunwu.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common</artifactId>
-      <version>${dunwu.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-test</artifactId>
       <version>${dunwu.version}</version>
     </dependency>
 
@@ -90,19 +84,9 @@
     <url>https://github.com/dunwu/dunwu/issues</url>
   </issueManagement>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-  </distributionManagement>
   <profiles>
     <profile>
-      <id>sonatype</id>
+      <id>release</id>
       <build>
         <resources>
           <resource>
@@ -111,74 +95,30 @@
         </resources>
         <plugins>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.7</version>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>sonatype-snapshots</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
-            <configuration>
-              <failOnError>false</failOnError>
-              <quiet>true</quiet>
-            </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
+      <distributionManagement>
+      <snapshotRepository>
+        <id>sonatype-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+        <id>sonatype-staging</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      </repository>
+    </distributionManagement>
+
     </profile>
   </profiles>
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.properties</include>
-          <include>**/*.json</include>
-          <include>**/*.xml</include>
-          <include>**/*.tld</include>
-        </includes>
-        <filtering>false</filtering>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.properties</include>
-          <include>**/*.json</include>
-          <include>**/*.xml</include>
-          <include>**/*.tld</include>
-        </includes>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-  </build>
 </project>
