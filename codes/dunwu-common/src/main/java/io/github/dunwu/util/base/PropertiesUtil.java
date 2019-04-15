@@ -1,16 +1,16 @@
 package io.github.dunwu.util.base;
 
+import io.github.dunwu.util.io.URLResourceUtil;
+import io.github.dunwu.util.number.NumberUtil;
+import io.github.dunwu.util.text.Charsets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Properties;
-
-import io.github.dunwu.util.io.URLResourceUtil;
-import io.github.dunwu.util.number.NumberUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.github.dunwu.util.text.Charsets;
 
 /**
  * 关于Properties的工具类

@@ -1,14 +1,13 @@
 package io.github.dunwu.util.number;
 
-import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import io.github.dunwu.util.base.annotation.NotNull;
-import io.github.dunwu.util.base.annotation.Nullable;
-
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
+import io.github.dunwu.util.base.annotation.NotNull;
+import io.github.dunwu.util.base.annotation.Nullable;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.Locale;
 
 /**
  * 数字的工具类.

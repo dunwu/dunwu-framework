@@ -4,46 +4,88 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.4.RELEASE</version>
+    <relativePath/>
   </parent>
 
-  <artifactId>dunwu-common</artifactId>
+  <groupId>io.github.dunwu</groupId>
+  <artifactId>dunwu-framework</artifactId>
   <packaging>jar</packaging>
   <version>${dunwu.version}</version>
-  <name>Dunwu - Common</name>
-  <description>Dunwu 基础工具包</description>
+  <name>Dunwu - Framework</name>
+  <description>Dunwu Framework 工具包</description>
 
   <properties>
     <dunwu.version>0.3.0-SNAPSHOT</dunwu.version>
+    <mybatis-plus.version>3.1.0</mybatis-plus.version>
   </properties>
 
   <dependencies>
-    <!-- UTILS BEGIN -->
+    <!-- SPRING BOOT BEGIN -->
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-freemarker</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-collections4</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
-    <!-- UTILS END -->
+    <!-- SPRING BOOT END -->
+
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-common</artifactId>
+      <version>${dunwu.version}</version>
+    </dependency>
+
+    <!-- DATA BEGIN -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-generator</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- DATA BEGIN -->
 
     <!-- JAVAX BEGIN -->
     <dependency>
       <groupId>eu.medsea.mimeutil</groupId>
       <artifactId>mime-util</artifactId>
-      <scope>provided</scope>
+      <version>2.1.3</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-log4j12</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -52,75 +94,22 @@
       <scope>provided</scope>
     </dependency>
     <!-- JAVAX END -->
-
-    <!-- LOG BEGIN -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- LOG END -->
-
-    <!-- BEAN BEGIN -->
-    <dependency>
-      <groupId>com.github.dozermapper</groupId>
-      <artifactId>dozer-core</artifactId>
-    </dependency>
-    <!-- BEAN END -->
-
-    <!-- JSON BEGIN -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-    </dependency>
-    <!-- JSON END -->
-
-    <!-- OFFICE BEGIN -->
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-scratchpad</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- OFFICE END -->
-
-    <!-- MEDIA BEGIN -->
-    <dependency>
-      <groupId>net.coobird</groupId>
-      <artifactId>thumbnailator</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <!-- MEDIA END -->
   </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-parent</artifactId>
-        <version>${dunwu.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-generator</artifactId>
+        <version>${mybatis-plus.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
+
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>

@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-parent</artifactId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Dunwu</name>
   <description>Dunwu 工具集版本管理</description>
@@ -13,11 +13,17 @@
   <modules>
     <module>dunwu-bom</module>
     <module>dunwu-common</module>
-    <module>dunwu-web</module>
+    <module>dunwu-framework</module>
   </modules>
 
   <properties>
-    <dunwu.version>0.2.2-SNAPSHOT</dunwu.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    <!-- version -->
+    <dunwu.version>0.3.0-SNAPSHOT</dunwu.version>
     <spring.version>5.1.3.RELEASE</spring.version>
     <poi.version>4.0.0</poi.version>
     <jetty.version>9.4.12.v20180830</jetty.version>
