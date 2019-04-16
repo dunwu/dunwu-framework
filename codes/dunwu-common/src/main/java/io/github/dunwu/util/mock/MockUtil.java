@@ -2,9 +2,9 @@ package io.github.dunwu.util.mock;
 
 import io.github.dunwu.util.time.DateUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -96,17 +96,13 @@ public class MockUtil {
     }
 
     public static String anyDomain() {
-        String chars = "abcdefghijklmnopqrstuvwxyz";
-        //使用字母a-z，生成20个code point(维基百科称之为'码位')的随机字符串
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
-        String domain1 = generator.generate(RandomUtils.nextInt(2, 11));
-        String domain2 = generator.generate(RandomUtils.nextInt(2, 4));
+        String domain1 = RandomStringUtils.randomAlphabetic(2, 11);
+        String domain2 = RandomStringUtils.randomAlphabetic(2, 4);
         return new StringBuilder().append(domain1.toLowerCase()).append(".").append(domain2.toLowerCase()).toString();
     }
 
     public static String anyEmail() {
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
-        String name = generator.generate(RandomUtils.nextInt(2, 11));
+        String name = RandomStringUtils.randomAlphabetic(2, 11);
         return new StringBuilder().append(name.toLowerCase()).append("@").append(anyDomain()).toString();
     }
 
@@ -218,21 +214,23 @@ public class MockUtil {
     }
 
     public static String anyLetterString(int minLen, int maxLen) {
-        String dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        RandomStringGenerator generator =
-            new RandomStringGenerator.Builder().selectFrom(dictionary.toCharArray()).build();
-        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
+        return RandomStringUtils.randomAlphabetic(minLen, maxLen);
     }
 
     public static String anyCLetterString(int minLen, int maxLen) {
-        String dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('一', '龥').build();
-        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
+        char begin = '\u4E00';
+        char end = '\u9FA5';
+        StringBuilder sb = new StringBuilder();
+        for (int index = begin; index <= end; index++) {
+            sb.append(index);
+        }
+
+        int count = RandomUtils.nextInt(minLen, maxLen);
+        return RandomStringUtils.random(count, sb.toString());
     }
 
     public static String anyNumString(int minLen, int maxLen) {
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
-        return generator.generate(RandomUtils.nextInt(minLen, maxLen));
+        return RandomStringUtils.randomAlphanumeric(minLen, maxLen);
     }
 
     public static String mock(String[] list) {
