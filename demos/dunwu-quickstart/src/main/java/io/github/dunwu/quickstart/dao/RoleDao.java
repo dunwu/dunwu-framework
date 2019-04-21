@@ -1,6 +1,6 @@
-package io.github.dunwu.demo.dao;
+package io.github.dunwu.quickstart.dao;
 
-import io.github.dunwu.demo.entity.Role;
+import io.github.dunwu.quickstart.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author Zhang Peng
- * @since 2019-04-15
+ * @since 2019-04-21
  */
 public interface RoleDao extends BaseMapper<Role> {
 

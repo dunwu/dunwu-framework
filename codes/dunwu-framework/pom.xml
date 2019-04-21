@@ -18,7 +18,7 @@
   <description>Dunwu Framework 工具包</description>
 
   <properties>
-    <dunwu.version>0.3.0-SNAPSHOT</dunwu.version>
+    <dunwu.version>0.3.0</dunwu.version>
     <mybatis-plus.version>3.1.0</mybatis-plus.version>
   </properties>
 
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-generator</artifactId>
-      <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>

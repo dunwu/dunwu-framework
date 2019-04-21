@@ -1,6 +1,9 @@
 # dunwu-common
 
 > `dunwu-common` 是一个精选的常用工具集合。
+>
+> :notebook: javalib 相关文档已归档到：「[blog](https://github.com/dunwu/blog/tree/master/source/_posts/java/javalib)」
+
 
 通用工具包
 

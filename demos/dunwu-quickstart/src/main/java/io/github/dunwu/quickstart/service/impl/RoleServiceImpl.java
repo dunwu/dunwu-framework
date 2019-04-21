@@ -1,8 +1,8 @@
-package io.github.dunwu.demo.service.impl;
+package io.github.dunwu.quickstart.service.impl;
 
-import io.github.dunwu.demo.entity.Role;
-import io.github.dunwu.demo.dao.RoleDao;
-import io.github.dunwu.demo.service.RoleService;
+import io.github.dunwu.quickstart.entity.Role;
+import io.github.dunwu.quickstart.dao.RoleDao;
+import io.github.dunwu.quickstart.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author Zhang Peng
- * @since 2019-04-15
+ * @since 2019-04-21
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleService {

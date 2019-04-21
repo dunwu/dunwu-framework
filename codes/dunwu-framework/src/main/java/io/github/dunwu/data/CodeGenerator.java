@@ -19,7 +19,18 @@ import java.util.Scanner;
 
 /**
  * 代码生成器
+ * <p>
+ * 基于 mybatis plus 代码生成器，做了定制修改。
+ * <ul>
+ * <li>生成 Mapper xml</li>
+ * <li>生成 Entity类</li>
+ * <li>生成 DAO类(mapper)</li>
+ * <li>生成 Service类</li>
+ * <li>生成 Controller类（Controller做了深层定制，自动生成继承自BaseController的增删改查REST接口）</li>
+ * </ul>
  * @author Zhang Peng
+ * @see io.github.dunwu.web.controller.BaseController
+ * @see <a href="https://mybatis.plus/guide/generator.html#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B">mybatis plus 代码生成器</a>
  * @since 2019-04-15
  */
 public class CodeGenerator {
@@ -124,8 +135,12 @@ public class CodeGenerator {
         });
         cfg.setFileOutConfigList(focList);
 
+        // 自定义 controller 模板
+        TemplateConfig templateConfig = new TemplateConfig().setEntity("templates/controller.java.ftl");
+
         // 将配置项注入 AutoGenerator
         AutoGenerator mpg = new AutoGenerator();
+        mpg.setTemplate(templateConfig);
         mpg.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc).setStrategy(sc).setCfg(cfg)
             .setTemplate(new TemplateConfig().setXml(null)).setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();

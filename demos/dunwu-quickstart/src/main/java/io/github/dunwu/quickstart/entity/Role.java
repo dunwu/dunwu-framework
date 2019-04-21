@@ -1,4 +1,4 @@
-package io.github.dunwu.demo.entity;
+package io.github.dunwu.quickstart.entity;
 
 import io.github.dunwu.data.entity.BaseEntity;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Zhang Peng
- * @since 2019-04-15
+ * @since 2019-04-21
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

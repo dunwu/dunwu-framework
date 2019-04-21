@@ -8,23 +8,19 @@ package io.github.dunwu.core;
 public class AppException extends RuntimeException {
 
     private static final long serialVersionUID = -7027578114976830416L;
-    
-    private BaseResult result;
 
-    public AppException(BaseResult result) {
-        try {
-            this.result = (BaseResult)result.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+    private Result result;
+
+    public AppException(Result result) {
+        this.result = new Result(result.getSuccess(), result.getCode(), result.getMsg());
     }
 
-    public AppException(AppCodeEnum appCodeEnum) {
-        this.result = ResultUtil.newFailBaseResult(appCodeEnum);
+    public AppException(SystemCode appCodeEnum) {
+        this.result = ResultUtil.fail(appCodeEnum);
     }
 
-    public AppException(AppCodeEnum appCodeEnum, String[] msgs) {
-        this.result = ResultUtil.newFailBaseResult(appCodeEnum);
+    public AppException(SystemCode appCodeEnum, String[] msgs) {
+        this.result = ResultUtil.fail(appCodeEnum);
         StringBuilder sb = new StringBuilder(appCodeEnum.msg());
         for (String s : msgs) {
             sb.append("\r\n").append(s);
@@ -45,11 +41,11 @@ public class AppException extends RuntimeException {
         return null == result ? null : result.getMsg();
     }
 
-    public BaseResult getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(BaseResult result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 

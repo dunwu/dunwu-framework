@@ -1,6 +1,6 @@
-package io.github.dunwu.demo.service;
+package io.github.dunwu.quickstart.service;
 
-import io.github.dunwu.demo.entity.User;
+import io.github.dunwu.quickstart.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author Zhang Peng
- * @since 2019-04-15
+ * @since 2019-04-21
  */
 public interface UserService extends IService<User> {
 
