@@ -18,8 +18,9 @@
   <description>Dunwu Framework 工具包</description>
 
   <properties>
-    <dunwu.version>0.3.0</dunwu.version>
+    <dunwu.version>0.3.1</dunwu.version>
     <mybatis-plus.version>3.1.0</mybatis-plus.version>
+    <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
   </properties>
 
   <dependencies>
@@ -41,6 +42,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.spring4all</groupId>
+      <artifactId>swagger-spring-boot-starter</artifactId>
+      <scope>provided</scope>
     </dependency>
     <!-- SPRING BOOT END -->
 
@@ -67,11 +73,6 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <!-- DATA BEGIN -->
 
@@ -106,6 +107,11 @@
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-generator</artifactId>
         <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.spring4all</groupId>
+        <artifactId>swagger-spring-boot-starter</artifactId>
+        <version>${swagger-spring-boot-starter.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

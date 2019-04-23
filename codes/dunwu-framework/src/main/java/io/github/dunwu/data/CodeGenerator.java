@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import io.github.dunwu.config.Const;
 import io.github.dunwu.util.base.PropertiesUtil;
+import io.github.dunwu.web.controller.CrudController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.Scanner;
  * <li>生成 Controller类（Controller做了深层定制，自动生成继承自BaseController的增删改查REST接口）</li>
  * </ul>
  * @author Zhang Peng
- * @see io.github.dunwu.web.controller.BaseController
+ * @see CrudController
  * @see <a href="https://mybatis.plus/guide/generator.html#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B">mybatis plus 代码生成器</a>
  * @since 2019-04-15
  */
@@ -66,7 +67,7 @@ public class CodeGenerator {
             Const.ParamKeyEnum.MYBATIS_GENERATOR_JAVA_DIR.value());
         GlobalConfig gc = new GlobalConfig();
         gc.setOpen(false).setFileOverride(true).setActiveRecord(false).setOutputDir(javaDir).setAuthor("Zhang Peng")
-            .setMapperName("%sDao").setXmlName("%sDao").setServiceName("%sService");
+            .setMapperName("%sDao").setXmlName("%sDao").setServiceName("%sService").setSwagger2(true);
 
         // 数据源配置
         String url = PropertiesUtil.getString(properties, Const.ParamKeyEnum.SPRING_DATASOURCE_URL.key(),
@@ -97,7 +98,7 @@ public class CodeGenerator {
         sc.setEntityLombokModel(true).setControllerMappingHyphenStyle(true).setRestControllerStyle(true)
             .setNaming(NamingStrategy.underline_to_camel).setColumnNaming(NamingStrategy.underline_to_camel)
             .setSuperEntityClass("io.github.dunwu.data.entity.BaseEntity")
-            .setSuperControllerClass("io.github.dunwu.web.controller.BaseController").setSuperEntityColumns("id")
+            .setSuperControllerClass("io.github.dunwu.web.controller.CrudController").setSuperEntityColumns("id")
             .setTablePrefix("t_").setTablePrefix(pc.getModuleName() + "_");
         String tableName = PropertiesUtil.getString(properties, Const.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.key(),
             Const.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.value());
@@ -136,7 +137,8 @@ public class CodeGenerator {
         cfg.setFileOutConfigList(focList);
 
         // 自定义 controller 模板
-        TemplateConfig templateConfig = new TemplateConfig().setEntity("templates/controller.java.ftl");
+        TemplateConfig templateConfig =
+            new TemplateConfig().setEntity("templates/entity.java.ftl").setController("templates/controller.java.ftl");
 
         // 将配置项注入 AutoGenerator
         AutoGenerator mpg = new AutoGenerator();

@@ -1,8 +1,7 @@
 package io.github.dunwu.data.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -17,5 +16,6 @@ public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "ID", example = "0")
     protected Long id;
 }

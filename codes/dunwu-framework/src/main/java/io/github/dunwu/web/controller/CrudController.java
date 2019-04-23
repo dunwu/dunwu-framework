@@ -13,18 +13,18 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * 基础 Controller
+ * CRUD 抽象 Controller
  * @author Zhang Peng
  * @since 2019-04-15
  */
-public abstract class BaseController<T> {
+public abstract class CrudController<T> {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private IService<T> service;
 
-    public BaseController() {}
+    public CrudController() {}
 
-    public BaseController(IService<T> service) {
+    public CrudController(IService<T> service) {
         this.service = service;
     }
 

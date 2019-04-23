@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 角色表 服务实现类
  * </p>
  *
  * @author Zhang Peng
- * @since 2019-04-21
+ * @since 2019-04-23
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleService {

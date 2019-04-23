@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
   </parent>
 
   <artifactId>dunwu-common</artifactId>
@@ -16,7 +16,7 @@
   <description>Dunwu 基础工具包</description>
 
   <properties>
-    <dunwu.version>0.3.0</dunwu.version>
+    <dunwu.version>0.3.1</dunwu.version>
   </properties>
 
   <dependencies>

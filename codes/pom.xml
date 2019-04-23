@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-parent</artifactId>
-  <version>0.3.0</version>
+  <version>0.3.1</version>
   <packaging>pom</packaging>
   <name>Dunwu</name>
   <description>Dunwu 工具集版本管理</description>
@@ -23,7 +23,7 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <!-- version -->
-    <dunwu.version>0.3.0</dunwu.version>
+    <dunwu.version>0.3.1</dunwu.version>
     <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
     <dozer.version>6.4.1</dozer.version>
     <guava.version>23.0</guava.version>
