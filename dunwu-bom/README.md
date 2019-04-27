@@ -10,7 +10,7 @@ dunwu-bom 负责统一版本管理，以避免出现依赖包多版本问题。
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-bom</artifactId>
-      <version>${dunwu.version}</version>
+      <version>${project.version}</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>

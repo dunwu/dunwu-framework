@@ -4,19 +4,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.4.RELEASE</version>
-    <relativePath/>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu</artifactId>
+    <version>0.4.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-data</artifactId>
-  <version>${dunwu.version}</version>
   <packaging>jar</packaging>
 
   <properties>
-    <dunwu.version>0.4.0-SNAPSHOT</dunwu.version>
     <mybatis-plus.version>3.1.0</mybatis-plus.version>
   </properties>
 

@@ -11,7 +11,6 @@
 
   <artifactId>dunwu-common</artifactId>
   <packaging>jar</packaging>
-  <version>${dunwu.version}</version>
   <description>Dunwu 基础工具包</description>
 
   <properties>
@@ -80,7 +79,7 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu</artifactId>
-        <version>${dunwu.version}</version>
+        <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

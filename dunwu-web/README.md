@@ -6,7 +6,7 @@
 <dependency>
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-framework</artifactId>
-  <version>${dunwu.version}</version>
+  <version>${project.version}</version>
 </dependency>
 ```
 

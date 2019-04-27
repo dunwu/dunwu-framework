@@ -7,8 +7,6 @@
   <artifactId>dunwu</artifactId>
   <version>0.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>dunwu</name>
-  <description>Dunwu 工具集版本管理</description>
 
   <modules>
     <module>dunwu-bom</module>
