@@ -9,6 +9,6 @@ import io.github.dunwu.generator.CodeGenerator;
  */
 public class MyCodeGenerator {
     public static void main(String[] args) {
-        CodeGenerator.main();
+        CodeGenerator.generate();
     }
 }

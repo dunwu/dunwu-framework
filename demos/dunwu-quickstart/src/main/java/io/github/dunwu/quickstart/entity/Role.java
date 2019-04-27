@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.entity;
 
-import io.github.dunwu.data.entity.BaseSwaggerEntity;
+import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="Role对象", description="角色表")
-public class Role extends BaseSwaggerEntity {
+public class Role extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

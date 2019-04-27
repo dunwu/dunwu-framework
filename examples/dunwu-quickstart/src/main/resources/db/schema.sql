@@ -1,12 +1,18 @@
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS role;
+CREATE TABLE IF NOT EXISTS role (
+    id BIGINT AUTO_INCREMENT COMMENT '主键ID' PRIMARY KEY,
+    role_name VARCHAR(30) NOT NULL COMMENT '角色名',
+    role_describe VARCHAR(30) NULL COMMENT '角色描述'
+)  COMMENT '角色表';
 
-CREATE TABLE user (
-  id bigint(20) NOT NULL COMMENT '主键ID',
-  name varchar(30) DEFAULT NULL COMMENT '姓名',
-  age int(11) DEFAULT NULL COMMENT '年龄',
-  gender int(2) DEFAULT NULL COMMENT '性别,0:MALE, 1:FEMALE',
-  salary double DEFAULT NULL COMMENT '收入',
-  email varchar(50) DEFAULT NULL COMMENT '邮箱',
-  role_id bigint(20) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (id)
-) COMMENT='用户表';
+DROP TABLE IF EXISTS user;
+CREATE TABLE IF NOT EXISTS user (
+    id BIGINT AUTO_INCREMENT COMMENT '主键ID' PRIMARY KEY,
+    name VARCHAR(30) NOT NULL COMMENT '姓名',
+    age INT NULL COMMENT '年龄',
+    gender INT(2) NULL COMMENT '性别,0:MALE, 1:FEMALE',
+    salary DOUBLE NULL COMMENT '收入',
+    email VARCHAR(50) NULL COMMENT '邮箱',
+    role_id BIGINT NULL COMMENT '角色ID',
+    deleted INT(1) NOT NULL COMMENT '是否逻辑删除。0:未删除，1:已删除。'
+)  COMMENT '用户表';

@@ -9,6 +9,6 @@ import org.junit.Test;
 public class CodeGeneratorTest {
     @Test
     public void test(){
-        CodeGenerator.main();
+        CodeGenerator.generate();
     }
 }

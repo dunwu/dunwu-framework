@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.entity;
 
-import io.github.dunwu.data.entity.BaseSwaggerEntity;
+import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="User对象", description="用户表")
-public class User extends BaseSwaggerEntity {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,9 @@ public class User extends BaseSwaggerEntity {
 
     @ApiModelProperty(value = "角色ID", example = "0")
     private Long roleId;
+
+    @ApiModelProperty(value = "是否逻辑删除。0:未删除，1:已删除。", example = "0")
+    private Integer deleted;
 
 
 }
