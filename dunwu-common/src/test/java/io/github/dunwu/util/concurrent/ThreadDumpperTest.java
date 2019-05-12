@@ -1,14 +1,13 @@
 package io.github.dunwu.util.concurrent;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.test.log.LogbackListAppender;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.test.log.LogbackListAppender;
-import io.github.dunwu.util.concurrent.threadpool.ThreadPoolBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThreadDumpperTest {
 
@@ -29,7 +28,7 @@ public class ThreadDumpperTest {
 
     @Test
     public void test() throws InterruptedException {
-        ExecutorService executor = ThreadPoolBuilder.fixedPool().setPoolSize(10).build();
+        ExecutorService executor = ThreadPoolUtil.fixedPool().setPoolSize(10).build();
         CountDownLatch countDownLatch = Concurrents.countDownLatch(10);
         for (int i = 0; i < 10; i++) {
             executor.execute(new LongRunTask(countDownLatch));

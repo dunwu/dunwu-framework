@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "dunwu.web.request",
+      "type": "java.lang.Boolean",
+      "description": "Description for dunwu.web.request."
+    }
+  ]
+}

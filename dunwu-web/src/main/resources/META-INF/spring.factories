@@ -1,2 +1,1 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = io.github.dunwu.config.AbstractWebConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = io.github.dunwu.config.DunwuWebConfiguration

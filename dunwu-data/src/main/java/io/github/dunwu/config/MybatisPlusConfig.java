@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,9 @@ import java.util.List;
  * @see <a href="https://mybatis.plus/">MyBatis-Plus</a>
  * @since 2019-04-27
  */
-public abstract class AbstractMybatisPlusConfig {
+@Configuration
+@EnableTransactionManagement
+public class MybatisPlusConfig {
 
     /**
      * 注入分页插件

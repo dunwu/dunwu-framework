@@ -98,8 +98,12 @@ public class ResultUtil {
      * @param msg 错误信息
      * @return Result
      */
-    public static Result fail(Integer code, String msg) {
+    public static Result fail(String code, String msg) {
         return new Result(false, code, msg);
+    }
+
+    public static <T> Result<T> fail(String code, String msg, T data) {
+        return new Result<>(false, code, msg, data);
     }
 
 }

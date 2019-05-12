@@ -20,7 +20,7 @@ public class Result<T> implements Serializable {
     /**
      * 错误码
      */
-    private Integer code;
+    private String code;
 
     /**
      * 错误描述。
@@ -44,27 +44,27 @@ public class Result<T> implements Serializable {
 
     public Result() {}
 
-    public Result(Boolean success, Integer code, String msg) {
+    public Result(Boolean success, String code, String msg) {
         this.success = success;
         this.code = code;
         this.msg = msg;
     }
 
-    public Result(Boolean success, Integer code, String msg, T data) {
+    public Result(Boolean success, String code, String msg, T data) {
         this.success = success;
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public Result(Boolean success, Integer code, String msg, List<T> list) {
+    public Result(Boolean success, String code, String msg, List<T> list) {
         this.success = success;
         this.code = code;
         this.msg = msg;
         this.list = list;
     }
 
-    public Result(Boolean success, Integer code, String msg, List<T> list, Page page) {
+    public Result(Boolean success, String code, String msg, List<T> list, Page page) {
         this.success = success;
         this.code = code;
         this.msg = msg;
@@ -80,11 +80,11 @@ public class Result<T> implements Serializable {
         this.success = success;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
