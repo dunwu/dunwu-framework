@@ -9,19 +9,19 @@ public class AppException extends RuntimeException {
 
     private static final long serialVersionUID = -7027578114976830416L;
 
-    private Result result;
+    private BaseResult result;
 
-    public AppException(Result result) {
-        this.result = new Result(result.getSuccess(), result.getCode(), result.getMsg());
+    public AppException(BaseResult result) {
+        this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMsg());
     }
 
-    public AppException(SystemCode appCodeEnum) {
-        this.result = ResultUtil.fail(appCodeEnum);
+    public AppException(IAppCode appCode) {
+        this.result = ResultUtil.failBaseResult(appCode);
     }
 
-    public AppException(SystemCode appCodeEnum, String[] msgs) {
-        this.result = ResultUtil.fail(appCodeEnum);
-        StringBuilder sb = new StringBuilder(appCodeEnum.msg());
+    public AppException(IAppCode appCode, String[] msgs) {
+        this.result = ResultUtil.failBaseResult(appCode);
+        StringBuilder sb = new StringBuilder(appCode.msg());
         for (String s : msgs) {
             sb.append("\r\n").append(s);
         }
@@ -41,11 +41,11 @@ public class AppException extends RuntimeException {
         return null == result ? null : result.getMsg();
     }
 
-    public Result getResult() {
+    public BaseResult getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(BaseResult result) {
         this.result = result;
     }
 

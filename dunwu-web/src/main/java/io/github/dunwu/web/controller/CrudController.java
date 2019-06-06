@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.dunwu.core.Page;
-import io.github.dunwu.core.Result;
+import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
-import io.github.dunwu.core.SystemCode;
+import io.github.dunwu.core.DefaultAppCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +35,12 @@ public abstract class CrudController<T> {
      * @param entity 查询条件
      * @return Result<Integer>
      */
-    public Result<Integer> count(T entity) {
+    public BaseResult<Integer> count(T entity) {
         if (entity == null) {
-            return ResultUtil.success(service.count());
+            return ResultUtil.successBaseResult(service.count());
         }
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        return ResultUtil.success(service.count(wrapper));
+        return ResultUtil.successBaseResult(service.count(wrapper));
     }
 
     /**
@@ -48,12 +48,12 @@ public abstract class CrudController<T> {
      * @param entity 查询条件
      * @return Result<T>
      */
-    public Result<T> list(T entity) {
+    public BaseResult<T> list(T entity) {
         if (entity == null) {
-            return ResultUtil.success(service.list());
+            return ResultUtil.successBaseResult(service.list());
         }
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        return ResultUtil.success(service.list(wrapper));
+        return ResultUtil.successBaseResult(service.list(wrapper));
     }
 
     /**
@@ -62,12 +62,12 @@ public abstract class CrudController<T> {
      * @param page 分页查询条件
      * @return Result<T>
      */
-    public Result<T> page(T entity, Page page) {
+    public BaseResult<T> page(T entity, Page page) {
         IPage<T> queryPage =
             new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page.getCurrent(), page.getSize());
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
         IPage<T> resultPage = service.page(queryPage, wrapper);
-        return ResultUtil.success(resultPage.getRecords(),
+        return ResultUtil.successBaseResult(resultPage.getRecords(),
             new Page(resultPage.getCurrent(), resultPage.getSize(), resultPage.getTotal()));
     }
 
@@ -76,11 +76,11 @@ public abstract class CrudController<T> {
      * @param entity 待添加的记录，填充的字段作为查询条件，未填充的字段忽略
      * @return Result
      */
-    public Result save(T entity) {
+    public BaseResult save(T entity) {
         if (service.save(entity)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -89,11 +89,11 @@ public abstract class CrudController<T> {
      * @param entityList 待添加的记录列表，填充的字段作为查询条件，未填充的字段忽略
      * @return Result
      */
-    public Result saveBatch(Collection<T> entityList) {
+    public BaseResult saveBatch(Collection<T> entityList) {
         if (service.saveBatch(entityList)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -102,12 +102,12 @@ public abstract class CrudController<T> {
      * @param entity 待删除的记录，填充的字段作为查询条件，未填充的字段忽略
      * @return Result
      */
-    public Result remove(T entity) {
+    public BaseResult remove(T entity) {
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
         if (service.remove(wrapper)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -115,11 +115,11 @@ public abstract class CrudController<T> {
      * 根据 ID 删除一条记录
      * @return Result
      */
-    public Result removeById(Long id) {
+    public BaseResult removeById(Long id) {
         if (service.removeById(id)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -127,11 +127,11 @@ public abstract class CrudController<T> {
      * 根据ID 批量删除
      * @return Result
      */
-    public Result removeByIds(Collection<? extends Serializable> idList) {
+    public BaseResult removeByIds(Collection<? extends Serializable> idList) {
         if (service.removeByIds(idList)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -141,12 +141,12 @@ public abstract class CrudController<T> {
      * @param origin 查询条件
      * @return Result
      */
-    public Result update(T target, T origin) {
+    public BaseResult update(T target, T origin) {
         UpdateWrapper<T> updateWrapper = new UpdateWrapper<>(origin);
         if (service.update(target, updateWrapper)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -154,11 +154,11 @@ public abstract class CrudController<T> {
      * 根据 ID 选择修改
      * @param entity 实体对象
      */
-    public Result updateById(T entity) {
+    public BaseResult updateById(T entity) {
         if (service.updateById(entity)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 
@@ -166,11 +166,11 @@ public abstract class CrudController<T> {
      * 根据 ID 批量更新
      * @param entityList 实体对象集合
      */
-    public Result updateBatchById(Collection<T> entityList) {
+    public BaseResult updateBatchById(Collection<T> entityList) {
         if (service.updateBatchById(entityList)) {
-            return ResultUtil.success();
+            return ResultUtil.successBaseResult();
         } else {
-            return ResultUtil.fail(SystemCode.ERROR_DB);
+            return ResultUtil.fail(DefaultAppCode.ERROR_DB);
         }
     }
 }

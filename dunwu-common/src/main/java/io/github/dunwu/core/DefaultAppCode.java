@@ -2,6 +2,7 @@ package io.github.dunwu.core;
 
 /**
  * 系统级错误码
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see <a href="https://httpstatuses.com/">HTTP 状态码</a>
  * @see <a href="http://wiki.open.qq.com/wiki/%E9%94%99%E8%AF%AF%E7%A0%81">腾讯开放平台错误码</a>
@@ -11,9 +12,9 @@ package io.github.dunwu.core;
  * <a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
  * @since 2019-04-11
  */
-public enum SystemCode {
+public enum DefaultAppCode implements IAppCode {
     // @formatter:off
-    SUCCESS("0", "success", "成功"),
+    SUCCESS("0", "successBaseResult", "成功"),
     FAIL("-1", "fail", "失败"),
     UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
     SERVICE_TIMEOUT("3", "服务超时", "服务超时，已执行 (%s)，中断任务"),
@@ -58,20 +59,23 @@ public enum SystemCode {
     private final String msg;
     private final String detail;
 
-    SystemCode(String code, String msg, String detail) {
+    DefaultAppCode(String code, String msg, String detail) {
         this.code = code;
         this.msg = msg;
         this.detail = detail;
     }
 
+    @Override
     public String code() {
         return code;
     }
 
+    @Override
     public String msg() {
         return msg;
     }
 
+    @Override
     public String detail() {
         return detail;
     }

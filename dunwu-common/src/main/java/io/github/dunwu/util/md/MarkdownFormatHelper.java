@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Markdown 格式化
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-02-25
  */
@@ -43,7 +44,7 @@ public class MarkdownFormatHelper {
         }
 
         newContents = TOC.changeTOCToGeneratedCatalogue(newContents);
-        newContents = addFrontMatter(srcFilePath, newContents);
+        //        newContents = addFrontMatter(srcFilePath, newContents);
 
         TxtFileUtil.writeLineByLine(newContents, detFilePath);
     }
