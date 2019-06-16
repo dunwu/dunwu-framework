@@ -1,6 +1,6 @@
 package io.github.dunwu.web.interceptor;
 
-import io.github.dunwu.config.DunwuSecurityProperties;
+import io.github.dunwu.config.DunwuWebSecurityProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +17,9 @@ import javax.servlet.http.HttpSession;
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private DunwuSecurityProperties dunwuSecurityProperties;
+    private DunwuWebSecurityProperties dunwuSecurityProperties;
 
-    public SecurityInterceptor(DunwuSecurityProperties dunwuSecurityProperties) {
+    public SecurityInterceptor(DunwuWebSecurityProperties dunwuSecurityProperties) {
         this.dunwuSecurityProperties = dunwuSecurityProperties;
     }
 

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-21
  */
-public class RequestInterceptor extends HandlerInterceptorAdapter {
+public class HttpDebugInterceptor extends HandlerInterceptorAdapter {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final String START_TIMESTAMP = "START_TIME";

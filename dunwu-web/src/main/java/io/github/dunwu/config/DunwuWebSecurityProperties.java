@@ -5,13 +5,15 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * Web 安全配置属性
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-06-15
  */
 @Data
 @ToString
-@ConfigurationProperties(prefix = "dunwu.security")
-public class DunwuSecurityProperties {
-    private Boolean enable = false;
+@ConfigurationProperties(prefix = "dunwu.web.security")
+public class DunwuWebSecurityProperties {
+    private Boolean enable = true;
     private String authTokenKey = "token";
 }

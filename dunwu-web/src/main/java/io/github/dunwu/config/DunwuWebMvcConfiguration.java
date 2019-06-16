@@ -1,7 +1,7 @@
 package io.github.dunwu.config;
 
 import io.github.dunwu.web.interceptor.CorsInceptor;
-import io.github.dunwu.web.interceptor.RequestInterceptor;
+import io.github.dunwu.web.interceptor.HttpDebugInterceptor;
 import io.github.dunwu.web.interceptor.SecurityInterceptor;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * Web Mvc 配置
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see
  * <a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/web.html#mvc-config">mvc-config</a>
@@ -23,11 +25,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @AllArgsConstructor
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
-@EnableConfigurationProperties({DunwuWebProperties.class, DunwuSecurityProperties.class})
-public class DunwuWebConfiguration implements WebMvcConfigurer {
+@EnableConfigurationProperties({DunwuWebProperties.class, DunwuWebSecurityProperties.class})
+public class DunwuWebMvcConfiguration implements WebMvcConfigurer {
 
     private final DunwuWebProperties dunwuWebProperties;
-    private final DunwuSecurityProperties dunwuSecurityProperties;
+    private final DunwuWebSecurityProperties dunwuSecurityProperties;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -68,8 +70,8 @@ public class DunwuWebConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        if (dunwuWebProperties.getRequest()) {
-            registry.addInterceptor(new RequestInterceptor())
+        if (dunwuWebProperties.getHttpDebugEnable()) {
+            registry.addInterceptor(new HttpDebugInterceptor())
                     .addPathPatterns("/**")
                     .order(1);
         }
