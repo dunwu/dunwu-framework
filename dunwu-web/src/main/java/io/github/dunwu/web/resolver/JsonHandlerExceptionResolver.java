@@ -18,8 +18,8 @@ package io.github.dunwu.web.resolver;
 
 import io.github.dunwu.core.AppException;
 import io.github.dunwu.core.BaseResult;
-import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.core.DefaultAppCode;
+import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.util.mapper.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +100,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
                 throw e;
             }
         }
-        return ResultUtil.fail(code, message, data);
+        return ResultUtil.failBaseResult(code, message);
     }
 
     private ExceptionMetadata logException(Object handler, HttpServletRequest request, Exception exception) {

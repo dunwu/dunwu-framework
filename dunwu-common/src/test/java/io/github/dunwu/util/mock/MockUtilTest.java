@@ -5,7 +5,9 @@ import io.github.dunwu.util.time.DateUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.List;
 
 /**
  * MockUtil 单元测试
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-12-04
  */
@@ -111,6 +114,17 @@ public class MockUtilTest {
     }
 
     @RepeatedTest(10)
+    void anySimpleCLetter() {
+        System.out.println("随机简体中文字组成的字符：" + MockUtil.anySimpleCLetter());
+    }
+
+    @RepeatedTest(10)
+    void anySimpleCLetterString() {
+        int count = RandomUtils.nextInt(10, 100);
+        System.out.println("随机简体中文字组成的字符串：" + MockUtil.anySimpleCLetterString(10, count));
+    }
+
+    @RepeatedTest(10)
     void anyNumString() {
         int count = RandomUtils.nextInt(5, 50);
         System.out.println("随机数字组成的字符串：" + MockUtil.anyNumString(5, count));
@@ -121,5 +135,34 @@ public class MockUtilTest {
         String[] charset = new String[] {"A", "B", "C", "D"};
         List<String> list = Arrays.asList(charset);
         System.out.println("random param: " + MockUtil.mock(list));
+    }
+
+    @Test
+    public void test() {
+        char begin = '\u4E00';
+        char end = '\u9FA5';
+        int count = 0;
+        for (char index = begin; index <= end; index++) {
+            System.out.print(index + "\t");
+            count++;
+            if (count % 10 == 0) {
+                System.out.println("");
+            }
+        }
+        System.out.println("count: " + count);
+    }
+
+    @Test
+    public void test2() throws UnsupportedEncodingException {
+        for (int i = 0xB0; i < 0xF7; i++) {
+            for (int j = 0xA1; j < 0xFF; j++) {
+                byte[] bytes = new byte[2];
+                bytes[0] = (byte) i;
+                bytes[1] = (byte) j;
+                String s = new String(bytes, "GB2312");
+                System.out.println(s);
+            }
+
+        }
     }
 }

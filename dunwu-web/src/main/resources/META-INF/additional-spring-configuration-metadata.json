@@ -4,6 +4,26 @@
       "name": "dunwu.web.request",
       "type": "java.lang.Boolean",
       "description": "Description for dunwu.web.request."
+    },
+    {
+      "name": "dunwu.web.cors-enable",
+      "type": "java.lang.String",
+      "description": "Description for dunwu.web.cors-enable."
+    },
+    {
+      "name": "dunwu.web.format-enable",
+      "type": "java.lang.String",
+      "description": "Description for dunwu.web.format-enable."
+    },
+    {
+      "name": "dunwu.security.enable",
+      "type": "java.lang.Boolean",
+      "description": "Description for dunwu.security.enable."
+    },
+    {
+      "name": "dunwu.security.auth-token-key",
+      "type": "java.lang.String",
+      "description": "Description for dunwu.security.auth-token-key."
     }
   ]
 }

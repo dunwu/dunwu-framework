@@ -1,11 +1,13 @@
 package io.github.dunwu.util.mock;
 
+import io.github.dunwu.util.number.RandomUtil;
 import io.github.dunwu.util.time.DateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 产生模拟数据工具类
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-12-04
  */
@@ -35,7 +38,8 @@ public class MockUtil {
     public static String anyDate(final LocalDateTime min, final LocalDateTime max, final String pattern) {
         long minSeconds = min.toEpochSecond(ZoneOffset.UTC);
         long maxSeconds = max.toEpochSecond(ZoneOffset.UTC);
-        long random = ThreadLocalRandom.current().nextLong(minSeconds, maxSeconds);
+        long random = ThreadLocalRandom.current()
+                                       .nextLong(minSeconds, maxSeconds);
         LocalDateTime localDate = LocalDateTime.ofEpochSecond(random, 1, ZoneOffset.UTC);
         return localDate.format(DateTimeFormatter.ofPattern(pattern));
     }
@@ -43,7 +47,8 @@ public class MockUtil {
     public static Date anyDate(final LocalDateTime min, final LocalDateTime max) {
         long minSeconds = min.toEpochSecond(ZoneOffset.UTC);
         long maxSeconds = max.toEpochSecond(ZoneOffset.UTC);
-        long random = ThreadLocalRandom.current().nextLong(minSeconds, maxSeconds);
+        long random = ThreadLocalRandom.current()
+                                       .nextLong(minSeconds, maxSeconds);
         LocalDateTime localDate = LocalDateTime.ofEpochSecond(random, 1, ZoneOffset.UTC);
         return DateUtil.localDateTime2Date(localDate);
     }
@@ -70,16 +75,16 @@ public class MockUtil {
     public static String anyMac() {
         Random random = new Random();
         String[] mac = {String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
-            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
-            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
+            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)), String.format(
+            "%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
         return StringUtils.join(mac);
     }
 
     public static String anyMac(String separator) {
         Random random = new Random();
         String[] mac = {String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
-            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
-            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
+            String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)), String.format(
+            "%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff))};
         return String.join(separator, mac);
     }
 
@@ -90,20 +95,26 @@ public class MockUtil {
         b[1] = ((ip >> 16) & 0xff);
         b[2] = ((ip >> 8) & 0xff);
         b[3] = (ip & 0xff);
-        result = Integer.toString(b[0]) + "." + Integer.toString(b[1]) + "." + Integer.toString(b[2]) + "." + Integer
-            .toString(b[3]);
+        result = Integer.toString(b[0]) + "." + Integer.toString(b[1]) + "." + Integer.toString(b[2]) + "."
+            + Integer.toString(b[3]);
         return result;
     }
 
     public static String anyDomain() {
         String domain1 = RandomStringUtils.randomAlphabetic(2, 11);
         String domain2 = RandomStringUtils.randomAlphabetic(2, 4);
-        return new StringBuilder().append(domain1.toLowerCase()).append(".").append(domain2.toLowerCase()).toString();
+        return new StringBuilder().append(domain1.toLowerCase())
+                                  .append(".")
+                                  .append(domain2.toLowerCase())
+                                  .toString();
     }
 
     public static String anyEmail() {
         String name = RandomStringUtils.randomAlphabetic(2, 11);
-        return new StringBuilder().append(name.toLowerCase()).append("@").append(anyDomain()).toString();
+        return new StringBuilder().append(name.toLowerCase())
+                                  .append("@")
+                                  .append(anyDomain())
+                                  .toString();
     }
 
     public static String anyFirstName() {
@@ -215,6 +226,33 @@ public class MockUtil {
 
     public static String anyLetterString(int minLen, int maxLen) {
         return RandomStringUtils.randomAlphabetic(minLen, maxLen);
+    }
+
+    /**
+     * 随机获取任意简体字符
+     *
+     * @see <a href="https://baike.baidu.com/item/信息交换用汉字编码字符集?fromtitle=GB2312&fromid=483170">百度词条-GB2312</a>
+     */
+    public static String anySimpleCLetter() {
+        byte[] bytes = new byte[2];
+        bytes[0] = (byte) RandomUtil.nextInt(0xB0, 0xF7);
+        bytes[1] = (byte) RandomUtil.nextInt(0xA1, 0xFF);
+
+        try {
+            return new String(bytes, "GB2312");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String anySimpleCLetterString(int minLen, int maxLen) {
+        int count = RandomUtils.nextInt(minLen, maxLen);
+        StringBuilder sb = new StringBuilder();
+        for (char index = 0; index < count; index++) {
+            sb.append(anySimpleCLetter());
+        }
+        return sb.toString();
     }
 
     public static String anyCLetterString(int minLen, int maxLen) {

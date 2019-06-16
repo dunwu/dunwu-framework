@@ -14,7 +14,7 @@ package io.github.dunwu.core;
  */
 public enum DefaultAppCode implements IAppCode {
     // @formatter:off
-    SUCCESS("0", "successBaseResult", "成功"),
+    SUCCESS("0", "success", "成功"),
     FAIL("-1", "fail", "失败"),
     UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
     SERVICE_TIMEOUT("3", "服务超时", "服务超时，已执行 (%s)，中断任务"),

@@ -27,16 +27,16 @@ public class DateFormatUtilTest {
     @Test
     public void formatWithPattern() {
         Date date = new Date(116, 10, 1, 12, 23, 44);
-        assertThat(DateFormatUtil.formatDate(DateFormatUtil.PATTERN_DEFAULT, date))
+        assertThat(DateFormatUtil.formatDate(DateFormatUtil.DatePattern.PATTERN_DEFAULT, date))
             .isEqualTo("2016-11-01 12:23:44.000");
-        assertThat(DateFormatUtil.formatDate(DateFormatUtil.PATTERN_DEFAULT, date.getTime()))
+        assertThat(DateFormatUtil.formatDate(DateFormatUtil.DatePattern.PATTERN_DEFAULT, date.getTime()))
             .isEqualTo("2016-11-01 12:23:44.000");
     }
 
     @Test
     public void parseWithPattern() throws ParseException {
         Date date = new Date(116, 10, 1, 12, 23, 44);
-        Date resultDate = DateFormatUtil.parseDate(DateFormatUtil.PATTERN_DEFAULT, "2016-11-01 12:23:44.000");
+        Date resultDate = DateFormatUtil.parseDate(DateFormatUtil.DatePattern.PATTERN_DEFAULT, "2016-11-01 12:23:44.000");
         assertThat(resultDate.getTime() == date.getTime()).isTrue();
     }
 

@@ -1,23 +1,28 @@
 package io.github.dunwu.config;
 
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * Custom Web Configuration
+ *
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ */
+@Data
+@ToString
 @ConfigurationProperties(prefix = "dunwu.web")
 public class DunwuWebProperties {
 
-    private Boolean request;
+    private Boolean request = true;
 
-    public DunwuWebProperties() {
-        this.request = true;
-    }
+    /**
+     * 放开跨域限制开关
+     */
+    private Boolean corsEnable = false;
 
-    public Boolean getRequest() {
-        return request;
-    }
-
-    public void setRequest(Boolean request) {
-        this.request = request;
-    }
+    /**
+     * http 数据自动格式化开关
+     */
+    private Boolean formatEnable = false;
 }

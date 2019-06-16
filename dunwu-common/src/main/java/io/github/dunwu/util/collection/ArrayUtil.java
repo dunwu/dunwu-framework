@@ -14,17 +14,33 @@ import java.util.Random;
 
 /**
  * 数组工具类.
+ * <p>
  * 1. 创建Array的函数
+ * <p>
  * 2. 数组的乱序与contact相加
- * 3. 从Array转换到Guava的底层为原子类型的List
- * JDK Arrays的其他函数，如sort(), toString() 请直接调用
+ * <p>
+ * 3. 从Array转换到Guava的底层为原子类型的List JDK Arrays的其他函数，如sort(), toString() 请直接调用
+ * <p>
  * Common Lang ArrayUtils的其他函数，如subarray(),reverse(),indexOf(), 请直接调用
  */
 public class ArrayUtil {
 
     /**
-     * 传入类型与大小创建数组.
-     * Array.newInstance()的性能并不差
+     * 判断数组是否为空
+     *
+     * @param array
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean isEmpty(T[] array) {
+        if (array == null || array.length == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 传入类型与大小创建数组. Array.newInstance()的性能并不差
      */
     @SuppressWarnings("unchecked")
     public static <T> T[] newArray(Class<T> type, int length) {
@@ -32,9 +48,8 @@ public class ArrayUtil {
     }
 
     /**
-     * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组.
-     * 本函数等价于list.toArray(new String[0]); 用户也可以直接用后者.
-     * https://shipilev.net/blog/2016/arrays-wisdom-ancients/
+     * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组. 本函数等价于list.toArray(new String[0]);
+     * 用户也可以直接用后者. https://shipilev.net/blog/2016/arrays-wisdom-ancients/
      */
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(Collection<T> col, Class<T> type) {
@@ -91,8 +106,8 @@ public class ArrayUtil {
     ////////////////// guava Array 转换为底层为原子类型的List ///////////
 
     /**
-     * 原版将数组转换为List.
-     * 注意转换后的List不能写入, 否则抛出UnsupportedOperationException
+     * 原版将数组转换为List. 注意转换后的List不能写入, 否则抛出UnsupportedOperationException
+     *
      * @see Arrays#asList(Object...)
      */
     public static <T> List<T> asList(T... a) {
@@ -100,8 +115,8 @@ public class ArrayUtil {
     }
 
     /**
-     * Arrays.asList()的加强版, 返回一个底层为原始类型int的List
-     * 与保存Integer相比节约空间，同时只在读取数据时AutoBoxing.
+     * Arrays.asList()的加强版, 返回一个底层为原始类型int的List 与保存Integer相比节约空间，同时只在读取数据时AutoBoxing.
+     *
      * @see Arrays#asList(Object...)
      * @see com.google.common.primitives.Ints#asList(int...)
      */
@@ -110,8 +125,8 @@ public class ArrayUtil {
     }
 
     /**
-     * Arrays.asList()的加强版, 返回一个底层为原始类型long的List
-     * 与保存Long相比节约空间，同时只在读取数据时AutoBoxing.
+     * Arrays.asList()的加强版, 返回一个底层为原始类型long的List 与保存Long相比节约空间，同时只在读取数据时AutoBoxing.
+     *
      * @see Arrays#asList(Object...)
      * @see com.google.common.primitives.Longs#asList(long...)
      */
@@ -120,8 +135,8 @@ public class ArrayUtil {
     }
 
     /**
-     * Arrays.asList()的加强版, 返回一个底层为原始类型double的List
-     * 与保存Double相比节约空间，同时也避免了AutoBoxing.
+     * Arrays.asList()的加强版, 返回一个底层为原始类型double的List 与保存Double相比节约空间，同时也避免了AutoBoxing.
+     *
      * @see Arrays#asList(Object...)
      * @see com.google.common.primitives.Doubles#asList(double...)
      */
@@ -131,6 +146,7 @@ public class ArrayUtil {
 
     /**
      * 获取展示数组内容的字符串
+     *
      * @param list
      * @param begin
      * @param end
@@ -159,6 +175,7 @@ public class ArrayUtil {
      * <p>在初始化的无重复待选数组中随机产生一个数放入结果中，</p>
      * <p>将待选数组被随机到的数，用待选数组(len-1)下标对应的数替换，</p>
      * <p>然后从len-2里随机产生下一个随机数，如此类推</p>
+     *
      * @param min 指定范围最小值
      * @param max 指定范围最大值
      * @param length 随机数个数
@@ -193,6 +210,7 @@ public class ArrayUtil {
 
     /**
      * 随机指定范围内N个重复的Int数组。
+     *
      * @param min 指定范围最小值
      * @param max 指定范围最大值
      * @param length 随机数个数
@@ -217,6 +235,7 @@ public class ArrayUtil {
      * <p>在初始化的无重复待选数组中随机产生一个数放入结果中，</p>
      * <p>将待选数组被随机到的数，用待选数组(len-1)下标对应的数替换，</p>
      * <p>然后从len-2里随机产生下一个随机数，如此类推</p>
+     *
      * @param min 指定范围最小值
      * @param max 指定范围最大值
      * @param length 随机数个数
@@ -251,6 +270,7 @@ public class ArrayUtil {
 
     /**
      * 随机指定范围内N个重复的Integer数组。
+     *
      * @param min 指定范围最小值
      * @param max 指定范围最大值
      * @param length 随机数个数

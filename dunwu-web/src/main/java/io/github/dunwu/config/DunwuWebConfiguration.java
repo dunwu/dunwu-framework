@@ -1,18 +1,17 @@
 package io.github.dunwu.config;
 
+import io.github.dunwu.web.interceptor.CorsInceptor;
 import io.github.dunwu.web.interceptor.RequestInterceptor;
-import io.github.dunwu.web.resolver.JsonHandlerExceptionResolver;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.dunwu.web.interceptor.SecurityInterceptor;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.Locale;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -22,23 +21,44 @@ import java.util.Locale;
  */
 @Configuration
 @EnableWebMvc
+@AllArgsConstructor
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
+@EnableConfigurationProperties({DunwuWebProperties.class, DunwuSecurityProperties.class})
 public class DunwuWebConfiguration implements WebMvcConfigurer {
 
-    private final MessageSource messageSource;
     private final DunwuWebProperties dunwuWebProperties;
-
-    @Autowired
-    public DunwuWebConfiguration(MessageSource messageSource, DunwuWebProperties dunwuWebProperties) {
-        Locale.setDefault(Locale.ROOT);
-        this.messageSource = messageSource;
-        this.dunwuWebProperties = dunwuWebProperties;
-    }
+    private final DunwuSecurityProperties dunwuSecurityProperties;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/lib/swagger-ui/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/lib/swagger-ui/**")
+                .addResourceLocations("classpath:/static/");
+    }
+
+    //    /**
+    //     * 设置跨域
+    //     *
+    //     * @param registry
+    //     */
+    //    @Override
+    //    public void addCorsMappings(CorsRegistry registry) {
+    //        if (dunwuWebProperties.getCorsEnable()) {
+    //            registry.addMapping("/**")
+    //                    .allowedOrigins("http://admin.vue.io")
+    //                    .allowedHeaders("*")
+    //                    .allowedMethods("*")
+    //                    .allowCredentials(true)
+    //                    .maxAge(3600L);
+    //        }
+    //    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        if (dunwuWebProperties.getFormatEnable()) {
+            registry.addConverter(new DateConverter());
+        }
     }
 
     /**
@@ -49,12 +69,22 @@ public class DunwuWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         if (dunwuWebProperties.getRequest()) {
-            registry.addInterceptor(new RequestInterceptor()).addPathPatterns("/**");
+            registry.addInterceptor(new RequestInterceptor())
+                    .addPathPatterns("/**")
+                    .order(1);
         }
-    }
 
-    @Bean
-    public JsonHandlerExceptionResolver jsonHandlerExceptionResolver() {
-        return new JsonHandlerExceptionResolver(messageSource);
+        if (dunwuWebProperties.getCorsEnable()) {
+            registry.addInterceptor(new CorsInceptor())
+                    .addPathPatterns("/**")
+                    .order(2);
+        }
+
+        if (dunwuSecurityProperties.getEnable()) {
+            registry.addInterceptor(new SecurityInterceptor(dunwuSecurityProperties))
+                    .excludePathPatterns("/user/login")
+                    .excludePathPatterns("/user/logout")
+                    .addPathPatterns("/**");
+        }
     }
 }

@@ -1,43 +1,37 @@
 package io.github.dunwu.util.text;
 
-import static org.assertj.core.api.Assertions.*;
-
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.EnumUtils;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 public class CsvUtilTest {
 
-    @Test
-    public void toCsvString() {
-        assertThat(CsvUtil.toCsvString(1, 2)).isEqualTo("1,2");
+    final String filepath = "D:\\Codes\\ZP\\Java\\dunwu\\dunwu-common\\src\\test\\resources\\data.csv";
 
-        assertThat(CsvUtil.toCsvString(1, 2, 3, 4)).isEqualTo("1,2,3,4");
-
-        // "2" still plain as 2
-        assertThat(CsvUtil.toCsvString(1, "2")).isEqualTo("1,2");
-
-        // "A BC" still plain as A BC
-        assertThat(CsvUtil.toCsvString(1, "A BC")).isEqualTo("1,A BC");
-
-        // "A,BC" has ',' as "A,BC"
-        assertThat(CsvUtil.toCsvString(1, "A,BC")).isEqualTo("1,\"A,BC\"");
-
-        // "A"BC" has '"' as "A""BC"
-        assertThat(CsvUtil.toCsvString(1, "A\"BC")).isEqualTo("1,\"A\"\"BC\"");
-
-        // "A,B"a"C" has 2 '""' as "A,""a""BC"
-        assertThat(CsvUtil.toCsvString(1, "A,\"a\"BC")).isEqualTo("1,\"A,\"\"a\"\"BC\"");
+    public enum Headers {
+        ecifid, cnt_tran, cnt_lingchen_tran, cnt_is_10to5k_30min, cnt_trad_n_1h, cnt_recaccount, cnt_days,
+        cnt_log_brand, ratio_log_lingchen, cnt_is_ip_diff, max_amt_diff, label
     }
 
     @Test
-    public void fromCsvString() {
-        assertThat(CsvUtil.fromCsvString("1,2")).hasSize(2).contains("1").contains("2");
-        assertThat(CsvUtil.fromCsvString("1,A BC")).hasSize(2).contains("1").contains("A BC");
-        assertThat(CsvUtil.fromCsvString("1,\"A,BC\"")).hasSize(2).contains("1").contains("A,BC");
-        assertThat(CsvUtil.fromCsvString("1,\"A,\"\"a\"\"BC\"")).hasSize(2).contains("1").contains("A,\"a\"BC");
-
-        // wrong format still work
-        assertThat(CsvUtil.fromCsvString("1,\"A,\"a\"\"BC\"")).hasSize(2).contains("1").contains("A,\"a\"BC");
-        assertThat(CsvUtil.fromCsvString("1,ABC\"")).hasSize(2).contains("1").contains("ABC\"");
+    public void test() throws IOException {
+        System.out.println(CsvUtil.getHeaders(filepath));
     }
 
+    @Test
+    public void test2() throws IOException {
+
+        Iterable<CSVRecord> records = CsvUtil.getRecords(filepath, Headers.class);
+        List<Headers> enumList = EnumUtils.getEnumList(Headers.class);
+        for (CSVRecord record : records) {
+            enumList.forEach(element -> {
+                String header = element.name();
+                System.out.print(record.get(header) + ",");
+            });
+            System.out.println();
+        }
+    }
 }
