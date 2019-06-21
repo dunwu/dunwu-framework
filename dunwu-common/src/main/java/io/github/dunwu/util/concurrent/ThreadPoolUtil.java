@@ -35,15 +35,15 @@ public class ThreadPoolUtil {
      * java.util.concurrent.TimeUnit)
      */
     public static boolean gracefulShutdown(@Nullable ExecutorService threadPool, int shutdownTimeoutMills) {
-        return threadPool == null || MoreExecutors
-            .shutdownAndAwaitTermination(threadPool, shutdownTimeoutMills, TimeUnit.MILLISECONDS);
+        return threadPool == null || MoreExecutors.shutdownAndAwaitTermination(threadPool, shutdownTimeoutMills,
+                                                                               TimeUnit.MILLISECONDS);
     }
 
     /**
      * @see ThreadPoolUtil#gracefulShutdown
      */
     public static boolean gracefulShutdown(@Nullable ExecutorService threadPool, int shutdownTimeout,
-        TimeUnit timeUnit) {
+                                           TimeUnit timeUnit) {
         return threadPool == null || MoreExecutors.shutdownAndAwaitTermination(threadPool, shutdownTimeout, timeUnit);
     }
 
@@ -53,7 +53,8 @@ public class ThreadPoolUtil {
      * @see ThreadFactoryBuilder#build()
      */
     public static ThreadFactory buildThreadFactory(@NotNull String threadNamePrefix) {
-        return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d").build();
+        return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d")
+                                         .build();
     }
 
     /**
@@ -62,7 +63,9 @@ public class ThreadPoolUtil {
      * @see ThreadFactoryBuilder
      */
     public static ThreadFactory buildThreadFactory(@NotNull String threadNamePrefix, @NotNull boolean daemon) {
-        return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d").setDaemon(daemon).build();
+        return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d")
+                                         .setDaemon(daemon)
+                                         .build();
     }
 
     private static RejectedExecutionHandler defaultRejectHandler = new ThreadPoolExecutor.AbortPolicy();
@@ -175,7 +178,7 @@ public class ThreadPoolUtil {
             }
 
             return new ThreadPoolExecutor(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS, queue, threadFactory,
-                rejectHandler);
+                                          rejectHandler);
         }
     }
 
@@ -260,7 +263,7 @@ public class ThreadPoolUtil {
             }
 
             return new ThreadPoolExecutor(minSize, maxSize, keepAliveSecs, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(), threadFactory, rejectHandler);
+                                          new SynchronousQueue<Runnable>(), threadFactory, rejectHandler);
         }
     }
 
@@ -381,7 +384,8 @@ public class ThreadPoolUtil {
             }
 
             return new QueuableCachedThreadPool(minSize, maxSize, keepAliveSecs, TimeUnit.SECONDS,
-                new QueuableCachedThreadPool.ControllableQueue(queueSize), threadFactory, rejectHandler);
+                                                new QueuableCachedThreadPool.ControllableQueue(queueSize),
+                                                threadFactory, rejectHandler);
         }
     }
 
@@ -402,8 +406,8 @@ public class ThreadPoolUtil {
         private final AtomicInteger submittedCount = new AtomicInteger(0);
 
         public QueuableCachedThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-            QueuableCachedThreadPool.ControllableQueue workQueue, ThreadFactory threadFactory,
-            RejectedExecutionHandler handler) {
+                                        QueuableCachedThreadPool.ControllableQueue workQueue,
+                                        ThreadFactory threadFactory, RejectedExecutionHandler handler) {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
             workQueue.setParent(this);
             prestartAllCoreThreads(); //NOSOANR
@@ -487,8 +491,8 @@ public class ThreadPoolUtil {
                 if (parent.isShutdown()) {
                     throw new RejectedExecutionException("Executor not running, can't force a command into the queue");
                 }
-                return super
-                    .offer(o, timeout, unit); // forces the item onto the queue, to be used if the task is rejected
+                return super.offer(o, timeout,
+                                   unit); // forces the item onto the queue, to be used if the task is rejected
             }
 
             @Override
@@ -519,7 +523,7 @@ public class ThreadPoolUtil {
      * 优先使用threadFactory，否则如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
      */
     private static ThreadFactory createThreadFactory(ThreadFactory threadFactory, String threadNamePrefix,
-        Boolean daemon) {
+                                                     Boolean daemon) {
         if (threadFactory != null) {
             return threadFactory;
         }

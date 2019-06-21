@@ -1,8 +1,7 @@
 package ${package.Controller};
 
 <#if superControllerClassPackage??>
-import io.github.dunwu.core.Page;
-import io.github.dunwu.core.Result;
+import io.github.dunwu.core.*;
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
 import ${superControllerClassPackage};
@@ -27,9 +26,8 @@ import java.util.Collection;
 </#if>
 
 /**
- * <p>
  * ${table.comment!} 前端控制器
- * </p>
+ *
  * @author ${author}
  * @since ${date}
  */
@@ -61,7 +59,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "返回符合查询条件的 ${entity} 记录数，如果 entity 为 null，返回所有记录数")
     </#if>
-    public Result<Integer> count(${entity} entity) {
+    public DataResult<Integer> count(${entity} entity) {
         return super.count(entity);
     }
 
@@ -70,7 +68,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "返回符合查询条件的 ${entity} 记录，如果 entity 为 null，返回所有记录")
     </#if>
-    public Result<${entity}> list(${entity} entity) {
+    public DataListResult<${entity}> list(${entity} entity) {
         return super.list(entity);
     }
 
@@ -79,7 +77,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "分页查询符合条件的 ${entity} 记录，如果 entity 为 null，返回所有记录的分页查询结果")
     </#if>
-    public Result<${entity}> page(${entity} entity, Page page) {
+    public PageResult<${entity}> page(${entity} entity, Page page) {
         return super.page(entity, page);
     }
 
@@ -88,7 +86,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "插入一条 ${entity} 记录（选择字段）")
     </#if>
-    public Result save(${entity} entity) {
+    public BaseResult save(${entity} entity) {
         return super.save(entity);
     }
 
@@ -97,7 +95,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "批量添加 ${entity} 记录（选择字段）")
     </#if>
-    public Result saveBatch(Collection<${entity}> entityList) {
+    public BaseResult saveBatch(Collection<${entity}> entityList) {
         return super.saveBatch(entityList);
     }
 
@@ -106,7 +104,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "删除符合条件的 ${entity} 记录")
     </#if>
-    public Result remove(${entity} entity) {
+    public BaseResult remove(${entity} entity) {
         return super.remove(entity);
     }
 
@@ -115,7 +113,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 ID 删除一条 ${entity} 记录")
     </#if>
-    public Result removeById(Long id) {
+    public BaseResult removeById(Long id) {
         return super.removeById(id);
     }
 
@@ -124,7 +122,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 ID 批量删除 ${entity} 记录")
     </#if>
-    public Result removeByIds(Collection<? extends Serializable> idList) {
+    public BaseResult removeByIds(Collection<? extends Serializable> idList) {
         return super.removeByIds(idList);
     }
 
@@ -133,7 +131,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 origin 条件，更新一条 ${entity} 记录 target")
     </#if>
-    public Result update(
+    public BaseResult update(
         @RequestBody @ApiParam(name = "target", value = "${entity} 对象（json 格式）", required = true) ${entity} target, ${entity} origin) {
         return super.update(target, origin);
     }
@@ -143,7 +141,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 ID 选择修改一条 ${entity} 记录")
     </#if>
-    public Result updateById(${entity} entity) {
+    public BaseResult updateById(${entity} entity) {
         return super.updateById(entity);
     }
 
@@ -152,7 +150,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 ID 批量修改 ${entity} 记录")
     </#if>
-    public Result updateBatchById(Collection<${entity}> entityList) {
+    public BaseResult updateBatchById(Collection<${entity}> entityList) {
         return super.updateBatchById(entityList);
     }
 }

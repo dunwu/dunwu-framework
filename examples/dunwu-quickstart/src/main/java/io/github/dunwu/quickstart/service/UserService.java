@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-04-27
+ * @since 2019-06-20
  */
 public interface UserService extends IService<User> {
 

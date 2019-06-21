@@ -19,7 +19,7 @@
     <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
     <dozer.version>6.4.1</dozer.version>
     <guava.version>23.0</guava.version>
-    <mybatis-plus.version>3.1.0</mybatis-plus.version>
+    <mybatis-plus.version>3.1.1</mybatis-plus.version>
     <commons-codec.version>1.12</commons-codec.version>
     <commons-collections4.version>4.3</commons-collections4.version>
     <commons-fileupload.version>1.4</commons-fileupload.version>
@@ -32,6 +32,7 @@
     <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <jetty.version>9.4.17.v20190418</jetty.version>
+    <swagger-annotations.version>1.5.22</swagger-annotations.version>
   </properties>
 
   <dependencies>
@@ -190,6 +191,12 @@
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-generator</artifactId>
         <version>${mybatis-plus.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger-annotations.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

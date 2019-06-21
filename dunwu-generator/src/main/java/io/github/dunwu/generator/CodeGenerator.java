@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import io.github.dunwu.constant.DatabaseConst;
 import io.github.dunwu.util.base.PropertiesUtil;
 import io.github.dunwu.web.controller.CrudController;
 import org.slf4j.Logger;
@@ -125,14 +124,14 @@ public class CodeGenerator {
     private static GlobalConfig getGlobalConfig(Properties properties) {
         // 全局配置
         String javaDir = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_JAVA_DIR.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_JAVA_DIR.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_JAVA_DIR.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_JAVA_DIR.value());
         String authorName = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_AUTHOR_NAME.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_AUTHOR_NAME.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_AUTHOR_NAME.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_AUTHOR_NAME.value());
         Boolean enableSwagger = PropertiesUtil
-            .getBoolean(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_ENABLE_SWAGGER.key(),
-                Boolean.valueOf(DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_ENABLE_SWAGGER.value()));
+            .getBoolean(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_ENABLE_SWAGGER.key(),
+                        Boolean.valueOf(CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_ENABLE_SWAGGER.value()));
         GlobalConfig gc = new GlobalConfig();
         gc.setOpen(false).setFileOverride(true).setActiveRecord(false).setOutputDir(javaDir).setAuthor(authorName)
             .setMapperName("%sDao").setXmlName("%sDao").setServiceName("%sService").setSwagger2(enableSwagger);
@@ -145,17 +144,17 @@ public class CodeGenerator {
      * @return DataSourceConfig
      */
     private static DataSourceConfig getDataSourceConfig(Properties properties) {
-        String url = PropertiesUtil.getString(properties, DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_URL.key(),
-            DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_URL.value());
+        String url = PropertiesUtil.getString(properties, CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_URL.key(),
+                                              CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_URL.value());
         String driverName = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_DRIVER.key(),
-                DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_DRIVER.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_DRIVER.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_DRIVER.value());
         String username = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_USERNAME.key(),
-                DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_USERNAME.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_USERNAME.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_USERNAME.value());
         String password = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_PASSWORD.key(),
-                DatabaseConst.ParamKeyEnum.SPRING_DATASOURCE_PASSWORD.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_PASSWORD.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.SPRING_DATASOURCE_PASSWORD.value());
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl(url).setDriverName(driverName).setUsername(username).setPassword(password);
         return dsc;
@@ -168,11 +167,11 @@ public class CodeGenerator {
      */
     private static PackageConfig getPackageConfig(Properties properties) {
         String packageName = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_PACKAGE_NAME.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_PACKAGE_NAME.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PACKAGE_NAME.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PACKAGE_NAME.value());
         String moduleName = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_MODULE_NAME.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_MODULE_NAME.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_MODULE_NAME.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_MODULE_NAME.value());
         PackageConfig pc = new PackageConfig();
         if (moduleName != null) {
             pc.setModuleName(moduleName);
@@ -189,14 +188,14 @@ public class CodeGenerator {
      */
     private static StrategyConfig getStrategyConfig(Properties properties, PackageConfig pc) {
         String tableName = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_TABLE_NAME.value());
         String superEntity = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_ENTITY.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_ENTITY.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_ENTITY.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_ENTITY.value());
         String superController = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_CONTROLLER.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_CONTROLLER.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_CONTROLLER.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SUPER_CONTROLLER.value());
 
         StrategyConfig sc = new StrategyConfig();
         sc.setEntityLombokModel(true).setControllerMappingHyphenStyle(true).setRestControllerStyle(true)
@@ -220,8 +219,8 @@ public class CodeGenerator {
      */
     private static InjectionConfig getInjectionConfig(Properties properties, PackageConfig pc) {
         String resourcesDir = PropertiesUtil
-            .getString(properties, DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_RESOURCE_DIR.key(),
-                DatabaseConst.ParamKeyEnum.MYBATIS_GENERATOR_RESOURCE_DIR.value());
+            .getString(properties, CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_RESOURCE_DIR.key(),
+                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_RESOURCE_DIR.value());
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {

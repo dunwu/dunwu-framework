@@ -1,55 +1,121 @@
 package io.github.dunwu.util.code;
 
+import io.github.dunwu.util.mock.MockUtil;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-
 public class CryptoUtilTest {
-    @Test
-    public void mac() {
-        String input = "foo message";
 
-        // key可为任意字符串
-        // byte[] key = "a foo key".getBytes();
-        byte[] key = CryptoUtil.generateHmacSha1Key();
-        assertThat(key).hasSize(20);
+    public static final int COUNT = 10000;
+    public static final String Bytes16Key = "1234567890ABCDEF";
+    public static final String DES_KEY = "一二三四五";
 
-        byte[] macResult = CryptoUtil.hmacSha1(input.getBytes(), key);
-        System.out.println("hmac-sha1 key in hex      :" + EncodeUtil.encodeHex(key));
-        System.out.println("hmac-sha1 in hex result   :" + EncodeUtil.encodeHex(macResult));
 
-        assertThat(CryptoUtil.isMacValid(macResult, input.getBytes(), key)).isTrue();
+    @Nested
+    class AesTest {
+
+        @Test
+        public void testAES() {
+            CryptoUtil.KeyCrypto keyCrypto = CryptoUtil.getAes(Bytes16Key);
+            encryptAndDecrypt(keyCrypto);
+        }
+
+        @Test
+        public void testAES_CBC_PKCS5PADDING() {
+            CryptoUtil.KeyCrypto keyCrypto = CryptoUtil.getAesCbcPkcs5padding(Bytes16Key);
+            encryptAndDecrypt(keyCrypto);
+        }
+
+        @Test
+        public void testAES_ECB_PKCS5PADDING() {
+            CryptoUtil.KeyCrypto keyCrypto = CryptoUtil.getAesEcbPkcs5Padding(Bytes16Key);
+            encryptAndDecrypt(keyCrypto);
+        }
+
+        /**
+         * AES/CBC/NoPadding 模式的输入内容必须为 8 字节的整数倍
+         */
+        @Test
+        public void testAES_CBC_NOPADDING() {
+            CryptoUtil.KeyCrypto aesCbcNoPadding = CryptoUtil.getAesCbcNoPadding(Bytes16Key);
+            System.out.println("crypto class: " + aesCbcNoPadding.getClass()
+                                                                 .getSimpleName());
+            long begin = System.currentTimeMillis();
+            for (int i = 0; i < COUNT; i++) {
+                String origin = MockUtil.anyLetterString(32, 32);
+                String encrypt = aesCbcNoPadding.encrypt(origin);
+                String decrypt = aesCbcNoPadding.decrypt(encrypt);
+                //            System.out.println("原文: " + origin);
+                //            System.out.println("密文: " + encrypt);
+                //            System.out.println("明文: " + decrypt);
+                Assertions.assertEquals(origin, decrypt);
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("总耗时: " + (end - begin) + " ms");
+            System.out.println("平均耗时: " + (end - begin) / COUNT + " ms");
+        }
     }
 
-    @Test
-    public void aes() {
-        byte[] key = CryptoUtil.generateAesKey();
-        assertThat(key).hasSize(16);
-        String input = "foo message";
 
-        byte[] encryptResult = CryptoUtil.aesEncrypt(input.getBytes(), key);
-        String descryptResult = CryptoUtil.aesDecrypt(encryptResult, key);
+    @Nested
+    class DesTest {
 
-        System.out.println("aes key in hex            :" + EncodeUtil.encodeHex(key));
-        System.out.println("aes encrypt in hex result :" + EncodeUtil.encodeHex(encryptResult));
-        assertThat(descryptResult).isEqualTo(input);
+        @Test
+        public void testDES() {
+            encryptAndDecrypt(CryptoUtil.getDes(DES_KEY));
+        }
+
+        @Test
+        public void testDES_CBC_PKCS5PADDING() {
+            encryptAndDecrypt(CryptoUtil.getDesCbcPkcs5Padding(DES_KEY));
+        }
+
+        @Test
+        public void testDES_ECB_PKCS5PADDING() {
+            encryptAndDecrypt(CryptoUtil.getDesEcbPkcs5Padding(DES_KEY));
+        }
+
+        /**
+         * DES/CBC/NoPadding 模式的输入内容必须为 8 字节的整数倍
+         */
+        @Test
+        public void testDES_CBC_NOPADDING() {
+            CryptoUtil.KeyCrypto desCbcNoPadding = CryptoUtil.getDesCbcNoPadding(DES_KEY);
+            System.out.println("crypto class: " + desCbcNoPadding.getClass()
+                                                                 .getSimpleName());
+            long begin = System.currentTimeMillis();
+            for (int i = 0; i < COUNT; i++) {
+                String origin = MockUtil.anyLetterString(8, 8);
+                String encrypt = desCbcNoPadding.encrypt(origin);
+                String decrypt = desCbcNoPadding.decrypt(encrypt);
+                //            System.out.println("原文: " + origin);
+                //            System.out.println("密文: " + encrypt);
+                //            System.out.println("明文: " + decrypt);
+                Assertions.assertEquals(origin, decrypt);
+
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("总耗时: " + (end - begin) + " ms");
+            System.out.println("平均耗时: " + (end - begin) / COUNT + " ms");
+        }
     }
 
-    @Test
-    public void aesWithIV() {
-        byte[] key = CryptoUtil.generateAesKey();
-        byte[] iv = CryptoUtil.generateIV();
-        assertThat(key).hasSize(16);
-        assertThat(iv).hasSize(16);
-        String input = "foo message";
-
-        byte[] encryptResult = CryptoUtil.aesEncrypt(input.getBytes(), key, iv);
-        String descryptResult = CryptoUtil.aesDecrypt(encryptResult, key, iv);
-
-        System.out.println("aes key in hex            :" + EncodeUtil.encodeHex(key));
-        System.out.println("iv in hex                 :" + EncodeUtil.encodeHex(iv));
-        System.out.println("aes encrypt in hex result :" + EncodeUtil.encodeHex(encryptResult));
-        assertThat(descryptResult).isEqualTo(input);
+    private static void encryptAndDecrypt(CryptoUtil.KeyCrypto crypto) {
+        System.out.println("crypto class: " + crypto.getClass()
+                                                    .getSimpleName());
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < COUNT; i++) {
+            String origin = MockUtil.anyLetterString(3, 100);
+            String encrypt = crypto.encrypt(origin);
+            String decrypt = crypto.decrypt(encrypt);
+            //            System.out.println("原文: " + origin);
+            //            System.out.println("密文: " + encrypt);
+            //            System.out.println("明文: " + decrypt);
+            Assertions.assertEquals(origin, decrypt);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("总耗时: " + (end - begin) + " ms");
+        System.out.println("平均耗时: " + (end - begin) / COUNT + " ms");
     }
 }

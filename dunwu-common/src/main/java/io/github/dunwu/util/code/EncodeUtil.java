@@ -4,11 +4,6 @@ import com.google.common.io.BaseEncoding;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.util.Base64;
 
 /**
@@ -99,7 +94,8 @@ public class EncodeUtil {
      * @return String
      * @throws UnsupportedEncodingException
      */
-    public static String changeCharset(String text, String oldCharset, String newCharset) throws UnsupportedEncodingException {
+    public static String changeCharset(String text, String oldCharset, String newCharset)
+        throws UnsupportedEncodingException {
         if (StringUtils.isBlank(text)) {
             return text;
         }

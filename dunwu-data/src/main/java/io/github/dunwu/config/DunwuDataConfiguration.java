@@ -7,7 +7,11 @@ import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
+import lombok.AllArgsConstructor;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -15,19 +19,27 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * MyBatis-Plus 集成配置抽象类
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see <a href="https://mybatis.plus/">MyBatis-Plus</a>
  * @since 2019-04-27
  */
 @Configuration
 @EnableTransactionManagement
-public class MybatisPlusConfig {
+@EnableConfigurationProperties({DunwuDataProperties.class})
+@ConditionalOnProperty(prefix = "dunwu.data", value = "enabled", matchIfMissing = true)
+public class DunwuDataConfiguration {
+
+    @Autowired
+    private DunwuDataProperties dunwuDataProperties;
 
     /**
      * 注入分页插件
+     *
      * @see <a href="https://mybatis.plus/guide/page.html">分页插件</a>
      * @see <a href="https://mybatis.plus/guide/block-attack-sql-parser.html">攻击 SQL 阻断解析器</a>
      */
@@ -45,6 +57,7 @@ public class MybatisPlusConfig {
 
     /**
      * 注入逻辑删除插件
+     *
      * @see <a href="https://mybatis.plus/guide/logic-delete.html">逻辑删除插件</a>
      */
     @Bean
@@ -54,6 +67,7 @@ public class MybatisPlusConfig {
 
     /**
      * 注入乐观锁插件
+     *
      * @see <a href="https://mybatis.plus/guide/optimistic-locker-plugin.html">乐观锁插件</a>
      */
     @Bean
@@ -65,6 +79,7 @@ public class MybatisPlusConfig {
      * 注入SQL执行效率插件
      * <p>
      * 设置 dev test 环境开启，不要在生产环境使用
+     *
      * @see <a href="https://mybatis.plus/guide/performance-analysis-plugin.html">性能分析插件</a>
      */
     @Bean
@@ -75,4 +90,13 @@ public class MybatisPlusConfig {
         performanceInterceptor.setFormat(true);
         return performanceInterceptor;
     }
+
+//    @Bean
+//    public MapperScannerConfigurer getMapperScannerConfigurer() {
+//        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+//        mapperScannerConfigurer.setAnnotationClass(org.apache.ibatis.annotations.Mapper.class);
+//        mapperScannerConfigurer.setBasePackage(Optional.ofNullable(dunwuDataProperties.getMapperPackage())
+//                                                       .orElse("io.github.dunwu.*.mapper"));
+//        return mapperScannerConfigurer;
+//    }
 }

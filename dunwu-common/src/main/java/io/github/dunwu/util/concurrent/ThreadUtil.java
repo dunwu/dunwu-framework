@@ -19,7 +19,8 @@ public class ThreadUtil {
         try {
             Thread.sleep(durationMillis);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.currentThread()
+                  .interrupt();
         }
     }
 
@@ -30,7 +31,8 @@ public class ThreadUtil {
         try {
             Thread.sleep(unit.toMillis(duration));
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.currentThread()
+                  .interrupt();
         }
     }
 
@@ -38,7 +40,8 @@ public class ThreadUtil {
      * 纯粹为了提醒下处理InterruptedException的正确方式，除非你是在写不可中断的任务.
      */
     public static void handleInterruptedException() {
-        Thread.currentThread().interrupt();
+        Thread.currentThread()
+              .interrupt();
     }
 
     /**

@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "dunwu.data.mapper-package",
+      "type": "java.lang.String",
+      "description": "Description for dunwu.data.mapper-package."
+    },
+    {
+      "name": "dunwu.data.enabled",
+      "type": "java.lang.String",
+      "description": "Description for dunwu.data.enabled."
+    }
+  ]
+}

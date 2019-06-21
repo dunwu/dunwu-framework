@@ -1,10 +1,10 @@
-package io.github.dunwu.constant;
+package io.github.dunwu.generator;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-15
  */
-public interface DatabaseConst {
+public interface CodeGeneratorProperties {
     enum ParamKeyEnum {
         // @formatter:off
         SPRING_DATASOURCE_URL("spring.datasource.url", "jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8"),
