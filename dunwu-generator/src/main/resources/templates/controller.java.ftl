@@ -37,10 +37,9 @@ import java.util.Collection;
 @Controller
 </#if>
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
-<#if swagger2>@Api(tags = "${entity}", description = "${table.comment!} CRUD Controller")</#if>
-<#if kotlin>
-class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
-<#else>
+<#if swagger2>
+@Api(tags = "${entity}", description = "${table.comment!} CRUD Controller")
+</#if>
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass}<${entity}> {
 <#else>
@@ -131,8 +130,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "根据 origin 条件，更新一条 ${entity} 记录 target")
     </#if>
-    public BaseResult update(
-        @RequestBody @ApiParam(name = "target", value = "${entity} 对象（json 格式）", required = true) ${entity} target, ${entity} origin) {
+    public BaseResult update(@RequestBody<#if swagger2> @ApiParam(name = "target", value = "${entity} 对象（json 格式）", required = true)</#if> ${entity} target, ${entity} origin) {
         return super.update(target, origin);
     }
 
@@ -154,4 +152,3 @@ public class ${table.controllerName} {
         return super.updateBatchById(entityList);
     }
 }
-</#if>
