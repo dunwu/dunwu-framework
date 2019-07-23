@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import lombok.AllArgsConstructor;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * MyBatis-Plus 集成配置抽象类
@@ -91,12 +88,12 @@ public class DunwuDataConfiguration {
         return performanceInterceptor;
     }
 
-//    @Bean
-//    public MapperScannerConfigurer getMapperScannerConfigurer() {
-//        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-//        mapperScannerConfigurer.setAnnotationClass(org.apache.ibatis.annotations.Mapper.class);
-//        mapperScannerConfigurer.setBasePackage(Optional.ofNullable(dunwuDataProperties.getMapperPackage())
-//                                                       .orElse("io.github.dunwu.*.mapper"));
-//        return mapperScannerConfigurer;
-//    }
+    //    @Bean
+    //    public MapperScannerConfigurer getMapperScannerConfigurer() {
+    //        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+    //        mapperScannerConfigurer.setAnnotationClass(org.apache.ibatis.annotations.Mapper.class);
+    //        mapperScannerConfigurer.setBasePackage(Optional.ofNullable(dunwuDataProperties.getMapperPackage())
+    //                                                       .orElse("io.github.dunwu.*.mapper"));
+    //        return mapperScannerConfigurer;
+    //    }
 }

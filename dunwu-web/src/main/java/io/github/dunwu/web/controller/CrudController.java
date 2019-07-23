@@ -63,13 +63,13 @@ public abstract class CrudController<T> {
      * @param page 分页查询条件
      * @return Result<T>
      */
-    public PageResult<T> page(T entity, Page page) {
+    public PageResult<T> page(T entity, PageResult.Page page) {
         IPage<T> queryPage =
             new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page.getCurrent(), page.getSize());
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
         IPage<T> resultPage = service.page(queryPage, wrapper);
         return ResultUtil.successPageResult(resultPage.getRecords(),
-            new Page(resultPage.getCurrent(), resultPage.getSize(), resultPage.getTotal()));
+            new PageResult.Page(resultPage.getCurrent(), resultPage.getSize(), resultPage.getTotal()));
     }
 
     /**

@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.4.2-SNAPSHOT</version>
+  <version>0.4.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -14,24 +14,28 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <!-- version -->
-    <dunwu.version>0.4.2-SNAPSHOT</dunwu.version>
+    <!-- core version -->
     <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
-    <dozer.version>6.4.1</dozer.version>
-    <guava.version>23.0</guava.version>
-    <mybatis-plus.version>3.1.1</mybatis-plus.version>
+
+    <!-- libs version -->
     <commons-codec.version>1.12</commons-codec.version>
     <commons-collections4.version>4.3</commons-collections4.version>
     <commons-fileupload.version>1.4</commons-fileupload.version>
     <commons-io.version>2.6</commons-io.version>
     <commons-csv.version>1.6</commons-csv.version>
+    <dozer.version>6.4.1</dozer.version>
+    <druid.version>1.1.19</druid.version>
+    <guava.version>23.0</guava.version>
     <javax.jsp-api.version>2.3.3</javax.jsp-api.version>
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
     <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
+    <jetty.version>9.4.17.v20190418</jetty.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-    <jetty.version>9.4.17.v20190418</jetty.version>
+    <mybatis.version>3.5.2</mybatis.version>
+    <mybatis-plus.version>3.1.1</mybatis-plus.version>
+    <mybatis-spring.version>2.0.2</mybatis-spring.version>
     <swagger-annotations.version>1.5.22</swagger-annotations.version>
   </properties>
 
@@ -66,7 +70,7 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
-      <!-- 大部分 jar 包使用 spring-boot-dependencies 直接管理版本 -->
+      <!-- 大部分第三方包使用 spring-boot-dependencies 直接管理版本 -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -81,17 +85,60 @@
         <artifactId>dozer-core</artifactId>
         <version>${dozer.version}</version>
       </dependency>
-      <!-- BEAN BEGIN -->
+      <dependency>
+        <groupId>com.github.dozermapper</groupId>
+        <artifactId>dozer-spring4</artifactId>
+        <version>${dozer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.dozermapper</groupId>
+        <artifactId>dozer-spring-boot-starter</artifactId>
+        <version>${dozer.version}</version>
+      </dependency>
+      <!-- BEAN END -->
+
+      <!-- DB BEGIN -->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>${mybatis-spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>${mybatis.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mybatis.generator</groupId>
+        <artifactId>mybatis-generator-core</artifactId>
+        <version>1.3.5</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-generator</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+      <!-- DB END -->
 
       <!-- JSON BEGIN -->
       <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>fastjson</artifactId>
-        <version>1.2.57</version>
+        <version>1.2.58</version>
       </dependency>
       <!-- JSON END -->
 
-      <!-- JAVAEE END -->
+      <!-- JAVAEE BEGIN -->
       <dependency>
         <groupId>javax.servlet.jsp</groupId>
         <artifactId>javax.servlet.jsp-api</artifactId>
@@ -115,7 +162,7 @@
         <artifactId>thumbnailator</artifactId>
         <version>[0.4, 0.5)</version>
       </dependency>
-      <!-- MEDIA BEGIN -->
+      <!-- MEDIA END -->
 
       <!-- SERVER BEGIN -->
       <dependency>
@@ -175,24 +222,7 @@
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
       </dependency>
-      <dependency>
-        <groupId>eu.medsea.mimeutil</groupId>
-        <artifactId>mime-util</artifactId>
-        <version>2.1.3</version>
-      </dependency>
       <!-- UTILS END -->
-
-      <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>${mybatis-plus.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-generator</artifactId>
-        <version>${mybatis-plus.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>io.swagger</groupId>
         <artifactId>swagger-annotations</artifactId>

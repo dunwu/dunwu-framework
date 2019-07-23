@@ -14,7 +14,7 @@ package io.github.dunwu.core;
  */
 public enum DefaultAppCode implements IAppCode {
     // @formatter:off
-    SUCCESS("0", "success", "成功"),
+    SUCCESS(IAppCode.SUCCESS_VALUE, "success", "成功"),
     FAIL("-1", "fail", "失败"),
     UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
     SERVICE_TIMEOUT("3", "服务超时", "服务超时，已执行 (%s)，中断任务"),
@@ -56,12 +56,12 @@ public enum DefaultAppCode implements IAppCode {
     // @formatter:on
 
     private final String code;
-    private final String msg;
+    private final String message;
     private final String detail;
 
     DefaultAppCode(String code, String msg, String detail) {
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
         this.detail = detail;
     }
 
@@ -71,8 +71,8 @@ public enum DefaultAppCode implements IAppCode {
     }
 
     @Override
-    public String msg() {
-        return msg;
+    public String message() {
+        return message;
     }
 
     @Override

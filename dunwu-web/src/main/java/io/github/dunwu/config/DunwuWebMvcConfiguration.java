@@ -1,6 +1,5 @@
 package io.github.dunwu.config;
 
-import io.github.dunwu.web.interceptor.CorsInceptor;
 import io.github.dunwu.web.interceptor.HttpDebugInterceptor;
 import io.github.dunwu.web.interceptor.SecurityInterceptor;
 import lombok.AllArgsConstructor;
@@ -8,10 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * Web Mvc 配置
@@ -39,22 +35,22 @@ public class DunwuWebMvcConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/");
     }
 
-    //    /**
-    //     * 设置跨域
-    //     *
-    //     * @param registry
-    //     */
-    //    @Override
-    //    public void addCorsMappings(CorsRegistry registry) {
-    //        if (dunwuWebProperties.getCorsEnable()) {
-    //            registry.addMapping("/**")
-    //                    .allowedOrigins("http://admin.vue.io")
-    //                    .allowedHeaders("*")
-    //                    .allowedMethods("*")
-    //                    .allowCredentials(true)
-    //                    .maxAge(3600L);
-    //        }
-    //    }
+    /**
+     * 设置跨域
+     *
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        if (dunwuWebProperties.getCorsEnable()) {
+            registry.addMapping("/**")
+                    .allowedOrigins("*")
+                    .allowedHeaders("*")
+                    .allowedMethods("*")
+                    .allowCredentials(true)
+                    .maxAge(3600L);
+        }
+    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -76,11 +72,11 @@ public class DunwuWebMvcConfiguration implements WebMvcConfigurer {
                     .order(1);
         }
 
-        if (dunwuWebProperties.getCorsEnable()) {
-            registry.addInterceptor(new CorsInceptor())
-                    .addPathPatterns("/**")
-                    .order(2);
-        }
+        //        if (dunwuWebProperties.getCorsEnable()) {
+        //            registry.addInterceptor(new CorsInceptor())
+        //                    .addPathPatterns("/**")
+        //                    .order(2);
+        //        }
 
         if (dunwuSecurityProperties.getEnable()) {
             registry.addInterceptor(new SecurityInterceptor(dunwuSecurityProperties))

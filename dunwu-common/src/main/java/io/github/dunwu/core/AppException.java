@@ -2,6 +2,7 @@ package io.github.dunwu.core;
 
 /**
  * 系统应答状态码
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-11
  */
@@ -12,20 +13,16 @@ public class AppException extends RuntimeException {
     private BaseResult result;
 
     public AppException(BaseResult result) {
-        this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMsg());
+        this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessages()
+                                                                                  .toArray(new String[] {}));
     }
 
     public AppException(IAppCode appCode) {
         this.result = ResultUtil.failBaseResult(appCode);
     }
 
-    public AppException(IAppCode appCode, String[] msgs) {
-        this.result = ResultUtil.failBaseResult(appCode);
-        StringBuilder sb = new StringBuilder(appCode.msg());
-        for (String s : msgs) {
-            sb.append("\r\n").append(s);
-        }
-        this.result.setMsg(sb.toString());
+    public AppException(IAppCode appCode, String... messages) {
+        this.result = ResultUtil.failBaseResult(appCode, messages);
     }
 
     /**
@@ -34,11 +31,6 @@ public class AppException extends RuntimeException {
     @Override
     public Throwable fillInStackTrace() {
         return this;
-    }
-
-    @Override
-    public String getMessage() {
-        return null == result ? null : result.getMsg();
     }
 
     public BaseResult getResult() {

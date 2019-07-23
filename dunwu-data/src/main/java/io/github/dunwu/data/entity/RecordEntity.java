@@ -1,9 +1,11 @@
 package io.github.dunwu.data.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -11,24 +13,20 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class RecordEntity extends BaseEntity {
 
-    private static final long serialVersionUID = 416443810370056461L;
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * 创建日期
-     */
-    private Date createDate;
-    /**
-     * 修改日期
-     */
-    private Date modifyDate;
-    /**
-     * 创建者
-     */
-    private String creator;
-    /**
-     * 修改者
-     */
-    private String modifier;
+    @ApiModelProperty(value = "创建者")
+    protected String createUser;
+
+    @ApiModelProperty(value = "更新者")
+    protected String updateUser;
+
+    @ApiModelProperty(value = "创建时间")
+    protected LocalDateTime createTime;
+
+    @ApiModelProperty(value = "更新时间")
+    protected LocalDateTime updateTime;
 }

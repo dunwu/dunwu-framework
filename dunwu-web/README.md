@@ -23,10 +23,10 @@ spring.datasource.data = classpath:db/data.sql
 
 # mybatis
 mybatis-plus.configuration.default-enum-type-handler = org.apache.ibatis.type.EnumOrdinalTypeHandler
-mybatis.generator.java.dir = D:/Codes/ZP/Java/dunwu/codes/dunwu-framework/src/test/java
-mybatis.generator.resources.dir = D:/Codes/ZP/Java/dunwu/codes/dunwu-framework/src/test/resources
-mybatis.generator.package.name = io.github.dunwu.demo
-mybatis.generator.table.name = user, role
+mybatis.generator.gc.java.dir = D:/Codes/ZP/Java/dunwu/codes/dunwu-framework/src/test/java
+mybatis.generator.gc.resources.dir = D:/Codes/ZP/Java/dunwu/codes/dunwu-framework/src/test/resources
+mybatis.generator.pc.package.name = io.github.dunwu.demo
+mybatis.generator.sc.table.name = user, role
 ```
 
 使用 `CodeGenerator.main()` 自动围绕数据表的 CRUD 操作生成 Controller、Service、Dao、Entity 代码。

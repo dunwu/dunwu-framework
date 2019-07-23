@@ -6,14 +6,14 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-data</artifactId>
   <packaging>jar</packaging>
 
   <properties>
-    <mybatis-plus.version>3.1.0</mybatis-plus.version>
+    <mybatis-plus.version>3.1.2</mybatis-plus.version>
   </properties>
 
   <dependencies>
@@ -84,16 +84,6 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>${mybatis-plus.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>

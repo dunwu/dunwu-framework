@@ -1,5 +1,6 @@
 package io.github.dunwu.core;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -16,7 +17,7 @@ public class ResultUtil {
      * @return Result
      */
     public static BaseResult successBaseResult() {
-        return new BaseResult(true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.msg());
+        return new BaseResult(true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.message());
     }
 
     /**
@@ -25,7 +26,7 @@ public class ResultUtil {
      * @return 成功的 Result
      */
     public static BaseResult failBaseResult() {
-        return failBaseResult(DefaultAppCode.FAIL);
+        return new BaseResult(DefaultAppCode.FAIL);
     }
 
     /**
@@ -35,47 +36,29 @@ public class ResultUtil {
      * @return Result
      */
     public static BaseResult failBaseResult(IAppCode appCode) {
-        return failBaseResult(appCode.code(), appCode.msg());
-    }
-
-    /**
-     * 根据枚举返回应答
-     *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param msgs 补充信息数组
-     * @return Result
-     */
-    public static BaseResult failBaseResult(IAppCode appCode, String... msgs) {
-        StringBuilder sb = new StringBuilder(appCode.msg());
-        if (msgs != null && msgs.length > 0) {
-            for (String str : msgs) {
-                sb.append("\r\n").append(str);
-            }
-        }
-
-        return failBaseResult(appCode.code(), sb.toString());
-    }
-
-    /**
-     * 根据枚举的 detail 和 objs 拼接应答信息并返回 Result
-     *
-     * @param appCode IAppCode
-     * @param objs
-     * @return
-     */
-    public static BaseResult failBaseResult(IAppCode appCode, Object... objs) {
-        return failBaseResult(appCode.code(), String.format(appCode.detail(), objs));
+        return new BaseResult(appCode);
     }
 
     /**
      * 根据参数返回失败 Result
      *
      * @param code 错误码
-     * @param msg 错误信息
+     * @param messages 错误信息
      * @return Result
      */
-    public static BaseResult failBaseResult(String code, String msg) {
-        return new BaseResult(false, code, msg);
+    public static BaseResult failBaseResult(String code, String... messages) {
+        return new BaseResult(false, code, messages);
+    }
+
+    /**
+     * 根据枚举返回应答
+     *
+     * @param appCode IAppCode（系统应答状态码）
+     * @param messages 补充信息数组
+     * @return Result
+     */
+    public static BaseResult failBaseResult(IAppCode appCode, String... messages) {
+        return new BaseResult(false, appCode.code(), messages);
     }
 
     /**
@@ -86,7 +69,7 @@ public class ResultUtil {
      * @return DataResult
      */
     public static <T> DataResult<T> successDataResult(T data) {
-        return new DataResult<>(true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.msg(), data);
+        return new DataResult<>(data, true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.message());
     }
 
     /**
@@ -102,43 +85,35 @@ public class ResultUtil {
     /**
      * 根据枚举返回失败 DataResult
      *
-     * @param appCodeEnum IAppCode（系统应答状态码）
+     * @param appCode IAppCode（系统应答状态码）
      * @param <T> 数据类型
      * @return BaseResult
      */
-    public static <T> DataResult<T> failDataResult(IAppCode appCodeEnum) {
-        return failDataResult(appCodeEnum.code(), appCodeEnum.msg());
-    }
-
-    /**
-     * 根据枚举返回失败 DataResult
-     *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param msgs 信息数组
-     * @param <T> 数据类型
-     * @return DataResult
-     */
-    public static <T> DataResult<T> failDataResult(IAppCode appCode, String... msgs) {
-        StringBuilder sb = new StringBuilder(appCode.msg());
-        if (msgs != null && msgs.length > 0) {
-            for (String str : msgs) {
-                sb.append("\r\n").append(str);
-            }
-        }
-
-        return failDataResult(appCode.code(), sb.toString());
+    public static <T> DataResult<T> failDataResult(IAppCode appCode) {
+        return new DataResult<>(appCode);
     }
 
     /**
      * 根据参数返回失败 DataResult
      *
      * @param code 错误码
-     * @param msg 错误信息
-     * @param <T> 数据类型
+     * @param messages 错误信息
      * @return BaseResult
      */
-    public static <T> DataResult<T> failDataResult(String code, String msg) {
-        return new DataResult<>(false, code, msg, null);
+    public static <T> DataResult<T> failDataResult(String code, String... messages) {
+        return new DataResult<>(null, false, code, messages);
+    }
+
+    /**
+     * 根据枚举返回失败 DataResult
+     *
+     * @param appCode IAppCode（系统应答状态码）
+     * @param messages 信息数组
+     * @param <T> 数据类型
+     * @return DataResult
+     */
+    public static <T> DataResult<T> failDataResult(IAppCode appCode, String... messages) {
+        return new DataResult<>(null, false, appCode.code(), messages);
     }
 
     /**
@@ -149,7 +124,7 @@ public class ResultUtil {
      * @return Result
      */
     public static <T> DataListResult<T> successDataListResult(Collection<T> list) {
-        return new DataListResult<>(true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.msg(), list);
+        return new DataListResult<>(list, true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.message());
     }
 
     /**
@@ -170,38 +145,31 @@ public class ResultUtil {
      * @return BaseResult
      */
     public static <T> DataListResult<T> failDataListResult(IAppCode appCode) {
-        return failDataListResult(appCode, null);
-    }
-
-    /**
-     * 根据枚举返回失败 DataListResult
-     *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param msgs 信息数组
-     * @param <T> 数据类型
-     * @return DataListResult
-     */
-    public static <T> DataListResult<T> failDataListResult(IAppCode appCode, String... msgs) {
-        StringBuilder sb = new StringBuilder(appCode.msg());
-        if (msgs != null && msgs.length > 0) {
-            for (String str : msgs) {
-                sb.append("\r\n").append(str);
-            }
-        }
-
-        return failDataListResult(appCode.code(), sb.toString());
+        return new DataListResult<>(appCode);
     }
 
     /**
      * 根据参数返回失败 DataListResult
      *
      * @param code 错误码
-     * @param msg 错误信息
+     * @param messages 错误信息
      * @param <T> 数据类型
      * @return DataListResult
      */
-    public static <T> DataListResult<T> failDataListResult(String code, String msg) {
-        return new DataListResult<>(false, code, msg, null);
+    public static <T> DataListResult<T> failDataListResult(String code, String... messages) {
+        return new DataListResult<>(null, false, code, messages);
+    }
+
+    /**
+     * 根据枚举返回失败 DataListResult
+     *
+     * @param appCode IAppCode（系统应答状态码）
+     * @param messages 信息数组
+     * @param <T> 数据类型
+     * @return DataListResult
+     */
+    public static <T> DataListResult<T> failDataListResult(IAppCode appCode, String... messages) {
+        return new DataListResult<>(null, false, appCode.code(), messages);
     }
 
     /**
@@ -212,8 +180,8 @@ public class ResultUtil {
      * @param <T> 数据类型
      * @return PageResult
      */
-    public static <T> PageResult<T> successPageResult(Collection<T> list, Page page) {
-        return new PageResult<>(true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.msg(), list, page);
+    public static <T> PageResult<T> successPageResult(Collection<T> list, PageResult.Page page) {
+        return new PageResult<>(list, page, true, DefaultAppCode.SUCCESS.code(), DefaultAppCode.SUCCESS.message());
     }
 
     /**
@@ -223,7 +191,7 @@ public class ResultUtil {
      * @return PageResult
      */
     public static <T> PageResult<T> failPageResult() {
-        return failPageResult(DefaultAppCode.FAIL);
+        return new PageResult<>(DefaultAppCode.FAIL);
     }
 
     /**
@@ -234,34 +202,30 @@ public class ResultUtil {
      * @return PageResult
      */
     public static <T> PageResult<T> failPageResult(IAppCode appCode) {
-        return failPageResult(appCode, null);
-    }
-
-    /**
-     * 根据枚举返回失败 PageResult
-     *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param msgs 信息数组
-     * @param <T> 数据类型
-     * @return PageResult
-     */
-    public static <T> PageResult<T> failPageResult(IAppCode appCode, String... msgs) {
-        StringBuilder sb = new StringBuilder(appCode.msg());
-        for (String str : msgs) {
-            sb.append("\r\n").append(str);
-        }
-        return failPageResult(appCode.code(), sb.toString());
+        return new PageResult<>(null, null, false, appCode.code(), appCode.message());
     }
 
     /**
      * 根据参数返回失败 PageResult
      *
      * @param code 错误码
-     * @param msg 错误信息
+     * @param messages 错误信息
      * @param <T> 数据类型
      * @return PageResult
      */
-    public static <T> PageResult<T> failPageResult(String code, String msg) {
-        return new PageResult<>(false, code, msg, null, null);
+    public static <T> PageResult<T> failPageResult(String code, String... messages) {
+        return new PageResult<>(null, null, false, code, messages);
+    }
+
+    /**
+     * 根据枚举返回失败 PageResult
+     *
+     * @param appCode IAppCode（系统应答状态码）
+     * @param messages 信息数组
+     * @param <T> 数据类型
+     * @return PageResult
+     */
+    public static <T> PageResult<T> failPageResult(IAppCode appCode, String... messages) {
+        return new PageResult<>(null, null, false, appCode.code(), messages);
     }
 }

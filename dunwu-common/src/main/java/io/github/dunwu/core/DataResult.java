@@ -1,35 +1,42 @@
 package io.github.dunwu.core;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.Collections;
+
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-06-06
  */
+@Data
+@ToString(callSuper = true)
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class DataResult<T> extends BaseResult {
 
-    private static final long serialVersionUID = 5967600057844753703L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 数据对象。当 successBaseResult = true 才有值
      */
     private T data;
 
+    public DataResult() { }
+
+    public DataResult(IAppCode appCode) {
+       super(appCode);
+    }
+
     public DataResult(BaseResult result) {
-        this.success = result.getSuccess();
-        this.code = result.getCode();
-        this.msg = result.getMsg();
+        super(result);
         this.data = null;
     }
 
-    public DataResult(Boolean success, String code, String msg, T data) {
-        super(success, code, msg);
-        this.data = data;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
+    public DataResult(T data, Boolean success, String code, String... messages) {
+        super(success, code, messages);
         this.data = data;
     }
 }

@@ -6,76 +6,23 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-common</artifactId>
   <packaging>jar</packaging>
-  <description>Dunwu 基础工具包</description>
-
-  <properties>
-    <dunwu.version>0.4.2-SNAPSHOT</dunwu.version>
-  </properties>
+  <description>Dunwu 公共包</description>
 
   <dependencies>
-    <!-- UTILS BEGIN -->
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-collections4</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-csv</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <!-- UTILS END -->
-
-    <!-- LOG BEGIN -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- LOG END -->
-
-    <!-- BEAN BEGIN -->
-    <dependency>
-      <groupId>com.github.dozermapper</groupId>
-      <artifactId>dozer-core</artifactId>
-    </dependency>
-    <!-- BEAN END -->
-
-    <!-- JSON BEGIN -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-    </dependency>
-    <!-- JSON END -->
-
-    <!-- MEDIA BEGIN -->
-    <dependency>
-      <groupId>net.coobird</groupId>
-      <artifactId>thumbnailator</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <!-- MEDIA END -->
 
     <!-- TEST BEGIN -->
     <dependency>
@@ -105,17 +52,6 @@
     </dependency>
     <!-- TEST END -->
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>
