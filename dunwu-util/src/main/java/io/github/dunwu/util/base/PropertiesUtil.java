@@ -49,14 +49,39 @@ public class PropertiesUtil {
      * 从文件路径加载properties. 默认使用utf-8编码解析文件
      * 路径支持从外部文件或resources文件加载, "file://"或无前缀代表外部文件, "classpath://"代表resources
      */
-    public static Properties loadFromFile(String generalPath) {
+    public static Properties loadFromFile(String file) {
         Properties p = new Properties();
-        try (Reader reader = new InputStreamReader(URLResourceUtil.asStream(generalPath), Charsets.UTF_8)) {
+        try (Reader reader = new InputStreamReader(URLResourceUtil.asStream(file), Charsets.UTF_8)) {
             p.load(reader);
         } catch (IOException e) {
-            logger.warn("Load property from " + generalPath + " failed", e);
+            logger.warn("Load property from " + file + " failed", e);
         }
         return p;
+    }
+
+    public static Properties loadFromFile(String... files) {
+        if (files == null || files.length == 0) {
+            return null;
+        }
+
+        Properties properties = null;
+        for (String file : files) {
+            try {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("加载配置文件 {}", file);
+                }
+                properties = loadFromFile(file);
+            } catch (Exception e) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("加载配置文件 {} 失败", file);
+                }
+            }
+
+            if (properties != null) {
+                return properties;
+            }
+        }
+        return null;
     }
 
     /**

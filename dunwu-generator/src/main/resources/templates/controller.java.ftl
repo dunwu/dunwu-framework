@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 </#if>
 <#if superControllerClassPackage??>
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 </#if>
 <#if restControllerStyle>
@@ -45,12 +44,9 @@ public class ${table.controllerName} extends ${superControllerClass}<${entity}> 
 <#else>
 public class ${table.controllerName} {
 </#if>
-    private final ${table.serviceName} service;
 
-    @Autowired
-    public ${table.controllerName}(${entity}Service service) {
-        super(service);
-        this.service = service;
+    public ${table.controllerName}(${table.serviceName} dao) {
+        super(dao);
     }
 
     @Override
@@ -76,7 +72,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation(value = "分页查询符合条件的 ${entity} 记录，如果 entity 为 null，返回所有记录的分页查询结果")
     </#if>
-    public PageResult<${entity}> page(${entity} entity, Page page) {
+    public PageResult<${entity}> page(${entity} entity, PageResult.Page page) {
         return super.page(entity, page);
     }
 

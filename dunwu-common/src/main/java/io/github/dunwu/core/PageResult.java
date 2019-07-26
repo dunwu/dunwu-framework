@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -36,7 +37,19 @@ public class PageResult<T> extends BaseResult {
         this.data = data;
     }
 
+    public PageResult(PageData data, Boolean success, String code, List<String> messages) {
+        super(success, code, messages);
+        this.data = data;
+    }
+
     public PageResult(Collection<T> list, Page page, Boolean success, String code, String... messages) {
+        super(success, code, messages);
+        data = new PageData();
+        data.setList(list);
+        data.setPage(page);
+    }
+
+    public PageResult(Collection<T> list, Page page, Boolean success, String code, List<String> messages) {
         super(success, code, messages);
         data = new PageData();
         data.setList(list);
@@ -63,6 +76,9 @@ public class PageResult<T> extends BaseResult {
     }
 
 
+    /**
+     * 分页信息
+     */
     @Data
     @ToString
     @NoArgsConstructor
@@ -85,5 +101,10 @@ public class PageResult<T> extends BaseResult {
          * 总记录数
          */
         private Long total = 0L;
+
+        /**
+         * 总页数
+         */
+        private Long pages = 0L;
     }
 }

@@ -6,6 +6,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -36,6 +37,11 @@ public class DataListResult<T> extends BaseResult {
     }
 
     public DataListResult(Collection<T> data, Boolean success, String code, String... messages) {
+        super(success, code, messages);
+        this.data = data;
+    }
+
+    public DataListResult(Collection<T> data, Boolean success, String code, List<String> messages) {
         super(success, code, messages);
         this.data = data;
     }

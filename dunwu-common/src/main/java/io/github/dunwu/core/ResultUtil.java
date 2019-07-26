@@ -1,7 +1,7 @@
 package io.github.dunwu.core;
 
-import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 应答工具类
@@ -40,6 +40,35 @@ public class ResultUtil {
     }
 
     /**
+     * 返回 BaseResult
+     *
+     * @param appCode IAppCode（系统应答状态码）
+     * @param messages 补充信息数组
+     * @return Result
+     */
+    /**
+     * 返回 BaseResult
+     *
+     * @param appCode 应用状态码 {@link io.github.dunwu.core.IAppCode}
+     * @param messages 错误信息 String... messages
+     * @return BaseResult
+     */
+    public static BaseResult failBaseResult(IAppCode appCode, String... messages) {
+        return new BaseResult(false, appCode.code(), messages);
+    }
+
+    /**
+     * 返回 BaseResult
+     *
+     * @param appCode 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param messages 错误信息 List<String>
+     * @return BaseResult
+     */
+    public static BaseResult failBaseResult(IAppCode appCode, List<String> messages) {
+        return new BaseResult(false, appCode.code(), messages);
+    }
+
+    /**
      * 根据参数返回失败 Result
      *
      * @param code 错误码
@@ -48,17 +77,6 @@ public class ResultUtil {
      */
     public static BaseResult failBaseResult(String code, String... messages) {
         return new BaseResult(false, code, messages);
-    }
-
-    /**
-     * 根据枚举返回应答
-     *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param messages 补充信息数组
-     * @return Result
-     */
-    public static BaseResult failBaseResult(IAppCode appCode, String... messages) {
-        return new BaseResult(false, appCode.code(), messages);
     }
 
     /**

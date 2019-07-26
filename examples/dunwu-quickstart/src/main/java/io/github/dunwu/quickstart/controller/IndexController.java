@@ -1,4 +1,4 @@
-package io.github.dunwu.hehe.controller;
+package io.github.dunwu.quickstart.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

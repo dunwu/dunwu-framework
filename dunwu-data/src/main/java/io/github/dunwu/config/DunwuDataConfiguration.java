@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -86,6 +87,20 @@ public class DunwuDataConfiguration {
         performanceInterceptor.setMaxTime(100);
         performanceInterceptor.setFormat(true);
         return performanceInterceptor;
+    }
+
+    /**
+     * Json 格式化
+     * <p>
+     * 引入 spring-boot-starter-json ，主要目的在于针对 Java8 的一些新类型进行 Json 格式化，这里需要注册进容器
+     *
+     * @return ObjectMapper
+     */
+    @Bean
+    public ObjectMapper serializingObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        return objectMapper;
     }
 
     //    @Bean

@@ -94,6 +94,9 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
         String serviceName = PropertiesUtil.getString(properties,
                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_SERVICE_NAME.key(),
                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_SERVICE_NAME.value());
+        String serviceImplName = PropertiesUtil.getString(properties,
+                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME.key(),
+                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME.value());
         String controllerName = PropertiesUtil.getString(properties,
                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_CONTROLLER_NAME.key(),
                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_GC_CONTROLLER_NAME.value());
@@ -106,6 +109,7 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
           .setXmlName(xmlName)
           .setMapperName(mapperName)
           .setServiceName(serviceName)
+          .setServiceImplName(serviceImplName)
           .setControllerName(controllerName)
           .setSwagger2(enableSwagger);
         return gc;
@@ -157,6 +161,12 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
         String mapperPackageName = PropertiesUtil.getString(properties,
                                                             CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_MAPPER_NAME.key(),
                                                             CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_MAPPER_NAME.value());
+        String servicePackageName = PropertiesUtil.getString(properties,
+                                                             CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_SERVICE_NAME.key(),
+                                                             CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_SERVICE_NAME.value());
+        String serviceImplPackageName = PropertiesUtil.getString(properties,
+                                                                 CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME.key(),
+                                                                 CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME.value());
         String xmlPackageName = PropertiesUtil.getString(properties,
                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_XML_NAME.key(),
                                                          CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_PC_XML_NAME.value());
@@ -168,6 +178,8 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
             pc.setParent(packageName);
         }
         pc.setMapper(mapperPackageName);
+        pc.setService(servicePackageName);
+        pc.setServiceImpl(serviceImplPackageName);
         pc.setXml(xmlPackageName);
         return pc;
     }
@@ -187,6 +199,12 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
         String superEntity = PropertiesUtil.getString(properties,
                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_ENTITY.key(),
                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_ENTITY.value());
+        String superService = PropertiesUtil.getString(properties,
+                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_SERVICE.key(),
+                                                       CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_SERVICE.value());
+        String superServiceImpl = PropertiesUtil.getString(properties,
+                                                           CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL.key(),
+                                                           CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL.value());
         String superController = PropertiesUtil.getString(properties,
                                                           CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_CONTROLLER.key(),
                                                           CodeGeneratorProperties.ParamKeyEnum.MYBATIS_GENERATOR_SC_SUPER_CONTROLLER.value());
@@ -198,6 +216,8 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
           .setNaming(NamingStrategy.underline_to_camel)
           .setColumnNaming(NamingStrategy.underline_to_camel)
           .setSuperEntityClass(superEntity)
+          .setSuperServiceClass(superService)
+          .setSuperServiceImplClass(superServiceImpl)
           .setSuperControllerClass(superController)
           .setSuperEntityColumns("id")
           .setTablePrefix("t_")
@@ -262,6 +282,8 @@ public class DefaultCodeGenerator extends CodeGeneratorTemplate {
     public TemplateConfig getTemplateConfig() {
         return new TemplateConfig().setEntity("templates/entity.java")
                                    .setController("templates/controller.java")
+                                   .setService("templates/dao.java")
+                                   .setServiceImpl("templates/daoImpl.java")
                                    .setXml(null);
     }
 

@@ -32,11 +32,9 @@ public class BaseResult implements Serializable {
     /**
      * 错误描述。
      */
-    protected List<String> messages;
+    protected List<String> messages = new LinkedList<>();
 
-    public BaseResult() {
-        this.messages = new LinkedList<>();
-    }
+    public BaseResult() { }
 
     public BaseResult(IAppCode appCode) {
         if (IAppCode.SUCCESS_VALUE.equals(appCode.code())) {
@@ -51,12 +49,18 @@ public class BaseResult implements Serializable {
     public BaseResult(BaseResult result) {
         this.success = result.getSuccess();
         this.code = result.getCode();
-        this.messages = result.getMessages();
+        this.messages.addAll(result.getMessages());
     }
 
     public BaseResult(Boolean success, String code, String... messages) {
         this.success = success;
         this.code = code;
         this.messages.addAll(Arrays.asList(messages));
+    }
+
+    public BaseResult(Boolean success, String code, List<String> messages) {
+        this.success = success;
+        this.code = code;
+        this.messages.addAll(messages);
     }
 }

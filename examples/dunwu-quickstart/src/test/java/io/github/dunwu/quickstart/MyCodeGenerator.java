@@ -1,4 +1,4 @@
-package io.github.dunwu.hehe;
+package io.github.dunwu.quickstart;
 
 import io.github.dunwu.generator.DefaultCodeGenerator;
 

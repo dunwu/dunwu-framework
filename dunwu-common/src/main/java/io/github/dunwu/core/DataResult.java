@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Collections;
+import java.util.List;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -27,7 +27,7 @@ public class DataResult<T> extends BaseResult {
     public DataResult() { }
 
     public DataResult(IAppCode appCode) {
-       super(appCode);
+        super(appCode);
     }
 
     public DataResult(BaseResult result) {
@@ -36,6 +36,11 @@ public class DataResult<T> extends BaseResult {
     }
 
     public DataResult(T data, Boolean success, String code, String... messages) {
+        super(success, code, messages);
+        this.data = data;
+    }
+
+    public DataResult(T data, Boolean success, String code, List<String> messages) {
         super(success, code, messages);
         this.data = data;
     }

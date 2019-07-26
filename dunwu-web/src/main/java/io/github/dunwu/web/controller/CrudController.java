@@ -3,8 +3,8 @@ package io.github.dunwu.web.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.dunwu.core.*;
+import io.github.dunwu.data.dao.IDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +18,15 @@ import java.util.Collection;
  * @since 2019-04-15
  */
 public abstract class CrudController<T> {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private IService<T> service;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    protected IDao<T> dao;
 
     public CrudController() {}
 
-    public CrudController(IService<T> service) {
-        this.service = service;
+    public CrudController(IDao<T> dao) {
+        this.dao = dao;
     }
 
     /**
@@ -36,10 +37,10 @@ public abstract class CrudController<T> {
      */
     public DataResult<Integer> count(T entity) {
         if (entity == null) {
-            return ResultUtil.successDataResult(service.count());
+            return ResultUtil.successDataResult(dao.count());
         }
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        return ResultUtil.successDataResult(service.count(wrapper));
+        return ResultUtil.successDataResult(dao.count(wrapper));
     }
 
     /**
@@ -50,10 +51,10 @@ public abstract class CrudController<T> {
      */
     public DataListResult<T> list(T entity) {
         if (entity == null) {
-            return ResultUtil.successDataListResult(service.list());
+            return ResultUtil.successDataListResult(dao.list());
         }
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        return ResultUtil.successDataListResult(service.list(wrapper));
+        return ResultUtil.successDataListResult(dao.list(wrapper));
     }
 
     /**
@@ -64,12 +65,13 @@ public abstract class CrudController<T> {
      * @return Result<T>
      */
     public PageResult<T> page(T entity, PageResult.Page page) {
-        IPage<T> queryPage =
-            new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page.getCurrent(), page.getSize());
+        IPage<T> queryPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page.getCurrent(),
+                                                                                              page.getSize());
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        IPage<T> resultPage = service.page(queryPage, wrapper);
+        IPage<T> resultPage = dao.page(queryPage, wrapper);
         return ResultUtil.successPageResult(resultPage.getRecords(),
-            new PageResult.Page(resultPage.getCurrent(), resultPage.getSize(), resultPage.getTotal()));
+                                            new PageResult.Page(resultPage.getCurrent(), resultPage.getSize(),
+                                                                resultPage.getTotal(), resultPage.getPages()));
     }
 
     /**
@@ -79,7 +81,7 @@ public abstract class CrudController<T> {
      * @return Result
      */
     public BaseResult save(T entity) {
-        if (service.save(entity)) {
+        if (dao.save(entity)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -93,7 +95,7 @@ public abstract class CrudController<T> {
      * @return Result
      */
     public BaseResult saveBatch(Collection<T> entityList) {
-        if (service.saveBatch(entityList)) {
+        if (dao.saveBatch(entityList)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -108,7 +110,7 @@ public abstract class CrudController<T> {
      */
     public BaseResult remove(T entity) {
         QueryWrapper<T> wrapper = new QueryWrapper<>(entity);
-        if (service.remove(wrapper)) {
+        if (dao.remove(wrapper)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -121,7 +123,7 @@ public abstract class CrudController<T> {
      * @return Result
      */
     public BaseResult removeById(Long id) {
-        if (service.removeById(id)) {
+        if (dao.removeById(id)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -134,7 +136,7 @@ public abstract class CrudController<T> {
      * @return Result
      */
     public BaseResult removeByIds(Collection<? extends Serializable> idList) {
-        if (service.removeByIds(idList)) {
+        if (dao.removeByIds(idList)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -150,7 +152,7 @@ public abstract class CrudController<T> {
      */
     public BaseResult update(T target, T origin) {
         UpdateWrapper<T> updateWrapper = new UpdateWrapper<>(origin);
-        if (service.update(target, updateWrapper)) {
+        if (dao.update(target, updateWrapper)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -163,7 +165,7 @@ public abstract class CrudController<T> {
      * @param entity 实体对象
      */
     public BaseResult updateById(T entity) {
-        if (service.updateById(entity)) {
+        if (dao.updateById(entity)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);
@@ -176,7 +178,7 @@ public abstract class CrudController<T> {
      * @param entityList 实体对象集合
      */
     public BaseResult updateBatchById(Collection<T> entityList) {
-        if (service.updateBatchById(entityList)) {
+        if (dao.updateBatchById(entityList)) {
             return ResultUtil.successBaseResult();
         } else {
             return ResultUtil.failBaseResult(DefaultAppCode.ERROR_DB);

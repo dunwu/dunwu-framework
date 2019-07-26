@@ -1,4 +1,4 @@
-package io.github.dunwu.hehe.constant;
+package io.github.dunwu.quickstart.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 
