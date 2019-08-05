@@ -32,8 +32,8 @@ public class PageResult<T> extends BaseResult {
         super(appCode);
     }
 
-    public PageResult(PageData data, Boolean success, String code, String... messages) {
-        super(success, code, messages);
+    public PageResult(PageData data, Boolean success, String code, String message) {
+        super(success, code, message);
         this.data = data;
     }
 
@@ -42,8 +42,15 @@ public class PageResult<T> extends BaseResult {
         this.data = data;
     }
 
-    public PageResult(Collection<T> list, Page page, Boolean success, String code, String... messages) {
-        super(success, code, messages);
+    public PageResult(Collection<T> list, Page page, Boolean success, String code, String message) {
+        super(success, code, message);
+        data = new PageData();
+        data.setList(list);
+        data.setPage(page);
+    }
+
+    public PageResult(Collection<T> list, Page page, Boolean success, String code, String message, Object... params) {
+        super(success, code, message, params);
         data = new PageData();
         data.setList(list);
         data.setPage(page);

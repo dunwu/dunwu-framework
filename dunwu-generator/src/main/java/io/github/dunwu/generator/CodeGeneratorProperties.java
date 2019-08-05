@@ -27,7 +27,7 @@ public interface CodeGeneratorProperties {
         /** package 配置 **/
         MYBATIS_GENERATOR_PC_PACKAGE_NAME("mybatis.generator.pc.package.name", null),
         MYBATIS_GENERATOR_PC_MODULE_NAME("mybatis.generator.pc.module.name", null),
-        MYBATIS_GENERATOR_PC_MAPPER_NAME("mybatis.generator.pc.mapper.name", "mapper"),
+        MYBATIS_GENERATOR_PC_MAPPER_NAME("mybatis.generator.pc.mapper.name", "dao.mapper"),
         MYBATIS_GENERATOR_PC_SERVICE_NAME("mybatis.generator.pc.service.name", "dao"),
         MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME("mybatis.generator.pc.service.impl.name", "dao.impl"),
         MYBATIS_GENERATOR_PC_XML_NAME("mybatis.generator.pc.xml.name", "mapper"),

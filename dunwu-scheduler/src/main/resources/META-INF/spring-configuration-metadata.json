@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "name": "dunwu.scheduler",
+      "type": "io.github.dunwu.config.DunwuSchedulerProperties",
+      "sourceType": "io.github.dunwu.config.DunwuSchedulerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "dunwu.scheduler.enabled",
+      "type": "java.lang.Boolean",
+      "description": "dunwu-scheduler 自动化配置总开关",
+      "sourceType": "io.github.dunwu.config.DunwuSchedulerProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "dunwu.scheduler.quartz-config-location",
+      "type": "java.lang.String",
+      "description": "quartz.properties 配置文件路径",
+      "sourceType": "io.github.dunwu.config.DunwuSchedulerProperties",
+      "defaultValue": "/quartz.properties"
+    },
+    {
+      "name": "dunwu.scheduler.scan-packages",
+      "type": "java.util.Collection<java.lang.String>",
+      "description": "调度任务执行句柄（JobHandler）扫描路径",
+      "sourceType": "io.github.dunwu.config.DunwuSchedulerProperties",
+      "defaultValue": []
+    }
+  ],
+  "hints": []
+}

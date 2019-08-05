@@ -1,12 +1,10 @@
 package io.github.dunwu.core;
 
+import io.github.dunwu.util.text.MoreStringUtil;
 import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +18,7 @@ public class BaseResult implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 处理结果，默认为处理成功
+     * 响应结果
      */
     protected Boolean success;
 
@@ -30,37 +28,39 @@ public class BaseResult implements Serializable {
     protected String code;
 
     /**
-     * 错误描述。
+     * 响应信息
      */
-    protected List<String> messages = new LinkedList<>();
+    protected String message;
 
     public BaseResult() { }
 
     public BaseResult(IAppCode appCode) {
-        if (IAppCode.SUCCESS_VALUE.equals(appCode.code())) {
-            this.success = true;
-        } else {
-            this.success = false;
-        }
+        this.success = IAppCode.SUCCESS_VALUE.equals(appCode.code());
         this.code = appCode.code();
-        this.messages.addAll(Collections.singletonList(appCode.message()));
+        this.message = appCode.message();
     }
 
     public BaseResult(BaseResult result) {
         this.success = result.getSuccess();
         this.code = result.getCode();
-        this.messages.addAll(result.getMessages());
+        this.message = result.getMessage();
     }
 
-    public BaseResult(Boolean success, String code, String... messages) {
+    public BaseResult(Boolean success, String code, String message) {
         this.success = success;
         this.code = code;
-        this.messages.addAll(Arrays.asList(messages));
+        this.message = message;
+    }
+
+    public BaseResult(Boolean success, String code, String message, Object... params) {
+        this.success = success;
+        this.code = code;
+        this.message = String.format(message, params);
     }
 
     public BaseResult(Boolean success, String code, List<String> messages) {
         this.success = success;
         this.code = code;
-        this.messages.addAll(messages);
+        this.message = MoreStringUtil.mergeInLines(messages);
     }
 }

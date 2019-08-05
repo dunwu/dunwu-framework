@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-util</artifactId>
@@ -31,6 +31,10 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
     </dependency>
     <!-- UTILS END -->
 
@@ -101,6 +105,17 @@
     </dependency>
     <!-- TEST END -->
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-dependencies</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>

@@ -1,0 +1,40 @@
+{
+  "groups": [
+    {
+      "name": "dunwu.web",
+      "type": "io.github.dunwu.config.DunwuWebProperties",
+      "sourceType": "io.github.dunwu.config.DunwuWebProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "dunwu.web.enabled",
+      "type": "java.lang.Boolean",
+      "description": "dunwu-web 自动化配置总开关",
+      "sourceType": "io.github.dunwu.config.DunwuWebProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "dunwu.web.http-debug-enable",
+      "type": "java.lang.Boolean",
+      "description": "Http 请求应答debug开关",
+      "sourceType": "io.github.dunwu.config.DunwuWebProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "dunwu.web.cors-enable",
+      "type": "java.lang.Boolean",
+      "description": "放开跨域限制开关",
+      "sourceType": "io.github.dunwu.config.DunwuWebProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "dunwu.web.format-enable",
+      "type": "java.lang.Boolean",
+      "description": "http 数据自动格式化开关",
+      "sourceType": "io.github.dunwu.config.DunwuWebProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

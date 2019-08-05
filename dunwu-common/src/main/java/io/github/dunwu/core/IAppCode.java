@@ -9,5 +9,5 @@ public interface IAppCode {
 
     String code();
     String message();
-    String detail();
+    String template();
 }

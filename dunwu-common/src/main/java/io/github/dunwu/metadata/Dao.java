@@ -1,4 +1,4 @@
-package io.github.dunwu.meta;
+package io.github.dunwu.metadata;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;

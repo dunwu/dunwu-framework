@@ -1,42 +1,27 @@
 package io.github.dunwu.util.text;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.base.Utf8;
 import io.github.dunwu.util.base.annotation.Nullable;
 import io.github.dunwu.util.collection.ListUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
-import com.google.common.base.Utf8;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 尽量使用Common Lang StringUtils, 基本覆盖了所有类库的StringUtils
- * 本类仅补充少量额外方法, 尤其是针对char的运算
- * 1. split char/chars
- * 2. 针对char的replace first/last, startWith,endWith 等
+ * 尽量使用Common Lang StringUtils, 基本覆盖了所有类库的StringUtils 本类仅补充少量额外方法, 尤其是针对char的运算 1. split char/chars 2. 针对char的replace
+ * first/last, startWith,endWith 等
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
-public class MoreStringUtil {
-
-    /////////// split char 相关 ////////
+public class MoreStringUtil extends StringUtils {
 
     /**
-     * 高性能的Split，针对char的分隔符号，比JDK String自带的高效.
-     * copy from Commons Lange 3.5 StringUtils 并做优化
-     * @see #split(String, char, int)
-     */
-    public static List<String> split(@Nullable final String str, final char separatorChar) {
-        return split(str, separatorChar, 10);
-    }
-
-    /**
-     * 高性能的Split，针对char的分隔符号，比JDK String自带的高效.
-     * copy from Commons Lange 3.5 StringUtils, 做如下优化:
-     * 1. 最后不做数组转换，直接返回List.
-     * 2. 可设定List初始大小.
-     * 3. preserveAllTokens 取默认值false
+     * 高性能的Split，针对char的分隔符号，比JDK String自带的高效. copy from Commons Lange 3.5 StringUtils, 做如下优化: 1. 最后不做数组转换，直接返回List. 2.
+     * 可设定List初始大小. 3. preserveAllTokens 取默认值false
+     *
      * @param expectParts 预估分割后的List大小，初始化数据更精准
      * @return 如果为null返回null, 如果为""返回空数组
      */
@@ -73,8 +58,8 @@ public class MoreStringUtil {
     }
 
     /**
-     * 使用多个可选的char作为分割符, 还可以设置omitEmptyStrings,trimResults等配置
-     * 设置后的Splitter进行重用，不要每次创建
+     * 使用多个可选的char作为分割符, 还可以设置omitEmptyStrings,trimResults等配置 设置后的Splitter进行重用，不要每次创建
+     *
      * @param separatorChars 比如Unix/Windows的路径分割符 "/\\"
      * @see com.google.common.base.Splitter
      */
@@ -118,8 +103,7 @@ public class MoreStringUtil {
     }
 
     /**
-     * 判断字符串是否以字母开头
-     * 如果字符串为Null或空，返回false
+     * 判断字符串是否以字母开头 如果字符串为Null或空，返回false
      */
     public static boolean startWith(@Nullable CharSequence s, char c) {
         if (StringUtils.isEmpty(s)) {
@@ -129,8 +113,7 @@ public class MoreStringUtil {
     }
 
     /**
-     * 判断字符串是否以字母结尾
-     * 如果字符串为Null或空，返回false
+     * 判断字符串是否以字母结尾 如果字符串为Null或空，返回false
      */
     public static boolean endWith(@Nullable CharSequence s, char c) {
         if (StringUtils.isEmpty(s)) {
@@ -153,6 +136,7 @@ public class MoreStringUtil {
 
     /**
      * 计算字符串被UTF8编码后的字节数 via guava
+     *
      * @see Utf8#encodedLength(CharSequence)
      */
     public static int utf8EncodedLength(@Nullable CharSequence sequence) {
@@ -160,5 +144,22 @@ public class MoreStringUtil {
             return 0;
         }
         return Utf8.encodedLength(sequence);
+    }
+
+    public static String merge(List<String> strs) {
+        StringBuilder sb = new StringBuilder();
+        for (CharSequence s : strs) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    public static String mergeInLines(List<String> strs) {
+        StringBuilder sb = new StringBuilder();
+        for (CharSequence s : strs) {
+            sb.append(s)
+              .append("\n");
+        }
+        return sb.toString();
     }
 }

@@ -43,40 +43,45 @@ public class ResultUtil {
      * 返回 BaseResult
      *
      * @param appCode IAppCode（系统应答状态码）
-     * @param messages 补充信息数组
+     * @param params 补充信息数组
      * @return Result
      */
-    /**
-     * 返回 BaseResult
-     *
-     * @param appCode 应用状态码 {@link io.github.dunwu.core.IAppCode}
-     * @param messages 错误信息 String... messages
-     * @return BaseResult
-     */
-    public static BaseResult failBaseResult(IAppCode appCode, String... messages) {
-        return new BaseResult(false, appCode.code(), messages);
+    public static BaseResult failBaseResult(IAppCode appCode, Object... params) {
+        return new BaseResult(false, appCode.code(), appCode.template(), params);
     }
 
     /**
      * 返回 BaseResult
      *
-     * @param appCode 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param messages 错误信息 List<String>
      * @return BaseResult
      */
-    public static BaseResult failBaseResult(IAppCode appCode, List<String> messages) {
-        return new BaseResult(false, appCode.code(), messages);
+    public static BaseResult failBaseResult(String code, List<String> messages) {
+        return new BaseResult(false, code, messages);
     }
 
     /**
      * 根据参数返回失败 Result
      *
-     * @param code 错误码
-     * @param messages 错误信息
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param message 错误信息
      * @return Result
      */
-    public static BaseResult failBaseResult(String code, String... messages) {
-        return new BaseResult(false, code, messages);
+    public static BaseResult failBaseResult(String code, String message) {
+        return new BaseResult(false, code, message);
+    }
+
+    /**
+     * 根据参数返回失败 Result
+     *
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param template 错误信息模板
+     * @param params 错误信息参数
+     * @return Result
+     */
+    public static BaseResult failBaseResult(String code, String template, Object... params) {
+        return new BaseResult(false, code, template, params);
     }
 
     /**
@@ -103,7 +108,7 @@ public class ResultUtil {
     /**
      * 根据枚举返回失败 DataResult
      *
-     * @param appCode IAppCode（系统应答状态码）
+     * @param appCode 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param <T> 数据类型
      * @return BaseResult
      */
@@ -112,26 +117,38 @@ public class ResultUtil {
     }
 
     /**
+     * 根据枚举返回失败 DataResult
+     *
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param message 信息数组
+     * @param <T> 数据类型
+     * @return DataResult
+     */
+    public static <T> DataResult<T> failDataResult(String code, String message) {
+        return new DataResult<>(null, false, code, message);
+    }
+
+    /**
      * 根据参数返回失败 DataResult
      *
-     * @param code 错误码
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param messages 错误信息
      * @return BaseResult
      */
-    public static <T> DataResult<T> failDataResult(String code, String... messages) {
+    public static <T> DataResult<T> failDataResult(String code, List<String> messages) {
         return new DataResult<>(null, false, code, messages);
     }
 
     /**
-     * 根据枚举返回失败 DataResult
+     * 根据参数返回失败 Result
      *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param messages 信息数组
-     * @param <T> 数据类型
-     * @return DataResult
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param template 错误信息模板
+     * @param params 错误信息参数
+     * @return Result
      */
-    public static <T> DataResult<T> failDataResult(IAppCode appCode, String... messages) {
-        return new DataResult<>(null, false, appCode.code(), messages);
+    public static <T> DataResult<T> failDataResult(String code, String template, Object... params) {
+        return new DataResult<>(null, false, code, template, params);
     }
 
     /**
@@ -167,27 +184,40 @@ public class ResultUtil {
     }
 
     /**
+     * 根据枚举返回失败 DataResult
+     *
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param message 信息数组
+     * @param <T> 数据类型
+     * @return DataResult
+     */
+    public static <T> DataListResult<T> failDataListResult(String code, String message) {
+        return new DataListResult<>(null, false, code, message);
+    }
+
+    /**
      * 根据参数返回失败 DataListResult
      *
-     * @param code 错误码
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param messages 错误信息
      * @param <T> 数据类型
      * @return DataListResult
      */
-    public static <T> DataListResult<T> failDataListResult(String code, String... messages) {
+    public static <T> DataListResult<T> failDataListResult(String code, List<String> messages) {
         return new DataListResult<>(null, false, code, messages);
     }
 
     /**
      * 根据枚举返回失败 DataListResult
      *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param messages 信息数组
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param template 信息模板
+     * @param params 信息参数
      * @param <T> 数据类型
      * @return DataListResult
      */
-    public static <T> DataListResult<T> failDataListResult(IAppCode appCode, String... messages) {
-        return new DataListResult<>(null, false, appCode.code(), messages);
+    public static <T> DataListResult<T> failDataListResult(String code, String template, Object... params) {
+        return new DataListResult<>(null, false, code, template, params);
     }
 
     /**
@@ -215,7 +245,7 @@ public class ResultUtil {
     /**
      * 根据枚举返回失败 PageResult
      *
-     * @param appCode IAppCode（系统应答状态码）
+     * @param appCode 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param <T> 数据类型
      * @return PageResult
      */
@@ -224,26 +254,38 @@ public class ResultUtil {
     }
 
     /**
+     * 根据枚举返回失败 DataResult
+     *
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param message 信息数组
+     * @param <T> 数据类型
+     * @return DataResult
+     */
+    public static <T> PageResult<T> failPageResult(String code, String message) {
+        return new PageResult<>(null, false, code, message);
+    }
+
+    /**
      * 根据参数返回失败 PageResult
      *
-     * @param code 错误码
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
      * @param messages 错误信息
      * @param <T> 数据类型
      * @return PageResult
      */
-    public static <T> PageResult<T> failPageResult(String code, String... messages) {
+    public static <T> PageResult<T> failPageResult(String code, List<String> messages) {
         return new PageResult<>(null, null, false, code, messages);
     }
 
     /**
      * 根据枚举返回失败 PageResult
      *
-     * @param appCode IAppCode（系统应答状态码）
-     * @param messages 信息数组
-     * @param <T> 数据类型
+     * @param code 错误码 {@link io.github.dunwu.core.IAppCode}
+     * @param template 信息模板
+     * @param params 信息参数
      * @return PageResult
      */
-    public static <T> PageResult<T> failPageResult(IAppCode appCode, String... messages) {
-        return new PageResult<>(null, null, false, appCode.code(), messages);
+    public static <T> PageResult<T> failPageResult(String code, String template, Object... params) {
+        return new PageResult<>(null, null, false, code, template, params);
     }
 }

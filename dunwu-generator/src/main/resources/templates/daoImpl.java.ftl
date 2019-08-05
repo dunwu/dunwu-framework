@@ -4,7 +4,7 @@ import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import ${superServiceImplClassPackage};
-import io.github.dunwu.meta.Dao;
+import io.github.dunwu.metadata.Dao;
 
 /**
  * <p>

@@ -36,8 +36,13 @@ public class DataListResult<T> extends BaseResult {
         this.data = null;
     }
 
-    public DataListResult(Collection<T> data, Boolean success, String code, String... messages) {
-        super(success, code, messages);
+    public DataListResult(Collection<T> data, Boolean success, String code, String message) {
+        super(success, code, message);
+        this.data = data;
+    }
+
+    public DataListResult(Collection<T> data, Boolean success, String code, String message, Object... params) {
+        super(success, code, message, params);
         this.data = data;
     }
 

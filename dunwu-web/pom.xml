@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-web</artifactId>
@@ -97,6 +97,17 @@
     </dependency>
     <!-- TEST END -->
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-dependencies</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>

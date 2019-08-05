@@ -3,7 +3,6 @@ package io.github.dunwu.config;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * 数据层服务配置
@@ -15,6 +14,6 @@ import org.springframework.stereotype.Component;
 @ToString
 @ConfigurationProperties(prefix = "dunwu.data")
 public class DunwuDataProperties {
-    private Boolean enabled;
-    private String mapperPackage;
+    private Boolean enabled = true;
+    private Boolean blockAttackEnabled = true;
 }

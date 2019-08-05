@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>0.4.3</version>
+  <version>0.4.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -16,6 +16,7 @@
     <module>dunwu-data</module>
     <module>dunwu-web</module>
     <module>dunwu-generator</module>
+    <module>dunwu-scheduler</module>
   </modules>
 
   <properties>
@@ -29,18 +30,6 @@
     <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-dependencies</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018</inceptionYear>

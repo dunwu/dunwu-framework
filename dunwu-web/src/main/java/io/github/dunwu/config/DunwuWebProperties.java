@@ -16,6 +16,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DunwuWebProperties {
 
     /**
+     * 总开关
+     */
+    private Boolean enabled = true;
+
+    /**
      * 打印 Http 请求应答 Debug 信息开关
      */
     private Boolean httpDebugEnable = true;

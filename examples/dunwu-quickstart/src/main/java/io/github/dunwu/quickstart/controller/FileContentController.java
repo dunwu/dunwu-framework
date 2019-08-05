@@ -1,11 +1,16 @@
 package io.github.dunwu.quickstart.controller;
 
+import io.github.dunwu.core.BaseResult;
+import io.github.dunwu.core.DataListResult;
+import io.github.dunwu.core.DataResult;
+import io.github.dunwu.core.PageResult;
 import io.github.dunwu.quickstart.dao.FileContentDao;
 import io.github.dunwu.quickstart.entity.FileContent;
 import io.github.dunwu.web.controller.CrudController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -50,7 +55,7 @@ public class FileContentController extends CrudController<FileContent> {
     @PostMapping("save")
     @ApiOperation(value = "插入一条 FileContent 记录（选择字段）")
     public BaseResult save(FileContent entity) {
-        return super.save(fileContent);
+        return super.save(entity);
     }
 
     @Override

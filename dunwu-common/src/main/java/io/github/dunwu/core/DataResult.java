@@ -1,5 +1,6 @@
 package io.github.dunwu.core;
 
+import io.github.dunwu.util.text.MoreStringUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,9 +36,13 @@ public class DataResult<T> extends BaseResult {
         this.data = null;
     }
 
-    public DataResult(T data, Boolean success, String code, String... messages) {
-        super(success, code, messages);
+    public DataResult(T data, Boolean success, String code, String message) {
+        super(success, code, message);
         this.data = data;
+    }
+
+    public DataResult(T data, Boolean success, String code, String message, Object... params) {
+        super(success, code, message, params);
     }
 
     public DataResult(T data, Boolean success, String code, List<String> messages) {

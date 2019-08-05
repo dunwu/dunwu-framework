@@ -1,10 +1,10 @@
 package io.github.dunwu.quickstart.dao.impl;
 
+import io.github.dunwu.data.dao.BaseDao;
+import io.github.dunwu.metadata.Dao;
+import io.github.dunwu.quickstart.dao.FileContentDao;
 import io.github.dunwu.quickstart.entity.FileContent;
 import io.github.dunwu.quickstart.mapper.FileContentMapper;
-import io.github.dunwu.quickstart.dao.FileContentDao;
-import io.github.dunwu.data.dao.BaseDao;
-import io.github.dunwu.meta.Dao;
 
 /**
  * <p>

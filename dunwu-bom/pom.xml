@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-bom</artifactId>
@@ -38,6 +38,11 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-scheduler</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

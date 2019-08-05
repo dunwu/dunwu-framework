@@ -13,17 +13,13 @@ public class AppException extends RuntimeException {
     private BaseResult result;
 
     public AppException(BaseResult result) {
-        this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessages()
-                                                                                  .toArray(new String[] {}));
+        this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessage());
     }
 
     public AppException(IAppCode appCode) {
         this.result = ResultUtil.failBaseResult(appCode);
     }
 
-    public AppException(IAppCode appCode, String... messages) {
-        this.result = ResultUtil.failBaseResult(appCode, messages);
-    }
 
     /**
      * 覆盖原方法，解决抓取堆性能开销

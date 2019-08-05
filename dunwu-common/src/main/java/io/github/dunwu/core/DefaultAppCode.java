@@ -26,6 +26,7 @@ public enum DefaultAppCode implements IAppCode {
     ERROR_IO("105", "IO 错误", "IO 错误"),
     ERROR_CONCURRENCE("106", "并发错误", "并发错误"),
     ERROR_AUTH("107", "认证错误", "认证错误"),
+    ERROR_SCHEDULER("108", "调度错误", "调度错误，调用 group=%, job=% 失败"),
 
     LIMIT_PERMISSIONS("201", "权限限制", "没有权限执行 (%s)"),
     LIMIT_IP("202", "IP 限制，不能请求该资源", "IP = (%s) 被限制，不能请求该资源"),
@@ -57,12 +58,12 @@ public enum DefaultAppCode implements IAppCode {
 
     private final String code;
     private final String message;
-    private final String detail;
+    private final String template;
 
-    DefaultAppCode(String code, String msg, String detail) {
+    DefaultAppCode(String code, String msg, String template) {
         this.code = code;
         this.message = msg;
-        this.detail = detail;
+        this.template = template;
     }
 
     @Override
@@ -76,7 +77,7 @@ public enum DefaultAppCode implements IAppCode {
     }
 
     @Override
-    public String detail() {
-        return detail;
+    public String template() {
+        return template;
     }
 }
