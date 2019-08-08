@@ -34,10 +34,10 @@ public class BaseResult implements Serializable {
 
     public BaseResult() { }
 
-    public BaseResult(IAppCode appCode) {
-        this.success = IAppCode.SUCCESS_VALUE.equals(appCode.code());
-        this.code = appCode.code();
-        this.message = appCode.message();
+    public BaseResult(ErrorCode appCode) {
+        this.success = ErrorCode.SUCCESS_CODE.equals(appCode.getCode());
+        this.code = appCode.getCode();
+        this.message = appCode.getMessage();
     }
 
     public BaseResult(BaseResult result) {

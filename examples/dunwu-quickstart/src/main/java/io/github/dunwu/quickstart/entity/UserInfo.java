@@ -13,15 +13,18 @@ import lombok.experimental.Accessors;
  * 用户信息表
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-07-24
+ * @since 2019-08-08
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@ApiModel(value="UserInfo对象", description="用户信息表")
+@ApiModel(value = "UserInfo对象", description = "用户信息表")
 public class UserInfo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "版本号", example = "0")
+    private Integer version;
 
     @ApiModelProperty(value = "姓名")
     private String name;
@@ -56,9 +59,6 @@ public class UserInfo extends BaseEntity {
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
-    @ApiModelProperty(value = "逻辑删除标记", example = "0")
-    private Integer deleted;
-
     @ApiModelProperty(value = "创建者")
     private String createUser;
 
@@ -70,6 +70,9 @@ public class UserInfo extends BaseEntity {
 
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
+
+    @ApiModelProperty(value = "逻辑删除标记")
+    private Boolean deleted;
 
 
 }

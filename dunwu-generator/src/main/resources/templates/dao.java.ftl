@@ -1,7 +1,7 @@
-package ${package.Service};
+package ${package.Dao};
 
 import ${package.Entity}.${entity};
-import ${superServiceClassPackage};
+import ${superDaoClassPackage};
 
 /**
  * <p>
@@ -12,9 +12,9 @@ import ${superServiceClassPackage};
  * @since ${date}
  */
 <#if kotlin>
-interface ${table.serviceName} : ${superServiceClass}<${entity}>
+interface ${table.daoName} : ${superDaoClass}<${entity}>
 <#else>
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+public interface ${table.daoName} extends ${superDaoClass}<${entity}> {
 
 }
 </#if>

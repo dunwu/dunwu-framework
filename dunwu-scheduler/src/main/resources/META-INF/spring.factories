@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = io.github.dunwu.config.DunwuSchedulerAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = io.github.dunwu.scheduler.config.DunwuSchedulerAutoConfiguration

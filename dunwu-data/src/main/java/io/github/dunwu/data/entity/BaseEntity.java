@@ -1,5 +1,7 @@
 package io.github.dunwu.data.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,6 +19,7 @@ public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.ID_WORKER_STR)
     @ApiModelProperty(value = "ID", example = "0")
     protected String id;
 }

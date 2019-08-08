@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.*;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.ibatis.binding.MapperMethod;
@@ -88,13 +89,6 @@ public class BaseDao<M extends BaseMapper<T>, T> implements IDao<T> {
         return retBool(baseMapper.insert(entity));
     }
 
-    /**
-     * 批量插入
-     *
-     * @param entityList ignore
-     * @param batchSize ignore
-     * @return ignore
-     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveBatch(Collection<T> entityList, int batchSize) {
@@ -113,12 +107,6 @@ public class BaseDao<M extends BaseMapper<T>, T> implements IDao<T> {
         return true;
     }
 
-    /**
-     * TableId 注解存在更新记录，否插入一条记录
-     *
-     * @param entity 实体对象
-     * @return boolean
-     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveOrUpdate(T entity) {

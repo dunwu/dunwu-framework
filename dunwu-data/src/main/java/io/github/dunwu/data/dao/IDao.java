@@ -1,13 +1,13 @@
 package io.github.dunwu.data.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.additional.query.ChainQuery;
 import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.ChainUpdate;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +23,14 @@ import java.util.function.Function;
  * @since 2019-07-24
  */
 public interface IDao<T> {
+
+    /**
+     * 获取对应 entity 的 BaseMapper
+     *
+     * @return BaseMapper
+     */
+    BaseMapper<T> getBaseMapper();
+
     /**
      * 插入一条记录（选择字段，策略插入）
      *
@@ -44,7 +52,7 @@ public interface IDao<T> {
      * 插入（批量）
      *
      * @param entityList 实体对象集合
-     * @param batchSize  插入批次数量
+     * @param batchSize 插入批次数量
      */
     boolean saveBatch(Collection<T> entityList, int batchSize);
 
@@ -62,7 +70,7 @@ public interface IDao<T> {
      * 批量修改插入
      *
      * @param entityList 实体对象集合
-     * @param batchSize  每次的数量
+     * @param batchSize 每次的数量
      */
     boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 
@@ -88,6 +96,17 @@ public interface IDao<T> {
     boolean remove(Wrapper<T> queryWrapper);
 
     /**
+     * 根据 entity 条件，删除记录
+     *
+     * @param entity 待删除实体
+     */
+    default boolean remove(T entity) {
+        UpdateWrapper<T> updateWrapper = Wrappers.update(entity);
+        return remove(updateWrapper);
+    }
+
+
+    /**
      * 删除（根据ID 批量删除）
      *
      * @param idList 主键ID列表
@@ -104,10 +123,15 @@ public interface IDao<T> {
     /**
      * 根据 whereEntity 条件，更新记录
      *
-     * @param entity        实体对象
+     * @param entity 实体对象
      * @param updateWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper}
      */
     boolean update(T entity, Wrapper<T> updateWrapper);
+
+    default boolean update(T entity, T origin) {
+        UpdateWrapper<T> updateWrapper = Wrappers.update(origin);
+        return update(entity, updateWrapper);
+    }
 
     /**
      * 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
@@ -132,7 +156,7 @@ public interface IDao<T> {
      * 根据ID 批量更新
      *
      * @param entityList 实体对象集合
-     * @param batchSize  更新批次数量
+     * @param batchSize 更新批次数量
      */
     boolean updateBatchById(Collection<T> entityList, int batchSize);
 
@@ -164,6 +188,15 @@ public interface IDao<T> {
      */
     Collection<T> listByMap(Map<String, Object> columnMap);
 
+
+    /**
+     * 根据 Wrapper，查询一条记录
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     * @param throwEx 有多个 result 是否抛出异常
+     */
+    T getOne(Wrapper<T> queryWrapper, boolean throwEx);
+
     /**
      * 根据 Wrapper，查询一条记录 <br/>
      * <p>结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</p>
@@ -175,12 +208,27 @@ public interface IDao<T> {
     }
 
     /**
-     * 根据 Wrapper，查询一条记录
+     * 查询一条记录
      *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     * @param throwEx      有多个 result 是否抛出异常
+     * @param entity 查询实体
+     * @param throwEx 有多个 result 是否抛出异常
      */
-    T getOne(Wrapper<T> queryWrapper, boolean throwEx);
+    default T getOne(T entity, boolean throwEx) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return getOne(queryWrapper, throwEx);
+    }
+
+    /**
+     * 根据 entity，查询一条记录 <br/>
+     * <p>结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</p>
+     *
+     * @param entity 实体对象
+     */
+    default T getOne(T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return getOne(queryWrapper);
+    }
+
 
     /**
      * 根据 Wrapper，查询一条记录
@@ -190,12 +238,35 @@ public interface IDao<T> {
     Map<String, Object> getMap(Wrapper<T> queryWrapper);
 
     /**
+     * 查询一条记录
+     *
+     * @param entity 查询实体
+     */
+    default Map<String, Object> getMap(T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return getMap(queryWrapper);
+    }
+
+
+    /**
      * 根据 Wrapper，查询一条记录
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     * @param mapper       转换函数
+     * @param mapper 转换函数
      */
     <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+
+    /**
+     * 查询一条记录
+     *
+     * @param entity 查询实体
+     * @param mapper 转换函数
+     */
+    default <V> V getObj(T entity, Function<? super Object, V> mapper) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return getObj(queryWrapper, mapper);
+    }
+
 
     /**
      * 根据 Wrapper 条件，查询总记录数
@@ -214,6 +285,17 @@ public interface IDao<T> {
     }
 
     /**
+     * 根据 Wrapper 条件，查询总记录数
+     *
+     * @param entity 查询实体
+     */
+    default int count(T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return count(queryWrapper);
+    }
+
+
+    /**
      * 查询列表
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
@@ -230,9 +312,20 @@ public interface IDao<T> {
     }
 
     /**
+     * 查询列表
+     *
+     * @param entity 查询实体
+     */
+    default List<T> list(T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return list(queryWrapper);
+    }
+
+
+    /**
      * 翻页查询
      *
-     * @param page         翻页对象
+     * @param page 翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
     IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
@@ -246,6 +339,18 @@ public interface IDao<T> {
     default IPage<T> page(IPage<T> page) {
         return page(page, Wrappers.emptyWrapper());
     }
+
+    /**
+     * 翻页查询
+     *
+     * @param page 翻页对象
+     * @param entity 查询实体
+     */
+    default IPage<T> page(IPage<T> page, T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return page(page, queryWrapper);
+    }
+
 
     /**
      * 查询列表
@@ -262,6 +367,25 @@ public interface IDao<T> {
     default List<Map<String, Object>> listMaps() {
         return listMaps(Wrappers.emptyWrapper());
     }
+
+    /**
+     * 查询列表
+     *
+     * @param entity 查询实体对象
+     */
+    default List<Map<String, Object>> listMaps(T entity) {
+        UpdateWrapper<T> updateWrapper = Wrappers.update(entity);
+        return listMaps(updateWrapper);
+    }
+
+
+    /**
+     * 根据 Wrapper 条件，查询全部记录
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     * @param mapper 转换函数
+     */
+    <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
 
     /**
      * 查询全部记录
@@ -289,17 +413,20 @@ public interface IDao<T> {
     }
 
     /**
-     * 根据 Wrapper 条件，查询全部记录
+     * 查询全部记录
      *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     * @param mapper       转换函数
+     * @param entity 查询实体对象
      */
-    <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+    default List<Object> listObjs(T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return listObjs(queryWrapper);
+    }
+
 
     /**
      * 翻页查询
      *
-     * @param page         翻页对象
+     * @param page 翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
     IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
@@ -315,28 +442,31 @@ public interface IDao<T> {
     }
 
     /**
-     * 获取对应 entity 的 BaseMapper
+     * 翻页查询
      *
-     * @return BaseMapper
+     * @param page 翻页对象
+     * @param entity 查询实体
      */
-    BaseMapper<T> getBaseMapper();
+    default IPage<Map<String, Object>> pageMaps(IPage<T> page, T entity) {
+        QueryWrapper<T> queryWrapper = Wrappers.query(entity);
+        return pageMaps(page, queryWrapper);
+    }
 
-    /**
-     * 以下的方法使用介绍:
-     *
-     * 一. 名称介绍
-     * 1. 方法名带有 query 的为对数据的查询操作, 方法名带有 update 的为对数据的修改操作
-     * 2. 方法名带有 lambda 的为内部方法入参 column 支持函数式的
-     *
-     * 二. 支持介绍
-     * 1. 方法名带有 query 的支持以 {@link ChainQuery} 内部的方法名结尾进行数据查询操作
-     * 2. 方法名带有 update 的支持以 {@link ChainUpdate} 内部的方法名为结尾进行数据修改操作
-     *
-     * 三. 使用示例,只用不带 lambda 的方法各展示一个例子,其他类推
-     * 1. 根据条件获取一条数据: `query().eq("column", value).one()`
-     * 2. 根据条件删除一条数据: `update().eq("column", value).remove()`
-     *
-     */
+    /*
+        以下的方法使用介绍:
+
+        一. 名称介绍
+        1. 方法名带有 query 的为对数据的查询操作, 方法名带有 update 的为对数据的修改操作
+        2. 方法名带有 lambda 的为内部方法入参 column 支持函数式的
+
+        二. 支持介绍
+        1. 方法名带有 query 的支持以 {@link ChainQuery} 内部的方法名结尾进行数据查询操作
+        2. 方法名带有 update 的支持以 {@link ChainUpdate} 内部的方法名为结尾进行数据修改操作
+
+        三. 使用示例,只用不带 lambda 的方法各展示一个例子,其他类推
+        1. 根据条件获取一条数据: `query().eq("column", value).one()`
+        2. 根据条件删除一条数据: `update().eq("column", value).remove()`
+    */
 
     /**
      * 链式查询 普通

@@ -18,7 +18,7 @@ package io.github.dunwu.web.resolver;
 
 import io.github.dunwu.core.AppException;
 import io.github.dunwu.core.BaseResult;
-import io.github.dunwu.core.DefaultAppCode;
+import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.util.mapper.JsonMapper;
 import org.slf4j.Logger;
@@ -87,7 +87,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
             AppException exception = (AppException) throwable;
             code = exception.getResult().getCode();
         } else {
-            code = DefaultAppCode.FAIL.code();
+            code = AppCode.FAIL.getCode();
         }
         Locale locale = (Locale) request.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
         String message;

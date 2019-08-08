@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.4-SNAPSHOT</version>
+    <version>0.4.4</version>
   </parent>
 
   <artifactId>dunwu-scheduler</artifactId>
@@ -20,20 +20,22 @@
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-data</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-web</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-generator</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
+
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-annotations</artifactId>
@@ -44,7 +46,7 @@
     <dependencies>
       <dependency>
         <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-dependencies</artifactId>
+        <artifactId>dunwu-bom</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>

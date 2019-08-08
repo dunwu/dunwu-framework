@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.4-SNAPSHOT</version>
+    <version>0.4.4</version>
   </parent>
 
   <artifactId>dunwu-generator</artifactId>
@@ -48,9 +48,22 @@
     <!-- DATA BEGIN -->
     <dependency>
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-generator</artifactId>
+      <artifactId>mybatis-plus-core</artifactId>
     </dependency>
     <!-- DATA BEGIN -->
+
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.7</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.ibeetl</groupId>
+      <artifactId>beetl</artifactId>
+      <version>3.0.10.RELEASE</version>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
@@ -63,7 +76,7 @@
       </dependency>
       <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-generator</artifactId>
+        <artifactId>mybatis-plus-core</artifactId>
         <version>${mybatis-plus.version}</version>
       </dependency>
       <dependency>

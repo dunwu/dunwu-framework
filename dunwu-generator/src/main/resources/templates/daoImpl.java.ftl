@@ -1,9 +1,9 @@
-package ${package.ServiceImpl};
+package ${package.DaoImpl};
 
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
-import ${package.Service}.${table.serviceName};
-import ${superServiceImplClassPackage};
+import ${package.Dao}.${table.daoName};
+import ${superDaoImplClassPackage};
 import io.github.dunwu.metadata.Dao;
 
 /**
@@ -16,11 +16,11 @@ import io.github.dunwu.metadata.Dao;
  */
 @Dao
 <#if kotlin>
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+open class ${table.daoImplName} : ${superDaoImplClass}<${table.mapperName}, ${entity}>(), ${table.daoName} {
 
 }
 <#else>
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+public class ${table.daoImplName} extends ${superDaoImplClass}<${table.mapperName}, ${entity}> implements ${table.daoName} {
 
 }
 </#if>

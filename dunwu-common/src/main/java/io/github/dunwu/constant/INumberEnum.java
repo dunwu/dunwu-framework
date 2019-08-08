@@ -6,7 +6,7 @@ package io.github.dunwu.constant;
  */
 public interface INumberEnum {
 
-    Integer getKey();
+    int getKey();
 
     String getValue();
 }

@@ -16,10 +16,9 @@ public class AppException extends RuntimeException {
         this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessage());
     }
 
-    public AppException(IAppCode appCode) {
+    public AppException(ErrorCode appCode) {
         this.result = ResultUtil.failBaseResult(appCode);
     }
-
 
     /**
      * 覆盖原方法，解决抓取堆性能开销

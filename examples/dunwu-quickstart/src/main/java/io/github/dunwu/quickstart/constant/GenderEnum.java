@@ -1,31 +1,32 @@
 package io.github.dunwu.quickstart.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import io.github.dunwu.constant.INumberEnum;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-27
  */
-public enum GenderEnum {
-    MALE(0, "男"), FEMALE(2, "女");
+public enum GenderEnum implements INumberEnum {
+    MALE(0, "男"),
+    FEMALE(1, "女");
 
-    GenderEnum(int code, String desc) {
-        this.code = code;
-        this.desc = desc;
+    GenderEnum(int key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
-    /**
-     * 标记数据库存的值是code
-     */
     @EnumValue
-    private final int code;
-    private final String desc;
+    private final int key;
+    private final String value;
 
-    public int getCode() {
-        return code;
+    @Override
+    public int getKey() {
+        return key;
     }
 
-    public String getDesc() {
-        return desc;
+    @Override
+    public String getValue() {
+        return value;
     }
 }

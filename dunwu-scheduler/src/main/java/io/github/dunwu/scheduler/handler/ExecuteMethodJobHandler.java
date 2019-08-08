@@ -6,6 +6,7 @@ import io.github.dunwu.web.util.SpringUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +31,21 @@ public class ExecuteMethodJobHandler extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext context) {
 
         JobDataMap jobDataMap = context.getMergedJobDataMap();
+        String beanName = (String) jobDataMap.get(SchedulerConstant.BEAN_NAME);
         String beanType = (String) jobDataMap.get(SchedulerConstant.BEAN_TYPE);
         String methodName = (String) jobDataMap.get(SchedulerConstant.METHOD_NAME);
         String methodParams = (String) jobDataMap.get(SchedulerConstant.METHOD_PARAMS);
 
         try {
-
-            Class<?> clazz = Class.forName(beanType);
-            Object bean = SpringUtil.getBean(clazz);
+            Object bean;
+            Class<?> clazz;
+            if (StringUtils.isNotBlank(beanName)) {
+                bean = SpringUtil.getBean(beanName);
+                clazz = bean.getClass();
+            } else {
+                clazz = Class.forName(beanType);
+                bean = SpringUtil.getBean(clazz);
+            }
             Method method = clazz.getMethod(methodName, String.class);
             if (method == null) {
                 log.error("class = {} 中未找到 {} 方法", clazz.getName(), methodName);

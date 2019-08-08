@@ -1,6 +1,6 @@
 package io.github.dunwu.web.interceptor;
 
-import io.github.dunwu.config.DunwuWebSecurityProperties;
+import io.github.dunwu.web.config.DunwuWebSecurityProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

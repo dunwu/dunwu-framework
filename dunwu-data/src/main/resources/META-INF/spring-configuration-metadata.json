@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "dunwu.data",
-      "type": "io.github.dunwu.config.DunwuDataProperties",
-      "sourceType": "io.github.dunwu.config.DunwuDataProperties"
+      "type": "io.github.dunwu.data.config.DunwuDataProperties",
+      "sourceType": "io.github.dunwu.data.config.DunwuDataProperties"
     }
   ],
   "properties": [
@@ -11,14 +11,14 @@
       "name": "dunwu.data.enabled",
       "type": "java.lang.Boolean",
       "description": "dunwu-data 自动化配置总开关",
-      "sourceType": "io.github.dunwu.config.DunwuDataProperties",
+      "sourceType": "io.github.dunwu.data.config.DunwuDataProperties",
       "defaultValue": true
     },
     {
       "name": "dunwu.data.block-attack-enabled",
       "type": "java.lang.Boolean",
       "description": "攻击 SQL 阻断解析器开关",
-      "sourceType": "io.github.dunwu.config.DunwuDataProperties",
+      "sourceType": "io.github.dunwu.data.config.DunwuDataProperties",
       "defaultValue": true
     }
   ],

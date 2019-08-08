@@ -27,7 +27,7 @@ public class DataListResult<T> extends BaseResult {
 
     public DataListResult() {}
 
-    public DataListResult(IAppCode appCode) {
+    public DataListResult(ErrorCode appCode) {
         super(appCode);
     }
 
