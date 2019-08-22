@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.4</version>
+    <version>0.4.5</version>
   </parent>
 
   <artifactId>dunwu-dependencies</artifactId>
@@ -14,7 +14,7 @@
 
   <properties>
     <!-- core version -->
-    <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
 
     <!-- libs version -->
     <commons-codec.version>1.12</commons-codec.version>

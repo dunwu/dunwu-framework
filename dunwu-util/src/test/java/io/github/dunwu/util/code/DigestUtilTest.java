@@ -68,36 +68,36 @@ public class DigestUtilTest {
         @Test
         @DisplayName("HmacMD5 摘要")
         void testHmacMD5() {
-            doDigest(DigestUtil.HmacMD5);
-            doDigestWithBase64(DigestUtil.HmacMD5);
+            doDigest(DigestUtil.HMAC_MD5);
+            doDigestWithBase64(DigestUtil.HMAC_MD5);
         }
 
         @Test
         @DisplayName("HmacSHA1 摘要")
         void testHmacSHA1() {
-            doDigest(DigestUtil.HmacSHA1);
-            doDigestWithBase64(DigestUtil.HmacSHA1);
+            doDigest(DigestUtil.HMAC_SHA1);
+            doDigestWithBase64(DigestUtil.HMAC_SHA1);
         }
 
         @Test
         @DisplayName("HmacSHA256 摘要")
         void testHmacSHA256() {
-            doDigest(DigestUtil.HmacSHA256);
-            doDigestWithBase64(DigestUtil.HmacSHA256);
+            doDigest(DigestUtil.HMAC_SHA256);
+            doDigestWithBase64(DigestUtil.HMAC_SHA256);
         }
 
         @Test
         @DisplayName("HmacSHA384 摘要")
         void testHmacSHA384() {
-            doDigest(DigestUtil.HmacSHA384);
-            doDigestWithBase64(DigestUtil.HmacSHA384);
+            doDigest(DigestUtil.HMAC_SHA384);
+            doDigestWithBase64(DigestUtil.HMAC_SHA384);
         }
 
         @Test
         @DisplayName("HmacSHA512 摘要")
         void testHmacSHA512() {
-            doDigest(DigestUtil.HmacSHA512);
-            doDigestWithBase64(DigestUtil.HmacSHA512);
+            doDigest(DigestUtil.HMAC_SHA512);
+            doDigestWithBase64(DigestUtil.HMAC_SHA512);
         }
     }
 

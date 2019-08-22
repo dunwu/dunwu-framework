@@ -13,8 +13,8 @@ import java.io.File;
 @Disabled
 public class MarkdownFormatHelperTest {
 
-    public static final String SRC_DIR_PATH = "D:\\Codes\\ZP\\Java\\linux-tutorial\\docs";
-    public static final String DEST_DIR_PATH = "D:\\Codes\\ZP\\Java\\linux-tutorial\\docs";
+    public static final String SRC_DIR_PATH = "D:\\Codes\\ZP\\Java\\spring-tutorial\\docs";
+    public static final String DEST_DIR_PATH = "D:\\Codes\\ZP\\Java\\spring-tutorial\\docs";
 
     public static final String SRC_FILE_PATH = "D:\\Codes\\ZP\\Java\\javaweb\\docs\\theory\\load-balance.md";
     public static final String DEST_FILE_PATH = "D:\\Codes\\ZP\\Java\\javaweb\\docs\\theory\\load-balance.md";

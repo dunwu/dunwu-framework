@@ -1,202 +1,231 @@
 package io.github.dunwu.util.code;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
 
 /**
- * 支持HMAC-SHA1消息签名 及 DES/AES对称加密的工具类. 支持Hex与Base64两种编码方式.
+ * 加密/解密工具类
+ * <p>
+ * 支持 AES/DES 两类加密/解密算法族
+ *
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ * @since 2019-06-19
  */
 public class CryptoUtil {
 
-    public static KeyCrypto getAes(String key) {
-        return AesCrypto.getInstace(AesCrypto.AesType.AES, key);
+    public static final String AES_NAME = "AES";
+    public static final String DES_NAME = "DES";
+
+    public static ICrypto getInstace(String type, String key) throws Exception {
+        String str = type.toUpperCase();
+        if (str.contains(AES_NAME)) {
+            return AesCrypto.getInstace(type, key);
+        } else if (str.contains(DES_NAME)) {
+            return DesCrypto.getInstace(type, key);
+        }
+        return null;
     }
 
-    public static KeyCrypto getAesEcbPkcs5Padding(String key) {
-        return AesCrypto.getInstace(AesCrypto.AesType.AES_ECB_PKCS5PADDING, key);
+    public static ICrypto getAes(String key) throws Exception {
+        return AesCrypto.getInstace(SymmetricCryptoEnum.AES, key);
     }
 
-    public static KeyCrypto getAesCbcPkcs5padding(String key) {
-        return AesCrypto.getInstace(AesCrypto.AesType.AES_CBC_PKCS5PADDING, key);
+    public static ICrypto getAesEcbPkcs5Padding(String key) throws Exception {
+        return AesCrypto.getInstace(SymmetricCryptoEnum.AES_ECB_PKCS5PADDING, key);
     }
 
-    public static KeyCrypto getAesCbcNoPadding(String key) {
-        return AesCrypto.getInstace(AesCrypto.AesType.AES_CBC_NOPADDING, key);
+    public static ICrypto getAesCbcPkcs5padding(String key) throws Exception {
+        return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING, key);
     }
 
-    public static KeyCrypto getDes(String key) {
-        return DesCrypto.getInstace(DesCrypto.DesType.DES, key);
+    public static ICrypto getAesCbcNoPadding(String key) throws Exception {
+        return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_NOPADDING, key);
     }
 
-    public static KeyCrypto getDesEcbPkcs5Padding(String key) {
-        return DesCrypto.getInstace(DesCrypto.DesType.DES_ECB_PKCS5PADDING, key);
+    public static ICrypto getDes(String key) throws Exception {
+        return DesCrypto.getInstace(SymmetricCryptoEnum.DES, key);
     }
 
-    public static KeyCrypto getDesCbcPkcs5Padding(String key) {
-        return DesCrypto.getInstace(DesCrypto.DesType.DES_CBC_PKCS5PADDING, key);
+    public static ICrypto getDesEcbPkcs5Padding(String key) throws Exception {
+        return DesCrypto.getInstace(SymmetricCryptoEnum.DES_ECB_PKCS5PADDING, key);
     }
 
-    public static KeyCrypto getDesCbcNoPadding(String key) {
-        return DesCrypto.getInstace(DesCrypto.DesType.DES_CBC_NOPADDING, key);
+    public static ICrypto getDesCbcPkcs5Padding(String key) throws Exception {
+        return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING, key);
+    }
+
+    public static ICrypto getDesCbcNoPadding(String key) throws Exception {
+        return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_NOPADDING, key);
     }
 
 
-    interface KeyCrypto {
-        String encrypt(String input);
-        String decrypt(String input);
-    }
-
-
-    public static class AesCrypto implements KeyCrypto {
+    /**
+     * AES 加密/解密算法
+     */
+    public static class AesCrypto implements ICrypto {
         private Key key;
         private Cipher encryptCipher;
         private Cipher decryptCipher;
 
-        public static final String INIT_VECTOR = "1234567890ABCDEF";
+        static final String INIT_VECTOR = "1234567890ABCDEF";
 
-        private AesCrypto(AesType type, String key) {
-            try {
-                IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes());
-                this.key = new SecretKeySpec(key.getBytes(), "AES");
-                this.encryptCipher = Cipher.getInstance(type.key());
-                this.decryptCipher = Cipher.getInstance(type.key());
-                if (type == AesType.AES_CBC_PKCS5PADDING || type == AesType.AES_CBC_NOPADDING) {
-                    this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
-                    this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-                } else {
-                    this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
-                    this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        static final String AES_DEFAULT_KEY = "1234567890ABCDEF";
+
+        private AesCrypto(String type, String key) throws Exception {
+            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes());
+            this.key = getKey(key);
+            this.encryptCipher = Cipher.getInstance(type);
+            this.decryptCipher = Cipher.getInstance(type);
+            if (type.equals(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING.getValue()) || type.equals(
+                SymmetricCryptoEnum.AES_CBC_NOPADDING.getValue())) {
+                this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
+                this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
+            } else {
+                this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
+                this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
             }
         }
 
-        public static KeyCrypto getInstace(AesType type, String key) {
+        static ICrypto getInstace(String type, String key) throws Exception {
             return new AesCrypto(type, key);
         }
 
-        @Override
-        public String encrypt(String input) {
-            try {
-                byte[] bytes = this.encryptCipher.doFinal(input.getBytes());
-                return Base64.getUrlEncoder()
-                             .encodeToString(bytes);
-            } catch (IllegalBlockSizeException | BadPaddingException e) {
-                e.printStackTrace();
-            }
-            return null;
+        static ICrypto getInstace(SymmetricCryptoEnum type, String key) throws Exception {
+            return new AesCrypto(type.getValue(), key);
         }
 
         @Override
-        public String decrypt(String input) {
-            try {
-                byte[] bytes = Base64.getUrlDecoder()
-                                     .decode(input);
-                return new String(this.decryptCipher.doFinal(bytes));
-            } catch (IllegalBlockSizeException | BadPaddingException e) {
-                e.printStackTrace();
-            }
-            return null;
+        public byte[] encryptToBytes(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+            return this.encryptCipher.doFinal(plaintext);
         }
 
-        public enum AesType {
-            AES("AES"),
-            AES_ECB_PKCS5PADDING("AES/ECB/PKCS5Padding"),
-            AES_CBC_PKCS5PADDING("AES/CBC/PKCS5Padding"),
-            AES_CBC_NOPADDING("AES/CBC/NoPadding");
-
-            private String key;
-
-            AesType(String key) {
-                this.key = key;
-            }
-
-            public String key() {
-                return this.key;
-            }
+        @Override
+        public byte[] decryptToBytes(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+            return this.decryptCipher.doFinal(ciphertext);
         }
+
+        @Override
+        public String encryptToString(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+            byte[] bytes = this.encryptCipher.doFinal(plaintext);
+            Base64.Encoder encoder = Base64.getUrlEncoder();
+            return encoder.encodeToString(bytes);
+        }
+
+        @Override
+        public byte[] decryptToBytes(String ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+            Base64.Decoder decoder = Base64.getUrlDecoder();
+            byte[] bytes = decoder.decode(ciphertext);
+            return this.decryptCipher.doFinal(bytes);
+        }
+
+        private Key getKey(String key) {
+            if (StringUtils.isNotBlank(key)) {
+                return new SecretKeySpec(key.getBytes(), AES_NAME);
+            }
+
+            return new SecretKeySpec(AES_DEFAULT_KEY.getBytes(), AES_NAME);
+        }
+
     }
 
 
-    public static class DesCrypto implements KeyCrypto {
+    /**
+     * DES 加密/解密算法
+     */
+    public static class DesCrypto implements ICrypto {
         private Key key;
         private Cipher encryptCipher;
         private Cipher decryptCipher;
 
-        public static final String INIT_VECTOR = "ABCDEFGH";
+        static final String INIT_VECTOR = "ABCDEFGH";
 
-        private DesCrypto(DesType type, String key) {
-            try {
-                DESKeySpec desKey = new DESKeySpec(key.getBytes());
-                SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-                this.key = keyFactory.generateSecret(desKey);
+        static final String DES_DEFAULT_KEY = "12345678";
 
-                IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
-                this.encryptCipher = Cipher.getInstance(type.key());
-                this.decryptCipher = Cipher.getInstance(type.key());
-                if (type == DesType.DES_CBC_PKCS5PADDING || type == DesType.DES_CBC_NOPADDING) {
-                    this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
-                    this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-                } else {
-                    this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
-                    this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        private DesCrypto(String type, String key) throws Exception {
+            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes());
+            this.key = getKey(key);
+            this.encryptCipher = Cipher.getInstance(type);
+            this.decryptCipher = Cipher.getInstance(type);
+            if (type.equals(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING.getValue()) || type.equals(
+                SymmetricCryptoEnum.DES_CBC_NOPADDING.getValue())) {
+                this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
+                this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
+            } else {
+                this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
+                this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
             }
         }
 
-        public static KeyCrypto getInstace(DesCrypto.DesType type, String key) {
+        static ICrypto getInstace(String type, String key) throws Exception {
             return new DesCrypto(type, key);
         }
 
-        @Override
-        public String encrypt(String input) {
-            try {
-                byte[] bytes = this.encryptCipher.doFinal(input.getBytes());
-                return Base64.getUrlEncoder()
-                             .encodeToString(bytes);
-            } catch (IllegalBlockSizeException | BadPaddingException e) {
-                e.printStackTrace();
-            }
-            return null;
+        static ICrypto getInstace(SymmetricCryptoEnum type, String key) throws Exception {
+            return new DesCrypto(type.getValue(), key);
         }
 
         @Override
-        public String decrypt(String input) {
-            try {
-                byte[] bytes = Base64.getUrlDecoder()
-                                     .decode(input);
-                return new String(this.decryptCipher.doFinal(bytes));
-            } catch (IllegalBlockSizeException | BadPaddingException e) {
-                e.printStackTrace();
-            }
-            return null;
+        public byte[] encryptToBytes(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+            return this.encryptCipher.doFinal(plaintext);
         }
 
-        public enum DesType {
-            DES("DES"),
-            DES_ECB_PKCS5PADDING("DES/ECB/PKCS5Padding"),
-            DES_CBC_PKCS5PADDING("DES/CBC/PKCS5Padding"),
-            DES_CBC_NOPADDING("DES/CBC/NoPadding");
+        @Override
+        public byte[] decryptToBytes(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+            return this.decryptCipher.doFinal(ciphertext);
+        }
 
-            private String key;
+        @Override
+        public String encryptToString(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+            byte[] bytes = this.encryptCipher.doFinal(plaintext);
+            Base64.Encoder encoder = Base64.getUrlEncoder();
+            return encoder.encodeToString(bytes);
+        }
 
-            DesType(String key) {
-                this.key = key;
+        @Override
+        public byte[] decryptToBytes(String ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+            Base64.Decoder decoder = Base64.getUrlDecoder();
+            byte[] bytes = decoder.decode(ciphertext);
+            return this.decryptCipher.doFinal(bytes);
+        }
+
+        private Key getKey(String key) {
+            if (StringUtils.isNotBlank(key)) {
+                return new SecretKeySpec(key.getBytes(), DES_NAME);
             }
 
-            public String key() {
-                return this.key;
-            }
+            return new SecretKeySpec(DES_DEFAULT_KEY.getBytes(), DES_NAME);
+        }
+    }
+
+
+    /**
+     * 对称加密/解密算法类型
+     */
+    public enum SymmetricCryptoEnum {
+        AES("AES"),
+        AES_ECB_PKCS5PADDING("AES/ECB/PKCS5Padding"),
+        AES_CBC_PKCS5PADDING("AES/CBC/PKCS5Padding"),
+        AES_CBC_NOPADDING("AES/CBC/NoPadding"),
+        DES("DES"),
+        DES_ECB_PKCS5PADDING("DES/ECB/PKCS5Padding"),
+        DES_CBC_PKCS5PADDING("DES/CBC/PKCS5Padding"),
+        DES_CBC_NOPADDING("DES/CBC/NoPadding");
+
+        private final String value;
+
+        SymmetricCryptoEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 }

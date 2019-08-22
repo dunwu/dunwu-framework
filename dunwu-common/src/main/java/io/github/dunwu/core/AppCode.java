@@ -27,6 +27,8 @@ public enum AppCode implements ErrorCode {
     ERROR_CONCURRENCE("106", "并发错误", "并发错误"),
     ERROR_AUTH("107", "认证错误", "认证错误"),
     ERROR_SCHEDULER("108", "调度错误", "调度错误，调用 group=%, job=% 失败"),
+    ERROR_ENCODE("109", "编码错误", "编码错误"),
+    ERROR_DECODE("110", "解码错误", "解码错误"),
 
     LIMIT_PERMISSIONS("201", "权限限制", "没有权限执行 (%s)"),
     LIMIT_IP("202", "IP 限制，不能请求该资源", "IP = (%s) 被限制，不能请求该资源"),

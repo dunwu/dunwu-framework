@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.*;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.*;
 @ConditionalOnProperty(prefix = "dunwu.web", value = "enabled", matchIfMissing = true)
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
 @EnableConfigurationProperties({DunwuWebProperties.class, DunwuWebSecurityProperties.class})
+@Import(value = {DunwuMailExtAutoConfiguration.class})
 public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 
     private final DunwuWebProperties dunwuWebProperties;

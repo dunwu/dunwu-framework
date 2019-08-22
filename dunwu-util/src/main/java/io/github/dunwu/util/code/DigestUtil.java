@@ -3,8 +3,6 @@ package io.github.dunwu.util.code;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 /**
@@ -18,62 +16,95 @@ public class DigestUtil {
     public static String PRIVATE_KEY = "天王盖地虎";
     public static String PUBLIC_KEY = "宝塔镇河妖";
 
-    public static IDigest MD2 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.MD2);
-    public static IDigest MD5 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.MD5);
-    public static IDigest SHA1 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.SHA1);
-    public static IDigest SHA256 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.SHA256);
-    public static IDigest SHA384 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.SHA384);
-    public static IDigest SHA512 = MessageDigestWrapper.getInstace(MessageDigestWrapper.MessageDigestType.SHA512);
+    public static final IDigest MD2 = Digest.getInstance(DigestTypeEnum.MD2);
+    public static final IDigest MD5 = Digest.getInstance(DigestTypeEnum.MD5);
+    public static final IDigest SHA1 = Digest.getInstance(DigestTypeEnum.SHA1);
+    public static final IDigest SHA256 = Digest.getInstance(DigestTypeEnum.SHA256);
+    public static final IDigest SHA384 = Digest.getInstance(DigestTypeEnum.SHA384);
+    public static final IDigest SHA512 = Digest.getInstance(DigestTypeEnum.SHA512);
 
-    public static IDigest HmacMD5 = HmacMessageDigestWrapper.getInstace(
-        HmacMessageDigestWrapper.HmacMessageDigestType.HmacMD5);
-    public static IDigest HmacSHA1 = HmacMessageDigestWrapper.getInstace(
-        HmacMessageDigestWrapper.HmacMessageDigestType.HmacSHA1);
-    public static IDigest HmacSHA256 = HmacMessageDigestWrapper.getInstace(
-        HmacMessageDigestWrapper.HmacMessageDigestType.HmacSHA256);
-    public static IDigest HmacSHA384 = HmacMessageDigestWrapper.getInstace(
-        HmacMessageDigestWrapper.HmacMessageDigestType.HmacSHA384);
-    public static IDigest HmacSHA512 = HmacMessageDigestWrapper.getInstace(
-        HmacMessageDigestWrapper.HmacMessageDigestType.HmacSHA512);
+    public static final IDigest HMAC_MD5 = HmacDigest.getInstance(DigestTypeEnum.HMAC_MD5);
+    public static final IDigest HMAC_SHA1 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA1);
+    public static final IDigest HMAC_SHA256 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA256);
+    public static final IDigest HMAC_SHA384 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA384);
+    public static final IDigest HMAC_SHA512 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA512);
 
+    public static IDigest getInstance(String type) {
+
+        IDigest instace = null;
+        if (type.toUpperCase()
+                .contains("HMAC")) {
+            instace = HmacDigest.getInstance(type);
+        } else {
+            instace = Digest.getInstance(type);
+        }
+
+        return instace;
+    }
+
+    public static IDigest getInstance(DigestTypeEnum type) {
+        IDigest instace = null;
+
+        switch (type) {
+            case MD2:
+            case MD5:
+            case SHA1:
+            case SHA256:
+            case SHA384:
+            case SHA512:
+                instace = Digest.getInstance(type);
+                break;
+
+            case HMAC_MD5:
+            case HMAC_SHA1:
+            case HMAC_SHA256:
+            case HMAC_SHA384:
+            case HMAC_SHA512:
+                instace = HmacDigest.getInstance(type);
+                break;
+            default:
+                break;
+        }
+
+        return instace;
+    }
+
+    public static KeyPair genKeyPair(String algorithm, int keySize) throws NoSuchAlgorithmException {
+
+        // 初始化密钥对生成器
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);
+        // 实例化密钥对生成器
+        keyPairGen.initialize(keySize);
+        // 实例化密钥对
+        return keyPairGen.genKeyPair();
+    }
 
     public interface IDigest {
 
-        default byte[] digest(byte[] input) {
-            return null;
-        }
+        byte[] digest(byte[] input);
 
-        default byte[] digestWithBase64(byte[] input) {
-            return null;
-        }
+        byte[] digestWithBase64(byte[] input);
     }
 
 
-    static class MessageDigestWrapper implements IDigest {
+    public static class Digest implements IDigest {
 
         private MessageDigest md;
 
-        private MessageDigestWrapper(MessageDigestWrapper.MessageDigestType type) {
-            switch (type) {
-                case MD2:
-                case MD5:
-                case SHA1:
-                case SHA256:
-                case SHA384:
-                case SHA512:
-                    try {
-                        md = MessageDigest.getInstance(type.key());
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
+        private Digest(String type) {
+            try {
+                md = MessageDigest.getInstance(type);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
         }
 
-        public static IDigest getInstace(MessageDigestWrapper.MessageDigestType type) {
-            return new MessageDigestWrapper(type);
+        public static IDigest getInstance(String type) {
+            return new Digest(type);
+        }
+
+        public static IDigest getInstance(DigestTypeEnum type) {
+            return new Digest(type.getValue());
         }
 
         @Override
@@ -86,55 +117,29 @@ public class DigestUtil {
             return Base64.getUrlEncoder()
                          .encode(md.digest(input));
         }
-
-        public enum MessageDigestType {
-            MD2("MD2"),
-            MD5("MD5"),
-            SHA1("SHA1"),
-            SHA256("SHA-256"),
-            SHA384("SHA-384"),
-            SHA512("SHA-512");
-
-            private String key;
-
-            MessageDigestType(String key) {
-                this.key = key;
-            }
-
-            public String key() {
-                return this.key;
-            }
-        }
     }
 
 
-    static class HmacMessageDigestWrapper implements IDigest {
+    public static class HmacDigest implements IDigest {
 
         private Mac mac;
 
-        private HmacMessageDigestWrapper(HmacMessageDigestWrapper.HmacMessageDigestType type) {
-            switch (type) {
-                case HmacMD5:
-                case HmacSHA1:
-                case HmacSHA256:
-                case HmacSHA384:
-                case HmacSHA512:
-
-                    try {
-                        SecretKeySpec keySpec = new SecretKeySpec(PRIVATE_KEY.getBytes(), type.key());
-                        mac = Mac.getInstance(keySpec.getAlgorithm());
-                        mac.init(keySpec);
-                    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
+        private HmacDigest(String type) {
+            SecretKeySpec keySpec = new SecretKeySpec(PRIVATE_KEY.getBytes(), type);
+            try {
+                mac = Mac.getInstance(keySpec.getAlgorithm());
+                mac.init(keySpec);
+            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                e.printStackTrace();
             }
         }
 
-        public static IDigest getInstace(HmacMessageDigestWrapper.HmacMessageDigestType type) {
-            return new HmacMessageDigestWrapper(type);
+        public static IDigest getInstance(String type) {
+            return new HmacDigest(type);
+        }
+
+        public static IDigest getInstance(DigestTypeEnum type) {
+            return new HmacDigest(type.getValue());
         }
 
         @Override
@@ -147,100 +152,40 @@ public class DigestUtil {
             return Base64.getUrlEncoder()
                          .encode(mac.doFinal(input));
         }
-
-        public enum HmacMessageDigestType {
-            HmacMD5("HmacMD5"),
-            HmacSHA1("HmacSHA1"),
-            HmacSHA256("HmacSHA256"),
-            HmacSHA384("HmacSHA384"),
-            HmacSHA512("HmacSHA512");
-
-            private String key;
-
-            HmacMessageDigestType(String key) {
-                this.key = key;
-            }
-
-            public String key() {
-                return this.key;
-            }
-        }
     }
 
 
-    static class DsaMessageDigestWrapper {
-
-        public static String PRIVATE_KEY = "天王盖地虎";
-        public static String PUBLIC_KEY = "宝塔镇河妖";
+    /**
+     * 数字摘要类型
+     */
+    public enum DigestTypeEnum {
+        /**
+         * 常规数字摘要算法
+         */
+        MD2("MD2"),
+        MD5("MD5"),
+        SHA1("SHA1"),
+        SHA256("SHA-256"),
+        SHA384("SHA-384"),
+        SHA512("SHA-512"),
 
         /**
-         * DSA密钥长度默认1024位。 密钥长度必须是64的整数倍，范围在512~1024之间
+         * HMAC 数字摘要算法
          */
-        private static final int KEY_SIZE = 1024;
+        HMAC_MD5("HmacMD5"),
+        HMAC_SHA1("HmacSHA1"),
+        HMAC_SHA256("HmacSHA256"),
+        HMAC_SHA384("HmacSHA384"),
+        HMAC_SHA512("HmacSHA512");
 
-        private KeyPair keyPair;
-        private DsaMessageDigestType type;
+        private final String value;
 
-        private DsaMessageDigestWrapper(DsaMessageDigestType type) {
-            try {
-                KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(type.key());
-                keyPairGen.initialize(KEY_SIZE);
-                this.type = type;
-                this.keyPair = keyPairGen.genKeyPair();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
+        DigestTypeEnum(String value) {
+            this.value = value;
         }
 
-        public static DsaMessageDigestWrapper getInstace(DsaMessageDigestWrapper.DsaMessageDigestType type) {
-            return new DsaMessageDigestWrapper(type);
-        }
-
-        public byte[] signature(byte[] data, byte[] privateKey) throws Exception {
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
-            KeyFactory keyFactory = KeyFactory.getInstance(type.key());
-            PrivateKey key = keyFactory.generatePrivate(keySpec);
-
-            Signature signature = Signature.getInstance(type.key());
-            signature.initSign(key);
-            signature.update(data);
-            return signature.sign();
-        }
-
-        public boolean verify(byte[] data, byte[] publicKey, byte[] sign) throws Exception {
-            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
-            KeyFactory keyFactory = KeyFactory.getInstance(type.key());
-            PublicKey key = keyFactory.generatePublic(keySpec);
-
-            Signature signature = Signature.getInstance(type.key());
-            signature.initVerify(key);
-            signature.update(data);
-            return signature.verify(sign);
-        }
-
-        public byte[] getPublicKey() {
-            return keyPair.getPublic()
-                          .getEncoded();
-        }
-
-        public byte[] getPrivateKey() {
-            return keyPair.getPrivate()
-                          .getEncoded();
-        }
-
-        public enum DsaMessageDigestType {
-            DSA("DSA"),
-            SHA1withDSA("SHA1withDSA");
-
-            private String key;
-
-            DsaMessageDigestType(String key) {
-                this.key = key;
-            }
-
-            public String key() {
-                return this.key;
-            }
+        public String getValue() {
+            return value;
         }
     }
 }
