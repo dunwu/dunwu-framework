@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
  * <p>
  * 省市区数据来源于
  * <a href="https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2018-12-11
  * @see <a href="https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
+ * @since 2018-12-11
  */
 public class ChinaAreaUtil {
     private static final String JSON_DATA_FILE = "cn-area-info.json";
@@ -39,6 +40,7 @@ public class ChinaAreaUtil {
 
     /**
      * 获取所有（省级行政单位）集合
+     *
      * @return Set<Province>
      */
     public static Set<Province> getAllProvinces() {
@@ -47,6 +49,7 @@ public class ChinaAreaUtil {
 
     /**
      * 获取所有（地级行政单位）集合
+     *
      * @return Set<Province>
      */
     public static Set<City> getAllCities() {
@@ -55,6 +58,7 @@ public class ChinaAreaUtil {
 
     /**
      * 获取所有（县级行政单位）集合
+     *
      * @return Set<Province>
      */
     public static Set<County> getAllCounties() {
@@ -63,6 +67,7 @@ public class ChinaAreaUtil {
 
     /**
      * 根据编码查询（省级行政单位）
+     *
      * @param code 编码
      * @return Province
      */
@@ -76,6 +81,7 @@ public class ChinaAreaUtil {
 
     /**
      * 根据名称查询（省级行政单位）
+     *
      * @param name 名称
      * @return Province
      */
@@ -89,6 +95,7 @@ public class ChinaAreaUtil {
 
     /**
      * 根据编码查询（地级行政单位）
+     *
      * @param code 编码
      * @return City
      */
@@ -102,6 +109,7 @@ public class ChinaAreaUtil {
 
     /**
      * 根据名称查询（地级行政单位）
+     *
      * @param name 名称
      * @return City
      */
@@ -115,6 +123,7 @@ public class ChinaAreaUtil {
 
     /**
      * 根据编码查询（县级行政单位）
+     *
      * @param code 编码
      * @return County
      */
@@ -130,6 +139,7 @@ public class ChinaAreaUtil {
      * 根据名称查询（县级行政单位）
      * <p>
      * 注：县级行政单位可能存在重名情况
+     *
      * @param name 名称
      * @return Set<County>
      */

@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>0.4.5</version>
+  <version>0.4.6-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -17,6 +17,7 @@
     <module>dunwu-web</module>
     <module>dunwu-generator</module>
     <module>dunwu-scheduler</module>
+    <!--<module>dunwu-dlock</module>-->
   </modules>
 
   <properties>

@@ -1,13 +1,14 @@
 package io.github.dunwu.util.text;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.code.EncodeUtil;
+import io.github.dunwu.util.io.ResourceUtil;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
-import io.github.dunwu.util.code.EncodeUtil;
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.io.ResourceUtil;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HashUtilTest {
 
@@ -75,7 +76,8 @@ public class HashUtilTest {
         assertThat(HashUtil.murmur32AsInt("hahhha6")).isEqualTo(-446760132);
 
         assertThat(HashUtil.murmur128AsLong("hahhha6")).isEqualTo(-5203515929515563680L);
-        assertThat(HashUtil.murmur128AsLong("hahhha6".getBytes(Charsets.UTF_8))).isEqualTo(-5203515929515563680L);
+        assertThat(HashUtil.murmur128AsLong("hahhha6".getBytes(StandardCharsets.UTF_8))).isEqualTo(
+            -5203515929515563680L);
 
     }
 

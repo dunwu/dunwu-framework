@@ -1,17 +1,16 @@
 package io.github.dunwu.util.io;
 
+import com.google.common.io.Resources;
+import io.github.dunwu.util.collection.ListUtil;
+import io.github.dunwu.util.reflect.ClassLoaderUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
-import io.github.dunwu.util.reflect.ClassLoaderUtil;
-import io.github.dunwu.util.collection.ListUtil;
-import io.github.dunwu.util.text.Charsets;
-
-import com.google.common.io.Resources;
 
 /**
  * 针对Jar包内的文件的工具类.
@@ -23,10 +22,10 @@ import com.google.common.io.Resources;
  * <p>
  * 2.路径
  * <p>
- * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName，
- * 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/" 反而导致JarFile.getEntry(resouceName)时没有返回.
- * 指定contextClass时，class.getResource()会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass package的相对路径,
- * 会先转为绝对路径.
+ * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName， 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/"
+ * 反而导致JarFile.getEntry(resouceName)时没有返回. 指定contextClass时，class.getResource()
+ * 会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass
+ * package的相对路径, 会先转为绝对路径.
  * <p>
  * 3.同名资源
  * <p>
@@ -70,28 +69,28 @@ public class ResourceUtil {
      * 读取文件的每一行，读取规则见本类注释.
      */
     public static String toString(String resourceName) throws IOException {
-        return Resources.toString(Resources.getResource(resourceName), Charsets.UTF_8);
+        return Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
     }
 
     /**
      * 读取文件的每一行，读取规则见本类注释.
      */
     public static String toString(Class<?> contextClass, String resourceName) throws IOException {
-        return Resources.toString(Resources.getResource(contextClass, resourceName), Charsets.UTF_8);
+        return Resources.toString(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
     }
 
     /**
      * 读取文件的每一行，读取规则见本类注释.
      */
     public static List<String> toLines(String resourceName) throws IOException {
-        return Resources.readLines(Resources.getResource(resourceName), Charsets.UTF_8);
+        return Resources.readLines(Resources.getResource(resourceName), StandardCharsets.UTF_8);
     }
 
     /**
      * 读取文件的每一行，读取规则见本类注释.
      */
     public static List<String> toLines(Class<?> contextClass, String resourceName) throws IOException {
-        return Resources.readLines(Resources.getResource(contextClass, resourceName), Charsets.UTF_8);
+        return Resources.readLines(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
     }
 
     ///////////// 打开所有同名文件///////

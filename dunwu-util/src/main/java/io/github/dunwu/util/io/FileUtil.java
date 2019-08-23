@@ -3,11 +3,11 @@ package io.github.dunwu.util.io;
 import io.github.dunwu.util.base.Platforms;
 import io.github.dunwu.util.base.annotation.NotNull;
 import io.github.dunwu.util.base.annotation.Nullable;
-import io.github.dunwu.util.text.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -18,10 +18,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 /**
- * 关于文件的工具集.
- * 主要是调用JDK自带的Files工具类，少量代码调用Guava Files。 固定encoding为UTF8.
- * 1.文件读写
- * 2.文件及目录操作
+ * 关于文件的工具集. 主要是调用JDK自带的Files工具类，少量代码调用Guava Files。 固定encoding为UTF8. 1.文件读写 2.文件及目录操作
  */
 public class FileUtil {
 
@@ -45,6 +42,7 @@ public class FileUtil {
 
     /**
      * 读取文件到byte[].
+     *
      * @see {@link Files#readAllBytes}
      */
     public static byte[] toByteArray(final File file) throws IOException {
@@ -55,15 +53,16 @@ public class FileUtil {
      * 读取文件到String.
      */
     public static String toString(final File file) throws IOException {
-        return com.google.common.io.Files.toString(file, Charsets.UTF_8);
+        return com.google.common.io.Files.toString(file, StandardCharsets.UTF_8);
     }
 
     /**
      * 读取文件的每行内容到List<String>.
+     *
      * @see {@link Files#readAllLines}
      */
     public static List<String> toLines(final File file) throws IOException {
-        return Files.readAllLines(file.toPath(), Charsets.UTF_8);
+        return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     }
 
     /**
@@ -73,7 +72,7 @@ public class FileUtil {
         Validate.notNull(file);
         Validate.notNull(data);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), Charsets.UTF_8)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
             writer.append(data);
         }
     }
@@ -85,14 +84,15 @@ public class FileUtil {
         Validate.notNull(file);
         Validate.notNull(data);
 
-        try (BufferedWriter writer = Files
-            .newBufferedWriter(file.toPath(), Charsets.UTF_8, StandardOpenOption.APPEND)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8,
+                                                             StandardOpenOption.APPEND)) {
             writer.append(data);
         }
     }
 
     /**
      * 打开文件为InputStream.
+     *
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(String fileName) throws IOException {
@@ -101,6 +101,7 @@ public class FileUtil {
 
     /**
      * 打开文件为InputStream.
+     *
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(File file) throws IOException {
@@ -110,6 +111,7 @@ public class FileUtil {
 
     /**
      * 打开文件为InputStream.
+     *
      * @see {@link Files#newInputStream}
      */
     public static InputStream asInputStream(Path path) throws IOException {
@@ -119,6 +121,7 @@ public class FileUtil {
 
     /**
      * 打开文件为OutputStream.
+     *
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(String fileName) throws IOException {
@@ -127,6 +130,7 @@ public class FileUtil {
 
     /**
      * 打开文件为OutputStream.
+     *
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(File file) throws IOException {
@@ -136,6 +140,7 @@ public class FileUtil {
 
     /**
      * 打开文件为OutputStream.
+     *
      * @see {@link Files#newOutputStream}
      */
     public static OutputStream asOututStream(Path path) throws IOException {
@@ -145,6 +150,7 @@ public class FileUtil {
 
     /**
      * 获取File的BufferedReader.
+     *
      * @see {@link Files#newBufferedReader}
      */
     public static BufferedReader asBufferedReader(String fileName) throws IOException {
@@ -154,31 +160,34 @@ public class FileUtil {
 
     public static BufferedReader asBufferedReader(Path path) throws IOException {
         Validate.notNull(path, "path is null");
-        return Files.newBufferedReader(path, Charsets.UTF_8);
+        return Files.newBufferedReader(path, StandardCharsets.UTF_8);
     }
 
     /**
      * 获取File的BufferedWriter.
+     *
      * @see {@link Files#newBufferedWriter}
      */
     public static BufferedWriter asBufferedWriter(String fileName) throws IOException {
         Validate.notBlank(fileName, "filename is blank");
-        return Files.newBufferedWriter(getPath(fileName), Charsets.UTF_8);
+        return Files.newBufferedWriter(getPath(fileName), StandardCharsets.UTF_8);
     }
 
     /**
      * 获取File的BufferedWriter.
+     *
      * @see {@link Files#newBufferedWriter}
      */
     public static BufferedWriter asBufferedWriter(Path path) throws IOException {
         Validate.notNull(path, "path is null");
-        return Files.newBufferedWriter(path, Charsets.UTF_8);
+        return Files.newBufferedWriter(path, StandardCharsets.UTF_8);
     }
 
     ///// 文件操作 /////
 
     /**
      * 复制文件或目录, not following links.
+     *
      * @param from 如果为null，或者是不存在的文件或目录，抛出异常.
      * @param to 如果为null，或者from是目录而to是已存在文件，或相反
      */
@@ -191,6 +200,7 @@ public class FileUtil {
 
     /**
      * 复制文件或目录, not following links.
+     *
      * @param from 如果为null，或者是不存在的文件或目录，抛出异常.
      * @param to 如果为null，或者from是目录而to是已存在文件，或相反
      */
@@ -207,6 +217,7 @@ public class FileUtil {
 
     /**
      * 文件复制.
+     *
      * @param from 如果为null，或文件不存在或者是目录，，抛出异常
      * @param to 如果to为null，或文件存在但是一个目录，抛出异常
      * @see {@link Files#copy}
@@ -219,6 +230,7 @@ public class FileUtil {
 
     /**
      * 文件复制. @see {@link Files#copy}
+     *
      * @param from 如果为null，或文件不存在或者是目录，，抛出异常
      * @param to 如果to为null，或文件存在但是一个目录，抛出异常
      */
@@ -256,6 +268,7 @@ public class FileUtil {
 
     /**
      * 文件移动/重命名.
+     *
      * @see {@link Files#move}
      */
     public static void moveFile(@NotNull File from, @NotNull File to) throws IOException {
@@ -267,6 +280,7 @@ public class FileUtil {
 
     /**
      * 文件移动/重命名.
+     *
      * @see {@link Files#move}
      */
     public static void moveFile(@NotNull Path from, @NotNull Path to) throws IOException {
@@ -300,6 +314,7 @@ public class FileUtil {
 
     /**
      * 创建文件或更新时间戳.
+     *
      * @see {@link com.google.common.io.Files#touch}
      */
     public static void touch(String filePath) throws IOException {
@@ -308,6 +323,7 @@ public class FileUtil {
 
     /**
      * 创建文件或更新时间戳.
+     *
      * @see {@link com.google.common.io.Files#touch}
      */
     public static void touch(File file) throws IOException {
@@ -315,8 +331,7 @@ public class FileUtil {
     }
 
     /**
-     * 删除文件.
-     * 如果文件不存在或者是目录，则不做修改
+     * 删除文件. 如果文件不存在或者是目录，则不做修改
      */
     public static void deleteFile(@Nullable File file) throws IOException {
         Validate.isTrue(isFileExists(file), "%s is not exist or not a file", file);
@@ -324,8 +339,7 @@ public class FileUtil {
     }
 
     /**
-     * 删除文件.
-     * 如果文件不存在或者是目录，则不做修改
+     * 删除文件. 如果文件不存在或者是目录，则不做修改
      */
     public static void deleteFile(@Nullable Path path) throws IOException {
         Validate.isTrue(isFileExists(path), "%s is not exist or not a file", path);
@@ -335,6 +349,7 @@ public class FileUtil {
 
     /**
      * 删除目录及所有子目录/文件
+     *
      * @see {@link Files#walkFileTree}
      */
     public static void deleteDir(Path dir) throws IOException {
@@ -393,6 +408,7 @@ public class FileUtil {
 
     /**
      * 确保目录存在, 如不存在则创建.
+     *
      * @see {@link Files#createDirectories}
      */
     public static void makesureDirExists(Path dirPath) throws IOException {
@@ -410,6 +426,7 @@ public class FileUtil {
 
     /**
      * 判断文件是否存在, from Jodd.
+     *
      * @see {@link Files#exists}
      * @see {@link Files#isRegularFile}
      */
@@ -422,6 +439,7 @@ public class FileUtil {
 
     /**
      * 判断文件是否存在, from Jodd.
+     *
      * @see {@link Files#exists}
      * @see {@link Files#isRegularFile}
      */
@@ -434,6 +452,7 @@ public class FileUtil {
 
     /**
      * 判断文件是否存在, from Jodd.
+     *
      * @see {@link Files#exists}
      * @see {@link Files#isRegularFile}
      */
@@ -446,6 +465,7 @@ public class FileUtil {
 
     /**
      * 在临时目录创建临时目录，命名为${毫秒级时间戳}-${同一毫秒内的随机数}.
+     *
      * @see {@link Files#createTempDirectory}
      */
     public static Path createTempDir() throws IOException {
@@ -454,6 +474,7 @@ public class FileUtil {
 
     /**
      * 在临时目录创建临时文件，命名为tmp-${random.nextLong()}.tmp
+     *
      * @see {@link Files#createTempFile}
      */
     public static Path createTempFile() throws IOException {
@@ -462,6 +483,7 @@ public class FileUtil {
 
     /**
      * 在临时目录创建临时文件，命名为${prefix}${random.nextLong()}${suffix}
+     *
      * @see {@link Files#createTempFile}
      */
     public static Path createTempFile(String prefix, String suffix) throws IOException {
@@ -483,6 +505,7 @@ public class FileUtil {
 
     /**
      * 获取文件名的扩展名部分(不包含.)
+     *
      * @see {@link com.google.common.io.Files#getFileExtension}
      */
     public static String getFileExtension(File file) {
@@ -491,6 +514,7 @@ public class FileUtil {
 
     /**
      * 获取文件名的扩展名部分(不包含.)
+     *
      * @see {@link com.google.common.io.Files#getFileExtension}
      */
     public static String getFileExtension(String fullName) {
@@ -529,6 +553,7 @@ public class FileUtil {
 
     /**
      * 将文件名中的空白去除，并将文件名转为小写
+     *
      * @param filePath
      */
     public static void changeFileNameToStandard(String filePath) {

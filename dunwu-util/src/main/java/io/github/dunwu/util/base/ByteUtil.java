@@ -10,43 +10,56 @@ import java.sql.Blob;
  * @since 2019-07-24
  */
 public class ByteUtil {
-    public static byte[] convertToPrimitiveArray(Byte[] objects) {
-        byte[] bytes = new byte[objects.length];
 
-        for (int i = 0; i < objects.length; ++i) {
-            bytes[i] = objects[i];
+    /**
+     * Byte[] -> byte[]
+     *
+     * @param origin Byte[]
+     * @return byte[]
+     */
+    public static byte[] convertToPrimitiveArray(final Byte[] origin) {
+        if (origin == null) {
+            return null;
         }
 
-        return bytes;
+        byte[] target = new byte[origin.length];
+        for (int i = 0; i < origin.length; ++i) {
+            target[i] = origin[i];
+        }
+
+        return target;
     }
 
-    public static Byte[] convertToObjectArray(byte[] bytes) {
-        Byte[] objects = new Byte[bytes.length];
-
-        for (int i = 0; i < bytes.length; ++i) {
-            objects[i] = bytes[i];
+    /**
+     * byte[] -> Byte[]
+     *
+     * @param origin byte[]
+     * @return Byte[]
+     */
+    public static Byte[] convertToObjectArray(final byte[] origin) {
+        if (origin == null) {
+            return null;
         }
 
-        return objects;
+        Byte[] target = new Byte[origin.length];
+        for (int i = 0; i < origin.length; ++i) {
+            target[i] = origin[i];
+        }
+
+        return target;
     }
 
-    public static byte[] blobToByte(Blob blob) throws Exception {
-        byte[] bytes = null;
-        try {
-            InputStream in = blob.getBinaryStream();
-            BufferedInputStream inBuffered = new BufferedInputStream(in);
-            ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-            byte[] temp = new byte[1024];
-            int size = 0;
-            while ((size = inBuffered.read(temp)) != -1) {
-                out.write(temp, 0, size);
-            }
-            inBuffered.close();
-            in.close();
-            bytes = out.toByteArray();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public static byte[] blobToByte(final Blob blob) throws Exception {
+        InputStream in = blob.getBinaryStream();
+        BufferedInputStream inBuffered = new BufferedInputStream(in);
+        ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+        byte[] bytes = new byte[1024];
+        int size = 0;
+        while ((size = inBuffered.read(bytes)) != -1) {
+            out.write(bytes, 0, size);
         }
-        return bytes;
+        inBuffered.close();
+        in.close();
+        return out.toByteArray();
     }
 }

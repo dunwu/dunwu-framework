@@ -4,14 +4,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import io.github.dunwu.util.number.NumberUtil;
-
 /**
- * 关于SystemProperties的工具类
- * 1. 统一风格的读取系统变量到各种数据类型，其中Boolean.readBoolean的风格不统一，Double则不支持，都进行了扩展.
- * 2. 简单的合并系统变量(-D)，环境变量 和默认值，以系统变量优先，在未引入Commons Config时使用.
- * 3. Properties 本质上是一个HashTable，每次读写都会加锁，所以不支持频繁的System.getProperty(name)来检查系统内容变化 因此扩展了一个ListenableProperties,
- * 在其所关心的属性变化时进行通知.
+ * 关于SystemProperties的工具类 1. 统一风格的读取系统变量到各种数据类型，其中Boolean.readBoolean的风格不统一，Double则不支持，都进行了扩展. 2. 简单的合并系统变量(-D)，环境变量
+ * 和默认值，以系统变量优先，在未引入Commons Config时使用. 3. Properties 本质上是一个HashTable，每次读写都会加锁，所以不支持频繁的System.getProperty(name)来检查系统内容变化
+ * 因此扩展了一个ListenableProperties, 在其所关心的属性变化时进行通知.
  */
 public class SystemPropertiesUtil {
 
@@ -151,11 +147,11 @@ public class SystemPropertiesUtil {
      */
     public static Boolean getBoolean(String propertyName, String envName, Boolean defaultValue) {
         checkEnvName(envName);
-        Boolean propertyValue = BooleanUtil.toBooleanObject(System.getProperty(propertyName), null);
+        Boolean propertyValue = BooleanUtil.toBooleanObject(System.getProperty(propertyName), false);
         if (propertyValue != null) {
             return propertyValue;
         } else {
-            propertyValue = BooleanUtil.toBooleanObject(System.getenv(envName), null);
+            propertyValue = BooleanUtil.toBooleanObject(System.getenv(envName), false);
             return propertyValue != null ? propertyValue : defaultValue;
         }
     }
@@ -174,9 +170,10 @@ public class SystemPropertiesUtil {
     /**
      * Properties 本质上是一个HashTable，每次读写都会加锁，所以不支持频繁的System.getProperty(name)来检查系统内容变化 因此扩展了一个ListenableProperties,
      * 在其所关心的属性变化时进行通知.
+     *
      * @see ListenableProperties
      */
-    public static synchronized void registerSystemPropertiesListener(PropertiesListener listener) {
+    public static synchronized void registerSystemPropertiesListener(BasePropertiesListener listener) {
         Properties currentProperties = System.getProperties();
 
         // 将System的properties实现替换为ListenableProperties
@@ -192,26 +189,27 @@ public class SystemPropertiesUtil {
     /**
      * Properties 本质上是一个HashTable，每次读写都会加锁，所以不支持频繁的System.getProperty(name)来检查系统内容变化 因此扩展了Properties子类,
      * 在其所关心的属性变化时进行通知.
-     * @see PropertiesListener
+     *
+     * @see BasePropertiesListener
      */
     public static class ListenableProperties extends Properties {
 
         private static final long serialVersionUID = -8282465702074684324L;
 
-        protected transient List<PropertiesListener> listeners = new CopyOnWriteArrayList<PropertiesListener>();
+        protected transient List<BasePropertiesListener> listeners = new CopyOnWriteArrayList<BasePropertiesListener>();
 
         public ListenableProperties(Properties properties) {
             super(properties);
         }
 
-        public void register(PropertiesListener listener) {
+        public void register(BasePropertiesListener listener) {
             listeners.add(listener);
         }
 
         @Override
         public synchronized Object setProperty(String key, String value) {
             Object result = put(key, value);
-            for (PropertiesListener listener : listeners) {
+            for (BasePropertiesListener listener : listeners) {
                 if (listener.propertyName.equals(key)) {
                     listener.onChange(key, value);
                 }
@@ -224,12 +222,12 @@ public class SystemPropertiesUtil {
     /**
      * 获取所关心的Property变更的Listener基类.
      */
-    public abstract static class PropertiesListener {
+    public abstract static class BasePropertiesListener {
 
         // 关心的Property
         protected String propertyName;
 
-        public PropertiesListener(String propertyName) {
+        public BasePropertiesListener(String propertyName) {
             this.propertyName = propertyName;
         }
 

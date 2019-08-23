@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-util</artifactId>
@@ -33,8 +33,14 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-configuration2</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
+      <optional>true</optional>
     </dependency>
     <!-- UTILS END -->
 
@@ -55,6 +61,7 @@
     <dependency>
       <groupId>com.github.dozermapper</groupId>
       <artifactId>dozer-core</artifactId>
+      <optional>true</optional>
     </dependency>
     <!-- BEAN END -->
 
@@ -62,10 +69,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
+      <optional>true</optional>
     </dependency>
     <!-- JSON END -->
 

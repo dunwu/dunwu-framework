@@ -15,7 +15,6 @@ public class SetUtilTest {
 
     @Test
     public void guavaBuildSet() {
-        HashSet<String> set1 = SetUtil.newHashSet();
 
         HashSet<String> set2 = SetUtil.newHashSetWithCapacity(10);
 
@@ -60,7 +59,7 @@ public class SetUtilTest {
             assertThat(t).isInstanceOf(UnsupportedOperationException.class);
         }
 
-        Set<String> set5 = SetUtil.newHashSet();
+        Set<String> set5 = new HashSet<>();
         Set<String> set6 = SetUtil.unmodifiableSet(set5);
 
         try {

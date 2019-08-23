@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 public class EnumUtilTest {
 
@@ -16,40 +17,39 @@ public class EnumUtilTest {
     }
 
     @Test
-    public void testBits() {
-        Assertions.assertThat(EnumUtil.generateBits(Options.class, Options.A))
-                  .isEqualTo(1);
-        Assertions.assertThat(EnumUtil.generateBits(Options.class, Options.A, Options.B))
+    void testBits() {
+        Assertions.assertThat(EnumUtil.generateBitVector(Options.class, Options.A)).isEqualTo(1);
+        Assertions.assertThat(EnumUtil.generateBitVector(Options.class, Options.A, Options.B)).isEqualTo(3);
+
+        Assertions.assertThat(EnumUtil.generateBitVector(Options.class, ListUtil.newArrayList(Options.A))).isEqualTo(1);
+        Assertions.assertThat(EnumUtil.generateBitVector(Options.class, ListUtil.newArrayList(Options.A, Options.B)))
                   .isEqualTo(3);
 
-        Assertions.assertThat(EnumUtil.generateBits(Options.class, ListUtil.newArrayList(Options.A)))
-                  .isEqualTo(1);
-        Assertions.assertThat(EnumUtil.generateBits(Options.class, ListUtil.newArrayList(Options.A, Options.B)))
-                  .isEqualTo(3);
-
-        Assertions.assertThat(EnumUtil.processBits(Options.class, 3))
+        Assertions.assertThat(EnumUtil.processBitVector(Options.class, 3))
                   .hasSize(2)
                   .containsExactly(Options.A, Options.B);
 
-        long value = EnumUtil.generateBits(Options.class, Options.A, Options.C, Options.D);
-        Assertions.assertThat(EnumUtil.processBits(Options.class, value))
+        long value = EnumUtil.generateBitVector(Options.class, Options.A, Options.C, Options.D);
+        Assertions.assertThat(EnumUtil.processBitVector(Options.class, value))
                   .hasSize(3)
                   .containsExactly(Options.A, Options.C, Options.D);
     }
 
     @Test
-    public void testString() {
-        Assertions.assertThat(EnumUtil.toString(Options.A))
-                  .isEqualTo("A");
-        Assertions.assertThat(EnumUtil.fromString(Options.class, "B"))
-                  .isEqualTo(Options.B);
+    void testString() {
+        Assertions.assertThat(EnumUtil.toString(Options.A)).isEqualTo("A");
+        Assertions.assertThat(EnumUtil.valueOf(Options.class, "B")).isEqualTo(Options.B);
     }
 
     @Test
-    public void test() {
-        EnumSet<Options> set = EnumUtil.allOf(Options.class);
-        for (Options item : set) {
-            System.out.println(item.name() + " : " + item.ordinal());
-        }
+    void testGetMap() {
+        Map<String, Options> enumMap = EnumUtil.getEnumMap(Options.class);
+        Assertions.assertThat(enumMap).hasSize(4);
+    }
+
+    @Test
+    void testEnumSet() {
+        EnumSet<Options> set = EnumUtil.enumSet(Options.class);
+        Assertions.assertThat(set).isNotEmpty();
     }
 }

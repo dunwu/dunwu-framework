@@ -1,0 +1,74 @@
+{
+  "properties": [
+    {
+      "name": "filesystem.db.min-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.db.min-size."
+    },
+    {
+      "name": "filesystem.db.max-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.db.max-size."
+    },
+    {
+      "name": "filesystem.db.support-types",
+      "type": "java.lang.String",
+      "description": "Description for filesystem.db.support-types."
+    },
+    {
+      "name": "filesystem.temp.min-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.temp.min-size."
+    },
+    {
+      "name": "filesystem.temp.max-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.temp.max-size."
+    },
+    {
+      "name": "filesystem.temp.support-types",
+      "type": "java.lang.String",
+      "description": "Description for filesystem.temp.support-types."
+    },
+    {
+      "name": "filesystem.temp.location",
+      "type": "java.lang.String",
+      "description": "Description for filesystem.temp.location."
+    },
+    {
+      "name": "filesystem.fdfs.min-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.fdfs.min-size."
+    },
+    {
+      "name": "filesystem.fdfs.max-size",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.fdfs.max-size."
+    },
+    {
+      "name": "filesystem.fdfs.group",
+      "type": "java.lang.String",
+      "description": "Description for filesystem.fdfs.group."
+    },
+    {
+      "name": "filesystem.fdfs.support-types",
+      "type": "java.lang.String",
+      "description": "Description for filesystem.fdfs.support-types."
+    },
+    {
+      "name": "filesystem.limit.stat-time-range",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.limit.stat-time-range."
+    },
+    {
+      "name": "filesystem.limit.max-upload-time-in-interval",
+      "type": "java.lang.Integer",
+      "description": "Description for filesystem.limit.max-upload-time-in-interval."
+    },
+    {
+      "name": "filesystem.limit.wait-time",
+      "type": "java.lang.Long",
+      "description": "Description for filesystem.limit.wait-time."
+    }
+  ]
+}

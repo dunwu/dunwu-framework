@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>dunwu-dependencies</artifactId>
@@ -22,6 +22,7 @@
     <commons-fileupload.version>1.4</commons-fileupload.version>
     <commons-io.version>2.6</commons-io.version>
     <commons-csv.version>1.6</commons-csv.version>
+    <commons-configuration2.version>2.5</commons-configuration2.version>
     <commons-text.version>1.7</commons-text.version>
     <disruptor.version>3.4.2</disruptor.version>
     <dozer.version>6.4.1</dozer.version>
@@ -95,6 +96,11 @@
       <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus</artifactId>
         <version>${mybatis-plus.version}</version>
       </dependency>
       <dependency>
@@ -190,6 +196,11 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-csv</artifactId>
         <version>${commons-csv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-configuration2</artifactId>
+        <version>${commons-configuration2.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>

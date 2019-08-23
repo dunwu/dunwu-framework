@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import io.github.dunwu.util.number.NumberUtil;
+import io.github.dunwu.util.base.NumberUtil;
 import io.github.dunwu.util.text.MoreStringUtil;
 
 import com.google.common.net.InetAddresses;

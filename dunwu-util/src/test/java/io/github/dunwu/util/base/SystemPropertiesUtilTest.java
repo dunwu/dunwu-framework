@@ -3,7 +3,7 @@ package io.github.dunwu.util.base;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.base.SystemPropertiesUtil.PropertiesListener;
+import io.github.dunwu.util.base.SystemPropertiesUtil.BasePropertiesListener;
 import io.github.dunwu.util.number.RandomUtil;
 
 public class SystemPropertiesUtilTest {
@@ -199,7 +199,7 @@ public class SystemPropertiesUtilTest {
         assertThat(listener.newValue).isEqualTo("haha");
     }
 
-    public static class TestPropertiesListener extends PropertiesListener {
+    public static class TestPropertiesListener extends BasePropertiesListener {
 
         public TestPropertiesListener(String propertyName) {
             super(propertyName);

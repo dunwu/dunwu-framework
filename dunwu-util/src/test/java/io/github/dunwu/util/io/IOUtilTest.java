@@ -1,14 +1,14 @@
 package io.github.dunwu.util.io;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.io.type.StringBuilderWriter;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.io.type.StringBuilderWriter;
-import io.github.dunwu.util.text.Charsets;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IOUtilTest {
 
@@ -26,7 +26,7 @@ public class IOUtilTest {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         IOUtil.write("hahahaha", out);
-        assertThat(new String(out.toByteArray(), Charsets.UTF_8)).isEqualTo("hahahaha");
+        assertThat(new String(out.toByteArray(), StandardCharsets.UTF_8)).isEqualTo("hahahaha");
 
         IOUtil.closeQuietly(out);
         IOUtil.closeQuietly((Closeable) null);

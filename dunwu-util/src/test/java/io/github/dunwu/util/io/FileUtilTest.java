@@ -1,22 +1,16 @@
 package io.github.dunwu.util.io;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.io.Files;
+import io.github.dunwu.util.base.Platforms;
+import io.github.dunwu.util.number.RandomUtil;
+import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.base.Platforms;
-import io.github.dunwu.util.number.RandomUtil;
-import io.github.dunwu.util.text.Charsets;
-
-import com.google.common.io.Files;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileUtilTest {
 
@@ -33,7 +27,7 @@ public class FileUtilTest {
             assertThat(lines).containsExactly("haha", "hehe");
 
             FileUtil.append("kaka", file);
-            assertThat(new String(FileUtil.toByteArray(file), Charsets.UTF_8)).isEqualTo("haha\nhehekaka");
+            assertThat(new String(FileUtil.toByteArray(file), StandardCharsets.UTF_8)).isEqualTo("haha\nhehekaka");
         } finally {
             FileUtil.deleteFile(file);
         }
@@ -196,7 +190,7 @@ public class FileUtilTest {
 
         FileUtil.copy(srcFile, destFile);
 
-        assertThat(Files.readFirstLine(destFile, Charsets.UTF_8)).isEqualTo("test");
+        assertThat(Files.readFirstLine(destFile, StandardCharsets.UTF_8)).isEqualTo("test");
     }
 
     @Test
@@ -255,12 +249,14 @@ public class FileUtilTest {
     }
 
     @Test
-    public void changeFileNameToStandard(){
-        FileUtil.changeFileNameToStandard("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor\\Change Bidirectional Association to Unidirectional - After.png");
+    public void changeFileNameToStandard() {
+        FileUtil.changeFileNameToStandard(
+            "D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor\\Change Bidirectional Association to "
+                + "Unidirectional - After.png");
     }
 
     @Test
-    public void changeFileNameToStandardInFolder(){
+    public void changeFileNameToStandardInFolder() {
         FileUtil.changeFileNameToStandardInFolder(new File("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor"));
     }
 

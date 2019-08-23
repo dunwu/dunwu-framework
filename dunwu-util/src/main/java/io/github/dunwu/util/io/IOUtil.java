@@ -3,11 +3,11 @@ package io.github.dunwu.util.io;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
-import io.github.dunwu.util.text.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -29,6 +29,7 @@ public class IOUtil {
 
     /**
      * 在final中安静的关闭, 不再往外抛出异常避免影响原有异常，最常用函数. 同时兼容Closeable为空未实际创建的情况.
+     *
      * @see {@link Closeables#close}
      */
     public static void closeQuietly(Closeable closeable) {
@@ -46,12 +47,13 @@ public class IOUtil {
      * 简单读取InputStream到String.
      */
     public static String toString(InputStream input) throws IOException {
-        InputStreamReader reader = new InputStreamReader(input, Charsets.UTF_8);
+        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
         return toString(reader);
     }
 
     /**
      * 简单读取Reader到String
+     *
      * @see {@link CharStreams#toString}
      */
     public static String toString(Reader input) throws IOException {
@@ -62,11 +64,12 @@ public class IOUtil {
      * 简单读取Reader的每行内容到List<String>
      */
     public static List<String> toLines(final InputStream input) throws IOException {
-        return toLines(new InputStreamReader(input, Charsets.UTF_8));
+        return toLines(new InputStreamReader(input, StandardCharsets.UTF_8));
     }
 
     /**
      * 简单读取Reader的每行内容到List<String>
+     *
      * @see {@link CharStreams#readLines}
      */
     public static List<String> toLines(final Reader input) throws IOException {
@@ -78,7 +81,7 @@ public class IOUtil {
      */
     public static void write(final String data, final OutputStream output) throws IOException {
         if (data != null) {
-            output.write(data.getBytes(Charsets.UTF_8));
+            output.write(data.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -93,6 +96,7 @@ public class IOUtil {
 
     /**
      * 在Reader与Writer间复制内容
+     *
      * @see {@link CharStreams#copy}
      */
     public static long copy(final Reader input, final Writer output) throws IOException {
@@ -101,6 +105,7 @@ public class IOUtil {
 
     /**
      * 在InputStream与OutputStream间复制内容
+     *
      * @see {@link ByteStreams#copy}
      */
     public static long copy(final InputStream input, final OutputStream output) throws IOException {
