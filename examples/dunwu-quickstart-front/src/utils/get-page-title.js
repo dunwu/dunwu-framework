@@ -1,6 +1,6 @@
 import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || 'dunwu-quickstart-front'
+const title = defaultSettings.title || 'Vue Element Admin'
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {

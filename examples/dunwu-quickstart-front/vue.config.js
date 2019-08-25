@@ -10,7 +10,9 @@ const name = defaultSettings.title || 'dunwu-quickstart-front' // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
-const port = 9528 // dev port
+// You can change the port by the following method:
+// port = 4000 npm run dev OR npm run dev --port = 9527
+const port = process.env.port || process.env.npm_config_port || 4000 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -40,14 +42,14 @@ module.exports = {
         target: `http://127.0.0.1:${port}/mock`,
         changeOrigin: true,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
+          ['^' + '/dev-api']: ''
         }
       },
-      '/stage-api': {
+      '/preview-api': {
         target: `http://localhost:9527`,
         changeOrigin: true,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
+          ['^' + '/preview-api']: ''
         }
       },
       '/prod-api': {

@@ -1,11 +1,9 @@
-const logininfo = {
+const tokens = {
   admin: {
-    password: '123456',
     token: 'admin-token'
   },
-  user: {
-    password: '123456',
-    token: 'user-token'
+  editor: {
+    token: 'editor-token'
   }
 }
 
@@ -14,15 +12,15 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar:
-      'http://dunwu.test.upcdn.net/images/others/zp.png',
+      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
-  'user-token': {
-    roles: ['user'],
-    introduction: 'I am an user',
+  'editor-token': {
+    roles: ['editor'],
+    introduction: 'I am an editor',
     avatar:
-      'http://dunwu.test.upcdn.net/images/others/zp.png',
-    name: 'Normal User'
+      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Editor'
   }
 }
 
@@ -32,51 +30,30 @@ export default [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { nickname, password } = config.body
-      const info = logininfo[nickname]
-
-      if (!info) {
-        return {
-          success: false,
-          code: 60204,
-          message: 'Account is not exists.',
-          data: {}
-        }
-      }
-
-      if (info.password !== password) {
-        return {
-          success: false,
-          code: 60203,
-          message: 'password is incorrect.',
-          data: {}
-        }
-      }
+      const { username } = config.body
+      const token = tokens[username]
 
       // mock error
-      if (!info.token) {
+      if (!token) {
         return {
           success: false,
-          code: 60204,
-          message: 'Account and password are incorrect.',
-          data: {}
+          code: '60204',
+          message: 'Account and password are incorrect.'
         }
       }
 
       return {
         success: true,
         code: '0',
-        msg: 'success',
-        data: {
-          token: info.token
-        }
+        message: 'success',
+        data: token
       }
     }
   },
 
   // get user info
   {
-    url: '/user/getInfo.*',
+    url: '/user/info.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -86,16 +63,15 @@ export default [
       if (!info) {
         return {
           success: false,
-          code: 50008,
-          message: 'Login failed, unable to get user details.',
-          data: {}
+          code: '50008',
+          message: 'Login failed, unable to get user details.'
         }
       }
 
       return {
         success: true,
         code: '0',
-        msg: 'success',
+        message: 'success',
         data: info
       }
     }
@@ -109,8 +85,8 @@ export default [
       return {
         success: true,
         code: '0',
-        msg: 'success',
-        data: {}
+        message: 'success',
+        data: 'success'
       }
     }
   }

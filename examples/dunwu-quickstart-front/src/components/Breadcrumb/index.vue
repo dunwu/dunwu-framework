@@ -19,7 +19,11 @@ export default {
     }
   },
   watch: {
-    $route() {
+    $route(route) {
+      // if you go to the redirect page, do not update the breadcrumbs
+      if (route.path.startsWith('/redirect/')) {
+        return
+      }
       this.getBreadcrumb()
     }
   },
@@ -33,7 +37,7 @@ export default {
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
+        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)

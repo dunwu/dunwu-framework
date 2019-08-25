@@ -89,14 +89,14 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.messages || 'Error'))
+      return Promise.reject(new Error(res.message || 'Error'))
     }
   },
   error => {
     console.log('err' + error) // for debug
     console.groupEnd()
     Message({
-      message: error.messages,
+      message: error.message,
       type: 'error',
       duration: 5 * 1000
     })
