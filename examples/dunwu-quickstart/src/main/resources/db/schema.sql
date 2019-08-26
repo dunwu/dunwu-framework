@@ -33,7 +33,7 @@ CREATE TABLE `login_info` (
   `email` VARCHAR(100) DEFAULT '' COMMENT '邮箱',
   `mobile` VARCHAR(20) DEFAULT '' COMMENT '手机号',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME DEFAULT ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_nickname` (`nickname`),
@@ -55,7 +55,7 @@ CREATE TABLE `file_info` (
   `store_type` VARCHAR(128) DEFAULT '' COMMENT '文件存储服务类型',
   `store_url` VARCHAR(128) DEFAULT '' COMMENT '文件存储路径',
   `access_url` VARCHAR(160) NOT NULL COMMENT '文件访问路径',
-  `time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+  `time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_file_name` (`file_name`),
   UNIQUE KEY `uk_access_url` (`access_url`),
@@ -101,9 +101,24 @@ CREATE TABLE `scheduler_info` (
   `status` INT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '状态',
   `note` VARCHAR(100) DEFAULT '' COMMENT '备注',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_trigger_group_name` (`trigger_group`, `trigger_name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='调度信息表';
 
+DROP TABLE IF EXISTS `template_config`;
+CREATE TABLE `template_config` (
+  `id` VARCHAR(32) NOT NULL COMMENT 'ID',
+  `template_name` VARCHAR(128) NOT NULL COMMENT '模板名',
+  `namespace` VARCHAR(32) DEFAULT 'default' COMMENT '命名空间。一般对应业务系统',
+  `tag` VARCHAR(32) DEFAULT '' COMMENT '标签。供业务系统使用',
+  `content` TEXT NOT NULL COMMENT '模板内容',
+  `metadata` TEXT NOT NULL COMMENT '模板元数据',
+  `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_namespace_template` (`namespace`, `template_name`),
+  KEY `idx_tag` (`tag`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='模板配置表';

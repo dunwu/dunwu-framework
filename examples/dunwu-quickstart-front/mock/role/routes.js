@@ -81,7 +81,7 @@ export const asyncRoutes = [
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'editor']
+      roles: ['admin', 'user']
     },
     children: [
       {
@@ -149,8 +149,8 @@ export const asyncRoutes = [
         meta: { title: 'Markdown' }
       },
       {
-        path: 'json-editor',
-        component: 'views/components-demo/json-editor',
+        path: 'json-user',
+        component: 'views/components-demo/json-user',
         name: 'JsonEditorDemo',
         meta: { title: 'Json Editor' }
       },

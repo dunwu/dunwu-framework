@@ -2,7 +2,7 @@ import { validUsername, validURL, validLowerCase, validUpperCase, validAlphabets
 describe('Utils:validate', () => {
   it('validUsername', () => {
     expect(validUsername('admin')).toBe(true)
-    expect(validUsername('editor')).toBe(true)
+    expect(validUsername('user')).toBe(true)
     expect(validUsername('xxxx')).toBe(false)
   })
   it('validURL', () => {

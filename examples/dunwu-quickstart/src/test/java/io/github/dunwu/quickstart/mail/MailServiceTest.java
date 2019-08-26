@@ -12,8 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-14
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class MailServiceTest {
 
     @Autowired

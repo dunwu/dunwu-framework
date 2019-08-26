@@ -6,6 +6,7 @@ const mailRouter = {
   name: 'email',
   meta: { title: '邮件', icon: 'email' }
 }
+
 const filesystemRouter = {
   path: 'filesystem',
   component: () => import('@/views/showcase/filesystem'),
@@ -26,6 +27,7 @@ const filesystemRouter = {
     }
   ]
 }
+
 const schedulerRouter = {
   path: 'scheduler',
   component: () => import('@/views/showcase/scheduler'),
@@ -52,12 +54,37 @@ const schedulerRouter = {
   ]
 }
 
+const templateRouter = {
+  path: 'template',
+  component: () => import('@/views/showcase/scheduler'),
+  name: 'template',
+  meta: { title: '模板服务', icon: 'timer' },
+  children: [
+    {
+      path: 'list',
+      component: () => import('@/views/showcase/template/list'),
+      name: 'list',
+      meta: { title: '模板列表', icon: 'list' }
+    },
+    {
+      path: 'create',
+      component: () => import('@/views/showcase/template/detail'),
+      hidden: true
+    },
+    {
+      path: 'update',
+      component: () => import('@/views/showcase/template/detail'),
+      hidden: true
+    }
+  ]
+}
+
 const showcaseRouter = {
   path: '/showcase',
   component: Layout,
   name: 'showcase',
   meta: { title: '功能示例', icon: 'experiment' },
-  children: [filesystemRouter, schedulerRouter, mailRouter]
+  children: [filesystemRouter, schedulerRouter, templateRouter, mailRouter]
 }
 
 export default showcaseRouter
