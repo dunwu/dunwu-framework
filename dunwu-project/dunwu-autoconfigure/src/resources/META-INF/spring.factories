@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+io.github.dunwu.autoconfigure.mybatis.DunwuMybatisAutoConfiguration,\
+io.github.dunwu.autoconfigure.mail.DunwuMailAutoConfiguration,\
+io.github.dunwu.autoconfigure.web.DunwuWebAutoConfiguration

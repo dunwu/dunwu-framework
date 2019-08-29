@@ -6,10 +6,12 @@ logs
 
 # temp files
 *.class
-*.jar
+#*.jar
 *.war
 *.versionsBackup
 
+# maven plugin temp files
+.flattened-pom.xml
 
 ################ JAVASCRIPT ################
 # dependencies
