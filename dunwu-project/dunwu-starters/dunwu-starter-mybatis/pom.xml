@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>dunwu-starter-mybatis</artifactId>
-  <name>dunwu-starter-data</name>
+  <name>dunwu-starter-mybatis</name>
   <description>Starter for using Mybatis</description>
 
   <properties>

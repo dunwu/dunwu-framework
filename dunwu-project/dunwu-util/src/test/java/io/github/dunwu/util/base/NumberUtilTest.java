@@ -1,9 +1,10 @@
 package io.github.dunwu.util.base;
 
-import static org.assertj.core.api.Assertions.*;
-
-import io.github.dunwu.util.base.NumberUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class NumberUtilTest {
 
@@ -182,5 +183,16 @@ public class NumberUtilTest {
         assertThat(NumberUtil.to2DigitString(23.112d)).isEqualTo("23.11");
         assertThat(NumberUtil.to2DigitString(23.116d)).isEqualTo("23.12");
 
+    }
+
+    @Test
+    public void numberToEnWords() {
+        Assertions.assertEquals("One Hundred Twenty Three", NumberUtil.intToEnWords(123));
+        Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five", NumberUtil.intToEnWords(12345));
+        Assertions.assertEquals("One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+                                NumberUtil.intToEnWords(1234567));
+        Assertions.assertEquals(
+            "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
+            NumberUtil.intToEnWords(1234567891));
     }
 }

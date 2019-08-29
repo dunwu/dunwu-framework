@@ -18,6 +18,9 @@
   <properties>
     <mybatis-plus.version>3.1.0</mybatis-plus.version>
     <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
+
+    <!--跳过 pmd 检查-->
+    <skip.pmd.check>true</skip.pmd.check>
   </properties>
 
   <dependencies>

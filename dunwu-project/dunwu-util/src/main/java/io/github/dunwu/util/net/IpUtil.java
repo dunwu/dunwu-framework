@@ -3,6 +3,7 @@ package io.github.dunwu.util.net;
 import com.google.common.net.InetAddresses;
 import io.github.dunwu.util.base.NumberUtil;
 import io.github.dunwu.util.text.MoreStringUtil;
+import io.github.dunwu.util.text.RegexUtil;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -17,6 +18,18 @@ import java.util.List;
 public class IpUtil {
 
     public static final int MAX_IP_NUM = 4;
+
+    public static boolean isValidIp(String address) {
+        return RegexUtil.isIpv4(address) || RegexUtil.isIpv6(address);
+    }
+
+    public static boolean isValidIpv4(String address) {
+        return RegexUtil.isIpv4(address);
+    }
+
+    public static boolean isValidIpv6(String address) {
+        return RegexUtil.isIpv6(address);
+    }
 
     /**
      * 从InetAddress转化到int, 传输和存储时, 用int代表InetAddress是最小的开销. InetAddress可以是IPV4或IPV6，都会转成IPV4.

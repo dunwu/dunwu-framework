@@ -30,7 +30,7 @@ public class MarkdownFormatHelper {
         for (String text : contents) {
             text = replaceSpecialChars(text, isCode);
 
-            if (RegexUtil.Checker.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
+            if (RegexUtil.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
                 text = text.replaceAll("/", "-");
             }
 
@@ -64,7 +64,7 @@ public class MarkdownFormatHelper {
     }
 
     public static String convertImgTag(final String text) {
-        String newstr = RegexUtil.replaceAllMatchContent(text, RegexUtil.Checker.REGEX_MARKDOWN_IMAGE_TAG, "![]");
+        String newstr = RegexUtil.replaceAllMatchContent(text, RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
 
         boolean hasPic = newstr.contains("![]");
         if (!hasPic) {

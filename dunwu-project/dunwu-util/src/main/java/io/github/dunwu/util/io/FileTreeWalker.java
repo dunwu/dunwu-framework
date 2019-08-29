@@ -3,7 +3,7 @@ package io.github.dunwu.util.io;
 import com.google.common.base.Predicate;
 import com.google.common.collect.TreeTraverser;
 import com.google.common.io.Files;
-import io.github.dunwu.util.text.WildcardUtil;
+import io.github.dunwu.util.text.TextUtil;
 
 import java.io.File;
 import java.util.List;
@@ -103,7 +103,7 @@ public class FileTreeWalker {
 
         @Override
         public boolean apply(File input) {
-            return input.isFile() && WildcardUtil.match(input.getName(), pattern);
+            return input.isFile() && TextUtil.match(input.getName(), pattern);
         }
     }
 

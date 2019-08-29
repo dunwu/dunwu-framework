@@ -39,7 +39,7 @@ public class MockUtilTest {
     void anyIPv4() {
         String ip = MockUtil.anyIpv4();
         System.out.println("MockUtil.anyIpv4(): " + ip);
-        Assertions.assertTrue(RegexUtil.Checker.isValidIpv4(ip));
+        Assertions.assertTrue(RegexUtil.isIpv4(ip));
     }
 
     @RepeatedTest(10)
