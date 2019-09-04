@@ -6,13 +6,13 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.4.6-SNAPSHOT</version>
+    <version>0.4.6</version>
     <relativePath>../</relativePath>
   </parent>
 
   <!--<groupId>io.github.dunwu</groupId>-->
   <artifactId>dunwu-project</artifactId>
-  <version>0.4.6-SNAPSHOT</version>
+  <version>0.4.6</version>
   <packaging>pom</packaging>
   <name>dunwu-project</name>
   <description>Dunwu Root Project</description>
@@ -33,4 +33,25 @@
     <module>dunwu-autoconfigure</module>
     <module>dunwu-starters</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>sonatype-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>sonatype-staging</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 </project>

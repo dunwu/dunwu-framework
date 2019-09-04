@@ -19,8 +19,8 @@ import java.util.Map;
  * @since 2019-07-31
  */
 @RestController
-@RequestMapping("/scheduler")
-@Api(tags = "scheduler", description = "调度信息 Controller")
+@RequestMapping("scheduler")
+@Api(tags = "scheduler", description = "SchedulerController")
 public class SchedulerController {
 
     private final SchedulerService schedulerService;

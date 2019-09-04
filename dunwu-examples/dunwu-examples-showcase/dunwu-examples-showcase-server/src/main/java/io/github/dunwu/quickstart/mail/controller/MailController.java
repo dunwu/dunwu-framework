@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-08-23
  */
 @RestController
-@RequestMapping("/mail")
-@Api(tags = "mail", description = "邮件服务")
+@RequestMapping("mail")
+@Api(tags = "mail", description = "MailController")
 public class MailController {
 
     private final MailService mailService;

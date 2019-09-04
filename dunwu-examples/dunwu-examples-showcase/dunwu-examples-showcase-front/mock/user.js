@@ -30,8 +30,8 @@ export default [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
-      const token = tokens[username]
+      const { nickname } = config.body
+      const token = tokens[nickname]
 
       // mock error
       if (!token) {

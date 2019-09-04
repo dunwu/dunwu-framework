@@ -34,7 +34,7 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T> {
     }
 
     @Override
-    public DataResult<Serializable> save(T entity) {
+    public DataResult<String> save(T entity) {
         if (dao.save(entity)) {
             return ResultUtil.successDataResult(entity.getId());
         } else {

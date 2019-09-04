@@ -33,7 +33,7 @@ public abstract class BaseRecordEntity extends BaseEntity {
     protected LocalDateTime updateTime;
 
     @Version
-    @ApiModelProperty(value = "版本号。用于乐观锁，不需要用户填值。")
+    @ApiModelProperty(value = "版本号。用于乐观锁，不需要用户填值。", example = "0")
     protected Integer version;
 
     @TableLogic

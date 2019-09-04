@@ -5,7 +5,7 @@ import io.github.dunwu.quickstart.user.dto.LoginInfoDTO;
 import io.github.dunwu.quickstart.user.dto.UserInfoDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -16,5 +16,7 @@ public interface UserManager {
 
     DataResult<Map<String, String>> register(LoginInfoDTO registerUserDTO);
 
-    DataResult<UserInfoDTO> login(HttpServletRequest request, HttpServletResponse response, Map<String, String> map);
+    DataResult<UserInfoDTO> login(HttpSession session, Map<String, String> map);
+
+    DataResult<UserInfoDTO> getCurrentUserInfo(HttpSession session);
 }

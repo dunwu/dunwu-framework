@@ -18,8 +18,8 @@ import java.util.Map;
  * @since 2019-08-29
  */
 @RestController
-@RequestMapping("/template")
-@Api(tags = "TemplateController", description = "模板配置表 CRUD Controller")
+@RequestMapping("template")
+@Api(tags = "template", description = "TemplateController")
 public class TemplateController {
 
     private final TemplateConfigService service;

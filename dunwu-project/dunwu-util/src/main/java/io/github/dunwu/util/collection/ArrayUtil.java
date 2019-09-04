@@ -36,9 +36,9 @@ public class ArrayUtil {
      */
     public static <T> boolean isEmpty(T[] array) {
         if (array == null || array.length == 0) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

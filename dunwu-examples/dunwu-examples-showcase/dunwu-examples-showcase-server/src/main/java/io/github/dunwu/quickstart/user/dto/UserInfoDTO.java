@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -75,6 +76,6 @@ public class UserInfoDTO implements Serializable {
 
     private String token;
     private String introduction;
-    private String roles;
+    private List<String> roles;
     private String currentAuthority;
 }

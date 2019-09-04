@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>${revision}</version>
+  <version>0.4.6</version>
   <packaging>pom</packaging>
   <name>dunwu</name>
   <description>Java 开发脚手架</description>
@@ -58,27 +58,6 @@
     <system>Github</system>
     <url>https://github.com/dunwu/dunwu/issues</url>
   </issueManagement>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <activation>
-        <property>
-          <name>release</name>
-        </property>
-      </activation>
-      <distributionManagement>
-        <snapshotRepository>
-          <id>sonatype-snapshots</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-          <id>sonatype-staging</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-      </distributionManagement>
-    </profile>
-  </profiles>
 
   <build>
     <plugins>

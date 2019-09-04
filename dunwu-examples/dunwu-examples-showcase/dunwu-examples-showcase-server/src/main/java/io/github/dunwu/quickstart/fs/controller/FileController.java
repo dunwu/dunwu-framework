@@ -26,8 +26,8 @@ import java.io.IOException;
  * @since 2019-07-23
  */
 @RestController
-@RequestMapping("/file")
-@Api(tags = "file", description = "文件上传下载服务")
+@RequestMapping("file")
+@Api(tags = "file", description = "FileController")
 public class FileController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());

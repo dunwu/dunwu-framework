@@ -31,7 +31,7 @@ public interface IService<T extends BaseEntity> {
      *
      * @param entity 实体对象
      */
-    DataResult<? extends Serializable> save(T entity);
+    DataResult<String> save(T entity);
 
     /**
      * 插入（批量）

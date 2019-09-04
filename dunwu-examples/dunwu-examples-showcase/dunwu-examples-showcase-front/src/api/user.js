@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export async function login(data) {
   return request({
     url: '/user/login',
     method: 'post',
@@ -10,13 +10,13 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/user/getInfo',
     method: 'get',
     params: { token }
   })
 }
 
-export function logout() {
+export async function logout() {
   return request({
     url: '/user/logout',
     method: 'post'
