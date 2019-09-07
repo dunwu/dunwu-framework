@@ -17,9 +17,10 @@ import java.io.Serializable;
 @Data
 public abstract class BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    @ApiModelProperty(value = "ID", example = "0")
-    protected String id;
+	@TableId(value = "id", type = IdType.ID_WORKER_STR)
+	@ApiModelProperty(value = "ID", example = "0")
+	protected String id;
+
 }

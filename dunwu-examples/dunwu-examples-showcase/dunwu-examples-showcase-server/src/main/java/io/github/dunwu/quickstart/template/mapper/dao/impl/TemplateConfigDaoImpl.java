@@ -15,6 +15,7 @@ import io.github.dunwu.quickstart.template.mapper.dao.TemplateConfigDao;
  * @since 2019-08-26
  */
 @Dao
-public class TemplateConfigDaoImpl extends BaseDao<TemplateConfigMapper, TemplateConfig> implements TemplateConfigDao {
+public class TemplateConfigDaoImpl extends BaseDao<TemplateConfigMapper, TemplateConfig>
+		implements TemplateConfigDao {
 
 }

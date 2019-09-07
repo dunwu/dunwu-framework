@@ -29,21 +29,22 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public abstract class FileOutConfig {
 
-    /**
-     * 模板
-     */
-    private String templatePath;
+	/**
+	 * 模板
+	 */
+	private String templatePath;
 
-    public FileOutConfig() {
-        // to do nothing
-    }
+	public FileOutConfig() {
+		// to do nothing
+	}
 
-    public FileOutConfig(String templatePath) {
-        this.templatePath = templatePath;
-    }
+	public FileOutConfig(String templatePath) {
+		this.templatePath = templatePath;
+	}
 
-    /**
-     * 输出文件
-     */
-    public abstract String outputFile(TableInfo tableInfo);
+	/**
+	 * 输出文件
+	 */
+	public abstract String outputFile(TableInfo tableInfo);
+
 }

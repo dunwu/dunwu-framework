@@ -5,63 +5,68 @@ package io.github.dunwu.util.china.bean;
  * @since 2018-12-11
  */
 public class County implements Comparable<County> {
-    private String code;
-    private String name;
-    private City city;
 
-    public String getCode() {
-        return code;
-    }
+	private String code;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	private City city;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public City getCity() {
-        return city;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setCity(City city) {
-        this.city = city;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public int compareTo(County o) {
-        return this.getCode().compareToIgnoreCase(o.getCode());
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public int hashCode() {
-        int prime = 31;
-        int result = 1;
-        result = prime * result + ((code == null) ? 0 : code.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+	public City getCity() {
+		return city;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+	public void setCity(City city) {
+		this.city = city;
+	}
 
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+	@Override
+	public int compareTo(County o) {
+		return this.getCode().compareToIgnoreCase(o.getCode());
+	}
 
-        County county = (County) obj;
-        if (county.getCode().equals(this.getCode())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public int hashCode() {
+		int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+
+		County county = (County) obj;
+		if (county.getCode().equals(this.getCode())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 }

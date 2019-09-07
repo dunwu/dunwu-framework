@@ -22,13 +22,7 @@ package com.baomidou.mybatisplus.generator.config.rules;
  * @since 2018-08-07
  */
 public enum FileType {
-    ENTITY,
-    MAPPER,
-    XML,
-    DAO,
-    DAO_IMPL,
-    SERVICE,
-    SERVICE_IMPL,
-    CONTROLLER,
-    OTHER
+
+	ENTITY, MAPPER, XML, DAO, DAO_IMPL, SERVICE, SERVICE_IMPL, CONTROLLER, OTHER
+
 }

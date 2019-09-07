@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 @Api(tags = "index", description = "IndexController")
 public class IndexController {
-    @RequestMapping("/")
-    public String index() {
-        return "forward:/static/lib/swagger-ui/swagger.html";
-    }
+
+	@RequestMapping("/")
+	public String index() {
+		return "forward:/static/lib/swagger-ui/swagger.html";
+	}
+
 }

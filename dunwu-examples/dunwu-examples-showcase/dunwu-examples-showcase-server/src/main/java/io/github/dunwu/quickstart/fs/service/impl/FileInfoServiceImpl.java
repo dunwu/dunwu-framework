@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-08-08
  */
 @Service
-public class FileInfoServiceImpl extends BaseService<FileInfo> implements FileInfoService {
+public class FileInfoServiceImpl extends BaseService<FileInfo>
+		implements FileInfoService {
 
 }

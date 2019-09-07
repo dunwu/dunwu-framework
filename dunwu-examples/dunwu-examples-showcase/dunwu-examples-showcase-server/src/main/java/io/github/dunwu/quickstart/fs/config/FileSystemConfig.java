@@ -11,5 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2019-07-24
  */
 @Configuration
-@EnableConfigurationProperties({FileSystemProperties.class})
-public class FileSystemConfig {}
+@EnableConfigurationProperties({ FileSystemProperties.class })
+public class FileSystemConfig {
+
+}

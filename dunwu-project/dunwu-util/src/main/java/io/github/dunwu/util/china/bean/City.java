@@ -8,76 +8,82 @@ import java.util.TreeSet;
  * @since 2018-12-11
  */
 public class City implements Comparable<City> {
-    private String code;
-    private String name;
-    private Province province;
-    private Set<County> counties;
 
-    public City() {
-        counties = new TreeSet<>();
-    }
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	private String name;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	private Province province;
 
-    public String getName() {
-        return name;
-    }
+	private Set<County> counties;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public City() {
+		counties = new TreeSet<>();
+	}
 
-    public Province getProvince() {
-        return province;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setProvince(Province province) {
-        this.province = province;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public Set<County> getCounties() {
-        return counties;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCounties(Set<County> counties) {
-        this.counties = counties;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public int compareTo(City o) {
-        return this.getCode().compareToIgnoreCase(o.getCode());
-    }
+	public Province getProvince() {
+		return province;
+	}
 
-    @Override
-    public int hashCode() {
-        int prime = 31;
-        int result = 1;
-        result = prime * result + ((code == null) ? 0 : code.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+	public void setProvince(Province province) {
+		this.province = province;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+	public Set<County> getCounties() {
+		return counties;
+	}
 
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+	public void setCounties(Set<County> counties) {
+		this.counties = counties;
+	}
 
-        City city = (City) obj;
-        if (city.getCode().equals(this.getCode())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public int compareTo(City o) {
+		return this.getCode().compareToIgnoreCase(o.getCode());
+	}
+
+	@Override
+	public int hashCode() {
+		int prime = 31;
+		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+
+		City city = (City) obj;
+		if (city.getCode().equals(this.getCode())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 }

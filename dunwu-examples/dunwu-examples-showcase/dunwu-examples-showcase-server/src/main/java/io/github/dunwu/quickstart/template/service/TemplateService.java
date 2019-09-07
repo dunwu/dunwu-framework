@@ -11,7 +11,9 @@ import java.util.Map;
  */
 public interface TemplateService {
 
-    String TMPL_MAIL_CHECKCODE = "templates/mail/checkcode.ftl";
+	String TMPL_MAIL_CHECKCODE = "templates/mail/checkcode.ftl";
 
-    String mergeTemplate(final String tmplName, Map params) throws IOException, TemplateException;
+	String mergeTemplate(final String tmplName, Map params)
+			throws IOException, TemplateException;
+
 }

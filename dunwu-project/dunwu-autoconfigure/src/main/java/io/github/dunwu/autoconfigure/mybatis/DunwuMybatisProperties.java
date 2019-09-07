@@ -14,5 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ToString
 @ConfigurationProperties(prefix = "spring.mybatis")
 public class DunwuMybatisProperties {
-    private Boolean blockAttackEnabled = true;
+
+	private Boolean blockAttackEnabled = true;
+
 }

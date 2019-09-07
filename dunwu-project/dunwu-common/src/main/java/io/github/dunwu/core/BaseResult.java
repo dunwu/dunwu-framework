@@ -15,52 +15,54 @@ import java.util.List;
 @ToString
 public class BaseResult implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 响应结果
-     */
-    protected Boolean success;
+	/**
+	 * 响应结果
+	 */
+	protected Boolean success;
 
-    /**
-     * 错误码
-     */
-    protected String code;
+	/**
+	 * 错误码
+	 */
+	protected String code;
 
-    /**
-     * 响应信息
-     */
-    protected String message;
+	/**
+	 * 响应信息
+	 */
+	protected String message;
 
-    public BaseResult() { }
+	public BaseResult() {
+	}
 
-    public BaseResult(ErrorCode appCode) {
-        this.success = ErrorCode.SUCCESS_CODE.equals(appCode.getCode());
-        this.code = appCode.getCode();
-        this.message = appCode.getMessage();
-    }
+	public BaseResult(ErrorCode appCode) {
+		this.success = ErrorCode.SUCCESS_CODE.equals(appCode.getCode());
+		this.code = appCode.getCode();
+		this.message = appCode.getMessage();
+	}
 
-    public BaseResult(BaseResult result) {
-        this.success = result.getSuccess();
-        this.code = result.getCode();
-        this.message = result.getMessage();
-    }
+	public BaseResult(BaseResult result) {
+		this.success = result.getSuccess();
+		this.code = result.getCode();
+		this.message = result.getMessage();
+	}
 
-    public BaseResult(Boolean success, String code, String message) {
-        this.success = success;
-        this.code = code;
-        this.message = message;
-    }
+	public BaseResult(Boolean success, String code, String message) {
+		this.success = success;
+		this.code = code;
+		this.message = message;
+	}
 
-    public BaseResult(Boolean success, String code, String message, Object... params) {
-        this.success = success;
-        this.code = code;
-        this.message = String.format(message, params);
-    }
+	public BaseResult(Boolean success, String code, String message, Object... params) {
+		this.success = success;
+		this.code = code;
+		this.message = String.format(message, params);
+	}
 
-    public BaseResult(Boolean success, String code, List<String> messages) {
-        this.success = success;
-        this.code = code;
-        this.message = MoreStringUtil.mergeInLines(messages);
-    }
+	public BaseResult(Boolean success, String code, List<String> messages) {
+		this.success = success;
+		this.code = code;
+		this.message = MoreStringUtil.mergeInLines(messages);
+	}
+
 }

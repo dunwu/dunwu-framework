@@ -15,6 +15,7 @@ import io.github.dunwu.annotation.Dao;
  * @since 2019-08-07
  */
 @Dao
-public class LoginInfoDaoImpl extends BaseDao<LoginInfoMapper, LoginInfo> implements LoginInfoDao {
+public class LoginInfoDaoImpl extends BaseDao<LoginInfoMapper, LoginInfo>
+		implements LoginInfoDao {
 
 }

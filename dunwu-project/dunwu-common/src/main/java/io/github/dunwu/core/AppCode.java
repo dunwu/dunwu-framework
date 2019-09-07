@@ -7,13 +7,15 @@ package io.github.dunwu.core;
  * @see <a href="https://httpstatuses.com/">HTTP 状态码</a>
  * @see <a href="http://wiki.open.qq.com/wiki/%E9%94%99%E8%AF%AF%E7%A0%81">腾讯开放平台错误码</a>
  * @see <a href="https://open.weibo.com/wiki/Error_code">新浪开放平台错误码</a>
- * @see <a href="https://docs.open.alipay.com/api_1/alipay.trade.order.settle/">支付宝开放平台API</a>
- * @see
- * <a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
+ * @see <a href=
+ * "https://docs.open.alipay.com/api_1/alipay.trade.order.settle/">支付宝开放平台API</a>
+ * @see <a href=
+ * "https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
  * @since 2019-04-11
  */
 public enum AppCode implements ErrorCode {
-    // @formatter:off
+
+	// @formatter:off
     SUCCESS(ErrorCode.SUCCESS_CODE, "success", "成功"),
     FAIL("-1", "fail", "失败"),
     UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
@@ -58,28 +60,31 @@ public enum AppCode implements ErrorCode {
     MISSING_VERSION("408", "缺失版本号", "缺失版本号");
     // @formatter:on
 
-    private final String code;
-    private final String message;
-    private final String template;
+	private final String code;
 
-    AppCode(String code, String msg, String template) {
-        this.code = code;
-        this.message = msg;
-        this.template = template;
-    }
+	private final String message;
 
-    @Override
-    public String getCode() {
-        return code;
-    }
+	private final String template;
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
+	AppCode(String code, String msg, String template) {
+		this.code = code;
+		this.message = msg;
+		this.template = template;
+	}
 
-    @Override
-    public String getTemplate() {
-        return template;
-    }
+	@Override
+	public String getCode() {
+		return code;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
+	}
+
+	@Override
+	public String getTemplate() {
+		return template;
+	}
+
 }

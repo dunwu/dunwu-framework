@@ -6,7 +6,8 @@ package io.github.dunwu.constant;
  */
 public interface IStringStringEnum {
 
-    String getKey();
+	String getKey();
 
-    String getValue();
+	String getValue();
+
 }

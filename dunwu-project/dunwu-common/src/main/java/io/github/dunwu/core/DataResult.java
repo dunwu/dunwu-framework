@@ -17,36 +17,39 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DataResult<T> extends BaseResult {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 数据对象。当 successBaseResult = true 才有值
-     */
-    private T data;
+	/**
+	 * 数据对象。当 successBaseResult = true 才有值
+	 */
+	private T data;
 
-    public DataResult() { }
+	public DataResult() {
+	}
 
-    public DataResult(ErrorCode appCode) {
-        super(appCode);
-    }
+	public DataResult(ErrorCode appCode) {
+		super(appCode);
+	}
 
-    public DataResult(BaseResult result) {
-        super(result);
-        this.data = null;
-    }
+	public DataResult(BaseResult result) {
+		super(result);
+		this.data = null;
+	}
 
-    public DataResult(T data, Boolean success, String code, String message) {
-        super(success, code, message);
-        this.data = data;
-    }
+	public DataResult(T data, Boolean success, String code, String message) {
+		super(success, code, message);
+		this.data = data;
+	}
 
-    public DataResult(T data, Boolean success, String code, String message, Object... params) {
-        super(success, code, message, params);
-        this.data = data;
-    }
+	public DataResult(T data, Boolean success, String code, String message,
+			Object... params) {
+		super(success, code, message, params);
+		this.data = data;
+	}
 
-    public DataResult(T data, Boolean success, String code, List<String> messages) {
-        super(success, code, messages);
-        this.data = data;
-    }
+	public DataResult(T data, Boolean success, String code, List<String> messages) {
+		super(success, code, messages);
+		this.data = data;
+	}
+
 }

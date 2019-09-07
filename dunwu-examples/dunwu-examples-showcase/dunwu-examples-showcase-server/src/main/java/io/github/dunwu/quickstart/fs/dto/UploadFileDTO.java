@@ -16,18 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 @ToString
 public class UploadFileDTO {
 
-    @ApiModelProperty(value = "命名空间。一般对应业务系统")
-    private String namespace;
+	@ApiModelProperty(value = "命名空间。一般对应业务系统")
+	private String namespace;
 
-    @ApiModelProperty(value = "标签。供业务系统使用")
-    private String tag;
+	@ApiModelProperty(value = "标签。供业务系统使用")
+	private String tag;
 
-    @ApiModelProperty(value = "源文件名")
-    private String originName;
+	@ApiModelProperty(value = "源文件名")
+	private String originName;
 
-    @ApiModelProperty(value = "文件存储服务类型")
-    private FileStoreTypeEnum storeType;
+	@ApiModelProperty(value = "文件存储服务类型")
+	private FileStoreTypeEnum storeType;
 
-    @ApiModelProperty(value = "上传的文件")
-    private MultipartFile file;
+	@ApiModelProperty(value = "上传的文件")
+	private MultipartFile file;
+
 }

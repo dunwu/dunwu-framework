@@ -23,179 +23,185 @@ import java.util.Map;
 @Api(tags = "scheduler", description = "SchedulerController")
 public class SchedulerController {
 
-    private final SchedulerService schedulerService;
-    private final SchedulerInfoService schedulerInfoService;
+	private final SchedulerService schedulerService;
 
-    public SchedulerController(SchedulerService schedulerService, SchedulerInfoService schedulerInfoService) {
-        this.schedulerService = schedulerService;
-        this.schedulerInfoService = schedulerInfoService;
-    }
+	private final SchedulerInfoService schedulerInfoService;
 
-    @PostMapping("createJob")
-    @ApiOperation(value = "创建调度任务")
-    public BaseResult createJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.createJob(schedulerInfoDTO);
-    }
+	public SchedulerController(SchedulerService schedulerService,
+			SchedulerInfoService schedulerInfoService) {
+		this.schedulerService = schedulerService;
+		this.schedulerInfoService = schedulerInfoService;
+	}
 
-    @PostMapping("updateJob")
-    @ApiOperation(value = "更新调度任务")
-    public BaseResult updateJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.updateJob(schedulerInfoDTO);
-    }
+	@PostMapping("createJob")
+	@ApiOperation(value = "创建调度任务")
+	public BaseResult createJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.createJob(schedulerInfoDTO);
+	}
 
-    @PostMapping("deleteJob")
-    @ApiOperation(value = "删除调度任务")
-    public BaseResult deleteJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.deleteJob(schedulerInfoDTO);
-    }
+	@PostMapping("updateJob")
+	@ApiOperation(value = "更新调度任务")
+	public BaseResult updateJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.updateJob(schedulerInfoDTO);
+	}
 
-    @PostMapping("pauseJob")
-    @ApiOperation(value = "暂停调度任务")
-    public BaseResult pauseJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.pauseJob(schedulerInfoDTO);
-    }
+	@PostMapping("deleteJob")
+	@ApiOperation(value = "删除调度任务")
+	public BaseResult deleteJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.deleteJob(schedulerInfoDTO);
+	}
 
-    @PostMapping("resumeJob")
-    @ApiOperation(value = "恢复调度任务")
-    public BaseResult resumeJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.resumeJob(schedulerInfoDTO);
-    }
+	@PostMapping("pauseJob")
+	@ApiOperation(value = "暂停调度任务")
+	public BaseResult pauseJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.pauseJob(schedulerInfoDTO);
+	}
 
-    @PostMapping("executeJob")
-    @ApiOperation(value = "立即执行一次调度任务")
-    public BaseResult executeJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
-        return schedulerService.executeJob(schedulerInfoDTO);
-    }
+	@PostMapping("resumeJob")
+	@ApiOperation(value = "恢复调度任务")
+	public BaseResult resumeJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.resumeJob(schedulerInfoDTO);
+	}
 
-    @GetMapping("/getJobBeans")
-    @ApiOperation(value = "获取所有 Service 类")
-    public DataListResult<BeanDTO> getJobBeans() {
-        return ResultUtil.successDataListResult(schedulerService.getJobHandlers());
-    }
+	@PostMapping("executeJob")
+	@ApiOperation(value = "立即执行一次调度任务")
+	public BaseResult executeJob(@RequestBody SchedulerInfoDTO schedulerInfoDTO) {
+		return schedulerService.executeJob(schedulerInfoDTO);
+	}
 
-    @PostMapping("save")
-    @ApiOperation(value = "插入一条 SchedulerInfo 记录，插入成功返回 ID（选择字段，策略插入）")
-    public DataResult<? extends Serializable> save(SchedulerInfo entity) {
-        return schedulerInfoService.save(entity);
-    }
+	@GetMapping("/getJobBeans")
+	@ApiOperation(value = "获取所有 Service 类")
+	public DataListResult<BeanDTO> getJobBeans() {
+		return ResultUtil.successDataListResult(schedulerService.getJobHandlers());
+	}
 
-    @PostMapping("saveBatch")
-    @ApiOperation(value = "批量添加 SchedulerInfo 记录（选择字段，策略插入）")
-    public BaseResult saveBatch(Collection<SchedulerInfo> entityList) {
-        return schedulerInfoService.saveBatch(entityList);
-    }
+	@PostMapping("save")
+	@ApiOperation(value = "插入一条 SchedulerInfo 记录，插入成功返回 ID（选择字段，策略插入）")
+	public DataResult<? extends Serializable> save(SchedulerInfo entity) {
+		return schedulerInfoService.save(entity);
+	}
 
-    @PostMapping("removeById")
-    @ApiOperation(value = "根据 ID 删除一条 SchedulerInfo 记录")
-    public BaseResult removeById(Serializable id) {
-        return schedulerInfoService.removeById(id);
-    }
+	@PostMapping("saveBatch")
+	@ApiOperation(value = "批量添加 SchedulerInfo 记录（选择字段，策略插入）")
+	public BaseResult saveBatch(Collection<SchedulerInfo> entityList) {
+		return schedulerInfoService.saveBatch(entityList);
+	}
 
-    @PostMapping("removeByMap")
-    @ApiOperation(value = "根据 columnMap 条件，删除 SchedulerInfo 记录")
-    public BaseResult removeByMap(Map<String, Object> columnMap) {
-        return schedulerInfoService.removeByMap(columnMap);
-    }
+	@PostMapping("removeById")
+	@ApiOperation(value = "根据 ID 删除一条 SchedulerInfo 记录")
+	public BaseResult removeById(Serializable id) {
+		return schedulerInfoService.removeById(id);
+	}
 
-    @PostMapping("remove")
-    @ApiOperation(value = "根据 entity 条件，删除 SchedulerInfo 记录")
-    public BaseResult remove(SchedulerInfo entity) {
-        return schedulerInfoService.remove(entity);
-    }
+	@PostMapping("removeByMap")
+	@ApiOperation(value = "根据 columnMap 条件，删除 SchedulerInfo 记录")
+	public BaseResult removeByMap(Map<String, Object> columnMap) {
+		return schedulerInfoService.removeByMap(columnMap);
+	}
 
-    @PostMapping("removeByIds")
-    @ApiOperation(value = "根据 ID 批量删除 SchedulerInfo 记录")
-    public BaseResult removeByIds(Collection<? extends Serializable> idList) {
-        return schedulerInfoService.removeByIds(idList);
-    }
+	@PostMapping("remove")
+	@ApiOperation(value = "根据 entity 条件，删除 SchedulerInfo 记录")
+	public BaseResult remove(SchedulerInfo entity) {
+		return schedulerInfoService.remove(entity);
+	}
 
-    @PostMapping("updateById")
-    @ApiOperation(value = "根据 ID 选择修改一条 SchedulerInfo 记录")
-    public BaseResult updateById(SchedulerInfo entity) {
-        return schedulerInfoService.updateById(entity);
-    }
+	@PostMapping("removeByIds")
+	@ApiOperation(value = "根据 ID 批量删除 SchedulerInfo 记录")
+	public BaseResult removeByIds(Collection<? extends Serializable> idList) {
+		return schedulerInfoService.removeByIds(idList);
+	}
 
-    @PostMapping("update")
-    @ApiOperation(value = "根据 origin 条件，更新 SchedulerInfo 记录")
-    public BaseResult update(@RequestBody SchedulerInfo target, @RequestParam SchedulerInfo origin) {
-        return schedulerInfoService.update(target, origin);
-    }
+	@PostMapping("updateById")
+	@ApiOperation(value = "根据 ID 选择修改一条 SchedulerInfo 记录")
+	public BaseResult updateById(SchedulerInfo entity) {
+		return schedulerInfoService.updateById(entity);
+	}
 
-    @PostMapping("updateBatchById")
-    @ApiOperation(value = "根据 ID 批量修改 SchedulerInfo 记录")
-    public BaseResult updateBatchById(Collection<SchedulerInfo> entityList) {
-        return schedulerInfoService.updateBatchById(entityList);
-    }
+	@PostMapping("update")
+	@ApiOperation(value = "根据 origin 条件，更新 SchedulerInfo 记录")
+	public BaseResult update(@RequestBody SchedulerInfo target,
+			@RequestParam SchedulerInfo origin) {
+		return schedulerInfoService.update(target, origin);
+	}
 
-    @PostMapping("saveOrUpdate")
-    @ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
-    public BaseResult saveOrUpdate(SchedulerInfo entity) {
-        return schedulerInfoService.saveOrUpdate(entity);
-    }
+	@PostMapping("updateBatchById")
+	@ApiOperation(value = "根据 ID 批量修改 SchedulerInfo 记录")
+	public BaseResult updateBatchById(Collection<SchedulerInfo> entityList) {
+		return schedulerInfoService.updateBatchById(entityList);
+	}
 
-    @PostMapping("saveOrUpdateBatch")
-    @ApiOperation(value = "批量添加或更新 SchedulerInfo 记录")
-    public BaseResult saveOrUpdateBatch(Collection<SchedulerInfo> entityList) {
-        return schedulerInfoService.saveOrUpdateBatch(entityList);
-    }
+	@PostMapping("saveOrUpdate")
+	@ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
+	public BaseResult saveOrUpdate(SchedulerInfo entity) {
+		return schedulerInfoService.saveOrUpdate(entity);
+	}
 
-    @GetMapping("getById")
-    @ApiOperation(value = "根据 ID 查询 SchedulerInfo 记录")
-    public DataResult<SchedulerInfo> getById(String id) {
-        return schedulerInfoService.getById(id);
-    }
+	@PostMapping("saveOrUpdateBatch")
+	@ApiOperation(value = "批量添加或更新 SchedulerInfo 记录")
+	public BaseResult saveOrUpdateBatch(Collection<SchedulerInfo> entityList) {
+		return schedulerInfoService.saveOrUpdateBatch(entityList);
+	}
 
-    @GetMapping("listByIds")
-    @ApiOperation(value = "根据 ID 批量查询 SchedulerInfo 记录")
-    public DataListResult<SchedulerInfo> listByIds(Collection<? extends Serializable> idList) {
-        return schedulerInfoService.listByIds(idList);
-    }
+	@GetMapping("getById")
+	@ApiOperation(value = "根据 ID 查询 SchedulerInfo 记录")
+	public DataResult<SchedulerInfo> getById(String id) {
+		return schedulerInfoService.getById(id);
+	}
 
-    @GetMapping("listByMap")
-    @ApiOperation(value = "根据 columnMap 批量查询 SchedulerInfo 记录")
-    public DataListResult<SchedulerInfo> listByMap(Map<String, Object> columnMap) {
-        return schedulerInfoService.listByMap(columnMap);
-    }
+	@GetMapping("listByIds")
+	@ApiOperation(value = "根据 ID 批量查询 SchedulerInfo 记录")
+	public DataListResult<SchedulerInfo> listByIds(
+			Collection<? extends Serializable> idList) {
+		return schedulerInfoService.listByIds(idList);
+	}
 
-    @GetMapping("getOne")
-    @ApiOperation(value = "根据 entity 查询一条 SchedulerInfo 记录")
-    public DataResult<SchedulerInfo> getOne(SchedulerInfo entity) {
-        return schedulerInfoService.getOne(entity);
-    }
+	@GetMapping("listByMap")
+	@ApiOperation(value = "根据 columnMap 批量查询 SchedulerInfo 记录")
+	public DataListResult<SchedulerInfo> listByMap(Map<String, Object> columnMap) {
+		return schedulerInfoService.listByMap(columnMap);
+	}
 
-    @GetMapping("count")
-    @ApiOperation(value = "根据 entity 条件，查询 SchedulerInfo 总记录数")
-    public DataResult<Integer> count(SchedulerInfo entity) {
-        return schedulerInfoService.count(entity);
-    }
+	@GetMapping("getOne")
+	@ApiOperation(value = "根据 entity 查询一条 SchedulerInfo 记录")
+	public DataResult<SchedulerInfo> getOne(SchedulerInfo entity) {
+		return schedulerInfoService.getOne(entity);
+	}
 
-    @GetMapping("countAll")
-    @ApiOperation(value = "查询 SchedulerInfo 总记录数")
-    public DataResult<Integer> countAll() {
-        return schedulerInfoService.count();
-    }
+	@GetMapping("count")
+	@ApiOperation(value = "根据 entity 条件，查询 SchedulerInfo 总记录数")
+	public DataResult<Integer> count(SchedulerInfo entity) {
+		return schedulerInfoService.count(entity);
+	}
 
-    @GetMapping("list")
-    @ApiOperation(value = "根据 entity 条件，查询匹配条件的 SchedulerInfo 记录")
-    public DataListResult<SchedulerInfo> list(SchedulerInfo entity) {
-        return schedulerInfoService.list(entity);
-    }
+	@GetMapping("countAll")
+	@ApiOperation(value = "查询 SchedulerInfo 总记录数")
+	public DataResult<Integer> countAll() {
+		return schedulerInfoService.count();
+	}
 
-    @GetMapping("listAll")
-    @ApiOperation(value = "查询所有 SchedulerInfo 记录")
-    public DataListResult<SchedulerInfo> listAll() {
-        return schedulerInfoService.list();
-    }
+	@GetMapping("list")
+	@ApiOperation(value = "根据 entity 条件，查询匹配条件的 SchedulerInfo 记录")
+	public DataListResult<SchedulerInfo> list(SchedulerInfo entity) {
+		return schedulerInfoService.list(entity);
+	}
 
-    @GetMapping("page")
-    @ApiOperation(value = "根据 entity 条件，翻页查询 UserInfo 记录")
-    public PageResult<SchedulerInfo> page(Pagination<SchedulerInfo> pagination, SchedulerInfo entity) {
-        return schedulerInfoService.page(pagination, entity);
-    }
+	@GetMapping("listAll")
+	@ApiOperation(value = "查询所有 SchedulerInfo 记录")
+	public DataListResult<SchedulerInfo> listAll() {
+		return schedulerInfoService.list();
+	}
 
-    @GetMapping("pageAll")
-    @ApiOperation(value = "翻页查询所有 UserInfo 记录")
-    public PageResult<SchedulerInfo> pageAll(Pagination<SchedulerInfo> pagination) {
-        return schedulerInfoService.page(pagination);
-    }
+	@GetMapping("page")
+	@ApiOperation(value = "根据 entity 条件，翻页查询 UserInfo 记录")
+	public PageResult<SchedulerInfo> page(Pagination<SchedulerInfo> pagination,
+			SchedulerInfo entity) {
+		return schedulerInfoService.page(pagination, entity);
+	}
+
+	@GetMapping("pageAll")
+	@ApiOperation(value = "翻页查询所有 UserInfo 记录")
+	public PageResult<SchedulerInfo> pageAll(Pagination<SchedulerInfo> pagination) {
+		return schedulerInfoService.page(pagination);
+	}
+
 }

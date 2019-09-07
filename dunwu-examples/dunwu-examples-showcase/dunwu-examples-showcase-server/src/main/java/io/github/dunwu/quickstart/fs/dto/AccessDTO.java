@@ -16,7 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccessDTO {
-    private String ip;
-    private Date date;
-    private Integer count;
+
+	private String ip;
+
+	private Date date;
+
+	private Integer count;
+
 }

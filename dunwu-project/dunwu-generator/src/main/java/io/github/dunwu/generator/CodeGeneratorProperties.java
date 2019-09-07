@@ -5,8 +5,10 @@ package io.github.dunwu.generator;
  * @since 2019-04-15
  */
 public interface CodeGeneratorProperties {
-    enum ParamKeyEnum {
-        // @formatter:off
+
+	enum ParamKeyEnum {
+
+		// @formatter:off
         /** 数据源配置 **/
         SPRING_DATASOURCE_URL("spring.datasource.url", "jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8"),
         SPRING_DATASOURCE_DRIVER("spring.datasource.driver-class-name", "com.mysql.cj.jdbc.Driver"),
@@ -46,26 +48,29 @@ public interface CodeGeneratorProperties {
         MYBATIS_GENERATOR_SC_SUPER_CONTROLLER("mybatis.generator.sc.super.controller", "io.github.dunwu.web.controller.CrudController");
         // @formatter:on
 
-        /**
-         * 配置参数 key
-         */
-        private String key;
-        /**
-         * 配置参数默认值
-         */
-        private String value;
+		/**
+		 * 配置参数 key
+		 */
+		private String key;
 
-        ParamKeyEnum(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
+		/**
+		 * 配置参数默认值
+		 */
+		private String value;
 
-        public String key() {
-            return key;
-        }
+		ParamKeyEnum(String key, String value) {
+			this.key = key;
+			this.value = value;
+		}
 
-        public String value() {
-            return value;
-        }
-    }
+		public String key() {
+			return key;
+		}
+
+		public String value() {
+			return value;
+		}
+
+	}
+
 }

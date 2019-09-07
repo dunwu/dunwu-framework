@@ -18,16 +18,26 @@ import java.util.Date;
 @Accessors(chain = true)
 public class MailDTO implements Serializable {
 
-    private static final long serialVersionUID = 6247967463273067024L;
+	private static final long serialVersionUID = 6247967463273067024L;
 
-    private String from;
-    private String replyTo;
-    private String[] to;
-    private String[] cc;
-    private String[] bcc;
-    private Date sentDate;
-    private String subject;
-    private String text;
-    private String[] filenames;
-    private Boolean html = true;
+	private String from;
+
+	private String replyTo;
+
+	private String[] to;
+
+	private String[] cc;
+
+	private String[] bcc;
+
+	private Date sentDate;
+
+	private String subject;
+
+	private String text;
+
+	private String[] filenames;
+
+	private Boolean html = true;
+
 }

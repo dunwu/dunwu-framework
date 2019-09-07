@@ -9,7 +9,9 @@ import io.github.dunwu.generator.DefaultCodeGenerator;
  * @since 2019-04-15
  */
 public class MyCodeGenerator extends DefaultCodeGenerator {
-    public static void main(String[] args) {
-        new MyCodeGenerator().generate();
-    }
+
+	public static void main(String[] args) {
+		new MyCodeGenerator().generate();
+	}
+
 }

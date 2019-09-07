@@ -7,5 +7,7 @@ import io.github.dunwu.core.BaseResult;
  * @since 2019-08-04
  */
 public interface IJobHandler {
-    BaseResult execute(String params) throws Exception;
+
+	BaseResult execute(String params) throws Exception;
+
 }

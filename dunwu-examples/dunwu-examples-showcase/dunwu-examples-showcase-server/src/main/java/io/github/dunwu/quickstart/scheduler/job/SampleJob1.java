@@ -14,11 +14,12 @@ import org.slf4j.LoggerFactory;
 @JobHandler("sampleJob1")
 public class SampleJob1 implements IJobHandler {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Override
-    public BaseResult execute(String params) {
-        log.info("params = {}", params);
-        return ResultUtil.successBaseResult();
-    }
+	@Override
+	public BaseResult execute(String params) {
+		log.info("params = {}", params);
+		return ResultUtil.successBaseResult();
+	}
+
 }

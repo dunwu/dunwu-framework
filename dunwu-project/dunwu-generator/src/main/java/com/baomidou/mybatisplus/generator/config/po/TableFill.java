@@ -27,17 +27,19 @@ import lombok.Data;
 @Data
 public class TableFill {
 
-    /**
-     * 字段名称
-     */
-    private String fieldName;
-    /**
-     * 忽略类型
-     */
-    private FieldFill fieldFill;
+	/**
+	 * 字段名称
+	 */
+	private String fieldName;
 
-    public TableFill(String fieldName, FieldFill ignore) {
-        this.fieldName = fieldName;
-        this.fieldFill = ignore;
-    }
+	/**
+	 * 忽略类型
+	 */
+	private FieldFill fieldFill;
+
+	public TableFill(String fieldName, FieldFill ignore) {
+		this.fieldName = fieldName;
+		this.fieldFill = ignore;
+	}
+
 }

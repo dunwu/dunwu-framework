@@ -18,33 +18,34 @@ import java.util.EnumSet;
  */
 public class EnumUtil extends EnumUtils {
 
-    /**
-     * Enum转换为String
-     */
-    public static String toString(Enum e) {
-        return e.name();
-    }
+	/**
+	 * Enum转换为String
+	 */
+	public static String toString(Enum e) {
+		return e.name();
+	}
 
-    /**
-     * String转换为Enum
-     */
-    public static <E extends Enum<E>> E valueOf(Class<E> enumClass, String value) {
-        return Enum.valueOf(enumClass, value);
-    }
+	/**
+	 * String转换为Enum
+	 */
+	public static <E extends Enum<E>> E valueOf(Class<E> enumClass, String value) {
+		return Enum.valueOf(enumClass, value);
+	}
 
-    public static <E extends Enum<E>> EnumMap<E, String> enumMap(Class<E> enumClass) {
-        return new EnumMap<>(enumClass);
-    }
+	public static <E extends Enum<E>> EnumMap<E, String> enumMap(Class<E> enumClass) {
+		return new EnumMap<>(enumClass);
+	}
 
-    public static <E extends Enum<E>> EnumSet<E> enumSet(Class<E> enumClass) {
-        return EnumSet.allOf(enumClass);
-    }
+	public static <E extends Enum<E>> EnumSet<E> enumSet(Class<E> enumClass) {
+		return EnumSet.allOf(enumClass);
+	}
 
-    public static <E extends Enum<E>> EnumSet<E> copyOf(EnumSet<E> s) {
-        return EnumSet.copyOf(s);
-    }
+	public static <E extends Enum<E>> EnumSet<E> copyOf(EnumSet<E> s) {
+		return EnumSet.copyOf(s);
+	}
 
-    public static <E extends Enum<E>> EnumSet<E> copyOf(Collection<E> c) {
-        return EnumSet.copyOf(c);
-    }
+	public static <E extends Enum<E>> EnumSet<E> copyOf(Collection<E> c) {
+		return EnumSet.copyOf(c);
+	}
+
 }

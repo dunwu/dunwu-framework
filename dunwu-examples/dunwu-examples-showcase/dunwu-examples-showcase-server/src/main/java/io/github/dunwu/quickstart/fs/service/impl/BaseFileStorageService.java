@@ -26,38 +26,37 @@ import java.time.LocalDateTime;
  */
 public abstract class BaseFileStorageService implements FileStorageService {
 
-    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    protected FileInfoService fileInfoService;
+	@Autowired
+	protected FileInfoService fileInfoService;
 
-    @Override
-    public FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException {
+	@Override
+	public FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException {
 
-        MultipartFile file = uploadFileDTO.getFile();
-        String extension = FileUtil.getFileExtension(file.getOriginalFilename());
-        String originName = FileUtil.getFileName(uploadFileDTO.getOriginName()) + FileSystemConstant.FILE_SEPARATOR
-            + extension;
-        String fileName = IdUtil.uuid2() + FileSystemConstant.FILE_SEPARATOR + extension.toLowerCase();
-        FileDTO fileInfoDTO = new FileDTO();
-        fileInfoDTO.setNamespace(uploadFileDTO.getNamespace());
-        fileInfoDTO.setTag(uploadFileDTO.getTag());
-        fileInfoDTO.setOriginName(originName);
-        fileInfoDTO.setFileName(fileName);
-        fileInfoDTO.setSize(file.getSize());
-        fileInfoDTO.setExtension(extension.toLowerCase());
-        fileInfoDTO.setContentType(file.getContentType());
-        fileInfoDTO.setStoreType(uploadFileDTO.getStoreType());
-        fileInfoDTO.setStoreUrl(fileName);
-        StringBuilder sb = new StringBuilder();
-        sb.append(uploadFileDTO.getNamespace())
-          .append("/")
-          .append(uploadFileDTO.getTag())
-          .append("/")
-          .append(originName);
-        fileInfoDTO.setAccessUrl(sb.toString());
-        fileInfoDTO.setContent(file.getBytes());
-        fileInfoDTO.setUploadTime(LocalDateTime.now());
-        return fileInfoDTO;
-    }
+		MultipartFile file = uploadFileDTO.getFile();
+		String extension = FileUtil.getFileExtension(file.getOriginalFilename());
+		String originName = FileUtil.getFileName(uploadFileDTO.getOriginName())
+				+ FileSystemConstant.FILE_SEPARATOR + extension;
+		String fileName = IdUtil.uuid2() + FileSystemConstant.FILE_SEPARATOR
+				+ extension.toLowerCase();
+		FileDTO fileInfoDTO = new FileDTO();
+		fileInfoDTO.setNamespace(uploadFileDTO.getNamespace());
+		fileInfoDTO.setTag(uploadFileDTO.getTag());
+		fileInfoDTO.setOriginName(originName);
+		fileInfoDTO.setFileName(fileName);
+		fileInfoDTO.setSize(file.getSize());
+		fileInfoDTO.setExtension(extension.toLowerCase());
+		fileInfoDTO.setContentType(file.getContentType());
+		fileInfoDTO.setStoreType(uploadFileDTO.getStoreType());
+		fileInfoDTO.setStoreUrl(fileName);
+		StringBuilder sb = new StringBuilder();
+		sb.append(uploadFileDTO.getNamespace()).append("/").append(uploadFileDTO.getTag())
+				.append("/").append(originName);
+		fileInfoDTO.setAccessUrl(sb.toString());
+		fileInfoDTO.setContent(file.getBytes());
+		fileInfoDTO.setUploadTime(LocalDateTime.now());
+		return fileInfoDTO;
+	}
+
 }

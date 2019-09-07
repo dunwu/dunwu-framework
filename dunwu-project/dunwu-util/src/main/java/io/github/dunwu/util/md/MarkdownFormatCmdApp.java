@@ -5,29 +5,31 @@ import java.util.Scanner;
 
 public class MarkdownFormatCmdApp {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
+		Scanner in = new Scanner(System.in);
 
-        String markdownFilePath;
+		String markdownFilePath;
 
-        while (true) {
+		while (true) {
 
-            System.out.print("File path : ");
+			System.out.print("File path : ");
 
-            markdownFilePath = in.nextLine();
-            if (new File(markdownFilePath).exists()) {
-                break;
-            }
-            System.out.println("File not exist!");
-        }
+			markdownFilePath = in.nextLine();
+			if (new File(markdownFilePath).exists()) {
+				break;
+			}
+			System.out.println("File not exist!");
+		}
 
-        Toc.setCatalogueLevel(3);
+		Toc.setCatalogueLevel(3);
 
-        String newMarkdownFilePath = markdownFilePath.substring(0, markdownFilePath.length() - 3) + ".gfm.md";
+		String newMarkdownFilePath = markdownFilePath.substring(0,
+				markdownFilePath.length() - 3) + ".gfm.md";
 
-        MarkdownFormatHelper.convertToGfm(markdownFilePath, newMarkdownFilePath);
+		MarkdownFormatHelper.convertToGfm(markdownFilePath, newMarkdownFilePath);
 
-        System.out.println(newMarkdownFilePath + " has been generated!");
-    }
+		System.out.println(newMarkdownFilePath + " has been generated!");
+	}
+
 }

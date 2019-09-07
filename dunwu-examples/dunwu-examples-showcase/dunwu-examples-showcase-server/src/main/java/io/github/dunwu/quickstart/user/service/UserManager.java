@@ -14,9 +14,10 @@ import java.util.Map;
  */
 public interface UserManager {
 
-    DataResult<Map<String, String>> register(LoginInfoDTO registerUserDTO);
+	DataResult<Map<String, String>> register(LoginInfoDTO registerUserDTO);
 
-    DataResult<UserInfoDTO> login(HttpSession session, Map<String, String> map);
+	DataResult<UserInfoDTO> login(HttpSession session, Map<String, String> map);
 
-    DataResult<UserInfoDTO> getCurrentUserInfo(HttpSession session);
+	DataResult<UserInfoDTO> getCurrentUserInfo(HttpSession session);
+
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class LoginInfoServiceImpl extends BaseService<LoginInfo> implements LoginInfoService {
+public class LoginInfoServiceImpl extends BaseService<LoginInfo>
+		implements LoginInfoService {
 
 }

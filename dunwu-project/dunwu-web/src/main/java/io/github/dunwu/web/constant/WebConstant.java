@@ -6,16 +6,14 @@ package io.github.dunwu.web.constant;
  */
 public interface WebConstant {
 
-    String HTTP_METHOD_OPTIONS = "OPTIONS";
+	String HTTP_METHOD_OPTIONS = "OPTIONS";
 
-    String PATH_SEPARATOR = "/";
+	String PATH_SEPARATOR = "/";
 
+	enum BrowserType {
 
-    enum BrowserType {
-        firefox,
-        chrome,
-        safari,
-        msie,
-        opera
-    }
+		firefox, chrome, safari, msie, opera
+
+	}
+
 }

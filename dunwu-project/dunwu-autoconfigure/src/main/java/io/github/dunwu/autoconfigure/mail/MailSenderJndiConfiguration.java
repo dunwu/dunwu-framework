@@ -25,29 +25,33 @@ import javax.naming.NamingException;
 @ConditionalOnJndi
 class MailSenderJndiConfiguration {
 
-    private final DunwuMailProperties properties;
+	private final DunwuMailProperties properties;
 
-    MailSenderJndiConfiguration(DunwuMailProperties properties) {
-        this.properties = properties;
-    }
+	MailSenderJndiConfiguration(DunwuMailProperties properties) {
+		this.properties = properties;
+	}
 
-    @Bean
-    public JavaMailSenderImpl mailSender(Session session) {
-        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setDefaultEncoding(this.properties.getDefaultEncoding().name());
-        sender.setSession(session);
-        return sender;
-    }
+	@Bean
+	public JavaMailSenderImpl mailSender(Session session) {
+		JavaMailSenderImpl sender = new JavaMailSenderImpl();
+		sender.setDefaultEncoding(this.properties.getDefaultEncoding().name());
+		sender.setSession(session);
+		return sender;
+	}
 
-    @Bean
-    @ConditionalOnMissingBean
-    public Session session() {
-        String jndiName = this.properties.getJndiName();
-        try {
-            return JndiLocatorDelegate.createDefaultResourceRefLocator().lookup(jndiName, Session.class);
-        } catch (NamingException ex) {
-            throw new IllegalStateException(String.format("Unable to find Session in JNDI location %s", jndiName), ex);
-        }
-    }
+	@Bean
+	@ConditionalOnMissingBean
+	public Session session() {
+		String jndiName = this.properties.getJndiName();
+		try {
+			return JndiLocatorDelegate.createDefaultResourceRefLocator().lookup(jndiName,
+					Session.class);
+		}
+		catch (NamingException ex) {
+			throw new IllegalStateException(
+					String.format("Unable to find Session in JNDI location %s", jndiName),
+					ex);
+		}
+	}
 
 }

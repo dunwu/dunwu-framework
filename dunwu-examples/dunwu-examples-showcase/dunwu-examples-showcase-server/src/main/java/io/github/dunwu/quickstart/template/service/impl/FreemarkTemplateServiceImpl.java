@@ -17,17 +17,19 @@ import java.util.Map;
 @Service
 public class FreemarkTemplateServiceImpl implements TemplateService {
 
-    private final Configuration freemarkConfig;
+	private final Configuration freemarkConfig;
 
-    public FreemarkTemplateServiceImpl(Configuration freemarkConfig) {
-        this.freemarkConfig = freemarkConfig;
-    }
+	public FreemarkTemplateServiceImpl(Configuration freemarkConfig) {
+		this.freemarkConfig = freemarkConfig;
+	}
 
-    @Override
-    public String mergeTemplate(String tmplFile, Map params) throws IOException, TemplateException {
-        Template template = freemarkConfig.getTemplate(tmplFile);
-        StringWriter stringWriter = new StringWriter();
-        template.process(params, stringWriter);
-        return stringWriter.toString();
-    }
+	@Override
+	public String mergeTemplate(String tmplFile, Map params)
+			throws IOException, TemplateException {
+		Template template = freemarkConfig.getTemplate(tmplFile);
+		StringWriter stringWriter = new StringWriter();
+		template.process(params, stringWriter);
+		return stringWriter.toString();
+	}
+
 }

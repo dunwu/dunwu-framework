@@ -33,30 +33,33 @@ import java.util.Map;
  */
 public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
 
-    private Configuration configuration;
+	private Configuration configuration;
 
-    @Override
-    public FreemarkerTemplateEngine init(ConfigBuilder configBuilder) {
-        super.init(configBuilder);
-        configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding(ConstVal.UTF8);
-        configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class, StringPool.SLASH);
-        return this;
-    }
+	@Override
+	public FreemarkerTemplateEngine init(ConfigBuilder configBuilder) {
+		super.init(configBuilder);
+		configuration = new Configuration(
+				Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+		configuration.setDefaultEncoding(ConstVal.UTF8);
+		configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class,
+				StringPool.SLASH);
+		return this;
+	}
 
+	@Override
+	public void writer(Map<String, Object> objectMap, String templatePath,
+			String outputFile) throws Exception {
+		Template template = configuration.getTemplate(templatePath);
+		try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+			template.process(objectMap,
+					new OutputStreamWriter(fileOutputStream, ConstVal.UTF8));
+		}
+		logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
+	}
 
-    @Override
-    public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
-        Template template = configuration.getTemplate(templatePath);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            template.process(objectMap, new OutputStreamWriter(fileOutputStream, ConstVal.UTF8));
-        }
-        logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
-    }
+	@Override
+	public String templateFilePath(String filePath) {
+		return filePath + ".ftl";
+	}
 
-
-    @Override
-    public String templateFilePath(String filePath) {
-        return filePath + ".ftl";
-    }
 }

@@ -10,6 +10,9 @@ import lombok.ToString;
 @Data
 @ToString
 public class BeanDTO {
-    private String beanName;
-    private Class<?> beanType;
+
+	private String beanName;
+
+	private Class<?> beanType;
+
 }

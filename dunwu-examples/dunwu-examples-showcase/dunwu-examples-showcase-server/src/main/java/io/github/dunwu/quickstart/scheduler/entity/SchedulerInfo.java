@@ -25,61 +25,62 @@ import java.time.LocalDateTime;
 @ApiModel(value = "SchedulerInfo对象", description = "调度信息表")
 public class SchedulerInfo extends BaseRecordEntity {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "调度器名")
-    protected String schedulerName;
+	@ApiModelProperty(value = "调度器名")
+	protected String schedulerName;
 
-    @ApiModelProperty(value = "触发器组")
-    protected String triggerGroup;
+	@ApiModelProperty(value = "触发器组")
+	protected String triggerGroup;
 
-    @ApiModelProperty(value = "触发器名称")
-    protected String triggerName;
+	@ApiModelProperty(value = "触发器名称")
+	protected String triggerName;
 
-    @ApiModelProperty(value = "任务组")
-    protected String jobGroup;
+	@ApiModelProperty(value = "任务组")
+	protected String jobGroup;
 
-    @ApiModelProperty(value = "任务名")
-    protected String jobName;
+	@ApiModelProperty(value = "任务名")
+	protected String jobName;
 
-    @ApiModelProperty(value = "Bean名称")
-    protected String beanName;
+	@ApiModelProperty(value = "Bean名称")
+	protected String beanName;
 
-    @ApiModelProperty(value = "Bean类型")
-    protected String beanType;
+	@ApiModelProperty(value = "Bean类型")
+	protected String beanType;
 
-    @ApiModelProperty(value = "方法名称")
-    protected String methodName;
+	@ApiModelProperty(value = "方法名称")
+	protected String methodName;
 
-    @ApiModelProperty(value = "方法参数（JSON 形式）")
-    protected String methodParams;
+	@ApiModelProperty(value = "方法参数（JSON 形式）")
+	protected String methodParams;
 
-    @ApiModelProperty(value = "触发类型", example = "0")
-    protected TriggerTypeEnum triggerType;
+	@ApiModelProperty(value = "触发类型", example = "0")
+	protected TriggerTypeEnum triggerType;
 
-    @ApiModelProperty(value = "调用类型", example = "0")
-    protected InvokeTypeEnum invokeType;
+	@ApiModelProperty(value = "调用类型", example = "0")
+	protected InvokeTypeEnum invokeType;
 
-    @ApiModelProperty(value = "触发开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    protected LocalDateTime beginTime;
+	@ApiModelProperty(value = "触发开始时间")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	protected LocalDateTime beginTime;
 
-    @ApiModelProperty(value = "触发结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    protected LocalDateTime endTime;
+	@ApiModelProperty(value = "触发结束时间")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	protected LocalDateTime endTime;
 
-    @ApiModelProperty(value = "重复调度间隔", example = "0")
-    protected Integer repeatInterval;
+	@ApiModelProperty(value = "重复调度间隔", example = "0")
+	protected Integer repeatInterval;
 
-    @ApiModelProperty(value = "重复调度次数", example = "0")
-    protected Integer repeatCount;
+	@ApiModelProperty(value = "重复调度次数", example = "0")
+	protected Integer repeatCount;
 
-    @ApiModelProperty(value = "CRON 表达式")
-    protected String cronExpression;
+	@ApiModelProperty(value = "CRON 表达式")
+	protected String cronExpression;
 
-    @ApiModelProperty(value = "状态", example = "0")
-    protected TriggerStatusEnum status;
+	@ApiModelProperty(value = "状态", example = "0")
+	protected TriggerStatusEnum status;
 
-    @ApiModelProperty(value = "备注")
-    protected String note;
+	@ApiModelProperty(value = "备注")
+	protected String note;
+
 }

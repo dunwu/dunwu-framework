@@ -15,6 +15,7 @@ import io.github.dunwu.annotation.Dao;
  * @since 2019-08-07
  */
 @Dao
-public class SchedulerInfoDaoImpl extends BaseDao<SchedulerInfoMapper, SchedulerInfo> implements SchedulerInfoDao {
+public class SchedulerInfoDaoImpl extends BaseDao<SchedulerInfoMapper, SchedulerInfo>
+		implements SchedulerInfoDao {
 
 }

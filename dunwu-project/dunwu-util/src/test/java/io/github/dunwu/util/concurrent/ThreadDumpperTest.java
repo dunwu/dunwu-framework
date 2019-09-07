@@ -11,49 +11,50 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThreadDumpperTest {
 
-    public static class LongRunTask implements Runnable {
+	public static class LongRunTask implements Runnable {
 
-        private CountDownLatch countDownLatch;
+		private CountDownLatch countDownLatch;
 
-        public LongRunTask(CountDownLatch countDownLatch) {
-            this.countDownLatch = countDownLatch;
-        }
+		public LongRunTask(CountDownLatch countDownLatch) {
+			this.countDownLatch = countDownLatch;
+		}
 
-        @Override
-        public void run() {
-            countDownLatch.countDown();
-            ThreadUtil.sleep(5, TimeUnit.SECONDS);
-        }
-    }
+		@Override
+		public void run() {
+			countDownLatch.countDown();
+			ThreadUtil.sleep(5, TimeUnit.SECONDS);
+		}
 
-    @Test
-    public void test() throws InterruptedException {
-        ExecutorService executor = ThreadPoolUtil.fixedPool().setPoolSize(10).build();
-        CountDownLatch countDownLatch = Concurrents.countDownLatch(10);
-        for (int i = 0; i < 10; i++) {
-            executor.execute(new LongRunTask(countDownLatch));
-        }
-        countDownLatch.await();
+	}
 
-        ThreadDumpper dumpper = new ThreadDumpper();
-        dumpper.threadDumpIfNeed();
+	@Test
+	public void test() throws InterruptedException {
+		ExecutorService executor = ThreadPoolUtil.fixedPool().setPoolSize(10).build();
+		CountDownLatch countDownLatch = Concurrents.countDownLatch(10);
+		for (int i = 0; i < 10; i++) {
+			executor.execute(new LongRunTask(countDownLatch));
+		}
+		countDownLatch.await();
 
-        LogbackListAppender appender = new LogbackListAppender();
-        appender.addToLogger(ThreadDumpper.class);
+		ThreadDumpper dumpper = new ThreadDumpper();
+		dumpper.threadDumpIfNeed();
 
-        // disable,不输出
-        dumpper.setEnable(false);
-        dumpper.threadDumpIfNeed();
-        assertThat(appender.getAllLogs()).hasSize(0);
+		LogbackListAppender appender = new LogbackListAppender();
+		appender.addToLogger(ThreadDumpper.class);
 
-        // 设置最少间隔,不输出
-        dumpper.setEnable(true);
-        dumpper.setLeastInterval(1800);
-        dumpper.threadDumpIfNeed();
-        assertThat(appender.getAllLogs()).hasSize(0);
+		// disable,不输出
+		dumpper.setEnable(false);
+		dumpper.threadDumpIfNeed();
+		assertThat(appender.getAllLogs()).hasSize(0);
 
-        executor.shutdownNow();
+		// 设置最少间隔,不输出
+		dumpper.setEnable(true);
+		dumpper.setLeastInterval(1800);
+		dumpper.threadDumpIfNeed();
+		assertThat(appender.getAllLogs()).hasSize(0);
 
-    }
+		executor.shutdownNow();
+
+	}
 
 }

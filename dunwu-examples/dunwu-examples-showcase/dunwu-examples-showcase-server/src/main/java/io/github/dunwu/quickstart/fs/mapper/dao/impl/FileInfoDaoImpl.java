@@ -15,6 +15,7 @@ import io.github.dunwu.annotation.Dao;
  * @since 2019-08-08
  */
 @Dao
-public class FileInfoDaoImpl extends BaseDao<FileInfoMapper, FileInfo> implements FileInfoDao {
+public class FileInfoDaoImpl extends BaseDao<FileInfoMapper, FileInfo>
+		implements FileInfoDao {
 
 }

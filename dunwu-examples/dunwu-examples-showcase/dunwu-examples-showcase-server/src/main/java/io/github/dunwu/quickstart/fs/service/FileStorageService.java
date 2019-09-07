@@ -22,39 +22,36 @@ import java.io.IOException;
  */
 public interface FileStorageService {
 
-    /**
-     * 添加文件到存储介质
-     *
-     * @param uploadFileDTO 上传文件信息
-     * @return 成功返回文件信息 DTO；失败返回 null
-     * @throws IOException IO 异常
-     */
-    FileDTO create(UploadFileDTO uploadFileDTO) throws IOException;
+	/**
+	 * 添加文件到存储介质
+	 * @param uploadFileDTO 上传文件信息
+	 * @return 成功返回文件信息 DTO；失败返回 null
+	 * @throws IOException IO 异常
+	 */
+	FileDTO create(UploadFileDTO uploadFileDTO) throws IOException;
 
-    /**
-     * 从存储介质删除文件
-     *
-     * @param fileContentDTO 上传文件内容
-     * @return 成功返回 true；失败返回 false
-     * @throws IOException IO 异常
-     */
-    boolean delete(FileContentDTO fileContentDTO) throws IOException;
+	/**
+	 * 从存储介质删除文件
+	 * @param fileContentDTO 上传文件内容
+	 * @return 成功返回 true；失败返回 false
+	 * @throws IOException IO 异常
+	 */
+	boolean delete(FileContentDTO fileContentDTO) throws IOException;
 
-    /**
-     * 从存储介质删除文件
-     *
-     * @param fileContentDTO 查询条件
-     * @return 成功返回文件内容 DTO；失败返回 null(含未找到)
-     * @throws IOException IO 异常
-     */
-    FileContentDTO getOne(FileContentDTO fileContentDTO) throws IOException;
+	/**
+	 * 从存储介质删除文件
+	 * @param fileContentDTO 查询条件
+	 * @return 成功返回文件内容 DTO；失败返回 null(含未找到)
+	 * @throws IOException IO 异常
+	 */
+	FileContentDTO getOne(FileContentDTO fileContentDTO) throws IOException;
 
-    /**
-     * 获取文件信息
-     *
-     * @param uploadFileDTO 上传文件信息
-     * @return FileDTO 文件信息 DTO
-     * @throws IOException IO 异常
-     */
-    FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException;
+	/**
+	 * 获取文件信息
+	 * @param uploadFileDTO 上传文件信息
+	 * @return FileDTO 文件信息 DTO
+	 * @throws IOException IO 异常
+	 */
+	FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException;
+
 }

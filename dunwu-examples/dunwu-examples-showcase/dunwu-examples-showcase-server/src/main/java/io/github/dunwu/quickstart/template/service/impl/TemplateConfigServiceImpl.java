@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-08-26
  */
 @Service
-public class TemplateConfigServiceImpl extends BaseService<TemplateConfig> implements TemplateConfigService {
+public class TemplateConfigServiceImpl extends BaseService<TemplateConfig>
+		implements TemplateConfigService {
 
 }

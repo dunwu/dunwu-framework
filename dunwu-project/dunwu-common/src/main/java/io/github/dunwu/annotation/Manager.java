@@ -13,10 +13,13 @@ import java.lang.annotation.*;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-07-23
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
 public @interface Manager {
-    @AliasFor(annotation = Component.class) String value() default "";
+
+	@AliasFor(annotation = Component.class)
+	String value() default "";
+
 }

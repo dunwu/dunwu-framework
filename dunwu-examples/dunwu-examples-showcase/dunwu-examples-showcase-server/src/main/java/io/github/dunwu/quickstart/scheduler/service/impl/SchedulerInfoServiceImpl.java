@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-08-07
  */
 @Service
-public class SchedulerInfoServiceImpl extends BaseService<SchedulerInfo> implements SchedulerInfoService {
+public class SchedulerInfoServiceImpl extends BaseService<SchedulerInfo>
+		implements SchedulerInfoService {
 
 }

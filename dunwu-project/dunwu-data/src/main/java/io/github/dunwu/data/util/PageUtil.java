@@ -10,11 +10,13 @@ import io.github.dunwu.core.Pagination;
  */
 public class PageUtil {
 
-    public static <T> IPage<T> transToMybatisPlusPage(Pagination<T> page) {
-        return new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-    }
+	public static <T> IPage<T> transToMybatisPlusPage(Pagination<T> page) {
+		return new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+	}
 
-    public static <T> Pagination<T> transToPagination(IPage<T> page) {
-        return new Pagination<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
-    }
+	public static <T> Pagination<T> transToPagination(IPage<T> page) {
+		return new Pagination<>(page.getCurrent(), page.getSize(), page.getTotal(),
+				page.getRecords());
+	}
+
 }

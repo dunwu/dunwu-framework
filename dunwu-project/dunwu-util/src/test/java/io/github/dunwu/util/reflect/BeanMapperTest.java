@@ -10,202 +10,215 @@ import io.github.dunwu.util.mapper.BeanMapper;
 
 public class BeanMapperTest {
 
-    @Test
-    public void copySingleObject() {
-        Student student = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
+	@Test
+	public void copySingleObject() {
+		Student student = new Student("zhang3", 20, new Teacher("li4"),
+				ListUtil.newArrayList("chinese", "english"));
 
-        StudentVO studentVo = BeanMapper.map(student, StudentVO.class);
+		StudentVO studentVo = BeanMapper.map(student, StudentVO.class);
 
-        assertThat(studentVo.name).isEqualTo("zhang3");
-        assertThat(studentVo.getAge()).isEqualTo(20);
-        assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
-        assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
+		assertThat(studentVo.name).isEqualTo("zhang3");
+		assertThat(studentVo.getAge()).isEqualTo(20);
+		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
+		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
 
-    }
+	}
 
-    @Test
-    public void copyListObject() {
-        Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
-        Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
-        Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
-        List<Student> studentList = ListUtil.newArrayList(student1, student2, student3);
+	@Test
+	public void copyListObject() {
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
+				ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
+				ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
+				ListUtil.newArrayList("chinese3", "english5"));
+		List<Student> studentList = ListUtil.newArrayList(student1, student2, student3);
 
-        List<StudentVO> studentVoList = BeanMapper.mapList(studentList, StudentVO.class);
-        assertThat(studentVoList).hasSize(3);
-        StudentVO studentVo = studentVoList.get(0);
+		List<StudentVO> studentVoList = BeanMapper.mapList(studentList, StudentVO.class);
+		assertThat(studentVoList).hasSize(3);
+		StudentVO studentVo = studentVoList.get(0);
 
-        assertThat(studentVo.name).isEqualTo("zhang3");
-        assertThat(studentVo.getAge()).isEqualTo(20);
-        assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
-        assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
+		assertThat(studentVo.name).isEqualTo("zhang3");
+		assertThat(studentVo.getAge()).isEqualTo(20);
+		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
+		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
 
-    }
+	}
 
-    @Test
-    public void copyArrayObject() {
-        Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
-        Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
-        Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
-        Student[] studentList = new Student[] {student1, student2, student3};
-        StudentVO[] studentVoList = BeanMapper.mapArray(studentList, StudentVO.class);
-        assertThat(studentVoList).hasSize(3);
-        StudentVO studentVo = studentVoList[0];
+	@Test
+	public void copyArrayObject() {
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
+				ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
+				ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
+				ListUtil.newArrayList("chinese3", "english5"));
+		Student[] studentList = new Student[] { student1, student2, student3 };
+		StudentVO[] studentVoList = BeanMapper.mapArray(studentList, StudentVO.class);
+		assertThat(studentVoList).hasSize(3);
+		StudentVO studentVo = studentVoList[0];
 
-        assertThat(studentVo.name).isEqualTo("zhang3");
-        assertThat(studentVo.getAge()).isEqualTo(20);
-        assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
-        assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
+		assertThat(studentVo.name).isEqualTo("zhang3");
+		assertThat(studentVo.getAge()).isEqualTo(20);
+		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
+		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
 
-    }
+	}
 
-    public static class Student {
-        public String name;
-        private int age;
-        private Teacher teacher;
-        private List<String> course = ListUtil.newArrayList();
+	public static class Student {
 
-        public Student() {
+		public String name;
 
-        }
+		private int age;
 
-        public Student(String name, int age, Teacher teacher, List<String> course) {
-            this.name = name;
-            this.age = age;
-            this.teacher = teacher;
-            this.course = course;
-        }
+		private Teacher teacher;
 
-        public List<String> getCourse() {
-            return course;
-        }
+		private List<String> course = ListUtil.newArrayList();
 
-        public void setCourse(List<String> course) {
-            this.course = course;
-        }
+		public Student() {
 
-        public int getAge() {
-            return age;
-        }
+		}
 
-        public void setAge(int age) {
-            this.age = age;
-        }
+		public Student(String name, int age, Teacher teacher, List<String> course) {
+			this.name = name;
+			this.age = age;
+			this.teacher = teacher;
+			this.course = course;
+		}
 
-        public Teacher getTeacher() {
-            return teacher;
-        }
+		public List<String> getCourse() {
+			return course;
+		}
 
-        public void setTeacher(Teacher teacher) {
-            this.teacher = teacher;
-        }
+		public void setCourse(List<String> course) {
+			this.course = course;
+		}
 
-        public String getName() {
-            return name;
-        }
+		public int getAge() {
+			return age;
+		}
 
-        public void setName(String name) {
-            this.name = name;
-        }
+		public void setAge(int age) {
+			this.age = age;
+		}
 
+		public Teacher getTeacher() {
+			return teacher;
+		}
 
+		public void setTeacher(Teacher teacher) {
+			this.teacher = teacher;
+		}
 
-    }
+		public String getName() {
+			return name;
+		}
 
+		public void setName(String name) {
+			this.name = name;
+		}
 
-    public static class Teacher {
-        private String name;
+	}
 
-        public Teacher() {
+	public static class Teacher {
 
-        }
+		private String name;
 
-        public Teacher(String name) {
-            super();
-            this.name = name;
-        }
+		public Teacher() {
 
-        public String getName() {
-            return name;
-        }
+		}
 
-        public void setName(String name) {
-            this.name = name;
-        }
+		public Teacher(String name) {
+			super();
+			this.name = name;
+		}
 
-    }
+		public String getName() {
+			return name;
+		}
 
+		public void setName(String name) {
+			this.name = name;
+		}
 
-    public static class StudentVO {
-        public String name;
-        private int age;
-        private TeacherVO teacher;
-        private List<String> course = ListUtil.newArrayList();
+	}
 
-        public StudentVO() {
+	public static class StudentVO {
 
-        }
+		public String name;
 
-        public StudentVO(String name, int age, TeacherVO teacher, List<String> course) {
-            this.name = name;
-            this.age = age;
-            this.teacher = teacher;
-            this.course = course;
-        }
+		private int age;
 
-        public List<String> getCourse() {
-            return course;
-        }
+		private TeacherVO teacher;
 
-        public void setCourse(List<String> course) {
-            this.course = course;
-        }
+		private List<String> course = ListUtil.newArrayList();
 
-        public int getAge() {
-            return age;
-        }
+		public StudentVO() {
 
-        public void setAge(int age) {
-            this.age = age;
-        }
+		}
 
-        public TeacherVO getTeacher() {
-            return teacher;
-        }
+		public StudentVO(String name, int age, TeacherVO teacher, List<String> course) {
+			this.name = name;
+			this.age = age;
+			this.teacher = teacher;
+			this.course = course;
+		}
 
-        public void setTeacher(TeacherVO teacher) {
-            this.teacher = teacher;
-        }
+		public List<String> getCourse() {
+			return course;
+		}
 
-        public String getName() {
-            return name;
-        }
+		public void setCourse(List<String> course) {
+			this.course = course;
+		}
 
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
+		public int getAge() {
+			return age;
+		}
 
+		public void setAge(int age) {
+			this.age = age;
+		}
 
-    public static class TeacherVO {
-        private String name;
+		public TeacherVO getTeacher() {
+			return teacher;
+		}
 
-        public TeacherVO() {
+		public void setTeacher(TeacherVO teacher) {
+			this.teacher = teacher;
+		}
 
-        }
+		public String getName() {
+			return name;
+		}
 
-        public TeacherVO(String name) {
-            super();
-            this.name = name;
-        }
+		public void setName(String name) {
+			this.name = name;
+		}
 
-        public String getName() {
-            return name;
-        }
+	}
 
-        public void setName(String name) {
-            this.name = name;
-        }
+	public static class TeacherVO {
 
-    }
+		private String name;
+
+		public TeacherVO() {
+
+		}
+
+		public TeacherVO(String name) {
+			super();
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+	}
 
 }

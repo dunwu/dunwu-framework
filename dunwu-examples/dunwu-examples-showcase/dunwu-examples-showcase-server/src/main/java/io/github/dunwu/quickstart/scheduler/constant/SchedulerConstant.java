@@ -6,8 +6,12 @@ package io.github.dunwu.quickstart.scheduler.constant;
  */
 public interface SchedulerConstant {
 
-    String BEAN_NAME = "beanName";
-    String BEAN_TYPE = "beanType";
-    String METHOD_NAME = "methodName";
-    String METHOD_PARAMS = "methodParams";
+	String BEAN_NAME = "beanName";
+
+	String BEAN_TYPE = "beanType";
+
+	String METHOD_NAME = "methodName";
+
+	String METHOD_PARAMS = "methodParams";
+
 }

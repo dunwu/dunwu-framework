@@ -15,59 +15,62 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtil {
 
-    /**
-     * 添加 Cookie
-     * @param request
-     * @param response
-     * @param key
-     * @param value
-     */
-    public static void addCookie(HttpServletRequest request, HttpServletResponse response, String key, String value) {
-        Cookie cookie = new Cookie(key, value);
-        cookie.setPath(request.getContextPath());
-        response.addCookie(cookie);
-    }
+	/**
+	 * 添加 Cookie
+	 * @param request
+	 * @param response
+	 * @param key
+	 * @param value
+	 */
+	public static void addCookie(HttpServletRequest request, HttpServletResponse response,
+			String key, String value) {
+		Cookie cookie = new Cookie(key, value);
+		cookie.setPath(request.getContextPath());
+		response.addCookie(cookie);
+	}
 
-    /**
-     * 获取 Cookie
-     * @param request
-     * @param key
-     * @return
-     */
-    public static String getCookie(HttpServletRequest request, String key) {
-        Cookie[] cookies = request.getCookies();
-        if (ArrayUtil.isEmpty(cookies) || StringUtils.isBlank(key)) {
-            return null;
-        }
+	/**
+	 * 获取 Cookie
+	 * @param request
+	 * @param key
+	 * @return
+	 */
+	public static String getCookie(HttpServletRequest request, String key) {
+		Cookie[] cookies = request.getCookies();
+		if (ArrayUtil.isEmpty(cookies) || StringUtils.isBlank(key)) {
+			return null;
+		}
 
-        for (Cookie cookie : cookies) {
-            if (key.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
+		for (Cookie cookie : cookies) {
+			if (key.equals(cookie.getName())) {
+				return cookie.getValue();
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * 删除 Cookie
-     * @param response
-     * @param key
-     * @param path
-     * @param domain
-     */
-    public static void removeCookie(HttpServletResponse response, String key, String path, String domain) {
-        Cookie cookie = new Cookie(key, null);
+	/**
+	 * 删除 Cookie
+	 * @param response
+	 * @param key
+	 * @param path
+	 * @param domain
+	 */
+	public static void removeCookie(HttpServletResponse response, String key, String path,
+			String domain) {
+		Cookie cookie = new Cookie(key, null);
 
-        if (StringUtils.isEmpty(path)) {
-            cookie.setPath(path);
-        }
+		if (StringUtils.isEmpty(path)) {
+			cookie.setPath(path);
+		}
 
-        if (StringUtils.isEmpty(domain)) {
-            cookie.setDomain(domain);
-        }
+		if (StringUtils.isEmpty(domain)) {
+			cookie.setDomain(domain);
+		}
 
-        cookie.setMaxAge(-1000);
-        response.addCookie(cookie);
-    }
+		cookie.setMaxAge(-1000);
+		response.addCookie(cookie);
+	}
+
 }

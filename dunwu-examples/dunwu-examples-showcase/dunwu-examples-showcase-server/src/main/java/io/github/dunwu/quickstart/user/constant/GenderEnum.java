@@ -8,28 +8,30 @@ import io.github.dunwu.constant.IIntegerStringEnum;
  * @since 2019-04-27
  */
 public enum GenderEnum implements IIntegerStringEnum {
-    MALE(1, "男"),
-    FEMALE(2, "女");
 
-    GenderEnum(int key, String value) {
-        this.key = key;
-        this.value = value;
-    }
+	MALE(1, "男"), FEMALE(2, "女");
 
-    /**
-     * 标记数据库存的值是code
-     */
-    @EnumValue
-    private final int key;
-    private final String value;
+	GenderEnum(int key, String value) {
+		this.key = key;
+		this.value = value;
+	}
 
-    @Override
-    public int getKey() {
-        return this.key;
-    }
+	/**
+	 * 标记数据库存的值是code
+	 */
+	@EnumValue
+	private final int key;
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	private final String value;
+
+	@Override
+	public int getKey() {
+		return this.key;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
 }

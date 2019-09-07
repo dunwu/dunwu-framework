@@ -31,114 +31,121 @@ import java.util.concurrent.*;
  */
 public abstract class BaseFuture<T> implements Future<T> {
 
-    private volatile boolean completed; //NOSONAR
-    private volatile boolean cancelled;
-    private volatile T result;
-    private volatile Exception ex;
+	private volatile boolean completed; // NOSONAR
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+	private volatile boolean cancelled;
 
-    @Override
-    public boolean isDone() {
-        return this.completed;
-    }
+	private volatile T result;
 
-    @Override
-    public synchronized T get() throws InterruptedException, ExecutionException {
-        while (!this.completed) {
-            wait();
-        }
-        return getResult();
-    }
+	private volatile Exception ex;
 
-    @Override
-    public synchronized T get(final long timeout, final TimeUnit unit)
-        throws InterruptedException, ExecutionException, TimeoutException {
-        Validate.notNull(unit, "Time unit");
-        final long msecs = unit.toMillis(timeout);
-        final long startTime = (msecs <= 0) ? 0 : System.currentTimeMillis();
-        long waitTime = msecs;
-        if (this.completed) {
-            return getResult();
-        } else if (waitTime <= 0) {
-            throw new TimeoutException();
-        } else {
-            for (; ; ) {
-                wait(waitTime);
-                if (this.completed) {
-                    return getResult();
-                } else {
-                    waitTime = msecs - (System.currentTimeMillis() - startTime);
-                    if (waitTime <= 0) {
-                        throw new TimeoutException();
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	public boolean isCancelled() {
+		return this.cancelled;
+	}
 
-    private T getResult() throws ExecutionException {
-        if (this.ex != null) {
-            throw new ExecutionException(this.ex);
-        }
+	@Override
+	public boolean isDone() {
+		return this.completed;
+	}
 
-        if (cancelled) {
-            throw new CancellationException();
-        }
-        return this.result;
-    }
+	@Override
+	public synchronized T get() throws InterruptedException, ExecutionException {
+		while (!this.completed) {
+			wait();
+		}
+		return getResult();
+	}
 
-    public boolean completed(final T result) {
-        synchronized (this) {
-            if (this.completed) {
-                return false;
-            }
-            this.completed = true;
-            this.result = result;
-            notifyAll();
-        }
-        onCompleted(result);
+	@Override
+	public synchronized T get(final long timeout, final TimeUnit unit)
+			throws InterruptedException, ExecutionException, TimeoutException {
+		Validate.notNull(unit, "Time unit");
+		final long msecs = unit.toMillis(timeout);
+		final long startTime = (msecs <= 0) ? 0 : System.currentTimeMillis();
+		long waitTime = msecs;
+		if (this.completed) {
+			return getResult();
+		}
+		else if (waitTime <= 0) {
+			throw new TimeoutException();
+		}
+		else {
+			for (;;) {
+				wait(waitTime);
+				if (this.completed) {
+					return getResult();
+				}
+				else {
+					waitTime = msecs - (System.currentTimeMillis() - startTime);
+					if (waitTime <= 0) {
+						throw new TimeoutException();
+					}
+				}
+			}
+		}
+	}
 
-        return true;
-    }
+	private T getResult() throws ExecutionException {
+		if (this.ex != null) {
+			throw new ExecutionException(this.ex);
+		}
 
-    public boolean failed(final Exception exception) {
-        synchronized (this) {
-            if (this.completed) {
-                return false;
-            }
-            this.completed = true;
-            this.ex = exception;
-            notifyAll();
-        }
+		if (cancelled) {
+			throw new CancellationException();
+		}
+		return this.result;
+	}
 
-        onFailed(exception);
+	public boolean completed(final T result) {
+		synchronized (this) {
+			if (this.completed) {
+				return false;
+			}
+			this.completed = true;
+			this.result = result;
+			notifyAll();
+		}
+		onCompleted(result);
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public boolean cancel(final boolean mayInterruptIfRunning) {
-        synchronized (this) {
-            if (this.completed) {
-                return false;
-            }
-            this.completed = true;
-            this.cancelled = true;
-            notifyAll();
-        }
+	public boolean failed(final Exception exception) {
+		synchronized (this) {
+			if (this.completed) {
+				return false;
+			}
+			this.completed = true;
+			this.ex = exception;
+			notifyAll();
+		}
 
-        onCancelled();
+		onFailed(exception);
 
-        return true;
-    }
+		return true;
+	}
 
-    protected abstract void onCompleted(T result);
+	@Override
+	public boolean cancel(final boolean mayInterruptIfRunning) {
+		synchronized (this) {
+			if (this.completed) {
+				return false;
+			}
+			this.completed = true;
+			this.cancelled = true;
+			notifyAll();
+		}
 
-    protected abstract void onFailed(Exception ex);
+		onCancelled();
 
-    protected abstract void onCancelled();
+		return true;
+	}
+
+	protected abstract void onCompleted(T result);
+
+	protected abstract void onFailed(Exception ex);
+
+	protected abstract void onCancelled();
+
 }

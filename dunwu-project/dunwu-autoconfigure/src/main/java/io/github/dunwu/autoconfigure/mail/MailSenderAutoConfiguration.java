@@ -45,52 +45,53 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since 1.2.0
  */
 @Configuration
-@ConditionalOnClass({MimeMessage.class, MimeType.class, MailSender.class})
+@ConditionalOnClass({ MimeMessage.class, MimeType.class, MailSender.class })
 @ConditionalOnMissingBean(MailSender.class)
 @Conditional(MailSenderAutoConfiguration.MailSenderCondition.class)
 @EnableConfigurationProperties(DunwuMailProperties.class)
-@Import({MailSenderJndiConfiguration.class, MailSenderPropertiesConfiguration.class})
+@Import({ MailSenderJndiConfiguration.class, MailSenderPropertiesConfiguration.class })
 public class MailSenderAutoConfiguration {
 
-    private final DunwuMailProperties dunwuMailProperties;
+	private final DunwuMailProperties dunwuMailProperties;
 
-    public MailSenderAutoConfiguration(DunwuMailProperties dunwuMailProperties) {
-        this.dunwuMailProperties = dunwuMailProperties;
-    }
+	public MailSenderAutoConfiguration(DunwuMailProperties dunwuMailProperties) {
+		this.dunwuMailProperties = dunwuMailProperties;
+	}
 
-    @Bean("mailExecutor")
-    public ExecutorService mailExecutor() {
-        DunwuMailProperties.Pool pool = dunwuMailProperties.getPool();
-        ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil.queuableCachedPool();
-        builder.setMinSize(pool.getMinSize())
-               .setMinSize(pool.getMaxSize())
-               .setKeepAliveSecs(pool.getKeepAliveSecs())
-               .setQueueSize(pool.getQueueSize())
-               .setThreadFactory(ThreadPoolUtil.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
-               .setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
-        return builder.build();
-    }
+	@Bean("mailExecutor")
+	public ExecutorService mailExecutor() {
+		DunwuMailProperties.Pool pool = dunwuMailProperties.getPool();
+		ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil
+				.queuableCachedPool();
+		builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize())
+				.setKeepAliveSecs(pool.getKeepAliveSecs())
+				.setQueueSize(pool.getQueueSize())
+				.setThreadFactory(ThreadPoolUtil
+						.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
+				.setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
+		return builder.build();
+	}
 
-    /**
-     * Condition to trigger the creation of a {@link MailSender}. This kicks in if either the host or jndi name property
-     * is set.
-     */
-    static class MailSenderCondition extends AnyNestedCondition {
+	/**
+	 * Condition to trigger the creation of a {@link MailSender}. This kicks in if either
+	 * the host or jndi name property is set.
+	 */
+	static class MailSenderCondition extends AnyNestedCondition {
 
-        MailSenderCondition() {
-            super(ConfigurationPhase.PARSE_CONFIGURATION);
-        }
+		MailSenderCondition() {
+			super(ConfigurationPhase.PARSE_CONFIGURATION);
+		}
 
-        @ConditionalOnProperty(prefix = "spring.mail", name = "host")
-        static class HostProperty {
+		@ConditionalOnProperty(prefix = "spring.mail", name = "host")
+		static class HostProperty {
 
-        }
+		}
 
+		@ConditionalOnProperty(prefix = "spring.mail", name = "jndi-name")
+		static class JndiNameProperty {
 
-        @ConditionalOnProperty(prefix = "spring.mail", name = "jndi-name")
-        static class JndiNameProperty {
+		}
 
-        }
+	}
 
-    }
 }

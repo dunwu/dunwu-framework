@@ -33,32 +33,35 @@ import java.util.Map;
  */
 public class BeetlTemplateEngine extends AbstractTemplateEngine {
 
-    private GroupTemplate groupTemplate;
+	private GroupTemplate groupTemplate;
 
-    @Override
-    public AbstractTemplateEngine init(ConfigBuilder configBuilder) {
-        super.init(configBuilder);
-        try {
-            Configuration cfg = Configuration.defaultConfiguration();
-            groupTemplate = new GroupTemplate(new ClasspathResourceLoader("/"), cfg);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return this;
-    }
+	@Override
+	public AbstractTemplateEngine init(ConfigBuilder configBuilder) {
+		super.init(configBuilder);
+		try {
+			Configuration cfg = Configuration.defaultConfiguration();
+			groupTemplate = new GroupTemplate(new ClasspathResourceLoader("/"), cfg);
+		}
+		catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return this;
+	}
 
-    @Override
-    public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
-        Template template = groupTemplate.getTemplate(templatePath);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            template.binding(objectMap);
-            template.renderTo(fileOutputStream);
-        }
-        logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
-    }
+	@Override
+	public void writer(Map<String, Object> objectMap, String templatePath,
+			String outputFile) throws Exception {
+		Template template = groupTemplate.getTemplate(templatePath);
+		try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+			template.binding(objectMap);
+			template.renderTo(fileOutputStream);
+		}
+		logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
+	}
 
-    @Override
-    public String templateFilePath(String filePath) {
-        return filePath + ".btl";
-    }
+	@Override
+	public String templateFilePath(String filePath) {
+		return filePath + ".btl";
+	}
+
 }

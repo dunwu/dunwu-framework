@@ -23,22 +23,22 @@ import java.time.LocalDateTime;
 @ApiModel(value = "TemplateConfig对象", description = "模板配置表")
 public class TemplateConfig extends BaseRecordEntity {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "模板名")
-    @TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
-    private String templateName;
+	@ApiModelProperty(value = "模板名")
+	@TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
+	private String templateName;
 
-    @ApiModelProperty(value = "命名空间。一般对应业务系统")
-    private String namespace;
+	@ApiModelProperty(value = "命名空间。一般对应业务系统")
+	private String namespace;
 
-    @ApiModelProperty(value = "标签。供业务系统使用")
-    private String tag;
+	@ApiModelProperty(value = "标签。供业务系统使用")
+	private String tag;
 
-    @ApiModelProperty(value = "模板内容")
-    private String content;
+	@ApiModelProperty(value = "模板内容")
+	private String content;
 
-    @ApiModelProperty(value = "模板元数据")
-    private String metadata;
+	@ApiModelProperty(value = "模板元数据")
+	private String metadata;
 
 }

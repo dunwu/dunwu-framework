@@ -24,201 +24,207 @@ import java.util.Map;
 @Api(tags = "user", description = "UserController")
 public class UserController {
 
-    public static final String TOKEN_KEY = "token";
+	public static final String TOKEN_KEY = "token";
 
-    private final UserManager userManager;
-    private final UserInfoService userInfoService;
+	private final UserManager userManager;
 
-    public UserController(UserManager userManager, UserInfoService userInfoService) {
-        this.userManager = userManager;
-        this.userInfoService = userInfoService;
-    }
+	private final UserInfoService userInfoService;
 
-    @PostMapping("register")
-    @ApiOperation(value = "用户注册")
-    public DataResult<Map<String, String>> register(@RequestBody LoginInfoDTO registerUserDTO) {
-        return userManager.register(registerUserDTO);
-    }
+	public UserController(UserManager userManager, UserInfoService userInfoService) {
+		this.userManager = userManager;
+		this.userInfoService = userInfoService;
+	}
 
-    @PostMapping("login")
-    @ApiOperation(value = "用户登录")
-    public DataResult<UserInfoDTO> login(HttpSession session, @RequestBody Map<String, String> map) {
-        return userManager.login(session, map);
-    }
+	@PostMapping("register")
+	@ApiOperation(value = "用户注册")
+	public DataResult<Map<String, String>> register(
+			@RequestBody LoginInfoDTO registerUserDTO) {
+		return userManager.register(registerUserDTO);
+	}
 
-    @PostMapping("logout")
-    @ApiOperation(value = "用户登出")
-    public BaseResult logout(HttpSession session) {
-        String sessionId = session.getId();
-        session.removeAttribute(sessionId);
-        return ResultUtil.successBaseResult();
-    }
+	@PostMapping("login")
+	@ApiOperation(value = "用户登录")
+	public DataResult<UserInfoDTO> login(HttpSession session,
+			@RequestBody Map<String, String> map) {
+		return userManager.login(session, map);
+	}
 
-    //    @GetMapping("{id:.+}")
-    //    @ApiOperation(value = "获取用户信息")
-    //    public DataResult<UserInfoDTO> getUser(@PathVariable String id) {
-    //        if (StringUtils.isBlank(id)) {
-    //            ResultUtil.failDataResult();
-    //        }
-    //
-    //        DataResult<UserInfo> dataResult = userInfoService.getById(id);
-    //        if (ResultUtil.isNotValidResult(dataResult)) {
-    //            return ResultUtil.failDataResult(AppCode.ERROR_DB);
-    //        }
-    //        UserInfoDTO userInfoDTO = BeanMapper.map(dataResult.getData(), UserInfoDTO.class);
-    //        userInfoDTO.setIntroduction("I am a super administrator");
-    //        userInfoDTO.setRoles("admin");
-    //        return ResultUtil.successDataResult(userInfoDTO);
-    //    }
+	@PostMapping("logout")
+	@ApiOperation(value = "用户登出")
+	public BaseResult logout(HttpSession session) {
+		String sessionId = session.getId();
+		session.removeAttribute(sessionId);
+		return ResultUtil.successBaseResult();
+	}
 
-    @GetMapping("currentUser")
-    @ApiOperation(value = "获取当前会话信息")
-    public DataResult<UserInfoDTO> currentUser(HttpSession session) {
-        return userManager.getCurrentUserInfo(session);
-    }
+	// @GetMapping("{id:.+}")
+	// @ApiOperation(value = "获取用户信息")
+	// public DataResult<UserInfoDTO> getUser(@PathVariable String id) {
+	// if (StringUtils.isBlank(id)) {
+	// ResultUtil.failDataResult();
+	// }
+	//
+	// DataResult<UserInfo> dataResult = userInfoService.getById(id);
+	// if (ResultUtil.isNotValidResult(dataResult)) {
+	// return ResultUtil.failDataResult(AppCode.ERROR_DB);
+	// }
+	// UserInfoDTO userInfoDTO = BeanMapper.map(dataResult.getData(), UserInfoDTO.class);
+	// userInfoDTO.setIntroduction("I am a super administrator");
+	// userInfoDTO.setRoles("admin");
+	// return ResultUtil.successDataResult(userInfoDTO);
+	// }
 
-    @GetMapping("getInfo")
-    @ApiOperation(value = "获取用户信息")
-    public DataResult<UserInfoDTO> getInfo(HttpSession session, @PathParam("token") String token) {
-        if (StringUtils.isBlank(token)) {
-            ResultUtil.failDataResult();
-        }
+	@GetMapping("currentUser")
+	@ApiOperation(value = "获取当前会话信息")
+	public DataResult<UserInfoDTO> currentUser(HttpSession session) {
+		return userManager.getCurrentUserInfo(session);
+	}
 
-        DataResult<UserInfoDTO> dataResult = userManager.getCurrentUserInfo(session);
-        if (ResultUtil.isNotValidResult(dataResult)) {
-            return ResultUtil.failDataResult(AppCode.ERROR_DB);
-        }
-        UserInfoDTO userInfoDTO = dataResult.getData();
-        userInfoDTO.setIntroduction("I am a super administrator");
-        ArrayList<String> roles = new ArrayList<>();
-        roles.add("admin");
-        userInfoDTO.setRoles(roles);
-        return ResultUtil.successDataResult(userInfoDTO);
-    }
+	@GetMapping("getInfo")
+	@ApiOperation(value = "获取用户信息")
+	public DataResult<UserInfoDTO> getInfo(HttpSession session,
+			@PathParam("token") String token) {
+		if (StringUtils.isBlank(token)) {
+			ResultUtil.failDataResult();
+		}
 
-    @PostMapping("save")
-    @ApiOperation(value = "插入一条 UserInfo 记录，插入成功返回 ID（选择字段，策略插入）")
-    public DataResult<String> save(@RequestBody UserInfo entity) {
-        return userInfoService.save(entity);
-    }
+		DataResult<UserInfoDTO> dataResult = userManager.getCurrentUserInfo(session);
+		if (ResultUtil.isNotValidResult(dataResult)) {
+			return ResultUtil.failDataResult(AppCode.ERROR_DB);
+		}
+		UserInfoDTO userInfoDTO = dataResult.getData();
+		userInfoDTO.setIntroduction("I am a super administrator");
+		ArrayList<String> roles = new ArrayList<>();
+		roles.add("admin");
+		userInfoDTO.setRoles(roles);
+		return ResultUtil.successDataResult(userInfoDTO);
+	}
 
-    @PostMapping("saveBatch")
-    @ApiOperation(value = "批量添加 UserInfo 记录（选择字段，策略插入）")
-    public BaseResult saveBatch(@RequestBody Collection<UserInfo> entityList) {
-        return userInfoService.saveBatch(entityList);
-    }
+	@PostMapping("save")
+	@ApiOperation(value = "插入一条 UserInfo 记录，插入成功返回 ID（选择字段，策略插入）")
+	public DataResult<String> save(@RequestBody UserInfo entity) {
+		return userInfoService.save(entity);
+	}
 
-    @PostMapping("removeById")
-    @ApiOperation(value = "根据 ID 删除一条 UserInfo 记录")
-    public BaseResult removeById(@RequestBody String id) {
-        return userInfoService.removeById(id);
-    }
+	@PostMapping("saveBatch")
+	@ApiOperation(value = "批量添加 UserInfo 记录（选择字段，策略插入）")
+	public BaseResult saveBatch(@RequestBody Collection<UserInfo> entityList) {
+		return userInfoService.saveBatch(entityList);
+	}
 
-    @PostMapping("removeByMap")
-    @ApiOperation(value = "根据 columnMap 条件，删除 UserInfo 记录")
-    public BaseResult removeByMap(@RequestBody Map<String, Object> columnMap) {
-        return userInfoService.removeByMap(columnMap);
-    }
+	@PostMapping("removeById")
+	@ApiOperation(value = "根据 ID 删除一条 UserInfo 记录")
+	public BaseResult removeById(@RequestBody String id) {
+		return userInfoService.removeById(id);
+	}
 
-    @PostMapping("remove")
-    @ApiOperation(value = "根据 entity 条件，删除 UserInfo 记录")
-    public BaseResult remove(@RequestBody UserInfo entity) {
-        return userInfoService.remove(entity);
-    }
+	@PostMapping("removeByMap")
+	@ApiOperation(value = "根据 columnMap 条件，删除 UserInfo 记录")
+	public BaseResult removeByMap(@RequestBody Map<String, Object> columnMap) {
+		return userInfoService.removeByMap(columnMap);
+	}
 
-    @PostMapping("removeByIds")
-    @ApiOperation(value = "根据 ID 批量删除 UserInfo 记录")
-    public BaseResult removeByIds(@RequestBody Collection<String> idList) {
-        return userInfoService.removeByIds(idList);
-    }
+	@PostMapping("remove")
+	@ApiOperation(value = "根据 entity 条件，删除 UserInfo 记录")
+	public BaseResult remove(@RequestBody UserInfo entity) {
+		return userInfoService.remove(entity);
+	}
 
-    @PostMapping("updateById")
-    @ApiOperation(value = "根据 ID 选择修改一条 UserInfo 记录")
-    public BaseResult updateById(@RequestBody UserInfo entity) {
-        return userInfoService.updateById(entity);
-    }
+	@PostMapping("removeByIds")
+	@ApiOperation(value = "根据 ID 批量删除 UserInfo 记录")
+	public BaseResult removeByIds(@RequestBody Collection<String> idList) {
+		return userInfoService.removeByIds(idList);
+	}
 
-    @PostMapping("update")
-    @ApiOperation(value = "根据 origin 条件，更新 UserInfo 记录")
-    public BaseResult update(@RequestBody UserInfo target, @RequestParam UserInfo origin) {
-        return userInfoService.update(target, origin);
-    }
+	@PostMapping("updateById")
+	@ApiOperation(value = "根据 ID 选择修改一条 UserInfo 记录")
+	public BaseResult updateById(@RequestBody UserInfo entity) {
+		return userInfoService.updateById(entity);
+	}
 
-    @PostMapping("updateBatchById")
-    @ApiOperation(value = "根据 ID 批量修改 UserInfo 记录")
-    public BaseResult updateBatchById(@RequestBody Collection<UserInfo> entityList) {
-        return userInfoService.updateBatchById(entityList);
-    }
+	@PostMapping("update")
+	@ApiOperation(value = "根据 origin 条件，更新 UserInfo 记录")
+	public BaseResult update(@RequestBody UserInfo target,
+			@RequestParam UserInfo origin) {
+		return userInfoService.update(target, origin);
+	}
 
-    @PostMapping("saveOrUpdate")
-    @ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
-    public BaseResult saveOrUpdate(@RequestBody UserInfo entity) {
-        return userInfoService.saveOrUpdate(entity);
-    }
+	@PostMapping("updateBatchById")
+	@ApiOperation(value = "根据 ID 批量修改 UserInfo 记录")
+	public BaseResult updateBatchById(@RequestBody Collection<UserInfo> entityList) {
+		return userInfoService.updateBatchById(entityList);
+	}
 
-    @PostMapping("saveOrUpdateBatch")
-    @ApiOperation(value = "批量添加或更新 UserInfo 记录")
-    public BaseResult saveOrUpdateBatch(@RequestBody Collection<UserInfo> entityList) {
-        return userInfoService.saveOrUpdateBatch(entityList);
-    }
+	@PostMapping("saveOrUpdate")
+	@ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
+	public BaseResult saveOrUpdate(@RequestBody UserInfo entity) {
+		return userInfoService.saveOrUpdate(entity);
+	}
 
-    @GetMapping("getById")
-    @ApiOperation(value = "根据 ID 查询 UserInfo 记录")
-    public DataResult<UserInfo> getById(Serializable id) {
-        return userInfoService.getById(id);
-    }
+	@PostMapping("saveOrUpdateBatch")
+	@ApiOperation(value = "批量添加或更新 UserInfo 记录")
+	public BaseResult saveOrUpdateBatch(@RequestBody Collection<UserInfo> entityList) {
+		return userInfoService.saveOrUpdateBatch(entityList);
+	}
 
-    @GetMapping("listByIds")
-    @ApiOperation(value = "根据 ID 批量查询 UserInfo 记录")
-    public DataListResult<UserInfo> listByIds(Collection<String> idList) {
-        return userInfoService.listByIds(idList);
-    }
+	@GetMapping("getById")
+	@ApiOperation(value = "根据 ID 查询 UserInfo 记录")
+	public DataResult<UserInfo> getById(Serializable id) {
+		return userInfoService.getById(id);
+	}
 
-    @GetMapping("listByMap")
-    @ApiOperation(value = "根据 columnMap 批量查询 UserInfo 记录")
-    public DataListResult<UserInfo> listByMap(Map<String, Object> columnMap) {
-        return userInfoService.listByMap(columnMap);
-    }
+	@GetMapping("listByIds")
+	@ApiOperation(value = "根据 ID 批量查询 UserInfo 记录")
+	public DataListResult<UserInfo> listByIds(Collection<String> idList) {
+		return userInfoService.listByIds(idList);
+	}
 
-    @GetMapping("getOne")
-    @ApiOperation(value = "根据 entity 查询一条 UserInfo 记录")
-    public DataResult<UserInfo> getOne(UserInfo entity) {
-        return userInfoService.getOne(entity);
-    }
+	@GetMapping("listByMap")
+	@ApiOperation(value = "根据 columnMap 批量查询 UserInfo 记录")
+	public DataListResult<UserInfo> listByMap(Map<String, Object> columnMap) {
+		return userInfoService.listByMap(columnMap);
+	}
 
-    @GetMapping("count")
-    @ApiOperation(value = "根据 entity 条件，查询 UserInfo 总记录数")
-    public DataResult<Integer> count(UserInfo entity) {
-        return userInfoService.count(entity);
-    }
+	@GetMapping("getOne")
+	@ApiOperation(value = "根据 entity 查询一条 UserInfo 记录")
+	public DataResult<UserInfo> getOne(UserInfo entity) {
+		return userInfoService.getOne(entity);
+	}
 
-    @GetMapping("countAll")
-    @ApiOperation(value = "查询 UserInfo 总记录数")
-    public DataResult<Integer> countAll() {
-        return userInfoService.count();
-    }
+	@GetMapping("count")
+	@ApiOperation(value = "根据 entity 条件，查询 UserInfo 总记录数")
+	public DataResult<Integer> count(UserInfo entity) {
+		return userInfoService.count(entity);
+	}
 
-    @GetMapping("list")
-    @ApiOperation(value = "根据 entity 条件，查询匹配条件的 UserInfo 记录")
-    public DataListResult<UserInfo> list(UserInfo entity) {
-        return userInfoService.list(entity);
-    }
+	@GetMapping("countAll")
+	@ApiOperation(value = "查询 UserInfo 总记录数")
+	public DataResult<Integer> countAll() {
+		return userInfoService.count();
+	}
 
-    @GetMapping("listAll")
-    @ApiOperation(value = "查询所有 UserInfo 记录")
-    public DataListResult<UserInfo> listAll() {
-        return userInfoService.list();
-    }
+	@GetMapping("list")
+	@ApiOperation(value = "根据 entity 条件，查询匹配条件的 UserInfo 记录")
+	public DataListResult<UserInfo> list(UserInfo entity) {
+		return userInfoService.list(entity);
+	}
 
-    @GetMapping("page")
-    @ApiOperation(value = "根据 entity 条件，翻页查询 UserInfo 记录")
-    public PageResult<UserInfo> page(Pagination<UserInfo> pagination, UserInfo entity) {
-        return userInfoService.page(pagination, entity);
-    }
+	@GetMapping("listAll")
+	@ApiOperation(value = "查询所有 UserInfo 记录")
+	public DataListResult<UserInfo> listAll() {
+		return userInfoService.list();
+	}
 
-    @GetMapping("pageAll")
-    @ApiOperation(value = "翻页查询所有 UserInfo 记录")
-    public PageResult<UserInfo> pageAll(Pagination<UserInfo> pagination) {
-        return userInfoService.page(pagination);
-    }
+	@GetMapping("page")
+	@ApiOperation(value = "根据 entity 条件，翻页查询 UserInfo 记录")
+	public PageResult<UserInfo> page(Pagination<UserInfo> pagination, UserInfo entity) {
+		return userInfoService.page(pagination, entity);
+	}
+
+	@GetMapping("pageAll")
+	@ApiOperation(value = "翻页查询所有 UserInfo 记录")
+	public PageResult<UserInfo> pageAll(Pagination<UserInfo> pagination) {
+		return userInfoService.page(pagination);
+	}
+
 }

@@ -20,16 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "mail", description = "MailController")
 public class MailController {
 
-    private final MailService mailService;
+	private final MailService mailService;
 
-    public MailController(MailService mailService) {
-        this.mailService = mailService;
-    }
+	public MailController(MailService mailService) {
+		this.mailService = mailService;
+	}
 
-    @PostMapping("send")
-    @ApiOperation(value = "发送邮件")
-    public BaseResult send(@RequestBody MailDTO mailDTO) {
-        mailService.send(mailDTO);
-        return ResultUtil.successBaseResult();
-    }
+	@PostMapping("send")
+	@ApiOperation(value = "发送邮件")
+	public BaseResult send(@RequestBody MailDTO mailDTO) {
+		mailService.send(mailDTO);
+		return ResultUtil.successBaseResult();
+	}
+
 }

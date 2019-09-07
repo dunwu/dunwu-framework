@@ -6,5 +6,6 @@ package io.github.dunwu.constant;
  */
 public interface IIntegerEnum {
 
-    int getValue();
+	int getValue();
+
 }

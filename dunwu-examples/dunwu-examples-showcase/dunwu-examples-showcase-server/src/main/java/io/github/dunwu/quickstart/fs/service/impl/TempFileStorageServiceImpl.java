@@ -23,65 +23,68 @@ import java.nio.file.StandardOpenOption;
 /**
  * 临时文件存储服务
  * <p>
- * 文件将被存储在服务所在本机的临时磁盘空间，路径为 {@link io.github.dunwu.quickstart.fs.config.FileSystemProperties.Temp#location}
+ * 文件将被存储在服务所在本机的临时磁盘空间，路径为
+ * {@link io.github.dunwu.quickstart.fs.config.FileSystemProperties.Temp#location}
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-07-26
  */
 @AllArgsConstructor
 @Service(value = FileSystemConstant.TEMP_FILE_CONTENT_SERVICE)
-public class TempFileStorageServiceImpl extends BaseFileStorageService implements FileStorageService {
+public class TempFileStorageServiceImpl extends BaseFileStorageService
+		implements FileStorageService {
 
-    private final FileSystemProperties fileSystemProperties;
+	private final FileSystemProperties fileSystemProperties;
 
-    @PostConstruct
-    public void init() {
-        Path path = Paths.get(fileSystemProperties.getTemp()
-                                                  .getLocation());
-        try {
-            Files.createDirectories(path);
-        } catch (IOException e) {
-            log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp()
-                                                              .getLocation());
-        }
-    }
+	@PostConstruct
+	public void init() {
+		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
+		try {
+			Files.createDirectories(path);
+		}
+		catch (IOException e) {
+			log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp().getLocation());
+		}
+	}
 
-    @Override
-    public FileDTO create(UploadFileDTO uploadFileDTO) throws IOException {
-        FileDTO fileDTO = this.getFileInfo(uploadFileDTO);
-        FileContentDTO fileContentDTO = BeanMapper.map(fileDTO, FileContentDTO.class);
-        Path path = Paths.get(fileSystemProperties.getTemp()
-                                                  .getLocation());
-        Files.write(path.resolve(fileContentDTO.getStoreUrl()), fileContentDTO.getContent(), StandardOpenOption.CREATE);
-        return fileDTO;
-    }
+	@Override
+	public FileDTO create(UploadFileDTO uploadFileDTO) throws IOException {
+		FileDTO fileDTO = this.getFileInfo(uploadFileDTO);
+		FileContentDTO fileContentDTO = BeanMapper.map(fileDTO, FileContentDTO.class);
+		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
+		Files.write(path.resolve(fileContentDTO.getStoreUrl()),
+				fileContentDTO.getContent(), StandardOpenOption.CREATE);
+		return fileDTO;
+	}
 
-    @Override
-    public boolean delete(FileContentDTO fileContentDTO) throws IOException {
-        Path path = Paths.get(fileContentDTO.getStoreUrl());
-        Files.delete(path);
-        return true;
-    }
+	@Override
+	public boolean delete(FileContentDTO fileContentDTO) throws IOException {
+		Path path = Paths.get(fileContentDTO.getStoreUrl());
+		Files.delete(path);
+		return true;
+	}
 
-    @Override
-    public FileContentDTO getOne(FileContentDTO fileContentDTO) throws IOException {
-        Path path = Paths.get(fileContentDTO.getStoreUrl());
-        Resource resource = new UrlResource(path.toUri());
-        if (resource.exists() || resource.isReadable()) {
-            byte[] bytes = FileUtils.readFileToByteArray(resource.getFile());
-            fileContentDTO.setContent(bytes);
-            return fileContentDTO;
-        } else {
-            throw new IOException("Could not read file: " + fileContentDTO.getStoreUrl());
-        }
-    }
+	@Override
+	public FileContentDTO getOne(FileContentDTO fileContentDTO) throws IOException {
+		Path path = Paths.get(fileContentDTO.getStoreUrl());
+		Resource resource = new UrlResource(path.toUri());
+		if (resource.exists() || resource.isReadable()) {
+			byte[] bytes = FileUtils.readFileToByteArray(resource.getFile());
+			fileContentDTO.setContent(bytes);
+			return fileContentDTO;
+		}
+		else {
+			throw new IOException("Could not read file: " + fileContentDTO.getStoreUrl());
+		}
+	}
 
-    @Override
-    public FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException {
-        FileDTO fileDTO = super.getFileInfo(uploadFileDTO);
-        String storeUrl = fileSystemProperties.getTemp()
-                                              .getLocation() + "/" + fileDTO.getFileName();
-        fileDTO.setStoreUrl(storeUrl);
-        return fileDTO;
-    }
+	@Override
+	public FileDTO getFileInfo(UploadFileDTO uploadFileDTO) throws IOException {
+		FileDTO fileDTO = super.getFileInfo(uploadFileDTO);
+		String storeUrl = fileSystemProperties.getTemp().getLocation() + "/"
+				+ fileDTO.getFileName();
+		fileDTO.setStoreUrl(storeUrl);
+		return fileDTO;
+	}
+
 }

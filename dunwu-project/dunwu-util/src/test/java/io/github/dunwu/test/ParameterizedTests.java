@@ -11,17 +11,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class ParameterizedTests {
 
-    @ParameterizedTest(name = "{0} + {1} = {2}")
-    @CsvSource({"0,    1,   1", "1,    2,   3", "49,  51, 100", "1,  100, 101"})
-    void add(int first, int second, int expectedResult) {
-        Calculator calculator = new Calculator();
-        assertEquals(expectedResult, calculator.add(first, second),
-            () -> first + " + " + second + " should equal " + expectedResult);
-    }
+	@ParameterizedTest(name = "{0} + {1} = {2}")
+	@CsvSource({ "0,    1,   1", "1,    2,   3", "49,  51, 100", "1,  100, 101" })
+	void add(int first, int second, int expectedResult) {
+		Calculator calculator = new Calculator();
+		assertEquals(expectedResult, calculator.add(first, second),
+				() -> first + " + " + second + " should equal " + expectedResult);
+	}
 
-    public class Calculator {
-        public int add(int a, int b) {
-            return a + b;
-        }
-    }
+	public class Calculator {
+
+		public int add(int a, int b) {
+			return a + b;
+		}
+
+	}
+
 }

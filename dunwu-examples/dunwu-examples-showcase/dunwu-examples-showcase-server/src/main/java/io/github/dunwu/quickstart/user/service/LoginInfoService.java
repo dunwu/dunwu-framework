@@ -11,4 +11,6 @@ import io.github.dunwu.quickstart.user.entity.LoginInfo;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-07
  */
-public interface LoginInfoService extends IService<LoginInfo> {}
+public interface LoginInfoService extends IService<LoginInfo> {
+
+}

@@ -5,12 +5,14 @@ import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
 @Inherited
 public @interface JobHandler {
 
-    @AliasFor(annotation = Component.class) String value() default "";
+	@AliasFor(annotation = Component.class)
+	String value() default "";
+
 }

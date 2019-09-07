@@ -19,17 +19,18 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "LoginInfo对象", description = "登录信息表")
 public class LoginInfo extends BaseRecordEntity {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "昵称")
-    private String nickname;
+	@ApiModelProperty(value = "昵称")
+	private String nickname;
 
-    @ApiModelProperty(value = "密码")
-    private String password;
+	@ApiModelProperty(value = "密码")
+	private String password;
 
-    @ApiModelProperty(value = "邮箱")
-    private String email;
+	@ApiModelProperty(value = "邮箱")
+	private String email;
 
-    @ApiModelProperty(value = "手机号")
-    private String mobile;
+	@ApiModelProperty(value = "手机号")
+	private String mobile;
+
 }

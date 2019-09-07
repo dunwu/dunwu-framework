@@ -17,7 +17,9 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableSwagger2Doc
 @SpringBootApplication(scanBasePackages = "io.github.dunwu")
 public class Application {
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
 }

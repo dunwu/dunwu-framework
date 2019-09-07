@@ -9,30 +9,39 @@ import java.util.Base64;
  */
 public interface ICrypto {
 
-    byte[] encryptToBytes(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException;
+	byte[] encryptToBytes(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException;
 
-    default byte[] encryptToBytes(String plaintext) throws BadPaddingException, IllegalBlockSizeException {
-        return encryptToBytes(plaintext.getBytes());
-    }
+	default byte[] encryptToBytes(String plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+		return encryptToBytes(plaintext.getBytes());
+	}
 
-    byte[] decryptToBytes(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException;
+	byte[] decryptToBytes(byte[] ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException;
 
-    byte[] decryptToBytes(String ciphertext) throws BadPaddingException, IllegalBlockSizeException;
+	byte[] decryptToBytes(String ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException;
 
-    String encryptToString(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException;
+	String encryptToString(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException;
 
-    default String encryptToString(String plaintext) throws BadPaddingException, IllegalBlockSizeException {
-        return encryptToString(plaintext.getBytes());
-    }
+	default String encryptToString(String plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+		return encryptToString(plaintext.getBytes());
+	}
 
-    default String decryptToString(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException {
-        byte[] bytes = decryptToBytes(ciphertext);
-        Base64.Encoder encoder = Base64.getUrlEncoder();
-        return encoder.encodeToString(bytes);
-    }
+	default String decryptToString(byte[] ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
+		byte[] bytes = decryptToBytes(ciphertext);
+		Base64.Encoder encoder = Base64.getUrlEncoder();
+		return encoder.encodeToString(bytes);
+	}
 
-    default String decryptToString(String ciphertext) throws BadPaddingException, IllegalBlockSizeException {
-        byte[] bytes = decryptToBytes(ciphertext);
-        return new String(bytes);
-    }
+	default String decryptToString(String ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
+		byte[] bytes = decryptToBytes(ciphertext);
+		return new String(bytes);
+	}
+
 }

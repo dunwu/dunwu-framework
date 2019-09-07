@@ -26,33 +26,35 @@ import java.io.IOException;
  */
 @AllArgsConstructor
 @Service(value = FileSystemConstant.DB_FILE_CONTENT_SERVICE)
-public class DbFileStorageServiceImpl extends BaseFileStorageService implements FileStorageService {
+public class DbFileStorageServiceImpl extends BaseFileStorageService
+		implements FileStorageService {
 
-    protected final FileContentDao fileContentDao;
+	protected final FileContentDao fileContentDao;
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public FileDTO create(UploadFileDTO uploadFileDTO) throws IOException {
-        FileDTO fileDTO = super.getFileInfo(uploadFileDTO);
-        FileContentDTO fileContentDTO = BeanMapper.map(fileDTO, FileContentDTO.class);
-        FileContent fileContent = BeanMapper.map(fileContentDTO, FileContent.class);
-        if (fileContentDao.save(fileContent)) {
-            return fileDTO;
-        }
-        return null;
-    }
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public FileDTO create(UploadFileDTO uploadFileDTO) throws IOException {
+		FileDTO fileDTO = super.getFileInfo(uploadFileDTO);
+		FileContentDTO fileContentDTO = BeanMapper.map(fileDTO, FileContentDTO.class);
+		FileContent fileContent = BeanMapper.map(fileContentDTO, FileContent.class);
+		if (fileContentDao.save(fileContent)) {
+			return fileDTO;
+		}
+		return null;
+	}
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean delete(FileContentDTO fileContentDTO) {
-        FileContent fileContent = BeanMapper.map(fileContentDTO, FileContent.class);
-        return fileContentDao.remove(new QueryWrapper<>(fileContent));
-    }
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean delete(FileContentDTO fileContentDTO) {
+		FileContent fileContent = BeanMapper.map(fileContentDTO, FileContent.class);
+		return fileContentDao.remove(new QueryWrapper<>(fileContent));
+	}
 
-    @Override
-    public FileContentDTO getOne(FileContentDTO fileContentDTO) {
-        FileContent query = BeanMapper.map(fileContentDTO, FileContent.class);
-        FileContent result = fileContentDao.getOne(new QueryWrapper<>(query));
-        return BeanMapper.map(result, FileContentDTO.class);
-    }
+	@Override
+	public FileContentDTO getOne(FileContentDTO fileContentDTO) {
+		FileContent query = BeanMapper.map(fileContentDTO, FileContent.class);
+		FileContent result = fileContentDao.getOne(new QueryWrapper<>(query));
+		return BeanMapper.map(result, FileContentDTO.class);
+	}
+
 }

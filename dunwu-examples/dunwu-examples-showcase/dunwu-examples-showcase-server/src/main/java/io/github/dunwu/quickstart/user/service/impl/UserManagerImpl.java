@@ -33,83 +33,89 @@ import java.util.Map;
 @AllArgsConstructor
 public class UserManagerImpl implements UserManager {
 
-    private final ObjectMapper objectMapper;
-    private final LoginInfoDao loginInfoDao;
-    private final UserInfoDao userInfoDao;
+	private final ObjectMapper objectMapper;
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public DataResult<Map<String, String>> register(LoginInfoDTO loginInfoDTO) {
-        if (loginInfoDTO == null) {
-            return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER.getCode(), AppCode.ERROR_PARAMETER.getTemplate(),
-                                             "userInfoDTO", "null");
-        }
+	private final LoginInfoDao loginInfoDao;
 
-        LoginInfo loginInfo = BeanMapper.map(loginInfoDTO, LoginInfo.class);
-        if (!loginInfoDao.save(loginInfo)) {
-            return ResultUtil.failDataResult(AppCode.ERROR_DB);
-        }
+	private final UserInfoDao userInfoDao;
 
-        UserInfo userInfo = BeanMapper.map(loginInfoDTO, UserInfo.class);
-        if (!userInfoDao.save(userInfo)) {
-            return ResultUtil.failDataResult(AppCode.ERROR_DB);
-        }
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public DataResult<Map<String, String>> register(LoginInfoDTO loginInfoDTO) {
+		if (loginInfoDTO == null) {
+			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER.getCode(),
+					AppCode.ERROR_PARAMETER.getTemplate(), "userInfoDTO", "null");
+		}
 
-        Map<String, String> map = new HashMap<>(1);
-        map.put("currentAuthority", "user");
-        return ResultUtil.successDataResult(map);
-    }
+		LoginInfo loginInfo = BeanMapper.map(loginInfoDTO, LoginInfo.class);
+		if (!loginInfoDao.save(loginInfo)) {
+			return ResultUtil.failDataResult(AppCode.ERROR_DB);
+		}
 
-    @Override
-    public DataResult<UserInfoDTO> login(HttpSession session, Map<String, String> map) {
-        String nickname = map.get("nickname");
-        String password = map.get("password");
+		UserInfo userInfo = BeanMapper.map(loginInfoDTO, UserInfo.class);
+		if (!userInfoDao.save(userInfo)) {
+			return ResultUtil.failDataResult(AppCode.ERROR_DB);
+		}
 
-        LoginInfo loginInfoQuery = new LoginInfo();
-        loginInfoQuery.setNickname(nickname);
-        LoginInfo loginInfo = loginInfoDao.getOne(loginInfoQuery);
-        if (loginInfo == null) {
-            return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-        }
+		Map<String, String> map = new HashMap<>(1);
+		map.put("currentAuthority", "user");
+		return ResultUtil.successDataResult(map);
+	}
 
-        if (password.equals(loginInfo.getPassword())) {
-            String sessionId = session.getId();
-            UserInfo userInfoQuery = new UserInfo();
-            userInfoQuery.setNickname(loginInfo.getNickname());
-            UserInfo userInfo = userInfoDao.getOne(userInfoQuery);
-            if (userInfo == null) {
-                return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-            }
+	@Override
+	public DataResult<UserInfoDTO> login(HttpSession session, Map<String, String> map) {
+		String nickname = map.get("nickname");
+		String password = map.get("password");
 
-            UserInfoDTO userInfoDTO = BeanMapper.map(userInfo, UserInfoDTO.class);
-            ArrayList<String> roles = new ArrayList<>();
-            roles.add("admin");
-            userInfoDTO.setRoles(roles);
-            userInfoDTO.setCurrentAuthority("admin");
-            userInfoDTO.setToken(sessionId);
+		LoginInfo loginInfoQuery = new LoginInfo();
+		loginInfoQuery.setNickname(nickname);
+		LoginInfo loginInfo = loginInfoDao.getOne(loginInfoQuery);
+		if (loginInfo == null) {
+			return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
+		}
 
-            try {
-                session.setAttribute(sessionId, objectMapper.writeValueAsString(userInfoDTO));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            return ResultUtil.successDataResult(userInfoDTO);
-        }
-        return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-    }
+		if (password.equals(loginInfo.getPassword())) {
+			String sessionId = session.getId();
+			UserInfo userInfoQuery = new UserInfo();
+			userInfoQuery.setNickname(loginInfo.getNickname());
+			UserInfo userInfo = userInfoDao.getOne(userInfoQuery);
+			if (userInfo == null) {
+				return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
+			}
 
-    @Override
-    public DataResult<UserInfoDTO> getCurrentUserInfo(HttpSession session) {
-        String value = (String) session.getAttribute(session.getId());
-        if (value == null) {
-            return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-        }
-        UserInfoDTO userInfoDTO = null;
-        try {
-            userInfoDTO = objectMapper.readValue(value, UserInfoDTO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResultUtil.successDataResult(userInfoDTO);
-    }
+			UserInfoDTO userInfoDTO = BeanMapper.map(userInfo, UserInfoDTO.class);
+			ArrayList<String> roles = new ArrayList<>();
+			roles.add("admin");
+			userInfoDTO.setRoles(roles);
+			userInfoDTO.setCurrentAuthority("admin");
+			userInfoDTO.setToken(sessionId);
+
+			try {
+				session.setAttribute(sessionId,
+						objectMapper.writeValueAsString(userInfoDTO));
+			}
+			catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			return ResultUtil.successDataResult(userInfoDTO);
+		}
+		return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
+	}
+
+	@Override
+	public DataResult<UserInfoDTO> getCurrentUserInfo(HttpSession session) {
+		String value = (String) session.getAttribute(session.getId());
+		if (value == null) {
+			return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
+		}
+		UserInfoDTO userInfoDTO = null;
+		try {
+			userInfoDTO = objectMapper.readValue(value, UserInfoDTO.class);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ResultUtil.successDataResult(userInfoDTO);
+	}
+
 }

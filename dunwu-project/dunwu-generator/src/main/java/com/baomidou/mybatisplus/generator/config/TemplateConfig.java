@@ -30,26 +30,27 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TemplateConfig {
 
-    @Getter(AccessLevel.NONE)
-    private String entity = ConstVal.TEMPLATE_ENTITY_JAVA;
+	@Getter(AccessLevel.NONE)
+	private String entity = ConstVal.TEMPLATE_ENTITY_JAVA;
 
-    private String entityKt = ConstVal.TEMPLATE_ENTITY_KT;
+	private String entityKt = ConstVal.TEMPLATE_ENTITY_KT;
 
-    private String dao = ConstVal.TEMPLATE_DAO;
+	private String dao = ConstVal.TEMPLATE_DAO;
 
-    private String daoImpl = ConstVal.TEMPLATE_DAO_IMPL;
+	private String daoImpl = ConstVal.TEMPLATE_DAO_IMPL;
 
-    private String service = ConstVal.TEMPLATE_SERVICE;
+	private String service = ConstVal.TEMPLATE_SERVICE;
 
-    private String serviceImpl = ConstVal.TEMPLATE_SERVICE_IMPL;
+	private String serviceImpl = ConstVal.TEMPLATE_SERVICE_IMPL;
 
-    private String mapper = ConstVal.TEMPLATE_MAPPER;
+	private String mapper = ConstVal.TEMPLATE_MAPPER;
 
-    private String xml = ConstVal.TEMPLATE_XML;
+	private String xml = ConstVal.TEMPLATE_XML;
 
-    private String controller = ConstVal.TEMPLATE_CONTROLLER;
+	private String controller = ConstVal.TEMPLATE_CONTROLLER;
 
-    public String getEntity(boolean kotlin) {
-        return kotlin ? entityKt : entity;
-    }
+	public String getEntity(boolean kotlin) {
+		return kotlin ? entityKt : entity;
+	}
+
 }

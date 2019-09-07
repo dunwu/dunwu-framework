@@ -15,99 +15,91 @@ import java.util.Properties;
  */
 public abstract class CodeGeneratorTemplate {
 
-    /**
-     * 模板方法
-     */
-    public void generate(String... files) {
-        Properties properties = loadProperties(files);
-        if (properties == null) {
-            return;
-        }
+	/**
+	 * 模板方法
+	 */
+	public void generate(String... files) {
+		Properties properties = loadProperties(files);
+		if (properties == null) {
+			return;
+		}
 
-        // 全局配置
-        GlobalConfig gc = getGlobalConfig(properties);
+		// 全局配置
+		GlobalConfig gc = getGlobalConfig(properties);
 
-        // 数据源配置
-        DataSourceConfig dsc = getDataSourceConfig(properties);
+		// 数据源配置
+		DataSourceConfig dsc = getDataSourceConfig(properties);
 
-        // 包名配置
-        PackageConfig pc = getPackageConfig(properties);
+		// 包名配置
+		PackageConfig pc = getPackageConfig(properties);
 
-        // 策略配置
-        StrategyConfig sc = getStrategyConfig(properties, pc);
+		// 策略配置
+		StrategyConfig sc = getStrategyConfig(properties, pc);
 
-        // 自定义配置
-        InjectionConfig cfg = getInjectionConfig(properties, pc);
+		// 自定义配置
+		InjectionConfig cfg = getInjectionConfig(properties, pc);
 
-        // 自定义 controller 模板
-        TemplateConfig tc = getTemplateConfig();
+		// 自定义 controller 模板
+		TemplateConfig tc = getTemplateConfig();
 
-        // 将配置项注入 AutoGenerator
-        AutoGenerator mpg = new AutoGenerator();
-        mpg.setTemplate(tc);
-        mpg.setGlobalConfig(gc)
-           .setDataSource(dsc)
-           .setPackageInfo(pc)
-           .setStrategy(sc)
-           .setCfg(cfg)
-           .setTemplate(tc)
-           .setTemplateEngine(new FreemarkerTemplateEngine());
-        mpg.execute();
-    }
+		// 将配置项注入 AutoGenerator
+		AutoGenerator mpg = new AutoGenerator();
+		mpg.setTemplate(tc);
+		mpg.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc).setStrategy(sc)
+				.setCfg(cfg).setTemplate(tc)
+				.setTemplateEngine(new FreemarkerTemplateEngine());
+		mpg.execute();
+	}
 
-    /**
-     * 从配置文件中加载属性
-     *
-     * @return
-     */
-    public abstract Properties loadProperties(String... files);
+	/**
+	 * 从配置文件中加载属性
+	 * @return
+	 */
+	public abstract Properties loadProperties(String... files);
 
-    /**
-     * 全局配置
-     *
-     * @param properties Properties
-     * @return GlobalConfig
-     */
-    public abstract GlobalConfig getGlobalConfig(Properties properties);
+	/**
+	 * 全局配置
+	 * @param properties Properties
+	 * @return GlobalConfig
+	 */
+	public abstract GlobalConfig getGlobalConfig(Properties properties);
 
-    /**
-     * 数据源配置
-     *
-     * @param properties Properties
-     * @return DataSourceConfig
-     */
-    public abstract DataSourceConfig getDataSourceConfig(Properties properties);
+	/**
+	 * 数据源配置
+	 * @param properties Properties
+	 * @return DataSourceConfig
+	 */
+	public abstract DataSourceConfig getDataSourceConfig(Properties properties);
 
-    /**
-     * 包名配置
-     *
-     * @param properties Properties
-     * @return PackageConfig
-     */
-    public abstract PackageConfig getPackageConfig(Properties properties);
+	/**
+	 * 包名配置
+	 * @param properties Properties
+	 * @return PackageConfig
+	 */
+	public abstract PackageConfig getPackageConfig(Properties properties);
 
-    /**
-     * 策略配置
-     *
-     * @param properties Properties
-     * @param pc PackageConfig
-     * @return StrategyConfig
-     */
-    public abstract StrategyConfig getStrategyConfig(Properties properties, PackageConfig pc);
+	/**
+	 * 策略配置
+	 * @param properties Properties
+	 * @param pc PackageConfig
+	 * @return StrategyConfig
+	 */
+	public abstract StrategyConfig getStrategyConfig(Properties properties,
+			PackageConfig pc);
 
-    /**
-     * 自定义配置
-     *
-     * @param properties Properties
-     * @param pc PackageConfig
-     * @return InjectionConfig
-     */
-    public abstract InjectionConfig getInjectionConfig(Properties properties, PackageConfig pc);
+	/**
+	 * 自定义配置
+	 * @param properties Properties
+	 * @param pc PackageConfig
+	 * @return InjectionConfig
+	 */
+	public abstract InjectionConfig getInjectionConfig(Properties properties,
+			PackageConfig pc);
 
-    /**
-     * 模板配置
-     *
-     * @return
-     */
-    public abstract TemplateConfig getTemplateConfig();
+	/**
+	 * 模板配置
+	 * @return
+	 */
+	public abstract TemplateConfig getTemplateConfig();
+
 }

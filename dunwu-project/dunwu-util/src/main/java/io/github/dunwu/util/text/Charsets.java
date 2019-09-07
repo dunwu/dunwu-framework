@@ -10,12 +10,16 @@ import java.nio.charset.StandardCharsets;
  */
 public interface Charsets {
 
-     Charset UTF_8 = StandardCharsets.UTF_8;
-     Charset US_ASCII = StandardCharsets.US_ASCII;
-     Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
+	Charset UTF_8 = StandardCharsets.UTF_8;
 
-     String UTF_8_NAME = StandardCharsets.UTF_8.name();
-     String ASCII_NAME = StandardCharsets.US_ASCII.name();
-     String ISO_8859_1_NAME = StandardCharsets.ISO_8859_1.name();
+	Charset US_ASCII = StandardCharsets.US_ASCII;
+
+	Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
+
+	String UTF_8_NAME = StandardCharsets.UTF_8.name();
+
+	String ASCII_NAME = StandardCharsets.US_ASCII.name();
+
+	String ISO_8859_1_NAME = StandardCharsets.ISO_8859_1.name();
 
 }

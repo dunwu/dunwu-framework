@@ -22,10 +22,10 @@ import java.util.List;
  * <p>
  * 2.路径
  * <p>
- * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName， 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/"
- * 反而导致JarFile.getEntry(resouceName)时没有返回. 指定contextClass时，class.getResource()
- * 会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass
- * package的相对路径, 会先转为绝对路径.
+ * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName，
+ * 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/" 反而导致JarFile.getEntry(resouceName)时没有返回.
+ * 指定contextClass时，class.getResource()
+ * 会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass package的相对路径, 会先转为绝对路径.
  * <p>
  * 3.同名资源
  * <p>
@@ -33,82 +33,92 @@ import java.util.List;
  */
 public class ResourceUtil {
 
-    // 打开单个文件////
+	// 打开单个文件////
 
-    /**
-     * 读取规则见本类注释.
-     */
-    public static URL asUrl(String resourceName) {
-        return Resources.getResource(resourceName);
-    }
+	/**
+	 * 读取规则见本类注释.
+	 */
+	public static URL asUrl(String resourceName) {
+		return Resources.getResource(resourceName);
+	}
 
-    /**
-     * 读取规则见本类注释.
-     */
-    public static URL asUrl(Class<?> contextClass, String resourceName) {
-        return Resources.getResource(contextClass, resourceName);
-    }
+	/**
+	 * 读取规则见本类注释.
+	 */
+	public static URL asUrl(Class<?> contextClass, String resourceName) {
+		return Resources.getResource(contextClass, resourceName);
+	}
 
-    /**
-     * 读取规则见本类注释.
-     */
-    public static InputStream asStream(String resourceName) throws IOException {
-        return Resources.getResource(resourceName).openStream();
-    }
+	/**
+	 * 读取规则见本类注释.
+	 */
+	public static InputStream asStream(String resourceName) throws IOException {
+		return Resources.getResource(resourceName).openStream();
+	}
 
-    /**
-     * 读取文件的每一行，读取规则见本类注释.
-     */
-    public static InputStream asStream(Class<?> contextClass, String resourceName) throws IOException {
-        return Resources.getResource(contextClass, resourceName).openStream();
-    }
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static InputStream asStream(Class<?> contextClass, String resourceName)
+			throws IOException {
+		return Resources.getResource(contextClass, resourceName).openStream();
+	}
 
-    ////// 读取单个文件内容／／／／／
+	////// 读取单个文件内容／／／／／
 
-    /**
-     * 读取文件的每一行，读取规则见本类注释.
-     */
-    public static String toString(String resourceName) throws IOException {
-        return Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
-    }
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static String toString(String resourceName) throws IOException {
+		return Resources.toString(Resources.getResource(resourceName),
+				StandardCharsets.UTF_8);
+	}
 
-    /**
-     * 读取文件的每一行，读取规则见本类注释.
-     */
-    public static String toString(Class<?> contextClass, String resourceName) throws IOException {
-        return Resources.toString(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
-    }
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static String toString(Class<?> contextClass, String resourceName)
+			throws IOException {
+		return Resources.toString(Resources.getResource(contextClass, resourceName),
+				StandardCharsets.UTF_8);
+	}
 
-    /**
-     * 读取文件的每一行，读取规则见本类注释.
-     */
-    public static List<String> toLines(String resourceName) throws IOException {
-        return Resources.readLines(Resources.getResource(resourceName), StandardCharsets.UTF_8);
-    }
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static List<String> toLines(String resourceName) throws IOException {
+		return Resources.readLines(Resources.getResource(resourceName),
+				StandardCharsets.UTF_8);
+	}
 
-    /**
-     * 读取文件的每一行，读取规则见本类注释.
-     */
-    public static List<String> toLines(Class<?> contextClass, String resourceName) throws IOException {
-        return Resources.readLines(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
-    }
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static List<String> toLines(Class<?> contextClass, String resourceName)
+			throws IOException {
+		return Resources.readLines(Resources.getResource(contextClass, resourceName),
+				StandardCharsets.UTF_8);
+	}
 
-    ///////////// 打开所有同名文件///////
+	///////////// 打开所有同名文件///////
 
-    public static List<URL> getResourcesQuietly(String resourceName) {
-        return getResourcesQuietly(resourceName, ClassLoaderUtil.getDefaultClassLoader());
-    }
+	public static List<URL> getResourcesQuietly(String resourceName) {
+		return getResourcesQuietly(resourceName, ClassLoaderUtil.getDefaultClassLoader());
+	}
 
-    public static List<URL> getResourcesQuietly(String resourceName, ClassLoader contextClassLoader) {
-        try {
-            Enumeration<URL> urls = contextClassLoader.getResources(resourceName);
-            List<URL> list = new ArrayList<URL>(10);
-            while (urls.hasMoreElements()) {
-                list.add(urls.nextElement());
-            }
-            return list;
-        } catch (IOException e) {// NOSONAR
-            return ListUtil.emptyList();
-        }
-    }
+	public static List<URL> getResourcesQuietly(String resourceName,
+			ClassLoader contextClassLoader) {
+		try {
+			Enumeration<URL> urls = contextClassLoader.getResources(resourceName);
+			List<URL> list = new ArrayList<URL>(10);
+			while (urls.hasMoreElements()) {
+				list.add(urls.nextElement());
+			}
+			return list;
+		}
+		catch (IOException e) {// NOSONAR
+			return ListUtil.emptyList();
+		}
+	}
+
 }

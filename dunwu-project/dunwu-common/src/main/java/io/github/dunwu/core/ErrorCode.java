@@ -5,11 +5,13 @@ package io.github.dunwu.core;
  * @since 2019-06-06
  */
 public interface ErrorCode {
-    String SUCCESS_CODE = "0";
 
-    String getCode();
+	String SUCCESS_CODE = "0";
 
-    String getMessage();
+	String getCode();
 
-    String getTemplate();
+	String getMessage();
+
+	String getTemplate();
+
 }

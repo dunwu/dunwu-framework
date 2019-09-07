@@ -22,40 +22,40 @@ import java.time.LocalDate;
 @ApiModel(value = "UserInfo对象", description = "用户信息表")
 public class UserInfo extends BaseRecordEntity {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "昵称")
-    private String nickname;
+	@ApiModelProperty(value = "昵称")
+	private String nickname;
 
-    @ApiModelProperty(value = "姓名")
-    private String name;
+	@ApiModelProperty(value = "姓名")
+	private String name;
 
-    @ApiModelProperty(value = "生日")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private LocalDate birthday;
+	@ApiModelProperty(value = "生日")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private LocalDate birthday;
 
-    @ApiModelProperty(value = "性别", example = "0")
-    private Integer sex;
+	@ApiModelProperty(value = "性别", example = "0")
+	private Integer sex;
 
-    @ApiModelProperty(value = "头像")
-    private String avatar;
+	@ApiModelProperty(value = "头像")
+	private String avatar;
 
-    @ApiModelProperty(value = "邮箱")
-    private String email;
+	@ApiModelProperty(value = "邮箱")
+	private String email;
 
-    @ApiModelProperty(value = "手机号")
-    private String mobile;
+	@ApiModelProperty(value = "手机号")
+	private String mobile;
 
-    @ApiModelProperty(value = "职业")
-    private String profession;
+	@ApiModelProperty(value = "职业")
+	private String profession;
 
-    @ApiModelProperty(value = "省")
-    private String province;
+	@ApiModelProperty(value = "省")
+	private String province;
 
-    @ApiModelProperty(value = "市")
-    private String city;
+	@ApiModelProperty(value = "市")
+	private String city;
 
-    @ApiModelProperty(value = "区")
-    private String county;
+	@ApiModelProperty(value = "区")
+	private String county;
 
 }
