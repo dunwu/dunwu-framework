@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.4.6</version>
+    <version>0.4.7</version>
     <relativePath>../dunwu-parent</relativePath>
   </parent>
 
@@ -15,10 +15,6 @@
   <packaging>pom</packaging>
   <name>dunwu-starters</name>
   <description>Dunwu Starters</description>
-
-  <properties>
-    <main.basedir>${basedir}/../..</main.basedir>
-  </properties>
 
   <modules>
     <module>dunwu-starter-mybatis</module>

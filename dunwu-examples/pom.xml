@@ -10,21 +10,12 @@
     <relativePath>../</relativePath>
   </parent>
 
-  <artifactId>dunwu-project</artifactId>
+  <artifactId>dunwu-examples</artifactId>
   <version>0.4.7</version>
   <packaging>pom</packaging>
   <description>Dunwu Root Project</description>
 
   <modules>
-    <module>dunwu-dependencies</module>
-    <module>dunwu-bom</module>
-    <module>dunwu-parent</module>
-    <module>dunwu-util</module>
-    <module>dunwu-common</module>
-    <module>dunwu-data</module>
-    <module>dunwu-web</module>
-    <module>dunwu-generator</module>
-    <module>dunwu-autoconfigure</module>
-    <module>dunwu-starters</module>
+    <module>dunwu-examples-showcase/dunwu-examples-showcase-server</module>
   </modules>
 </project>

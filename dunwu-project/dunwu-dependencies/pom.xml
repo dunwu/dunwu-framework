@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-project</artifactId>
-    <version>0.4.6</version>
+    <version>0.4.7</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -20,6 +20,7 @@
     <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
 
     <!-- Dependency versions -->
+    <caffeine.version>2.8.0</caffeine.version>
     <commons-codec.version>1.12</commons-codec.version>
     <commons-collections4.version>4.3</commons-collections4.version>
     <commons-fileupload.version>1.4</commons-fileupload.version>
@@ -32,7 +33,8 @@
     <druid.version>1.1.19</druid.version>
     <guava.version>23.0</guava.version>
     <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-    <javax.jsp-api.version>2.3.3</javax.jsp-api.version>
+    <javax.servlet.jsp-api.version>2.3.3</javax.servlet.jsp-api.version>
+    <jstl.version>1.2</jstl.version>
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
     <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
     <jetty.version>9.4.17.v20190418</jetty.version>
@@ -68,6 +70,7 @@
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+    <maven-pmd-plugin.version>3.12.0</maven-pmd-plugin.version>
     <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
     <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
     <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
@@ -150,6 +153,11 @@
         <artifactId>druid</artifactId>
         <version>${druid.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
+      </dependency>
       <!-- DB END -->
 
       <!-- JSON BEGIN -->
@@ -169,7 +177,12 @@
       <dependency>
         <groupId>javax.servlet.jsp</groupId>
         <artifactId>javax.servlet.jsp-api</artifactId>
-        <version>${javax.jsp-api.version}</version>
+        <version>${javax.servlet.jsp-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet.jsp.jstl</groupId>
+        <artifactId>jstl</artifactId>
+        <version>${jstl.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.mail</groupId>
@@ -274,173 +287,6 @@
   </dependencyManagement>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.johnzon</groupId>
-          <artifactId>johnzon-maven-plugin</artifactId>
-          <version>${johnzon.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-maven-plugin</artifactId>
-          <version>${kotlin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.jooq</groupId>
-          <artifactId>jooq-codegen-maven</artifactId>
-          <version>${jooq.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring-boot.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>${maven-antrun-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>${maven-assembly-plugin.version}</version>
-          <configuration>
-            <recompressZippedFiles>false</recompressZippedFiles>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>${maven-clean-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven-deploy-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven-dependency-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${maven-enforcer-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>${maven-failsafe-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${maven-install-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-invoker-plugin</artifactId>
-          <version>${maven-invoker-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-help-plugin</artifactId>
-          <version>${maven-help-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven-jar-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven-resources-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>${maven-shade-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${maven-site-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>${maven-source-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>${maven-war-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>${build-helper-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>${exec-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>versions-maven-plugin</artifactId>
-          <version>${versions-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>xml-maven-plugin</artifactId>
-          <version>${xml-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>flatten-maven-plugin</artifactId>
-          <version>${flatten-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.flywaydb</groupId>
-          <artifactId>flyway-maven-plugin</artifactId>
-          <version>${flyway.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.infinispan</groupId>
-          <artifactId>infinispan-protocol-parser-generator-maven-plugin</artifactId>
-          <version>${infinispan.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>pl.project13.maven</groupId>
-          <artifactId>git-commit-id-plugin</artifactId>
-          <version>${git-commit-id-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.basepom.maven</groupId>
-          <artifactId>duplicate-finder-maven-plugin</artifactId>
-          <version>${duplicate-finder-maven-plugin.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -448,8 +294,6 @@
         <inherited>false</inherited>
         <executions>
           <execution>
-            <!-- Create an effective POM (with versions expanded) for the CLI and
-                            documentation -->
             <id>flatten-effective-pom</id>
             <phase>process-resources</phase>
             <goals>
@@ -458,12 +302,12 @@
             <configuration>
               <updatePomFile>false</updatePomFile>
               <outputDirectory>${project.build.directory}/effective-pom</outputDirectory>
-              <flattenedPomFilename>spring-boot-dependencies.xml</flattenedPomFilename>
+              <flattenedPomFilename>dunwu-dependencies.xml</flattenedPomFilename>
               <flattenMode>oss</flattenMode>
               <pomElements>
                 <dependencyManagement>expand</dependencyManagement>
                 <pluginManagement>expand</pluginManagement>
-                <properties>remove</properties>
+                <properties>expand</properties>
                 <repositories>remove</repositories>
               </pomElements>
             </configuration>
@@ -563,7 +407,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${project.build.directory}/effective-pom/spring-boot-dependencies.xml</file>
+                  <file>${project.build.directory}/effective-pom/dunwu-dependencies.xml</file>
                   <type>effective-pom</type>
                 </artifact>
               </artifacts>
@@ -574,8 +418,77 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven-source-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc-plugin.version}</version>
+            <configuration>
+              <failOnError>false</failOnError>
+              <quiet>true</quiet>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>sonatype-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>sonatype-staging</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
   <url>https://github.com/dunwu/dunwu</url>
-  <inceptionYear>2018</inceptionYear>
+  <inceptionYear>2018 - Now</inceptionYear>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>

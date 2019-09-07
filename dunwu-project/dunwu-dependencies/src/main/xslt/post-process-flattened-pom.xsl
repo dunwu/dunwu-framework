@@ -25,7 +25,5 @@
 		match="/m:project/m:build/m:pluginManagement/m:plugins/m:plugin/m:version/text()[. = '${revision}']">
 		<xsl:value-of select="/m:project/m:version/text()" />
 	</xsl:template>
-	<xsl:template match="/m:project/m:properties/m:revision" />
-	<xsl:template match="/m:project/m:properties/m:main.basedir" />
 	<xsl:template match="/m:project/m:distributionManagement" />
 </xsl:stylesheet>

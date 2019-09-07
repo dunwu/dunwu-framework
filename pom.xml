@@ -5,169 +5,34 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>0.4.6</version>
+  <version>0.4.7</version>
   <packaging>pom</packaging>
-  <name>dunwu</name>
-  <description>Java 开发脚手架</description>
+  <description>Dunwu 项目 —— 一个用于支持 Spring、Spring Boot 的全方面脚手架</description>
+
   <modules>
     <module>dunwu-project</module>
+    <module>dunwu-examples</module>
   </modules>
 
   <properties>
-    <revision>0.4.6-SNAPSHOT</revision>
-    <main.basedir>${basedir}</main.basedir>
-
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
     <spring-javaformat.version>0.0.6</spring-javaformat.version>
-
-    <!-- version -->
-    <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-
-    <skip.pmd.check>false</skip.pmd.check>
   </properties>
-
-  <url>https://github.com/dunwu/dunwu</url>
-  <inceptionYear>2018</inceptionYear>
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-      <comments>A business-friendly OSS license</comments>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://github.com/dunwu/dunwu</url>
-    <connection>git@github.com:dunwu/dunwu.git</connection>
-    <developerConnection>https://github.com/dunwu</developerConnection>
-  </scm>
-  <developers>
-    <developer>
-      <name>Zhang Peng</name>
-      <url>https://github.com/dunwu</url>
-      <email>forbreak@163.com</email>
-      <timezone>+8</timezone>
-    </developer>
-  </developers>
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/dunwu/dunwu/issues</url>
-  </issueManagement>
 
   <build>
     <plugins>
-      <!--阿里巴巴规范检查，参考如下文档：-->
-      <!--https://github.com/alibaba/p3c-->
-      <!--https://github.com/alibaba/p3c/blob/master/p3c-pmd/pom.xml-->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-          <targetJdk>${maven.compiler.target}</targetJdk>
-          <rulesets>
-            <!--<ruleset>rulesets/java/ali-comment.xml</ruleset>-->
-            <ruleset>rulesets/java/ali-concurrent.xml</ruleset>
-            <ruleset>rulesets/java/ali-constant.xml</ruleset>
-            <ruleset>rulesets/java/ali-exception.xml</ruleset>
-            <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
-            <ruleset>rulesets/java/ali-naming.xml</ruleset>
-            <ruleset>rulesets/java/ali-oop.xml</ruleset>
-            <ruleset>rulesets/java/ali-orm.xml</ruleset>
-            <ruleset>rulesets/java/ali-other.xml</ruleset>
-            <ruleset>rulesets/java/ali-set.xml</ruleset>
-          </rulesets>
-          <printFailingErrors>true</printFailingErrors>
-          <skip>${skip.pmd.check}</skip>
-        </configuration>
+        <groupId>io.spring.javaformat</groupId>
+        <artifactId>spring-javaformat-maven-plugin</artifactId>
+        <version>${spring-javaformat.version}</version>
         <executions>
           <execution>
-            <id>p3c-pmd-validation</id>
             <phase>validate</phase>
             <goals>
-              <goal>check</goal>
+              <goal>validate</goal>
             </goals>
           </execution>
         </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.alibaba.p3c</groupId>
-            <artifactId>p3c-pmd</artifactId>
-            <version>2.0.0</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>${maven-source-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
-          <configuration>
-            <failOnError>false</failOnError>
-            <quiet>true</quiet>
-          </configuration>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>${maven-gpg-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.12.0</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
-
-  <!--用于生成错误到代码内容的链接-->
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.0.0</version>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
