@@ -48,139 +48,139 @@ public class ${table.controllerName} {
     }
 
     @PostMapping("save")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "插入一条 ${entity} 记录，插入成功返回 ID（选择字段，策略插入）")
-    </#if>
+</#if>
     public DataResult<? extends Serializable> save(@RequestBody ${entity} entity) {
         return service.save(entity);
     }
 
     @PostMapping("saveBatch")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "批量添加 ${entity} 记录（选择字段，策略插入）")
-    </#if>
-    public BaseResult saveBatch(Collection<${entity}> entityList) {
+</#if>
+    public BaseResult saveBatch(@RequestBody Collection<${entity}> entityList) {
         return service.saveBatch(entityList);
     }
 
     @PostMapping("removeById")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 删除一条 ${entity} 记录")
-    </#if>
-    public BaseResult removeById(String id) {
+</#if>
+    public BaseResult removeById(@RequestBody String id) {
         return service.removeById(id);
     }
 
     @PostMapping("removeByMap")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 columnMap 条件，删除 ${entity} 记录")
-    </#if>
-    public BaseResult removeByMap(Map<String, Object> columnMap) {
+</#if>
+    public BaseResult removeByMap(@RequestBody Map<String, Object> columnMap) {
         return service.removeByMap(columnMap);
     }
 
     @PostMapping("remove")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 entity 条件，删除 ${entity} 记录")
-    </#if>
+</#if>
     public BaseResult remove(@RequestBody ${entity} entity) {
         return service.remove(entity);
     }
 
     @PostMapping("removeByIds")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 批量删除 ${entity} 记录")
-    </#if>
-    public BaseResult removeByIds(Collection<? extends Serializable> idList) {
+</#if>
+    public BaseResult removeByIds(@RequestBody Collection<? extends Serializable> idList) {
         return service.removeByIds(idList);
     }
 
     @PostMapping("updateById")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 选择修改一条 ${entity} 记录")
-    </#if>
+</#if>
     public BaseResult updateById(@RequestBody ${entity} entity) {
         return service.updateById(entity);
     }
 
     @PostMapping("update")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 origin 条件，更新 ${entity} 记录")
-    </#if>
+</#if>
     public BaseResult update(@RequestBody ${entity} target, @RequestParam ${entity} origin) {
         return service.update(target, origin);
     }
 
     @PostMapping("updateBatchById")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 批量修改 ${entity} 记录")
-    </#if>
-    public BaseResult updateBatchById(Collection<${entity}> entityList) {
+</#if>
+    public BaseResult updateBatchById(@RequestBody Collection<${entity}> entityList) {
         return service.updateBatchById(entityList);
     }
 
     @PostMapping("saveOrUpdate")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
-    </#if>
+</#if>
     public BaseResult saveOrUpdate(@RequestBody ${entity} entity) {
         return service.saveOrUpdate(entity);
     }
 
     @PostMapping("saveOrUpdateBatch")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "批量添加或更新 ${entity} 记录")
-    </#if>
-    public BaseResult saveOrUpdateBatch(Collection<${entity}> entityList) {
+</#if>
+    public BaseResult saveOrUpdateBatch(@RequestBody Collection<${entity}> entityList) {
         return service.saveOrUpdateBatch(entityList);
     }
 
     @GetMapping("getById")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 查询 ${entity} 记录")
-    </#if>
+</#if>
     public DataResult<${entity}> getById(String id) {
         return service.getById(id);
     }
 
     @GetMapping("listByIds")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 ID 批量查询 ${entity} 记录")
-    </#if>
-    public DataListResult<${entity}> listByIds(Collection<? extends Serializable> idList) {
+</#if>
+    public DataListResult<${entity}> listByIds(@RequestParam Collection<? extends Serializable> idList) {
         return service.listByIds(idList);
     }
 
     @GetMapping("listByMap")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 columnMap 批量查询 ${entity} 记录")
-    </#if>
+</#if>
     public DataListResult<${entity}> listByMap(Map<String, Object> columnMap) {
         return service.listByMap(columnMap);
     }
 
     @GetMapping("getOne")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 entity 查询一条 ${entity} 记录")
-    </#if>
+</#if>
     public DataResult<${entity}> getOne(${entity} entity) {
         return service.getOne(entity);
     }
 
     @GetMapping("count")
-    <#if swagger2>
+<#if swagger2>
     @ApiOperation(value = "根据 entity 条件，查询 ${entity} 总记录数")
-    </#if>
+</#if>
     public DataResult<Integer> count(${entity} entity) {
-        return service.count(entity);
-    }
+  return service.count(entity);
+  }
 
-    @GetMapping("countAll")
+  @GetMapping("countAll")
     <#if swagger2>
     @ApiOperation(value = "查询 ${entity} 总记录数")
     </#if>
-    public DataResult<Integer> countAll() {
-        return service.count();
+  public DataResult<Integer> countAll() {
+    return service.count();
     }
 
     @GetMapping("list")
@@ -188,7 +188,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "根据 entity 条件，查询匹配条件的 ${entity} 记录")
     </#if>
     public DataListResult<${entity}> list(${entity} entity) {
-        return service.list(entity);
+    return service.list(entity);
     }
 
     @GetMapping("listAll")
@@ -196,7 +196,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "查询所有 ${entity} 记录")
     </#if>
     public DataListResult<${entity}> listAll() {
-        return service.list();
+    return service.list();
     }
 
     @GetMapping("page")
@@ -204,7 +204,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "根据 entity 条件，翻页查询 UserInfo 记录")
     </#if>
     public PageResult<${entity}> page(Pagination<${entity}> pagination, ${entity} entity) {
-        return service.page(pagination, entity);
+    return service.page(pagination, entity);
     }
 
     @GetMapping("pageAll")
@@ -212,6 +212,6 @@ public class ${table.controllerName} {
     @ApiOperation(value = "翻页查询所有 UserInfo 记录")
     </#if>
     public PageResult<${entity}> pageAll(Pagination<${entity}> pagination) {
-        return service.page(pagination);
+    return service.page(pagination);
     }
-}
+    }

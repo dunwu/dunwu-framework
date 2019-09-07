@@ -3,6 +3,7 @@ package io.github.dunwu.autoconfigure.web;
 import io.github.dunwu.web.converter.DateConverter;
 import io.github.dunwu.web.interceptor.HttpDebugInterceptor;
 import io.github.dunwu.web.interceptor.SecurityInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,12 +37,12 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 	}
 
 	@Override
-	@Profile({ "dev", "test" })
+	@ConditionalOnProperty(name = "swagger.enabled", havingValue = "true")
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**")
-				.addResourceLocations("classpath:/static/");
-		registry.addResourceHandler("/lib/swagger-ui/**")
-				.addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("swagger-ui.html")
+				.addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**")
+				.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	/**

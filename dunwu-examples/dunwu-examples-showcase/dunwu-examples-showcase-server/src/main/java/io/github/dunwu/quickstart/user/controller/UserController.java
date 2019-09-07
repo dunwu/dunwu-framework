@@ -169,13 +169,13 @@ public class UserController {
 
 	@GetMapping("getById")
 	@ApiOperation(value = "根据 ID 查询 UserInfo 记录")
-	public DataResult<UserInfo> getById(Serializable id) {
+	public DataResult<UserInfo> getById(String id) {
 		return userInfoService.getById(id);
 	}
 
 	@GetMapping("listByIds")
 	@ApiOperation(value = "根据 ID 批量查询 UserInfo 记录")
-	public DataListResult<UserInfo> listByIds(Collection<String> idList) {
+	public DataListResult<UserInfo> listByIds(@RequestParam Collection<String> idList) {
 		return userInfoService.listByIds(idList);
 	}
 
