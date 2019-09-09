@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>0.4.7</version>
+  <version>0.4.8-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Dunwu 项目 —— 一个用于支持 Spring、Spring Boot 的全方面脚手架</description>
 

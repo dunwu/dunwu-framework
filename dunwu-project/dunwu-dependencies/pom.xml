@@ -6,13 +6,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-project</artifactId>
-    <version>0.4.7</version>
+    <version>0.4.8-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>dunwu-dependencies</artifactId>
   <packaging>pom</packaging>
-  <name>dunwu-dependencies</name>
   <description>Dunwu Dependencies</description>
 
   <properties>
@@ -31,6 +30,8 @@
     <disruptor.version>3.4.2</disruptor.version>
     <dozer.version>6.4.1</dozer.version>
     <druid.version>1.1.19</druid.version>
+    <fastdfs.version>1.26.6</fastdfs.version>
+    <fastjson.version>1.2.60</fastjson.version>
     <guava.version>23.0</guava.version>
     <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
     <javax.servlet.jsp-api.version>2.3.3</javax.servlet.jsp-api.version>
@@ -47,6 +48,8 @@
     <mybatis-spring.version>2.0.2</mybatis-spring.version>
     <reflections.version>0.9.11</reflections.version>
     <swagger-annotations.version>1.5.22</swagger-annotations.version>
+    <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
+    <thumbnailator.version>0.4.8</thumbnailator.version>
 
     <!-- Plugin versions -->
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
@@ -89,7 +92,70 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- BEAN BEGIN -->
+      <!-- dunwu dependencies begin -->
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-dependencies</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-util</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-data</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-autoconfigure</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starters</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starter-parent</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starter-mybatis</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starter-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starter-mail</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!-- dunwu dependencies end -->
+
+      <!-- mapper begin -->
       <dependency>
         <groupId>com.github.dozermapper</groupId>
         <artifactId>dozer-core</artifactId>
@@ -110,9 +176,14 @@
         <artifactId>reflections</artifactId>
         <version>${reflections.version}</version>
       </dependency>
-      <!-- BEAN END -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
+      </dependency>
+      <!-- mapper end -->
 
-      <!-- DB BEGIN -->
+      <!-- data begin -->
       <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis-spring</artifactId>
@@ -158,17 +229,9 @@
         <artifactId>caffeine</artifactId>
         <version>${caffeine.version}</version>
       </dependency>
-      <!-- DB END -->
+      <!-- data end -->
 
-      <!-- JSON BEGIN -->
-      <dependency>
-        <groupId>com.alibaba</groupId>
-        <artifactId>fastjson</artifactId>
-        <version>1.2.58</version>
-      </dependency>
-      <!-- JSON END -->
-
-      <!-- JAVAEE BEGIN -->
+      <!-- javaee begin -->
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
@@ -194,17 +257,9 @@
         <artifactId>validation-api</artifactId>
         <version>${javax.validation-api.version}</version>
       </dependency>
-      <!-- JAVAEE END -->
+      <!-- javaee end -->
 
-      <!-- MEDIA BEGIN -->
-      <dependency>
-        <groupId>net.coobird</groupId>
-        <artifactId>thumbnailator</artifactId>
-        <version>0.4.8</version>
-      </dependency>
-      <!-- MEDIA END -->
-
-      <!-- SERVER BEGIN -->
+      <!-- server begin -->
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-webapp</artifactId>
@@ -229,9 +284,9 @@
         <version>${jetty.version}</version>
         <scope>test</scope>
       </dependency>
-      <!-- SERVER END -->
+      <!-- server end -->
 
-      <!-- UTILS BEGIN -->
+      <!-- utils begin -->
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
@@ -277,12 +332,27 @@
         <artifactId>disruptor</artifactId>
         <version>${disruptor.version}</version>
       </dependency>
-      <!-- UTILS END -->
+      <dependency>
+        <groupId>com.github.tobato</groupId>
+        <artifactId>fastdfs-client</artifactId>
+        <version>${fastdfs.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.coobird</groupId>
+        <artifactId>thumbnailator</artifactId>
+        <version>${thumbnailator.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.swagger</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.spring4all</groupId>
+        <artifactId>swagger-spring-boot-starter</artifactId>
+        <version>${swagger-spring-boot-starter.version}</version>
+      </dependency>
+      <!-- utils end -->
     </dependencies>
   </dependencyManagement>
 

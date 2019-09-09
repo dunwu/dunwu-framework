@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.4.7</version>
+    <version>0.4.8-SNAPSHOT</version>
     <relativePath>../dunwu-parent</relativePath>
   </parent>
 
@@ -17,6 +17,7 @@
   <description>Dunwu Starters</description>
 
   <modules>
+    <module>dunwu-starter-parent</module>
     <module>dunwu-starter-mybatis</module>
     <module>dunwu-starter-web</module>
     <module>dunwu-starter-mail</module>
@@ -24,31 +25,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-rules</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <excludes>
-                    <exclude>commons-logging:*:*</exclude>
-                    <exclude>org.hibernate:hibernate-validator:*</exclude>
-                  </excludes>
-                  <searchTransitive>true</searchTransitive>
-                </bannedDependencies>
-                <dependencyConvergence/>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <inherited>false</inherited>

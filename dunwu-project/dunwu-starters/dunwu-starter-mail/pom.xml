@@ -6,17 +6,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-starters</artifactId>
-    <version>0.4.7</version>
+    <version>0.4.8-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>dunwu-starter-mail</artifactId>
-  <name>dunwu-starter-mail</name>
   <description>Starter for using Java Mail</description>
-
-  <properties>
-    <main.basedir>${basedir}/../../..</main.basedir>
-  </properties>
 
   <dependencies>
     <dependency>

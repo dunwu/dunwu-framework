@@ -6,9 +6,9 @@
 
   <parent>
     <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-bom</artifactId>
-    <version>0.4.7</version>
-    <relativePath>../dunwu-bom</relativePath>
+    <artifactId>dunwu-dependencies</artifactId>
+    <version>0.4.8-SNAPSHOT</version>
+    <relativePath>../dunwu-dependencies</relativePath>
   </parent>
 
   <artifactId>dunwu-parent</artifactId>
@@ -79,23 +79,25 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <version>[1.8,)</version>
+                  <version>${java.version}</version>
                 </requireJavaVersion>
                 <requireMavenVersion>
-                  <version>[3.5.0,)</version>
+                  <version>${maven.version}</version>
                 </requireMavenVersion>
-                <requireProperty>
-                  <property>project.name</property>
-                </requireProperty>
-                <requireProperty>
-                  <property>project.description</property>
-                </requireProperty>
                 <requireProperty>
                   <property>disable.checks</property>
                 </requireProperty>
                 <requireReleaseDeps>
                   <onlyWhenRelease>true</onlyWhenRelease>
                 </requireReleaseDeps>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>commons-logging:*:*</exclude>
+                    <exclude>org.hibernate:hibernate-validator:*</exclude>
+                  </excludes>
+                  <searchTransitive>true</searchTransitive>
+                </bannedDependencies>
+                <dependencyConvergence/>
               </rules>
               <fail>true</fail>
             </configuration>
