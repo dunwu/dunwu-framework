@@ -57,6 +57,6 @@ public class FileInfo extends BaseEntity {
 	private String accessUrl;
 
 	@ApiModelProperty(value = "上传时间")
-	private LocalDateTime uploadTime;
+	private LocalDateTime time;
 
 }

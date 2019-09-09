@@ -8,7 +8,10 @@
       autocomplete="on"
       label-position="left"
     >
-      <div class="title-container"><h3 class="title">Login Form</h3></div>
+      <div class="title-container">
+        <h1 class="title1">DUNWU</h1>
+        <h3 class="title2">Login Form</h3>
+      </div>
 
       <el-form-item prop="nickname">
         <span class="svg-container"> <svg-icon icon-class="user" /> </span>
@@ -323,8 +326,37 @@ $light_gray: #eee;
   .title-container {
     position: relative;
 
-    .title {
+    .title1 {
       font-size: 26px;
+      color: $light_gray;
+      margin: 0px auto 20px auto;
+      text-align: center;
+      font-weight: bold;
+      background-image: -webkit-linear-gradient(
+        left,
+        #ffdcb4,
+        #b96972 25%,
+        #e88a57 50%,
+        #804170 75%,
+        #a596cd
+      );
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-background-size: 200% 100%;
+      -webkit-animation: masked-animation 4s infinite linear;
+    }
+
+    @-webkit-keyframes masked-animation {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: -100% 0;
+      }
+    }
+
+    .title2 {
+      font-size: 20px;
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
@@ -340,18 +372,6 @@ $light_gray: #eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
   }
 }
 </style>

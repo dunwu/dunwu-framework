@@ -4,10 +4,10 @@
  * @see https://github.com/mzabriskie/axios
  * @see http://www.jianshu.com/p/df464b26ae58
  */
+import axios from 'axios'
+import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import axios from 'axios'
-import { Message, MessageBox } from 'element-ui'
 
 axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/json'
@@ -15,7 +15,9 @@ axios.defaults.headers['Content-Type'] = 'application/json'
 // axios.defaults.headers.post['Content-Type'] =
 //   'application/x-www-form-urlencoded'
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request urlContent-Type
+  baseURL: process.env.NODE_ENV === 'development'
+    ? process.env.VUE_APP_BASE_API
+    : 'http://localhost:9527', // url = base url + request urlContent-Type
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 1000 * 60
 })

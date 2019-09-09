@@ -11,15 +11,13 @@ const users = {
   'admin-token': {
     roles: ['admin'],
     introduction: 'I am a super administrator',
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    avatar: 'http://dunwu.test.upcdn.net/cs/others/zp.png',
     name: 'Super Admin'
   },
   'user-token': {
     roles: ['user'],
     introduction: 'I am an user',
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    avatar: 'http://dunwu.test.upcdn.net/cs/others/zp.png',
     name: 'Normal User'
   }
 }
@@ -53,7 +51,7 @@ export default [
 
   // get user info
   {
-    url: '/user/info.*',
+    url: '/user/getInfo',
     type: 'get',
     response: config => {
       const { token } = config.query

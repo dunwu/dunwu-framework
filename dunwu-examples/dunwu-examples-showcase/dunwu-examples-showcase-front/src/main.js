@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
-import Element from 'element-ui'
+import ElementUI from 'element-ui'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
@@ -28,11 +28,14 @@ import * as filters from './filters' // global filters
  * please remove it before going online! ! !
  */
 import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
+
+console.info('current env is ' + process.env.NODE_ENV)
+
+if (process.env.NODE_ENV === 'development') {
   mockXHR()
 }
 
-Vue.use(Element, {
+Vue.use(ElementUI, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 

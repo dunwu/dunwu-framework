@@ -4,9 +4,11 @@ const NameList = []
 const count = 100
 
 for (let i = 0; i < count; i++) {
-  NameList.push(Mock.mock({
-    name: '@first'
-  }))
+  NameList.push(
+    Mock.mock({
+      name: '@first'
+    })
+  )
 }
 NameList.push({ name: 'mock-Pan' })
 
@@ -41,13 +43,15 @@ export default [
         message: 'success',
         data: {
           total: 20,
-          'items|20': [{
-            order_no: '@guid()',
-            timestamp: +Mock.Random.date('T'),
-            nickname: '@name()',
-            price: '@float(1000, 15000, 0, 2)',
-            'status|1': ['success', 'pending']
-          }]
+          'items|20': [
+            {
+              order_no: '@guid()',
+              timestamp: +Mock.Random.date('T'),
+              nickname: '@name()',
+              price: '@float(1000, 15000, 0, 2)',
+              'status|1': ['success', 'pending']
+            }
+          ]
         }
       }
     }
