@@ -16,9 +16,9 @@ export function getFilePage(params) {
   })
 }
 
-export function removeFile(data) {
+export function deleteFile(data) {
   return request({
-    url: '/file/remove',
+    url: '/file/delete',
     method: 'post',
     data
   })

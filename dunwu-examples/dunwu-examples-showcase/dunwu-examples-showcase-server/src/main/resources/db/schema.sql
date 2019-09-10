@@ -55,7 +55,7 @@ CREATE TABLE `file_info` (
   `store_type` VARCHAR(128) DEFAULT '' COMMENT '文件存储服务类型',
   `store_url` VARCHAR(128) DEFAULT '' COMMENT '文件存储路径',
   `access_url` VARCHAR(160) NOT NULL COMMENT '文件访问路径',
-  `time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
+  `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_file_name` (`file_name`),
   UNIQUE KEY `uk_access_url` (`access_url`),
@@ -66,15 +66,9 @@ DROP TABLE IF EXISTS `file_content`;
 CREATE TABLE `file_content` (
   `id` VARCHAR(32) NOT NULL COMMENT 'ID',
   `file_name` VARCHAR(128) NOT NULL COMMENT '实际文件名',
-  `namespace` VARCHAR(32) DEFAULT 'default' COMMENT '命名空间。一般对应业务系统',
-  `tag` VARCHAR(32) DEFAULT '' COMMENT '标签。供业务系统使用',
-  `origin_name` VARCHAR(128) NOT NULL COMMENT '源文件名',
-  `store_type` VARCHAR(128) DEFAULT '' COMMENT '文件存储服务类型',
-  `store_url` VARCHAR(128) DEFAULT '' COMMENT '文件存储路径',
   `content` BLOB NOT NULL COMMENT '文件内容',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_file_name` (`file_name`),
-  UNIQUE KEY `uk_store_url` (`store_url`)
+  UNIQUE KEY `uk_file_name` (`file_name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='文件内容表';
 
 -- 调度信息表

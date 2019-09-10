@@ -53,13 +53,6 @@ module.exports = {
           ['^' + '/preview-api']: ''
         }
       },
-      '/prod-api': {
-        target: `http://localhost:9527`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + '/prod-api']: ''
-        }
-      }
     },
     after: require('./mock/mock-server.js')
   },

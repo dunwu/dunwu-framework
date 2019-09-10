@@ -183,7 +183,7 @@
 </style>
 
 <script>
-import { getFilePage, removeFile } from '@/api/file'
+import { getFilePage, deleteFile } from '@/api/file'
 
 export default {
   data() {
@@ -216,7 +216,7 @@ export default {
       this.fetchData()
     },
     async handleDeleteFile(row) {
-      await removeFile({ id: row.id })
+      await deleteFile({ id: row.id })
         .then(response => {
           console.log('handleDeleteFile', response)
           if (response.data) {
