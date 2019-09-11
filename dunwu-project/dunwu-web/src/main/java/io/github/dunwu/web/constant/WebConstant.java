@@ -10,6 +10,12 @@ public interface WebConstant {
 
 	String PATH_SEPARATOR = "/";
 
+	enum ResponseType {
+
+		HTTP_REPONSE, MODEL_AND_VIEW
+
+	}
+
 	enum BrowserType {
 
 		firefox, chrome, safari, msie, opera

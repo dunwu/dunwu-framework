@@ -7,9 +7,9 @@
     </encoder>
   </appender>
 
-  <logger name="io.github.dunwu" level="WARN"/>
+  <logger name="io.github.dunwu" level="INFO"/>
 
-  <root level="WARN">
+  <root level="INFO">
     <appender-ref ref="CONSOLE"/>
   </root>
 </configuration>

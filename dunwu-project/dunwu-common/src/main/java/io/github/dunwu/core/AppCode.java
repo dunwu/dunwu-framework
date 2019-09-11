@@ -21,7 +21,8 @@ public enum AppCode implements ErrorCode {
     UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
     SERVICE_TIMEOUT("3", "服务超时", "服务超时，已执行 (%s)，中断任务"),
 
-    ERROR_SYSTEM("101", "系统内部错误", "系统内部错误"),
+    ERROR_SYSTEM("100", "系统内部错误", "系统内部错误"),
+    ERROR_UNKNOWN("101", "系统未知错误", "系统未知错误"),
     ERROR_PARAMETER("102", "参数错误", "参数错误，期望为 (%s)，实际为 (%s)"),
     ERROR_REMOTE_SERVICE("103", "远程服务错误", "远程服务错误，调用接口 (%s) 失败"),
     ERROR_DB("104", "数据库错误", "数据库错误"),

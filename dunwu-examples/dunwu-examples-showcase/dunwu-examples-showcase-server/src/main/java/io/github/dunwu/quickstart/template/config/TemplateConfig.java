@@ -5,6 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -22,8 +26,17 @@ public class TemplateConfig {
 
 		/* Create and adjust the configuration singleton */
 		freemarker.template.Configuration cfg = new freemarker.template.Configuration(
-				freemarker.template.Configuration.VERSION_2_3_28);
-		cfg.setClassLoaderForTemplateLoading(ClassLoader.getSystemClassLoader(), "/");
+				freemarker.template.Configuration.VERSION_2_3_22);
+
+		File folder = null;
+		try {
+			folder = ResourceUtils.getFile("classpath:templates");
+			cfg.setDirectoryForTemplateLoading(folder);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		cfg.setDefaultEncoding("UTF-8");
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		return cfg;
