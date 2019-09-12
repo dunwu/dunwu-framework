@@ -1,58 +1,63 @@
 package io.github.dunwu.quickstart.scheduler.service;
 
 import io.github.dunwu.core.BaseResult;
+import io.github.dunwu.data.service.IService;
 import io.github.dunwu.quickstart.scheduler.dto.BeanDTO;
-import io.github.dunwu.quickstart.scheduler.entity.SchedulerInfo;
+import io.github.dunwu.quickstart.scheduler.entity.Scheduler;
 
 import java.util.List;
 
 /**
+ * <p>
+ * 调度信息表 服务类
+ * </p>
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-07-30
+ * @since 2019-09-12
  */
-public interface SchedulerService {
+public interface SchedulerService extends IService<Scheduler> {
 
 	/**
 	 * 创建调度任务
-	 * @param schedulerInfo 调度信息 DTO
+	 * @param scheduler 调度信息 DTO
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult createJob(SchedulerInfo schedulerInfo);
+	BaseResult createJob(Scheduler scheduler);
 
 	/**
 	 * 更新调度任务
-	 * @param schedulerInfo 调度信息 DTO
+	 * @param scheduler 调度信息 DTO
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult updateJob(SchedulerInfo schedulerInfo);
+	BaseResult updateJob(Scheduler scheduler);
 
 	/**
 	 * 删除调度任务
-	 * @param schedulerInfo 调度信息 Query
+	 * @param scheduler 调度信息 Query
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult deleteJob(SchedulerInfo schedulerInfo);
+	BaseResult deleteJob(Scheduler scheduler);
 
 	/**
 	 * 暂停调度任务
-	 * @param schedulerInfo 调度信息 Query
+	 * @param scheduler 调度信息 Query
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult pauseJob(SchedulerInfo schedulerInfo);
+	BaseResult pauseJob(Scheduler scheduler);
 
 	/**
 	 * 恢复调度任务
-	 * @param schedulerInfo 调度信息 Query
+	 * @param scheduler 调度信息 Query
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult resumeJob(SchedulerInfo schedulerInfo);
+	BaseResult resumeJob(Scheduler scheduler);
 
 	/**
 	 * 立即执行一次调度任务。如果调度任务本身是持久化任务，不影响其正常的执行计算
-	 * @param schedulerInfo 调度信息 DTO
+	 * @param scheduler 调度信息 DTO
 	 * @return 成功则 success 为 true；反之为 false
 	 */
-	BaseResult executeJob(SchedulerInfo schedulerInfo);
+	BaseResult executeJob(Scheduler scheduler);
 
 	List<BeanDTO> getJobHandlers();
 

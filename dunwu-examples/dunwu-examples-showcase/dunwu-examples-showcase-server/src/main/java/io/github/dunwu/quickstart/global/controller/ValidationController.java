@@ -2,7 +2,7 @@ package io.github.dunwu.quickstart.global.controller;
 
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
-import io.github.dunwu.quickstart.user.dto.UserInfoDTO;
+import io.github.dunwu.quickstart.user.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +19,7 @@ public class ValidationController {
 
 	@PostMapping("test")
 	@ApiOperation(value = "测试校验器")
-	public BaseResult method(@Validated @RequestBody UserInfoDTO userInfoDTO) {
+	public BaseResult method(@Validated @RequestBody UserDTO userInfoDTO) {
 		return ResultUtil.successBaseResult();
 	}
 

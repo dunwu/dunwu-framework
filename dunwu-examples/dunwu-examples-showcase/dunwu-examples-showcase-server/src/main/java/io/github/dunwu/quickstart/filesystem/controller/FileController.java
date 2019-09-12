@@ -4,7 +4,6 @@ import io.github.dunwu.core.*;
 import io.github.dunwu.quickstart.filesystem.dto.FileDTO;
 import io.github.dunwu.quickstart.filesystem.dto.FileQuery;
 import io.github.dunwu.quickstart.filesystem.dto.UploadFileDTO;
-import io.github.dunwu.quickstart.filesystem.entity.FileInfo;
 import io.github.dunwu.quickstart.filesystem.service.FileManager;
 import io.github.dunwu.web.util.ServletUtil;
 import io.swagger.annotations.Api;
@@ -59,8 +58,7 @@ public class FileController {
 
 	@PostMapping("delete")
 	@ApiOperation(value = "删除文件")
-	public DataResult<Boolean> delete(@RequestBody FileQuery fileQuery)
-			throws IOException {
+	public BaseResult delete(@RequestBody FileQuery fileQuery) throws IOException {
 		return fileManager.delete(fileQuery);
 	}
 
@@ -108,8 +106,7 @@ public class FileController {
 
 	@GetMapping("/page")
 	@ApiOperation(value = "分页查询")
-	public PageResult<FileDTO> page(FileQuery fileQuery,
-			Pagination<FileInfo> pagination) {
+	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> pagination) {
 		return fileManager.page(fileQuery, pagination);
 	}
 

@@ -1,5 +1,6 @@
 package io.github.dunwu.quickstart.filesystem.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.dunwu.core.*;
 import io.github.dunwu.data.util.PageUtil;
@@ -9,8 +10,8 @@ import io.github.dunwu.quickstart.filesystem.dto.AccessDTO;
 import io.github.dunwu.quickstart.filesystem.dto.FileDTO;
 import io.github.dunwu.quickstart.filesystem.dto.FileQuery;
 import io.github.dunwu.quickstart.filesystem.dto.UploadFileDTO;
-import io.github.dunwu.quickstart.filesystem.entity.FileInfo;
-import io.github.dunwu.quickstart.filesystem.mapper.dao.FileInfoDao;
+import io.github.dunwu.quickstart.filesystem.entity.File;
+import io.github.dunwu.quickstart.filesystem.mapper.FileMapper;
 import io.github.dunwu.quickstart.filesystem.service.FileManager;
 import io.github.dunwu.quickstart.filesystem.service.FileStorageService;
 import io.github.dunwu.util.collection.MapUtil;
@@ -27,6 +28,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +41,7 @@ public class FileManagerImpl implements FileManager {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final FileInfoDao fileInfoDao;
+	private final FileMapper fileInfoMapper;
 
 	private final FileSystemProperties fileSystemProperties;
 
@@ -59,30 +61,33 @@ public class FileManagerImpl implements FileManager {
 		if (StringUtils.isBlank(storeUrl)) {
 			return ResultUtil.failDataResult(AppCode.ERROR_IO);
 		}
-		FileInfo fileInfo = BeanMapper.map(fileDTO, FileInfo.class);
-		fileInfo.setStoreUrl(storeUrl);
-		fileInfoDao.save(fileInfo);
+		File file = BeanMapper.map(fileDTO, File.class);
+		file.setStoreUrl(storeUrl);
+		fileInfoMapper.insert(file);
 		return ResultUtil.successDataResult(fileDTO);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataResult<Boolean> delete(FileQuery fileQuery) throws IOException {
+	public BaseResult delete(FileQuery fileQuery) throws IOException {
 		if (fileQuery == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
+			return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER);
 		}
 
-		FileInfo query = BeanMapper.map(fileQuery, FileInfo.class);
-		FileInfo fileInfo = fileInfoDao.getOne(query);
-		FileDTO fileDTO = BeanMapper.map(fileInfo, FileDTO.class);
-		FileStoreTypeEnum storeType = fileInfo.getStoreType();
+		File query = BeanMapper.map(fileQuery, File.class);
+		File file = fileInfoMapper.selectOne(new QueryWrapper<>(query));
+		FileDTO fileDTO = BeanMapper.map(file, FileDTO.class);
+		FileStoreTypeEnum storeType = file.getStoreType();
 		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(),
 				FileStorageService.class);
 		if (fileService.delete(fileDTO)) {
-			return ResultUtil.successDataResult(fileInfoDao.removeById(fileInfo.getId()));
+			int num = fileInfoMapper.deleteById(file.getId());
+			if (num > 0) {
+				return ResultUtil.successBaseResult();
+			}
 		}
 
-		return ResultUtil.failDataResult(AppCode.ERROR_DB);
+		return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 	}
 
 	@Override
@@ -91,28 +96,30 @@ public class FileManagerImpl implements FileManager {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
-		FileInfo fileInfoQuery = BeanMapper.map(fileQuery, FileInfo.class);
-		FileInfo fileInfo = fileInfoDao.getOne(fileInfoQuery);
-		if (fileInfo == null) {
+		File fileInfoQuery = BeanMapper.map(fileQuery, File.class);
+		File file = fileInfoMapper.selectOne(new QueryWrapper<>(fileInfoQuery));
+		if (file == null) {
 			return ResultUtil.successDataResult(null);
 		}
 
-		FileStoreTypeEnum storeType = fileInfo.getStoreType();
+		FileStoreTypeEnum storeType = file.getStoreType();
 		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(),
 				FileStorageService.class);
-		FileDTO query = BeanMapper.map(fileInfo, FileDTO.class);
+		FileDTO query = BeanMapper.map(file, FileDTO.class);
 		FileDTO fileDTO = fileService.getContent(query);
 		return ResultUtil.successDataResult(fileDTO);
 	}
 
 	@Override
-	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination pagination) {
-		FileInfo fileInfoQuery = BeanMapper.map(fileQuery, FileInfo.class);
-		IPage page = PageUtil.transToMybatisPlusPage(pagination);
-		IPage<FileDTO> result = fileInfoDao.page(page, fileInfoQuery);
+	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> pagination) {
+		File fileInfoQuery = BeanMapper.map(fileQuery, File.class);
+		IPage<File> page = PageUtil.transToMybatisPlusPage(pagination);
+		IPage<File> result = fileInfoMapper.selectPage(page,
+				new QueryWrapper<>(fileInfoQuery));
+		List<FileDTO> list = BeanMapper.mapList(result.getRecords(), FileDTO.class);
 		pagination.setTotal(result.getTotal());
 		pagination.setPages(result.getPages());
-		pagination.setList(result.getRecords());
+		pagination.setList(list);
 		return ResultUtil.successPageResult(pagination);
 	}
 

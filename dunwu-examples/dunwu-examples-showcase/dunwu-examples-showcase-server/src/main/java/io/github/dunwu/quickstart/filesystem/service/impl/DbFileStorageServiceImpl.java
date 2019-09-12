@@ -5,7 +5,7 @@ import io.github.dunwu.quickstart.filesystem.constant.FileSystemConstant;
 import io.github.dunwu.quickstart.filesystem.dto.FileDTO;
 import io.github.dunwu.quickstart.filesystem.dto.UploadFileDTO;
 import io.github.dunwu.quickstart.filesystem.entity.FileContent;
-import io.github.dunwu.quickstart.filesystem.mapper.dao.FileContentDao;
+import io.github.dunwu.quickstart.filesystem.mapper.FileContentMapper;
 import io.github.dunwu.quickstart.filesystem.service.FileStorageService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +31,15 @@ public class DbFileStorageServiceImpl implements FileStorageService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	protected final FileContentDao fileContentDao;
+	protected final FileContentMapper fileContentMapper;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public String create(UploadFileDTO uploadFileDTO) throws IOException {
 		FileContent fileContent = new FileContent();
+		fileContent.setFileName(uploadFileDTO.getFileName());
 		fileContent.setContent(uploadFileDTO.getFile().getBytes());
-		fileContentDao.save(fileContent);
+		fileContentMapper.insert(fileContent);
 		return fileContent.getId();
 	}
 
@@ -49,7 +50,7 @@ public class DbFileStorageServiceImpl implements FileStorageService {
 		if (StringUtils.isNotBlank(fileDTO.getFileName())) {
 			fileContent.setFileName(fileDTO.getFileName());
 		}
-		return fileContentDao.remove(new QueryWrapper<>(fileContent));
+		return fileContentMapper.delete(new QueryWrapper<>(fileContent)) > 0;
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class DbFileStorageServiceImpl implements FileStorageService {
 		if (StringUtils.isNotBlank(fileDTO.getFileName())) {
 			query.setFileName(fileDTO.getFileName());
 		}
-		FileContent result = fileContentDao.getOne(new QueryWrapper<>(query));
+		FileContent result = fileContentMapper.selectOne(new QueryWrapper<>(query));
 		if (result != null) {
 			fileDTO.setContent(result.getContent());
 		}

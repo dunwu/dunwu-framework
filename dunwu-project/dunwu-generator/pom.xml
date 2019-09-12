@@ -11,20 +11,13 @@
   </parent>
 
   <artifactId>dunwu-generator</artifactId>
-  <packaging>jar</packaging>
-  <name>dunwu-generator</name>
   <description>Dunwu 代码生成器</description>
 
   <properties>
-    <mybatis-plus.version>3.1.0</mybatis-plus.version>
-    <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
-
-    <!--跳过检查-->
     <disable.checks>true</disable.checks>
   </properties>
 
   <dependencies>
-    <!-- SPRING BOOT BEGIN -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -33,66 +26,27 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>asm</artifactId>
-          <groupId>org.ow2.asm</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
-    <dependency>
-      <groupId>com.spring4all</groupId>
-      <artifactId>swagger-spring-boot-starter</artifactId>
-    </dependency>
-    <!-- SPRING BOOT END -->
-
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-data</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-web</artifactId>
-      <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.7</version>
-      <optional>true</optional>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-generator</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.ibeetl</groupId>
-      <artifactId>beetl</artifactId>
-      <version>3.0.10.RELEASE</version>
-      <optional>true</optional>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-dependencies</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus-core</artifactId>
-        <version>${mybatis-plus.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.spring4all</groupId>
-        <artifactId>swagger-spring-boot-starter</artifactId>
-        <version>${swagger-spring-boot-starter.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 </project>

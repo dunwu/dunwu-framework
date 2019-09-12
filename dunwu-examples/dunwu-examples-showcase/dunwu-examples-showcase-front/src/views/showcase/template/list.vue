@@ -4,7 +4,7 @@
     <el-form :inline="true" :model="templateQuery">
       <el-form-item label="模板名称">
         <el-input
-          v-model="templateQuery.templateName"
+          v-model="templateQuery.name"
           placeholder="输入关键字搜索"
         />
       </el-form-item>
@@ -46,7 +46,7 @@
     >
       <el-table-column label="模板名称">
         <template slot-scope="scope">
-          <span>{{ scope.row.templateName }}</span>
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="命名空间">

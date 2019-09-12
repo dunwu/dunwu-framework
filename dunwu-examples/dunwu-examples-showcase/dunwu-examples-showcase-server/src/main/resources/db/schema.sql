@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `user_info`;
-CREATE TABLE `user_info` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` VARCHAR(32) NOT NULL COMMENT 'ID',
   `version` INT(32) UNSIGNED DEFAULT 0 COMMENT '版本号',
   `nickname` VARCHAR(32) NOT NULL COMMENT '昵称',
@@ -20,12 +20,12 @@ CREATE TABLE `user_info` (
   UNIQUE KEY `uk_nickname` (`nickname`),
   UNIQUE KEY `uk_email` (`email`),
   UNIQUE KEY `uk_mobile` (`mobile`),
-  KEY `k_name` (`name`)
+  KEY `idx_name` (`name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='用户信息表';
 
 
-DROP TABLE IF EXISTS `login_info`;
-CREATE TABLE `login_info` (
+DROP TABLE IF EXISTS `login`;
+CREATE TABLE `login` (
   `id` VARCHAR(32) NOT NULL COMMENT '用户ID',
   `version` INT(32) UNSIGNED DEFAULT 0 COMMENT '版本号',
   `nickname` VARCHAR(32) NOT NULL COMMENT '昵称',
@@ -42,8 +42,8 @@ CREATE TABLE `login_info` (
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='登录信息表';
 
 
-DROP TABLE IF EXISTS `file_info`;
-CREATE TABLE `file_info` (
+DROP TABLE IF EXISTS `file`;
+CREATE TABLE `file` (
   `id` VARCHAR(32) NOT NULL COMMENT 'ID',
   `file_name` VARCHAR(128) NOT NULL COMMENT '实际文件名',
   `namespace` VARCHAR(32) DEFAULT 'default' COMMENT '命名空间。一般对应业务系统',
@@ -72,8 +72,8 @@ CREATE TABLE `file_content` (
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='文件内容表';
 
 -- 调度信息表
-DROP TABLE IF EXISTS `scheduler_info`;
-CREATE TABLE `scheduler_info` (
+DROP TABLE IF EXISTS `scheduler`;
+CREATE TABLE `scheduler` (
   `id` VARCHAR(32) NOT NULL COMMENT 'ID',
   `version` INT(32) DEFAULT 0 COMMENT '版本号',
   `scheduler_name` VARCHAR(32) DEFAULT '' COMMENT '调度器名',
@@ -101,18 +101,19 @@ CREATE TABLE `scheduler_info` (
   UNIQUE KEY `uk_trigger_group_name` (`trigger_group`, `trigger_name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='调度信息表';
 
-DROP TABLE IF EXISTS `template_config`;
-CREATE TABLE `template_config` (
+DROP TABLE IF EXISTS `template`;
+CREATE TABLE `template` (
   `id` VARCHAR(32) NOT NULL COMMENT 'ID',
-  `template_name` VARCHAR(128) NOT NULL COMMENT '模板名',
-  `namespace` VARCHAR(32) DEFAULT 'default' COMMENT '命名空间。一般对应业务系统',
-  `tag` VARCHAR(32) DEFAULT '' COMMENT '标签。供业务系统使用',
+  `name` VARCHAR(128) NOT NULL COMMENT '模板名',
+  `namespace` VARCHAR(32) DEFAULT 'default' COMMENT '命名空间',
+  `tag` VARCHAR(128) DEFAULT '' COMMENT '标签',
   `content` TEXT NOT NULL COMMENT '模板内容',
   `metadata` TEXT NOT NULL COMMENT '模板元数据',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_namespace_template` (`namespace`, `template_name`),
+  UNIQUE KEY `uk_namespace_name` (`namespace`, `name`),
   KEY `idx_tag` (`tag`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='模板配置表';
+

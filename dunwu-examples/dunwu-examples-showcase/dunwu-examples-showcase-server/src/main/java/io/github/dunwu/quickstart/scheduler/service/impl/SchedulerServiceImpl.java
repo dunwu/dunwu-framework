@@ -2,13 +2,14 @@ package io.github.dunwu.quickstart.scheduler.service.impl;
 
 import io.github.dunwu.annotation.JobHandler;
 import io.github.dunwu.core.*;
+import io.github.dunwu.data.service.ServiceImpl;
 import io.github.dunwu.quickstart.scheduler.constant.SchedulerConstant;
 import io.github.dunwu.quickstart.scheduler.constant.TriggerStatusEnum;
 import io.github.dunwu.quickstart.scheduler.constant.TriggerTypeEnum;
 import io.github.dunwu.quickstart.scheduler.dto.BeanDTO;
-import io.github.dunwu.quickstart.scheduler.entity.SchedulerInfo;
+import io.github.dunwu.quickstart.scheduler.entity.Scheduler;
 import io.github.dunwu.quickstart.scheduler.handler.ExecuteMethodJobHandler;
-import io.github.dunwu.quickstart.scheduler.service.SchedulerInfoService;
+import io.github.dunwu.quickstart.scheduler.mapper.SchedulerMapper;
 import io.github.dunwu.quickstart.scheduler.service.SchedulerService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.quartz.*;
@@ -20,6 +21,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,28 +29,32 @@ import java.util.Set;
 import java.util.TimeZone;
 
 /**
+ * <p>
+ * 调度信息表 服务实现类
+ * </p>
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-07-30
+ * @since 2019-09-12
  */
 @Service
-public class SchedulerServiceImpl implements SchedulerService {
+public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler>
+		implements SchedulerService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final Scheduler scheduler;
-
-	private final SchedulerInfoService schedulerInfoService;
+	private final org.quartz.Scheduler scheduler;
 
 	public SchedulerServiceImpl(SchedulerFactoryBean schedulerFactoryBean,
-			SchedulerInfoService schedulerInfoService,
 			// 注入 applicationContext 是为了保证 SpringUtil 可以成功注入 applicationContext
 			ApplicationContext applicationContext) {
 		this.scheduler = schedulerFactoryBean.getScheduler();
-		this.schedulerInfoService = schedulerInfoService;
+	}
 
-		DataListResult<SchedulerInfo> dataListResult = schedulerInfoService.list();
+	@PostConstruct
+	public void init() {
+		DataListResult<Scheduler> dataListResult = list();
 		try {
-			for (SchedulerInfo item : dataListResult.getData()) {
+			for (Scheduler item : dataListResult.getData()) {
 				createQuartzJob(item);
 			}
 		}
@@ -59,7 +65,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public BaseResult createJob(SchedulerInfo schedulerInfo) {
+	public BaseResult createJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
@@ -71,14 +77,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 			return ResultUtil.failBaseResult();
 		}
 
-		DataListResult<SchedulerInfo> dataListResult = schedulerInfoService
-				.list(schedulerInfo);
+		DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
 		if (CollectionUtils.isNotEmpty(dataListResult.getData())) {
 			return ResultUtil.failBaseResult();
 		}
 
-		DataResult<? extends Serializable> dataResult = schedulerInfoService
-				.save(schedulerInfo);
+		DataResult<? extends Serializable> dataResult = super.save(schedulerInfo);
 		if (ResultUtil.isNotValidResult(dataResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "创建调度作业数据库记录失败");
 		}
@@ -94,18 +98,17 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public BaseResult updateJob(SchedulerInfo schedulerInfo) {
+	public BaseResult updateJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
-		DataResult<SchedulerInfo> dataResult = schedulerInfoService
-				.getById(schedulerInfo.getId());
+		DataResult<Scheduler> dataResult = super.getById(schedulerInfo.getId());
 		if (ResultUtil.isNotValidResult(dataResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到记录");
 		}
 
-		BaseResult baseResult = schedulerInfoService.updateById(schedulerInfo);
+		BaseResult baseResult = super.updateById(schedulerInfo);
 		if (ResultUtil.isNotValidResult(baseResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "更新调度作业数据库记录失败");
 		}
@@ -129,20 +132,19 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public BaseResult deleteJob(SchedulerInfo schedulerInfo) {
+	public BaseResult deleteJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
-		DataListResult<SchedulerInfo> dataListResult = schedulerInfoService
-				.list(schedulerInfo);
+		DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
 		if (ResultUtil.isNotValidResult(dataListResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到调度器");
 		}
 
-		for (SchedulerInfo item : dataListResult.getData()) {
+		for (Scheduler item : dataListResult.getData()) {
 			// 删除记录
-			BaseResult baseResult = schedulerInfoService.removeById(item.getId());
+			BaseResult baseResult = super.removeById(item.getId());
 			if (ResultUtil.isNotValidResult(baseResult)) {
 				return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(),
 						"删除调度作业数据库记录失败");
@@ -169,20 +171,19 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	@Override
-	public BaseResult pauseJob(SchedulerInfo schedulerInfo) {
+	public BaseResult pauseJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
-		DataListResult<SchedulerInfo> dataListResult = schedulerInfoService
-				.list(schedulerInfo);
+		DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
 		if (ResultUtil.isNotValidResult(dataListResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(), "未找到调度器");
 		}
 
-		for (SchedulerInfo item : dataListResult.getData()) {
+		for (Scheduler item : dataListResult.getData()) {
 			item.setStatus(TriggerStatusEnum.PAUSED);
-			BaseResult baseResult = schedulerInfoService.updateById(item);
+			BaseResult baseResult = super.updateById(item);
 			if (ResultUtil.isNotValidResult(baseResult)) {
 				return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(),
 						"更新调度作业数据库记录失败");
@@ -203,20 +204,19 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	@Override
-	public BaseResult resumeJob(SchedulerInfo schedulerInfo) {
+	public BaseResult resumeJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
-		DataListResult<SchedulerInfo> dataListResult = schedulerInfoService
-				.list(schedulerInfo);
+		DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
 		if (ResultUtil.isNotValidResult(dataListResult)) {
 			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(), "未找到调度器");
 		}
 
-		for (SchedulerInfo item : dataListResult.getData()) {
+		for (Scheduler item : dataListResult.getData()) {
 			item.setStatus(TriggerStatusEnum.EXECUTING);
-			BaseResult baseResult = schedulerInfoService.updateById(item);
+			BaseResult baseResult = super.updateById(item);
 			if (ResultUtil.isNotValidResult(baseResult)) {
 				return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(),
 						"更新调度作业数据库记录失败");
@@ -237,7 +237,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	@Override
-	public BaseResult executeJob(SchedulerInfo schedulerInfo) {
+	public BaseResult executeJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
@@ -254,7 +254,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		return ResultUtil.successBaseResult();
 	}
 
-	private void fillFields(SchedulerInfo schedulerInfo) throws SchedulerException {
+	private void fillFields(Scheduler schedulerInfo) throws SchedulerException {
 		schedulerInfo.setSchedulerName(scheduler.getSchedulerName());
 		schedulerInfo.setTriggerGroup("trigger_group_" + schedulerInfo.getJobGroup());
 		schedulerInfo.setTriggerName("trigger_" + schedulerInfo.getJobName());
@@ -266,7 +266,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		// }
 	}
 
-	private void createQuartzJob(SchedulerInfo schedulerInfo) throws SchedulerException {
+	private void createQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
 		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
@@ -301,8 +301,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	private boolean deleteQuartzJob(SchedulerInfo schedulerInfo)
-			throws SchedulerException {
+	private boolean deleteQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
 				schedulerInfo.getJobGroup());
 		TriggerKey triggerKey = TriggerKey.triggerKey(schedulerInfo.getTriggerName(),
@@ -315,7 +314,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		return true;
 	}
 
-	private void pauseQuartzJob(SchedulerInfo schedulerInfo) throws SchedulerException {
+	private void pauseQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
 				schedulerInfo.getJobGroup());
 		TriggerKey triggerKey = TriggerKey.triggerKey(schedulerInfo.getTriggerName(),
@@ -324,7 +323,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		scheduler.pauseTrigger(triggerKey);
 	}
 
-	private void resumeQuartzJob(SchedulerInfo schedulerInfo) throws SchedulerException {
+	private void resumeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
 				schedulerInfo.getJobGroup());
 		TriggerKey triggerKey = TriggerKey.triggerKey(schedulerInfo.getTriggerName(),
@@ -333,7 +332,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		scheduler.resumeTrigger(triggerKey);
 	}
 
-	private void executeQuartzJob(SchedulerInfo schedulerInfo) throws SchedulerException {
+	private void executeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
 		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
@@ -368,7 +367,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		scheduler.start();
 	}
 
-	private void newCronTriggerBuilder(SchedulerInfo schedulerInfo,
+	private void newCronTriggerBuilder(Scheduler schedulerInfo,
 			TriggerBuilder<Trigger> triggerBuilder) {
 		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
 				.cronSchedule(schedulerInfo.getCronExpression());
@@ -376,7 +375,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		triggerBuilder.withSchedule(scheduleBuilder);
 	}
 
-	private void newSimpleTriggerBuilder(SchedulerInfo schedulerInfo,
+	private void newSimpleTriggerBuilder(Scheduler schedulerInfo,
 			TriggerBuilder<Trigger> triggerBuilder) {
 		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
 		scheduleBuilder.withIntervalInSeconds(schedulerInfo.getRepeatInterval());
@@ -394,16 +393,16 @@ public class SchedulerServiceImpl implements SchedulerService {
 	public List<BeanDTO> getJobHandlers() {
 		Reflections reflections = new Reflections("io.github.dunwu");
 		Set<Class<?>> types = reflections.getTypesAnnotatedWith(JobHandler.class);
-		List<BeanDTO> classDTOS = new ArrayList<>();
+		List<BeanDTO> beans = new ArrayList<>();
 		for (Class<?> clazz : types) {
 			JobHandler annotation = clazz.getAnnotation(JobHandler.class);
 			String beanName = annotation.value();
 			BeanDTO beanDTO = new BeanDTO();
 			beanDTO.setBeanName(beanName);
 			beanDTO.setBeanType(clazz);
-			classDTOS.add(beanDTO);
+			beans.add(beanDTO);
 		}
-		return classDTOS;
+		return beans;
 	}
 
 }

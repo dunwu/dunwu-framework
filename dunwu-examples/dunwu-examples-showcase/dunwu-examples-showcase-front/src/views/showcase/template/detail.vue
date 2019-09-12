@@ -17,10 +17,10 @@
     >
       <el-form-item
         label="模板名称"
-        prop="templateName"
+        prop="name"
         class="template-form-item"
       >
-        <el-input v-model="templateConfig.templateName" />
+        <el-input v-model="templateConfig.name" />
       </el-form-item>
       <el-form-item
         label="命名空间"
@@ -76,14 +76,14 @@ export default {
       id: null,
       loading: false,
       templateConfig: {
-        templateName: '',
+        name: '',
         namespace: '',
         tag: '',
         content: '',
         metadata: ''
       },
       rules: {
-        templateName: [
+        name: [
           {
             type: 'string',
             required: true,

@@ -1,5 +1,6 @@
 package io.github.dunwu.quickstart.filesystem.service;
 
+import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.DataResult;
 import io.github.dunwu.core.PageResult;
 import io.github.dunwu.core.Pagination;
@@ -38,7 +39,7 @@ public interface FileManager {
 	 * @return 成功则 Result 中 data 为 true；反之 data 为 false
 	 * @throws IOException IO 异常
 	 */
-	DataResult<Boolean> delete(FileQuery fileQuery) throws IOException;
+	BaseResult delete(FileQuery fileQuery) throws IOException;
 
 	/**
 	 * 查询一个文件的文件信息以及其内容
@@ -54,7 +55,7 @@ public interface FileManager {
 	 * @param page 分页查询条件
 	 * @return 成功则 Result 中 data 存储 FileDTO 分页列表；反之 data 为 null
 	 */
-	PageResult<FileDTO> page(FileQuery fileQuery, Pagination page);
+	PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> page);
 
 	/**
 	 * 判断当前 IP 是否允许访问文件服务

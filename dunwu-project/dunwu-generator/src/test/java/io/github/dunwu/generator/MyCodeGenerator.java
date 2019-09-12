@@ -9,7 +9,6 @@ package io.github.dunwu.generator;
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see DefaultCodeGenerator
- * @see CodeGeneratorProperties.ParamKeyEnum
  * @since 2019-07-19
  */
 public class MyCodeGenerator extends DefaultCodeGenerator {

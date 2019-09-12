@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.dunwu.core.*;
-import io.github.dunwu.data.entity.BaseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-06
  */
-public interface IService<T extends BaseEntity> {
+public interface IService<T> {
 
 	/**
 	 * 获取对应 entity 的 BaseMapper
@@ -35,6 +35,7 @@ public interface IService<T extends BaseEntity> {
 	 * 插入（批量）
 	 * @param entityList 实体对象集合
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	default BaseResult saveBatch(Collection<T> entityList) {
 		return saveBatch(entityList, 1000);
 	}
@@ -117,6 +118,7 @@ public interface IService<T extends BaseEntity> {
 	 * 根据ID 批量更新
 	 * @param entityList 实体对象集合
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	default BaseResult updateBatchById(Collection<T> entityList) {
 		return updateBatchById(entityList, 1000);
 	}
@@ -139,6 +141,7 @@ public interface IService<T extends BaseEntity> {
 	 * @param entityList 实体对象集合
 	 * @param batchSize 每次的数量
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	BaseResult saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 
 	/**
@@ -252,7 +255,6 @@ public interface IService<T extends BaseEntity> {
 
 	/**
 	 * 查询总记录数
-	 *
 	 * @see Wrappers#emptyWrapper()
 	 */
 	default DataResult<Integer> count() {
@@ -277,7 +279,6 @@ public interface IService<T extends BaseEntity> {
 
 	/**
 	 * 查询所有
-	 *
 	 * @see Wrappers#emptyWrapper()
 	 */
 	default DataListResult<T> list() {
@@ -329,7 +330,6 @@ public interface IService<T extends BaseEntity> {
 
 	/**
 	 * 查询所有列表
-	 *
 	 * @see Wrappers#emptyWrapper()
 	 */
 	default DataListResult<Map<String, Object>> listMaps() {

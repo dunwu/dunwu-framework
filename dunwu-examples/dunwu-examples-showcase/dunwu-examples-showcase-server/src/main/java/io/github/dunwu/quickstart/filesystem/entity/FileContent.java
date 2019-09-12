@@ -1,22 +1,27 @@
 package io.github.dunwu.quickstart.filesystem.entity;
 
-import io.github.dunwu.data.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import io.github.dunwu.data.entity.BaseEntity;
+import java.sql.Blob;
+
 /**
- * 文件内容表
+ * 文件内容表数据实体
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-07-24
+ * @since 2019-09-12
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@ToString
 @Accessors(chain = true)
-@ApiModel(value = "FileContent对象", description = "文件内容表")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "FileContent", description = "文件内容表")
 public class FileContent extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;

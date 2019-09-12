@@ -1,8 +1,9 @@
 package io.github.dunwu.quickstart.filesystem.service.impl;
 
-import io.github.dunwu.data.service.BaseService;
 import io.github.dunwu.quickstart.filesystem.entity.FileContent;
+import io.github.dunwu.quickstart.filesystem.mapper.FileContentMapper;
 import io.github.dunwu.quickstart.filesystem.service.FileContentService;
+import io.github.dunwu.data.service.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-08-08
+ * @since 2019-09-12
  */
 @Service
-public class FileContentServiceImpl extends BaseService<FileContent>
+public class FileContentServiceImpl extends ServiceImpl<FileContentMapper, FileContent>
 		implements FileContentService {
 
 }
