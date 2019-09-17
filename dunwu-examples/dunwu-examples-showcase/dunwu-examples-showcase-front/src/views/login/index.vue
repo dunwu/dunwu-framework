@@ -13,13 +13,13 @@
         <h3 class="title2">Login Form</h3>
       </div>
 
-      <el-form-item prop="nickname">
+      <el-form-item prop="username">
         <span class="svg-container"> <svg-icon icon-class="user" /> </span>
         <el-input
-          ref="nickname"
-          v-model="loginForm.nickname"
-          placeholder="Nickname"
-          name="nickname"
+          ref="username"
+          v-model="loginForm.username"
+          placeholder="Username"
+          name="username"
           type="text"
           tabindex="1"
           autocomplete="on"
@@ -66,10 +66,10 @@
 
       <div style="position:relative">
         <div class="tips">
-          <span>Nickname : admin</span> <span>Password : any</span>
+          <span>Username : admin</span> <span>Password : any</span>
         </div>
         <div class="tips">
-          <span style="margin-right:18px;">Nickname : user</span>
+          <span style="margin-right:18px;">Username : user</span>
           <span>Password : any</span>
         </div>
 
@@ -94,15 +94,15 @@
 </template>
 
 <script>
-import { validNickname } from '@/utils/validate'
+import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
 
 export default {
   name: 'Login',
   components: { SocialSign },
   data() {
-    const validateNickname = (rule, value, callback) => {
-      if (!validNickname(value)) {
+    const validateUsername = (rule, value, callback) => {
+      if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
         callback()
@@ -117,12 +117,12 @@ export default {
     }
     return {
       loginForm: {
-        nickname: 'admin',
+        username: 'admin',
         password: '111111'
       },
       loginRules: {
-        nickname: [
-          { required: true, trigger: 'blur', validator: validateNickname }
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
@@ -152,8 +152,8 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.nickname === '') {
-      this.$refs.nickname.focus()
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus()
     }

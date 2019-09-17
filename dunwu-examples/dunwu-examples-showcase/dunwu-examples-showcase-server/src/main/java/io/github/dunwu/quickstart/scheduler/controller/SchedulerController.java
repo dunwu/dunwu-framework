@@ -72,7 +72,7 @@ public class SchedulerController {
 
 	@PostMapping("save")
 	@ApiOperation(value = "插入一条 Scheduler 记录，插入成功返回 ID（选择字段，策略插入）")
-	public DataResult<String> save(@RequestBody Scheduler entity) {
+	public DataResult<Long> save(@RequestBody Scheduler entity) {
 		return service.save(entity);
 	}
 

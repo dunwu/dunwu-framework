@@ -9,7 +9,7 @@ import io.github.dunwu.constant.IIntegerStringEnum;
  */
 public enum GenderEnum implements IIntegerStringEnum {
 
-	MALE(1, "男"), FEMALE(2, "女");
+	MALE(0, "男"), FEMALE(1, "女");
 
 	GenderEnum(int key, String value) {
 		this.key = key;

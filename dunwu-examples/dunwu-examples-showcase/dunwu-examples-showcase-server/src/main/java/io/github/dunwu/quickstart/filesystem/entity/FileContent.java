@@ -1,15 +1,12 @@
 package io.github.dunwu.quickstart.filesystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import io.github.dunwu.data.entity.BaseEntity;
-import java.sql.Blob;
 
 /**
  * 文件内容表数据实体

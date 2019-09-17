@@ -34,7 +34,7 @@ public class UserDTO implements Serializable {
 	@NotNull
 	@Length(min = 6, max = 10)
 	@ApiModelProperty(value = "昵称")
-	private String nickname;
+	private String username;
 
 	@NotNull
 	@Length(min = 6, max = 10)

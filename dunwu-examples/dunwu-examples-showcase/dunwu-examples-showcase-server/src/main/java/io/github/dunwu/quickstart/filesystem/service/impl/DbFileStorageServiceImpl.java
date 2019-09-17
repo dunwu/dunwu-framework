@@ -40,7 +40,7 @@ public class DbFileStorageServiceImpl implements FileStorageService {
 		fileContent.setFileName(uploadFileDTO.getFileName());
 		fileContent.setContent(uploadFileDTO.getFile().getBytes());
 		fileContentMapper.insert(fileContent);
-		return fileContent.getId();
+		return fileContent.getId().toString();
 	}
 
 	@Override

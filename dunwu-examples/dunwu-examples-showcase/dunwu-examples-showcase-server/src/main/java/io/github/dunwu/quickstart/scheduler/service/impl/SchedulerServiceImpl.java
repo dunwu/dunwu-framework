@@ -391,7 +391,7 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 
 	@Override
 	public List<BeanDTO> getJobHandlers() {
-		Reflections reflections = new Reflections("io.github.dunwu");
+		Reflections reflections = new Reflections("io.github.dunwu.quickstart.scheduler.job");
 		Set<Class<?>> types = reflections.getTypesAnnotatedWith(JobHandler.class);
 		List<BeanDTO> beans = new ArrayList<>();
 		for (Class<?> clazz : types) {

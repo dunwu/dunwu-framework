@@ -32,10 +32,6 @@ public abstract class BaseRecordEntity extends BaseEntity {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	protected LocalDateTime updateTime;
 
-	@Version
-	@ApiModelProperty(value = "版本号。用于乐观锁，不需要用户填值。", example = "0")
-	protected Integer version;
-
 	@TableLogic
 	@TableField(select = false)
 	@ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")

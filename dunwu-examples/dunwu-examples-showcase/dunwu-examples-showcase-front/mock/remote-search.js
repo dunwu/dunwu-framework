@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
 NameList.push({ name: 'mock-Pan' })
 
 export default [
-  // nickname search
+  // username search
   {
     url: '/search/user',
     type: 'get',
@@ -47,7 +47,7 @@ export default [
             {
               order_no: '@guid()',
               timestamp: +Mock.Random.date('T'),
-              nickname: '@name()',
+              username: '@name()',
               price: '@float(1000, 15000, 0, 2)',
               'status|1': ['success', 'pending']
             }

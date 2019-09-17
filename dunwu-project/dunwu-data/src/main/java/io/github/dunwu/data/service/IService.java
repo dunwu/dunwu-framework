@@ -29,7 +29,7 @@ public interface IService<T> {
 	 * 插入一条记录（选择字段，策略插入）
 	 * @param entity 实体对象
 	 */
-	DataResult<String> save(T entity);
+	DataResult<Long> save(T entity);
 
 	/**
 	 * 插入（批量）

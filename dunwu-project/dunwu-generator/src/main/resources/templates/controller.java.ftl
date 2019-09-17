@@ -50,7 +50,7 @@ public class ${table.controllerName} {
 	<#if swagger2>
 	@ApiOperation(value = "插入一条 ${entity} 记录，插入成功返回 ID（选择字段，策略插入）")
 	</#if>
-	public DataResult<String> save(@RequestBody ${entity} entity) {
+	public DataResult<Long> save(@RequestBody ${entity} entity) {
 		return service.save(entity);
 	}
 

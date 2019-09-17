@@ -26,9 +26,9 @@
         <version>${spring-javaformat.version}</version>
         <executions>
           <execution>
-            <phase>validate</phase>
+            <phase>package</phase>
             <goals>
-              <goal>validate</goal>
+              <goal>apply</goal>
             </goals>
           </execution>
         </executions>

@@ -88,7 +88,7 @@ DROP TABLE IF EXISTS `login`;
 CREATE TABLE `login` (
   `id` varchar(32) NOT NULL COMMENT '用户ID',
   `version` int(32) unsigned DEFAULT '0' COMMENT '版本号',
-  `nickname` varchar(32) NOT NULL COMMENT '昵称',
+  `username` varchar(32) NOT NULL COMMENT '昵称',
   `password` varchar(32) NOT NULL COMMENT '密码',
   `email` varchar(100) DEFAULT '' COMMENT '邮箱',
   `mobile` varchar(20) DEFAULT '' COMMENT '手机号',
@@ -96,7 +96,7 @@ CREATE TABLE `login` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_nickname` (`nickname`),
+  UNIQUE KEY `uk_username` (`username`),
   UNIQUE KEY `uk_email` (`email`),
   UNIQUE KEY `uk_mobile` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='登录信息表';
@@ -201,7 +201,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` varchar(32) NOT NULL COMMENT 'ID',
   `version` int(32) unsigned DEFAULT '0' COMMENT '版本号',
-  `nickname` varchar(32) NOT NULL COMMENT '昵称',
+  `username` varchar(32) NOT NULL COMMENT '昵称',
   `name` varchar(32) DEFAULT '' COMMENT '姓名',
   `birthday` date DEFAULT NULL COMMENT '生日',
   `sex` int(1) unsigned DEFAULT NULL COMMENT '性别',
@@ -216,7 +216,7 @@ CREATE TABLE `user` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_nickname` (`nickname`),
+  UNIQUE KEY `uk_username` (`username`),
   UNIQUE KEY `uk_email` (`email`),
   UNIQUE KEY `uk_mobile` (`mobile`),
   KEY `idx_name` (`name`)

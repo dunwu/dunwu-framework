@@ -19,8 +19,8 @@ public abstract class BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId(value = "id", type = IdType.ID_WORKER_STR)
+	@TableId(value = "id", type = IdType.AUTO)
 	@ApiModelProperty(value = "ID", example = "0")
-	protected String id;
+	protected Long id;
 
 }
