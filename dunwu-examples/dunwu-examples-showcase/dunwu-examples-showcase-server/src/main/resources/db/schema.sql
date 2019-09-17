@@ -27,10 +27,19 @@ CREATE TABLE `role` (
   `type` VARCHAR(32) NOT NULL COMMENT '角色类型',
   `key` VARCHAR(32) NOT NULL COMMENT '角色KEY',
   `status` INT(1) UNSIGNED COMMENT '状态',
-  `description` TEXT COMMENT '描述',
+  `notes` TEXT COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='角色表';
+
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+  `id` INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` INT(20) NOT NULL COMMENT '用户ID',
+  `role_id` INT(20) NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_role` (`user_id`, `role_id`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='用户角色表';
 
 -- 权限表
 DROP TABLE IF EXISTS `permission`;
@@ -41,7 +50,7 @@ CREATE TABLE `permission` (
   `type` VARCHAR(32) NOT NULL COMMENT '权限类型',
   `expression` VARCHAR(32) NOT NULL COMMENT '表达式',
   `status` INT(1) UNSIGNED COMMENT '状态',
-  `description` TEXT COMMENT '描述',
+  `notes` TEXT COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='权限表';
@@ -60,7 +69,7 @@ CREATE TABLE `menu` (
   `power` INT(3) DEFAULT 1 COMMENT '菜单权重',
   `expression` VARCHAR(32) NOT NULL COMMENT '表达式',
   `status` INT(1) UNSIGNED COMMENT '状态',
-  `description` TEXT COMMENT '描述',
+  `notes` TEXT COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_key` (`key`)
 )  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI COMMENT='菜单表';
