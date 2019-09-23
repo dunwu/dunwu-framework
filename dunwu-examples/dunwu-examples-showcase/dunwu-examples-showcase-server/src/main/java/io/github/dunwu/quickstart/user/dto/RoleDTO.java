@@ -1,34 +1,37 @@
-package io.github.dunwu.quickstart.user.entity;
+package io.github.dunwu.quickstart.user.dto;
 
-import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.experimental.Accessors;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
- * 角色表数据实体
- *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-09-17
+ * @since 2019-09-23
  */
+@Valid
 @Data
 @ToString
-@Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "Role", description = "角色表")
-public class Role extends BaseEntity {
+@ApiModel(value = "UserDTO", description = "用户信息 DTO")
+public class RoleDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(value = "ID", example = "0")
+	private Integer id;
+
+	@NotNull
 	@ApiModelProperty(value = "角色名")
 	private String name;
 
 	@ApiModelProperty(value = "角色类型")
 	private String type;
 
+	@NotNull
 	@ApiModelProperty(value = "角色code")
 	private String code;
 

@@ -12,9 +12,7 @@ import lombok.experimental.Accessors;
  * 用户角色表数据实体
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @see User
- * @see Role
- * @since 2019-09-17
+ * @since 2019-09-23
  */
 @Data
 @ToString

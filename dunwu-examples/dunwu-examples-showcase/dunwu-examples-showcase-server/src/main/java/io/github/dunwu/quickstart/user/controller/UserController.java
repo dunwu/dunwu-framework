@@ -7,12 +7,10 @@ import io.github.dunwu.quickstart.user.service.UserManager;
 import io.github.dunwu.quickstart.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
 
@@ -42,50 +40,16 @@ public class UserController {
 		return userManager.register(userDTO);
 	}
 
-	@PostMapping("login")
-	@ApiOperation(value = "用户登录")
-	public DataResult<UserDTO> login(HttpSession session,
-			@RequestBody Map<String, String> map) {
-		return userManager.login(session, map);
-	}
-
-	@PostMapping("logout")
-	@ApiOperation(value = "用户登出")
-	public BaseResult logout(HttpSession session) {
-		String sessionId = session.getId();
-		session.removeAttribute(sessionId);
-		return ResultUtil.successBaseResult();
-	}
-
-	@GetMapping("currentUser")
-	@ApiOperation(value = "获取当前会话信息")
-	public DataResult<UserDTO> currentUser(HttpSession session) {
-		return userManager.getCurrentUserInfo(session);
-	}
-
 	@GetMapping("getInfo")
 	@ApiOperation(value = "获取用户信息")
-	public DataResult<UserDTO> getInfo(HttpSession session,
-			@PathParam("token") String token) {
-		if (StringUtils.isBlank(token)) {
-			ResultUtil.failDataResult();
-		}
-
-		DataResult<UserDTO> dataResult = userManager.getCurrentUserInfo(session);
-		if (ResultUtil.isNotValidResult(dataResult)) {
-			return ResultUtil.failDataResult(AppCode.ERROR_DB);
-		}
-		UserDTO userInfoDTO = dataResult.getData();
-		userInfoDTO.setIntroduction("I am a super administrator");
-		ArrayList<String> roles = new ArrayList<>();
-		roles.add("admin");
-		userInfoDTO.setRoles(roles);
-		return ResultUtil.successDataResult(userInfoDTO);
+	public DataResult<UserDTO> user(@AuthenticationPrincipal Principal principal) {
+		UserDTO userDTO = userManager.getByUsername(principal.getName());
+		return ResultUtil.successDataResult(userDTO);
 	}
 
 	@PostMapping("save")
 	@ApiOperation(value = "插入一条 User 记录，插入成功返回 ID（选择字段，策略插入）")
-	public DataResult<Long> save(@RequestBody User entity) {
+	public DataResult<Integer> save(@RequestBody User entity) {
 		return userService.save(entity);
 	}
 

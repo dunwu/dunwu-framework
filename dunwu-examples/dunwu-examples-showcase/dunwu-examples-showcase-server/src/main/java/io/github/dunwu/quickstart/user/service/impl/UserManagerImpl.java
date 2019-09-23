@@ -1,25 +1,29 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.dunwu.annotation.Manager;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.DataResult;
 import io.github.dunwu.core.ResultUtil;
+import io.github.dunwu.quickstart.user.dto.RoleDTO;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
+import io.github.dunwu.quickstart.user.entity.Role;
 import io.github.dunwu.quickstart.user.entity.User;
+import io.github.dunwu.quickstart.user.entity.UserRole;
+import io.github.dunwu.quickstart.user.mapper.RoleMapper;
 import io.github.dunwu.quickstart.user.mapper.UserMapper;
+import io.github.dunwu.quickstart.user.mapper.UserRoleMapper;
 import io.github.dunwu.quickstart.user.service.UserManager;
 import io.github.dunwu.util.mapper.BeanMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +38,10 @@ public class UserManagerImpl implements UserManager {
 	private final ObjectMapper objectMapper;
 
 	private final UserMapper userMapper;
+
+	private final RoleMapper roleMapper;
+
+	private final UserRoleMapper userRoleMapper;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -54,51 +62,33 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public DataResult<UserDTO> login(HttpSession session, Map<String, String> map) {
-		String username = map.get("username");
-		String password = map.get("password");
-
-		String sessionId = session.getId();
-		User userInfoQuery = new User();
-		userInfoQuery.setUsername(username);
-		User user = userMapper.selectOne(new QueryWrapper<>(userInfoQuery));
-		if (user == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-		}
-		if (!user.getPassword().equals(password)) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-		}
-
+	public UserDTO getByUsername(String username) {
+		User query = new User();
+		query.setUsername(username);
+		User user = userMapper.selectOne(new QueryWrapper<>(query));
 		UserDTO userDTO = BeanMapper.map(user, UserDTO.class);
-		ArrayList<String> roles = new ArrayList<>();
-		roles.add("admin");
+
+		// 查询用户角色列表
+		UserRole userRole = new UserRole();
+		userRole.setUserId(user.getId());
+		List<UserRole> userRoleList = userRoleMapper
+				.selectList(new QueryWrapper<>(userRole));
+		if (CollectionUtils.isEmpty(userRoleList)) {
+			return userDTO;
+		}
+
+		// 查询角色列表
+		List<RoleDTO> roles = new ArrayList<>();
+		for (UserRole item : userRoleList) {
+			Role role = roleMapper.selectById(item.getRoleId());
+			if (role != null) {
+				RoleDTO roleDTO = BeanMapper.map(role, RoleDTO.class);
+				roles.add(roleDTO);
+			}
+		}
 		userDTO.setRoles(roles);
-		userDTO.setCurrentAuthority("admin");
-		userDTO.setToken(sessionId);
 
-		try {
-			session.setAttribute(sessionId, objectMapper.writeValueAsString(userDTO));
-		}
-		catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return ResultUtil.successDataResult(userDTO);
-	}
-
-	@Override
-	public DataResult<UserDTO> getCurrentUserInfo(HttpSession session) {
-		String value = (String) session.getAttribute(session.getId());
-		if (value == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTH);
-		}
-		UserDTO userDTO = null;
-		try {
-			userDTO = objectMapper.readValue(value, UserDTO.class);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return ResultUtil.successDataResult(userDTO);
+		return userDTO;
 	}
 
 }

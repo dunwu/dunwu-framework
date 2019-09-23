@@ -28,7 +28,7 @@ public enum AppCode implements ErrorCode {
     ERROR_DB("104", "数据库错误", "数据库错误"),
     ERROR_IO("105", "IO 错误", "IO 错误"),
     ERROR_CONCURRENCE("106", "并发错误", "并发错误"),
-    ERROR_AUTH("107", "认证错误", "认证错误"),
+    ERROR_AUTHENTICATION("107", "认证错误", "认证错误"),
     ERROR_SCHEDULER("108", "调度错误", "调度错误，调用 group=%, job=% 失败"),
     ERROR_ENCODE("109", "编码错误", "编码错误"),
     ERROR_DECODE("110", "解码错误", "解码错误"),
@@ -51,14 +51,15 @@ public enum AppCode implements ErrorCode {
     INVALID_TOKEN("310", "非法的令牌", "非法的令牌"),
     INVALID_VERSION("311", "非法的版本号", "非法的版本号 (%s)"),
 
-    MISSING_KEY("401", "缺失 key", "缺失 key (%s)"),
+    UNAUTHORIZED("401", "没有权限", "没有权限执行 (%s) 操作"),
     MISSING_METHOD("402", "缺失方法名参数", "缺失方法名参数"),
     MISSING_PARAMETER("403", "缺失参数", "缺失参数 (%s)"),
     MISSING_SESSION("404", "缺失 session", "缺失 session"),
     MISSING_SIGNATURE("405", "缺失签名", "缺失签名"),
     MISSING_TIMESTAMP("406", "缺失时间戳", "缺失时间戳"),
     MISSING_TOKEN("407", "缺失令牌", "缺失令牌"),
-    MISSING_VERSION("408", "缺失版本号", "缺失版本号");
+    MISSING_VERSION("408", "缺失版本号", "缺失版本号"),
+    MISSING_KEY("409", "缺失 key", "缺失 key (%s)");
     // @formatter:on
 
 	private final String code;

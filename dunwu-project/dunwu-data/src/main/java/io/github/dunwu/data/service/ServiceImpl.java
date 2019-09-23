@@ -84,7 +84,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 	}
 
 	@Override
-	public DataResult<Long> save(T entity) {
+	public DataResult<Integer> save(T entity) {
 		boolean result = retBool(baseMapper.insert(entity));
 		if (result) {
 			return ResultUtil.successDataResult(entity.getId());

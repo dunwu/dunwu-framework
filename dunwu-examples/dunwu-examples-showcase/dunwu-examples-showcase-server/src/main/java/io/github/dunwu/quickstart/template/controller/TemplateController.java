@@ -29,7 +29,7 @@ public class TemplateController {
 
 	@PostMapping("save")
 	@ApiOperation(value = "插入一条 Template 记录，插入成功返回 ID（选择字段，策略插入）")
-	public DataResult<Long> save(@RequestBody Template entity) {
+	public DataResult<Integer> save(@RequestBody Template entity) {
 		return service.save(entity);
 	}
 

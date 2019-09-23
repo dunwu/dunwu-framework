@@ -3,7 +3,6 @@ package io.github.dunwu.quickstart.user.service;
 import io.github.dunwu.core.DataResult;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
 
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -14,8 +13,6 @@ public interface UserManager {
 
 	DataResult<Map<String, String>> register(UserDTO userDTO);
 
-	DataResult<UserDTO> login(HttpSession session, Map<String, String> map);
-
-	DataResult<UserDTO> getCurrentUserInfo(HttpSession session);
+	UserDTO getByUsername(String username);
 
 }

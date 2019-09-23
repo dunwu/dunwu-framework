@@ -25,7 +25,7 @@ CREATE TABLE `role` (
   `id` INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` VARCHAR(32) NOT NULL COMMENT '角色名',
   `type` VARCHAR(32) NOT NULL COMMENT '角色类型',
-  `key` VARCHAR(32) NOT NULL COMMENT '角色KEY',
+  `code` VARCHAR(32) NOT NULL COMMENT '角色code',
   `status` INT(1) UNSIGNED COMMENT '状态',
   `notes` TEXT COMMENT '备注',
   PRIMARY KEY (`id`),

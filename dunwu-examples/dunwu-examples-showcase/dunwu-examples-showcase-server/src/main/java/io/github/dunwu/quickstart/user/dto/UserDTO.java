@@ -1,6 +1,7 @@
 package io.github.dunwu.quickstart.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.dunwu.quickstart.user.constant.GenderEnum;
 import io.github.dunwu.util.text.RegexUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +17,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,19 +31,22 @@ public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(value = "ID", example = "0")
+	private Integer id;
+
 	@NotNull
 	@Length(min = 6, max = 10)
-	@ApiModelProperty(value = "昵称")
+	@ApiModelProperty(value = "用户名")
 	private String username;
+
+	@NotNull
+	@ApiModelProperty(value = "密码")
+	private String password;
 
 	@NotNull
 	@Length(min = 6, max = 10)
 	@ApiModelProperty(value = "姓名")
 	private String name;
-
-	@NotNull
-	@ApiModelProperty(value = "密码")
-	private String password;
 
 	@Past
 	@ApiModelProperty(value = "生日")
@@ -52,7 +55,7 @@ public class UserDTO implements Serializable {
 
 	@Range(min = 1, max = 2)
 	@ApiModelProperty(value = "性别", example = "0")
-	private Integer sex;
+	private GenderEnum sex;
 
 	@ApiModelProperty(value = "头像")
 	private String avatar;
@@ -65,41 +68,13 @@ public class UserDTO implements Serializable {
 	@ApiModelProperty(value = "手机号")
 	private String mobile;
 
-	@ApiModelProperty(value = "职业")
-	private String profession;
-
-	@ApiModelProperty(value = "省")
-	private String province;
-
-	@ApiModelProperty(value = "市")
-	private String city;
-
-	@ApiModelProperty(value = "区")
-	private String county;
+	@ApiModelProperty(value = "地址")
+	private String address;
 
 	@ApiModelProperty(value = "逻辑删除标记", example = "0")
-	private Integer deleted;
+	private Boolean deleted;
 
-	@ApiModelProperty(value = "创建者")
-	private String createUser;
-
-	@ApiModelProperty(value = "更新者")
-	private String updateUser;
-
-	@ApiModelProperty(value = "创建时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private LocalDateTime createTime;
-
-	@ApiModelProperty(value = "更新时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private LocalDateTime updateTime;
-
-	private String token;
-
-	private String introduction;
-
-	private List<String> roles;
-
-	private String currentAuthority;
+	@ApiModelProperty(value = "角色列表")
+	private List<RoleDTO> roles;
 
 }

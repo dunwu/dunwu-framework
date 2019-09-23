@@ -2,13 +2,19 @@ package io.github.dunwu.autoconfigure.web;
 
 import io.github.dunwu.web.converter.DateConverter;
 import io.github.dunwu.web.interceptor.HttpDebugInterceptor;
-import io.github.dunwu.web.interceptor.SecurityInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Web Mvc 配置
@@ -44,15 +50,19 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 	}
 
 	/**
-	 * 设置跨域
-	 * @param registry
+	 * 设置跨域过滤器
 	 */
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		if (dunwuWebProperties.getCorsEnable()) {
-			registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*")
-					.allowedMethods("*").allowCredentials(true).maxAge(3600L);
-		}
+	@Bean
+	@ConditionalOnProperty(name = "dunwu.web.corsEnable", havingValue = "true")
+	public CorsFilter corsFilter() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return new CorsFilter(source);
 	}
 
 	@Override
@@ -71,13 +81,6 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 		if (dunwuWebProperties.getHttpDebugEnable()) {
 			registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**")
 					.order(1);
-		}
-
-		if (dunwuSecurityProperties.getEnable()) {
-			registry.addInterceptor(
-					new SecurityInterceptor(dunwuSecurityProperties.getAuthTokenKey()))
-					.excludePathPatterns("/user/login")
-					.excludePathPatterns("/user/logout").addPathPatterns("/**");
 		}
 	}
 
