@@ -1,9 +1,9 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
+import io.github.dunwu.data.service.ServiceImpl;
 import io.github.dunwu.quickstart.user.entity.Permission;
 import io.github.dunwu.quickstart.user.mapper.PermissionMapper;
 import io.github.dunwu.quickstart.user.service.PermissionService;
-import io.github.dunwu.data.service.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-09-17
  */
 @Service
-public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>
-		implements PermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
 
 }

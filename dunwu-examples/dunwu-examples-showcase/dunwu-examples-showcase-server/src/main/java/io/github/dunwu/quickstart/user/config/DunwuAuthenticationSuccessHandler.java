@@ -33,11 +33,10 @@ public class DunwuAuthenticationSuccessHandler implements AuthenticationSuccessH
 	}
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, Authentication authentication)
-			throws IOException, ServletException {
-		List<String> roles = authentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			Authentication authentication) throws IOException, ServletException {
+		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
 		DataListResult result = ResultUtil.successDataListResult(roles);
 		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);

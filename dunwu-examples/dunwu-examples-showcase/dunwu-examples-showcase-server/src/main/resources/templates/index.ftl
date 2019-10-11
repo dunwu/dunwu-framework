@@ -38,13 +38,13 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="/">DUNWU</a>
   <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#headerNavbar"
-    aria-controls="headerNavbar"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#headerNavbar"
+          aria-controls="headerNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
   >
     <span class="navbar-toggler-icon"></span>
   </button>

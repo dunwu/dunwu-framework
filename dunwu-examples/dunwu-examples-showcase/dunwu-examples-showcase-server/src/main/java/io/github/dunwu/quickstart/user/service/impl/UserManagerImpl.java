@@ -47,8 +47,8 @@ public class UserManagerImpl implements UserManager {
 	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Map<String, String>> register(UserDTO userDTO) {
 		if (userDTO == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER.getCode(),
-					AppCode.ERROR_PARAMETER.getTemplate(), "userDTO", "null");
+			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER.getCode(), AppCode.ERROR_PARAMETER.getTemplate(),
+					"userDTO", "null");
 		}
 
 		User user = BeanMapper.map(userDTO, User.class);
@@ -71,8 +71,7 @@ public class UserManagerImpl implements UserManager {
 		// 查询用户角色列表
 		UserRole userRole = new UserRole();
 		userRole.setUserId(user.getId());
-		List<UserRole> userRoleList = userRoleMapper
-				.selectList(new QueryWrapper<>(userRole));
+		List<UserRole> userRoleList = userRoleMapper.selectList(new QueryWrapper<>(userRole));
 		if (CollectionUtils.isEmpty(userRoleList)) {
 			return userDTO;
 		}

@@ -50,11 +50,9 @@ public class TempFileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		String storeUrl = fileSystemProperties.getTemp().getLocation() + "/"
-				+ uploadFileDTO.getOriginName();
+		String storeUrl = fileSystemProperties.getTemp().getLocation() + "/" + uploadFileDTO.getOriginName();
 		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
-		Files.write(path.resolve(storeUrl), uploadFileDTO.getFile().getBytes(),
-				StandardOpenOption.CREATE);
+		Files.write(path.resolve(storeUrl), uploadFileDTO.getFile().getBytes(), StandardOpenOption.CREATE);
 		return storeUrl;
 	}
 

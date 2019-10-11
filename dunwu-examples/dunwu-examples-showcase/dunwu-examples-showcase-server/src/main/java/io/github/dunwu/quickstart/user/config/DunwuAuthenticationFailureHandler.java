@@ -31,16 +31,14 @@ public class DunwuAuthenticationFailureHandler implements AuthenticationFailureH
 	}
 
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, AuthenticationException exception)
-			throws IOException, ServletException {
-		BaseResult baseResult = ResultUtil.failBaseResult(
-				AppCode.ERROR_AUTHENTICATION.getCode(), exception.getMessage());
+	public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			AuthenticationException exception) throws IOException, ServletException {
+		BaseResult baseResult = ResultUtil.failBaseResult(AppCode.ERROR_AUTHENTICATION.getCode(),
+				exception.getMessage());
 		httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		httpServletResponse.getWriter()
-				.write(objectMapper.writeValueAsString(baseResult));
+		httpServletResponse.getWriter().write(objectMapper.writeValueAsString(baseResult));
 	}
 
 }

@@ -34,10 +34,8 @@ public class FdfsFileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		StorePath storePath = storageClient.uploadFile(
-				fileSystemProperties.getFdfs().getGroup(),
-				uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(),
-				uploadFileDTO.getExtension());
+		StorePath storePath = storageClient.uploadFile(fileSystemProperties.getFdfs().getGroup(),
+				uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(), uploadFileDTO.getExtension());
 		return storePath.getFullPath();
 	}
 
@@ -50,8 +48,7 @@ public class FdfsFileStorageServiceImpl implements FileStorageService {
 	@Override
 	public FileDTO getContent(FileDTO fileDTO) throws IOException {
 		StorePath path = StorePath.parseFromUrl(fileDTO.getStoreUrl());
-		byte[] bytes = storageClient.downloadFile(
-				fileSystemProperties.getFdfs().getGroup(), path.getPath(),
+		byte[] bytes = storageClient.downloadFile(fileSystemProperties.getFdfs().getGroup(), path.getPath(),
 				new DownloadByteArray());
 		fileDTO.setContent(bytes);
 		return fileDTO;

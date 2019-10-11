@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.filesystem.mapper;
 
-import io.github.dunwu.quickstart.filesystem.entity.File;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.github.dunwu.quickstart.filesystem.entity.File;
 
 /**
  * <p>

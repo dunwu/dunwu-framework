@@ -11,11 +11,6 @@ public enum GenderEnum implements IIntegerStringEnum {
 
 	MALE(0, "男"), FEMALE(1, "女");
 
-	GenderEnum(int key, String value) {
-		this.key = key;
-		this.value = value;
-	}
-
 	/**
 	 * 标记数据库存的值是code
 	 */
@@ -23,6 +18,11 @@ public enum GenderEnum implements IIntegerStringEnum {
 	private final int key;
 
 	private final String value;
+
+	GenderEnum(int key, String value) {
+		this.key = key;
+		this.value = value;
+	}
 
 	@Override
 	public int getKey() {

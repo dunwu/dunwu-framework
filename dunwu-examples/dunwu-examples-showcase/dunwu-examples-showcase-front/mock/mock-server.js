@@ -46,31 +46,31 @@ module.exports = app => {
 
   // watch files, hot reload mock server
   chokidar
-    .watch(mockDir, {
-      ignored: /mock-server/,
-      ignoreInitial: true
-    })
-    .on('all', (event, path) => {
-      if (event === 'change' || event === 'add') {
-        try {
-          // remove mock routes stack
-          app._router.stack.splice(mockStartIndex, mockRoutesLength)
+  .watch(mockDir, {
+    ignored: /mock-server/,
+    ignoreInitial: true
+  })
+  .on('all', (event, path) => {
+    if (event === 'change' || event === 'add') {
+      try {
+        // remove mock routes stack
+        app._router.stack.splice(mockStartIndex, mockRoutesLength)
 
-          // clear routes cache
-          unregisterRoutes()
+        // clear routes cache
+        unregisterRoutes()
 
-          const mockRoutes = registerRoutes(app)
-          mockRoutesLength = mockRoutes.mockRoutesLength
-          mockStartIndex = mockRoutes.mockStartIndex
+        const mockRoutes = registerRoutes(app)
+        mockRoutesLength = mockRoutes.mockRoutesLength
+        mockStartIndex = mockRoutes.mockStartIndex
 
-          console.log(
-            chalk.magentaBright(
-              `\n > Mock Server hot reload success! changed  ${path}`
-            )
+        console.log(
+          chalk.magentaBright(
+            `\n > Mock Server hot reload success! changed  ${path}`
           )
-        } catch (error) {
-          console.log(chalk.redBright(error))
-        }
+        )
+      } catch (error) {
+        console.log(chalk.redBright(error))
       }
-    })
+    }
+  })
 }

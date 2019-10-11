@@ -52,7 +52,7 @@ module.exports = {
         pathRewrite: {
           ['^' + '/preview-api']: ''
         }
-      },
+      }
     },
     after: require('./mock/mock-server.js')
   },
@@ -72,31 +72,31 @@ module.exports = {
 
     // set svg-sprite-loader
     config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    .rule('svg')
+    .exclude.add(resolve('src/icons'))
+    .end()
     config.module
-      .rule('icons')
-      .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
-      .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]'
-      })
-      .end()
+    .rule('icons')
+    .test(/\.svg$/)
+    .include.add(resolve('src/icons'))
+    .end()
+    .use('svg-sprite-loader')
+    .loader('svg-sprite-loader')
+    .options({
+      symbolId: 'icon-[name]'
+    })
+    .end()
 
     // set preserveWhitespace
     config.module
-      .rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
-      .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
-      })
-      .end()
+    .rule('vue')
+    .use('vue-loader')
+    .loader('vue-loader')
+    .tap(options => {
+      options.compilerOptions.preserveWhitespace = true
+      return options
+    })
+    .end()
 
     // https://webpack.js.org/configuration/devtool/#development
     config.when(process.env.NODE_ENV !== 'production', config =>
@@ -106,15 +106,15 @@ module.exports = {
     config.when(process.env.NODE_ENV === 'production', config => {
       config.devtool('eval-source-map')
       config
-        .plugin('ScriptExtHtmlWebpackPlugin')
-        .after('html')
-        .use('script-ext-html-webpack-plugin', [
-          {
-            // `runtime` must same as runtimeChunk name. default is `runtime`
-            inline: /runtime\..*\.js$/
-          }
-        ])
-        .end()
+      .plugin('ScriptExtHtmlWebpackPlugin')
+      .after('html')
+      .use('script-ext-html-webpack-plugin', [
+        {
+          // `runtime` must same as runtimeChunk name. default is `runtime`
+          inline: /runtime\..*\.js$/
+        }
+      ])
+      .end()
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {

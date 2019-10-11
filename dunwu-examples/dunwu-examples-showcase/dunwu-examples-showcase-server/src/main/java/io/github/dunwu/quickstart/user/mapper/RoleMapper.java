@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.user.mapper;
 
-import io.github.dunwu.quickstart.user.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.github.dunwu.quickstart.user.entity.Role;
 
 /**
  * <p>

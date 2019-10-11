@@ -76,9 +76,9 @@
     </button>
     <br>
     <div id="errorStack" class="container bg-light collapse in" style="margin-top: 20px; padding: 20px">
-      <#list stackTrace as item>
-        <p class="text-warning">${item}</p>
-      </#list>
+        <#list stackTrace as item>
+          <p class="text-warning">${item}</p>
+        </#list>
     </div>
   </div>
 </main>

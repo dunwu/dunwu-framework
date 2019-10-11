@@ -62,8 +62,7 @@ public class RequestGlobalHandler {
 
 		BaseResult baseResult;
 		if (e instanceof MethodArgumentNotValidException) {
-			baseResult = resolveMethodArgumentNotValidException(
-					(MethodArgumentNotValidException) e);
+			baseResult = resolveMethodArgumentNotValidException((MethodArgumentNotValidException) e);
 		}
 		else if (e instanceof AppException) {
 			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_SYSTEM);
@@ -91,8 +90,7 @@ public class RequestGlobalHandler {
 	 * @param e MethodArgumentNotValidException
 	 * @return {@link BaseResult}
 	 */
-	private BaseResult resolveMethodArgumentNotValidException(
-			final MethodArgumentNotValidException e) {
+	private BaseResult resolveMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("出现参数错误：\n");
 		for (ObjectError error : e.getBindingResult().getAllErrors()) {
@@ -100,8 +98,7 @@ public class RequestGlobalHandler {
 			sb.append(error.getDefaultMessage());
 			sb.append("\n");
 		}
-		return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER.getCode(),
-				sb.toString());
+		return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER.getCode(), sb.toString());
 	}
 
 	private WebConstant.ResponseType getResponseMode(HttpServletRequest request) {
@@ -109,18 +106,15 @@ public class RequestGlobalHandler {
 		String accept = request.getHeader(HttpHeaders.ACCEPT);
 		String xRequestedWith = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
 
-		if (StringUtils.isNotBlank(contentType)
-				&& contentType.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
+		if (StringUtils.isNotBlank(contentType) && contentType.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 
-		if (StringUtils.isNotBlank(accept)
-				&& accept.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
+		if (StringUtils.isNotBlank(accept) && accept.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 
-		if (StringUtils.isNotBlank(xRequestedWith)
-				&& HttpHeaders.X_REQUESTED_WITH.equalsIgnoreCase(xRequestedWith)) {
+		if (StringUtils.isNotBlank(xRequestedWith) && HttpHeaders.X_REQUESTED_WITH.equalsIgnoreCase(xRequestedWith)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 

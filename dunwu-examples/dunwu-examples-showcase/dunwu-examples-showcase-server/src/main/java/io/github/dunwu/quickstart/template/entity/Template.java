@@ -2,7 +2,6 @@ package io.github.dunwu.quickstart.template.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -29,6 +28,19 @@ public class Template extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(value = "创建时间")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	protected LocalDateTime createTime;
+
+	@ApiModelProperty(value = "更新时间")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	protected LocalDateTime updateTime;
+
+	@TableLogic
+	@TableField(select = false)
+	@ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")
+	protected Boolean deleted = false;
+
 	@ApiModelProperty(value = "模板名")
 	@TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
 	private String name;
@@ -44,18 +56,5 @@ public class Template extends BaseEntity {
 
 	@ApiModelProperty(value = "模板元数据")
 	private String metadata;
-
-	@ApiModelProperty(value = "创建时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	protected LocalDateTime createTime;
-
-	@ApiModelProperty(value = "更新时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	protected LocalDateTime updateTime;
-
-	@TableLogic
-	@TableField(select = false)
-	@ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")
-	protected Boolean deleted = false;
 
 }

@@ -30,8 +30,8 @@ public class DunwuLogoutSuccessHandler implements LogoutSuccessHandler {
 	}
 
 	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+			throws IOException, ServletException {
 		BaseResult baseResult = ResultUtil.successBaseResult();
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

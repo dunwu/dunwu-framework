@@ -39,14 +39,13 @@ public class FileController {
 
 	@PostMapping("upload")
 	@ApiOperation(value = "批量上传文件")
-	public DataResult<FileDTO> upload(MultipartHttpServletRequest request,
-			UploadFileDTO uploadFileDTO) throws IOException {
+	public DataResult<FileDTO> upload(MultipartHttpServletRequest request, UploadFileDTO uploadFileDTO)
+			throws IOException {
 
 		String ip = ServletUtil.getRealRemoteAddr(request);
 		DataResult<Boolean> dataResult = fileManager.allowAccess(ip);
 		if (dataResult.getData()) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(),
-					"上传请求过于频繁，请稍后再尝试");
+			return ResultUtil.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(), "上传请求过于频繁，请稍后再尝试");
 		}
 
 		if (uploadFileDTO == null) {
@@ -64,9 +63,8 @@ public class FileController {
 
 	@GetMapping("image/{namespace}/{tag}/{originName:.+}")
 	@ApiOperation(value = "查看图片文件")
-	public void imageByName(HttpServletResponse response,
-			@PathVariable("namespace") String namespace, @PathVariable("tag") String tag,
-			@PathVariable("originName") String originName) throws IOException {
+	public void imageByName(HttpServletResponse response, @PathVariable("namespace") String namespace,
+			@PathVariable("tag") String tag, @PathVariable("originName") String originName) throws IOException {
 
 		FileQuery fileQuery = new FileQuery();
 		fileQuery.setNamespace(namespace);
@@ -99,8 +97,7 @@ public class FileController {
 		}
 
 		FileDTO fileDTO = dataResult.getData();
-		ServletUtil.setFileDownloadHeader(request, response, fileDTO.getOriginName(),
-				fileDTO.getContent());
+		ServletUtil.setFileDownloadHeader(request, response, fileDTO.getOriginName(), fileDTO.getContent());
 		IOUtils.write(fileDTO.getContent(), response.getOutputStream());
 	}
 

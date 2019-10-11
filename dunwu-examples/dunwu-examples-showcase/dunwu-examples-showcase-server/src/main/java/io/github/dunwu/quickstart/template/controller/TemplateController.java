@@ -71,8 +71,7 @@ public class TemplateController {
 
 	@PostMapping("update")
 	@ApiOperation(value = "根据 origin 条件，更新 Template 记录")
-	public BaseResult update(@RequestBody Template target,
-			@RequestParam Template origin) {
+	public BaseResult update(@RequestBody Template target, @RequestParam Template origin) {
 		return service.update(target, origin);
 	}
 

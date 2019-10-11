@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.user.service;
 
-import io.github.dunwu.quickstart.user.entity.Role;
 import io.github.dunwu.data.service.IService;
+import io.github.dunwu.quickstart.user.entity.Role;
 
 /**
  * <p>

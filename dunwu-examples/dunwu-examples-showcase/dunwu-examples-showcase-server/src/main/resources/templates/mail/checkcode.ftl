@@ -1,6 +1,6 @@
 <html>
 <head>
-  <base target="_blank" />
+  <base target="_blank"/>
   <style type="text/css">
     ::-webkit-scrollbar {
       display: none;
@@ -18,15 +18,15 @@
   <style></style>
 
   <div
-    style="background-color:#d0d0d0;background-image:url(http://weixin.qq.com/zh_CN/htmledition/images/weixin/letter/mmsgletter_2_bg.png);padding:40px;"
+          style="background-color:#d0d0d0;background-image:url(http://weixin.qq.com/zh_CN/htmledition/images/weixin/letter/mmsgletter_2_bg.png);padding:40px;"
   >
     <div
-      class="mmsgLetter"
-      style="margin:0 auto;padding:10px;color:#333;background-color:#fff;border:0px solid #aaa;border-radius:5px;-webkit-box-shadow:3px 3px 10px #999;-moz-box-shadow:3px 3px 10px #999;box-shadow:3px 3px 10px #999;font-family:Verdana, sans-serif; "
+            class="mmsgLetter"
+            style="margin:0 auto;padding:10px;color:#333;background-color:#fff;border:0px solid #aaa;border-radius:5px;-webkit-box-shadow:3px 3px 10px #999;-moz-box-shadow:3px 3px 10px #999;box-shadow:3px 3px 10px #999;font-family:Verdana, sans-serif; "
     >
       <div
-        class="mmsgLetterHeader"
-        style="height:23px;background:url(http://weixin.qq.com/zh_CN/htmledition/images/weixin/letter/mmsgletter_2_bg_topline.png) repeat-x 0 0;"
+              class="mmsgLetterHeader"
+              style="height:23px;background:url(http://weixin.qq.com/zh_CN/htmledition/images/weixin/letter/mmsgletter_2_bg_topline.png) repeat-x 0 0;"
       ></div>
 
       <div class="letterLog"><p>Dunwu Quickstart</p></div>
@@ -35,7 +35,7 @@
         <div>
           <p>${to}，您好!</p>
           <p>
-            感谢您注册 <strong>Dunwu QuickStart</strong>!<br />
+            感谢您注册 <strong>Dunwu QuickStart</strong>!<br/>
             您的登录邮箱为：<a data-auto-link="1" href="mailto:${to}">${to}</a>。请回填如下6位验证码：
           </p>
           <p style="text-align: center;"><code class="mmsgLetterDigital">${checkCode}</code></p>
@@ -44,15 +44,15 @@
 
         <div class="mmsgLetterInscribe" style="padding:40px 0 0;">
           <img
-            class="mmsgAvatar"
-            src="http://dunwu.test.upcdn.net/cs/others/zp.png"
-            style="float:left; width:60px; height:60px; margin-right: 10px"
+                  class="mmsgAvatar"
+                  src="http://dunwu.test.upcdn.net/cs/others/zp.png"
+                  style="float:left; width:60px; height:60px; margin-right: 10px"
           />
           <div class="mmsgSender" style="margin:0 0 0 54px;">
             <p class="mmsgName" style="margin:0 0 10px;">Dunwu</p>
             <p class="mmsgInfo" style="font-size:12px;margin:0;line-height:1.2;">
               <a href="https://github.com/dunwu/" style="color:#777777;">Github：https://github.com/dunwu/</a>
-              <br />
+              <br/>
               <a href="mailto:forbreak@163.com" style="color:#777777;">邮箱：forbreak@163.com</a>
             </p>
           </div>
@@ -60,16 +60,16 @@
       </div>
 
       <div
-        class="mmsgLetterFooter"
-        style="margin:16px;text-align:center;font-size:12px;color:#888;text-shadow:1px 0px 0px #eee;"
+              class="mmsgLetterFooter"
+              style="margin:16px;text-align:center;font-size:12px;color:#888;text-shadow:1px 0px 0px #eee;"
       ></div>
     </div>
   </div>
 </div>
 
 <script>
-  var _c = document.getElementById("content");
-  _c.innerHTML = (_c.innerHTML || "").replace(/(href|formAction|onclick|javascript)/gi, "__$1");
+  var _c = document.getElementById('content')
+  _c.innerHTML = (_c.innerHTML || '').replace(/(href|formAction|onclick|javascript)/gi, '__$1')
 </script>
 <style type="text/css">
   body {

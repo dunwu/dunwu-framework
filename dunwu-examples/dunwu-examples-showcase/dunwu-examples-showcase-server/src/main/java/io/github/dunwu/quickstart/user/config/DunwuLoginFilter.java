@@ -40,21 +40,18 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 	private final UserManager userManager;
 
 	DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager) {
-		super(new AntPathRequestMatcher(defaultFilterProcessesUrl,
-				HttpMethod.POST.name()));
+		super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
 		this.userManager = userManager;
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request,
-			HttpServletResponse response)
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
 		ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
 		String requestBody = getRequestBody(request);
-		Map<String, String> map = objectMapper.readValue(requestBody,
-				new TypeReference<Map<String, String>>() {
-				});
+		Map<String, String> map = objectMapper.readValue(requestBody, new TypeReference<Map<String, String>>() {
+		});
 		String username = map.get("username");
 		String password = map.get("password");
 
@@ -81,8 +78,7 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 	/**
 	 * 获取请求体
 	 */
-	private String getRequestBody(HttpServletRequest request)
-			throws AuthenticationException {
+	private String getRequestBody(HttpServletRequest request) throws AuthenticationException {
 		try {
 			StringBuilder stringBuilder = new StringBuilder();
 			InputStream inputStream = request.getInputStream();

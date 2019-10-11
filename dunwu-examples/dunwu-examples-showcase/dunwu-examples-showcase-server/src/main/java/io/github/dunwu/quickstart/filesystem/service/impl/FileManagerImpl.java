@@ -53,8 +53,7 @@ public class FileManagerImpl implements FileManager {
 	@Override
 	public DataResult<FileDTO> create(UploadFileDTO uploadFileDTO) throws IOException {
 		FileStoreTypeEnum storeType = uploadFileDTO.getStoreType();
-		FileStorageService fileStorageService = SpringUtil.getBean(storeType.getValue(),
-				FileStorageService.class);
+		FileStorageService fileStorageService = SpringUtil.getBean(storeType.getValue(), FileStorageService.class);
 		autoFillUploadFileDto(uploadFileDTO);
 		FileDTO fileDTO = convert(uploadFileDTO);
 		String storeUrl = fileStorageService.create(uploadFileDTO);
@@ -78,8 +77,7 @@ public class FileManagerImpl implements FileManager {
 		File file = fileInfoMapper.selectOne(new QueryWrapper<>(query));
 		FileDTO fileDTO = BeanMapper.map(file, FileDTO.class);
 		FileStoreTypeEnum storeType = file.getStoreType();
-		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(),
-				FileStorageService.class);
+		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(), FileStorageService.class);
 		if (fileService.delete(fileDTO)) {
 			int num = fileInfoMapper.deleteById(file.getId());
 			if (num > 0) {
@@ -103,8 +101,7 @@ public class FileManagerImpl implements FileManager {
 		}
 
 		FileStoreTypeEnum storeType = file.getStoreType();
-		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(),
-				FileStorageService.class);
+		FileStorageService fileService = SpringUtil.getBean(storeType.getValue(), FileStorageService.class);
 		FileDTO query = BeanMapper.map(file, FileDTO.class);
 		FileDTO fileDTO = fileService.getContent(query);
 		return ResultUtil.successDataResult(fileDTO);
@@ -114,8 +111,7 @@ public class FileManagerImpl implements FileManager {
 	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> pagination) {
 		File fileInfoQuery = BeanMapper.map(fileQuery, File.class);
 		IPage<File> page = PageUtil.transToMybatisPlusPage(pagination);
-		IPage<File> result = fileInfoMapper.selectPage(page,
-				new QueryWrapper<>(fileInfoQuery));
+		IPage<File> result = fileInfoMapper.selectPage(page, new QueryWrapper<>(fileInfoQuery));
 		List<FileDTO> list = BeanMapper.mapList(result.getRecords(), FileDTO.class);
 		pagination.setTotal(result.getTotal());
 		pagination.setPages(result.getPages());
@@ -138,8 +134,7 @@ public class FileManagerImpl implements FileManager {
 			Date first = accessDTO.getDate();
 
 			// 首次请求时间已经超出时间间隔，刷新时间和次数
-			FileSystemProperties.UploadTimeLimit uploadTimeLimit = fileSystemProperties
-					.getLimit();
+			FileSystemProperties.UploadTimeLimit uploadTimeLimit = fileSystemProperties.getLimit();
 			if (now.getTime() - first.getTime() > uploadTimeLimit.getStatTimeRange()) {
 				accessDTO.setCount(1);
 				accessDTO.setDate(new Date());

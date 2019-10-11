@@ -38,8 +38,7 @@ public class MailServiceImpl implements MailService {
 
 	private final DunwuMailProperties mailProperties;
 
-	public MailServiceImpl(JavaMailSender javaMailSender,
-			DunwuMailProperties mailProperties,
+	public MailServiceImpl(JavaMailSender javaMailSender, DunwuMailProperties mailProperties,
 			@Qualifier("mailExecutor") ExecutorService mailExecutor) {
 		this.javaMailSender = javaMailSender;
 		this.mailExecutor = mailExecutor;
@@ -70,8 +69,7 @@ public class MailServiceImpl implements MailService {
 	}
 
 	private void sendSimpleMessage(MailDTO mailDTO) {
-		SimpleMailMessage simpleMailMessage = BeanMapper.map(mailDTO,
-				SimpleMailMessage.class);
+		SimpleMailMessage simpleMailMessage = BeanMapper.map(mailDTO, SimpleMailMessage.class);
 		if (StringUtils.isBlank(mailDTO.getFrom())) {
 			simpleMailMessage.setFrom(mailProperties.getFrom());
 		}
@@ -92,8 +90,7 @@ public class MailServiceImpl implements MailService {
 			return;
 		}
 
-		List<SimpleMailMessage> simpleMailMessages = BeanMapper.mapList(mailDTOS,
-				SimpleMailMessage.class);
+		List<SimpleMailMessage> simpleMailMessages = BeanMapper.mapList(mailDTOS, SimpleMailMessage.class);
 		for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
 			if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
 				simpleMailMessage.setFrom(mailProperties.getFrom());

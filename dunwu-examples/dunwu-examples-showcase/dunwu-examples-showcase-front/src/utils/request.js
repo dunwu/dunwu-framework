@@ -5,7 +5,7 @@
  * @see http://www.jianshu.com/p/df464b26ae58
  */
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 

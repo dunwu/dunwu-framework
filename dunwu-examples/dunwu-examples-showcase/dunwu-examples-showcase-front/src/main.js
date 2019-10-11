@@ -3,12 +3,10 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
-
 import ElementUI from 'element-ui'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
-
 import App from './App'
 import store from './store'
 import router from './router'
@@ -16,9 +14,7 @@ import router from './router'
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
-
 import * as filters from './filters' // global filters
-
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

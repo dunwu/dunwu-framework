@@ -29,9 +29,9 @@ import java.io.IOException;
 @Service(value = FileSystemConstant.DB_FILE_CONTENT_SERVICE)
 public class DbFileStorageServiceImpl implements FileStorageService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
 	protected final FileContentMapper fileContentMapper;
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)

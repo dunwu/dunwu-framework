@@ -70,14 +70,13 @@ public interface FileManager {
 		uploadFileDTO.setExtension(extension);
 
 		if (StringUtils.isBlank(uploadFileDTO.getOriginName())) {
-			String originName = FileUtil.getFileName(uploadFileDTO.getOriginName())
-					+ FileSystemConstant.FILE_SEPARATOR + extension;
+			String originName = FileUtil.getFileName(uploadFileDTO.getOriginName()) + FileSystemConstant.FILE_SEPARATOR
+					+ extension;
 			uploadFileDTO.setOriginName(originName);
 		}
 
 		if (StringUtils.isBlank(uploadFileDTO.getFileName())) {
-			String fileName = IdUtil.uuid2() + FileSystemConstant.FILE_SEPARATOR
-					+ extension.toLowerCase();
+			String fileName = IdUtil.uuid2() + FileSystemConstant.FILE_SEPARATOR + extension.toLowerCase();
 			uploadFileDTO.setFileName(fileName);
 		}
 
@@ -94,8 +93,8 @@ public interface FileManager {
 	default FileDTO convert(UploadFileDTO uploadFileDTO) throws IOException {
 		FileDTO fileDTO = BeanMapper.map(uploadFileDTO, FileDTO.class);
 		StringBuilder sb = new StringBuilder();
-		sb.append(uploadFileDTO.getNamespace()).append("/").append(uploadFileDTO.getTag())
-				.append("/").append(fileDTO.getOriginName());
+		sb.append(uploadFileDTO.getNamespace()).append("/").append(uploadFileDTO.getTag()).append("/")
+				.append(fileDTO.getOriginName());
 		fileDTO.setAccessUrl(sb.toString());
 		fileDTO.setUpdateTime(LocalDateTime.now());
 		return fileDTO;

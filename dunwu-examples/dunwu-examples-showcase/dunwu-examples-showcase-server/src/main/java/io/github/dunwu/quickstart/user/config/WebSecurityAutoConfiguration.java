@@ -48,15 +48,12 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable();
 
-		http.authorizeRequests().anyRequest().authenticated()
-				.antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
-				.antMatchers(properties.getRegisterUrl(), properties.getLoginUrl(),
-						properties.getLogoutUrl())
+		http.authorizeRequests().anyRequest().authenticated().antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
+				.antMatchers(properties.getRegisterUrl(), properties.getLoginUrl(), properties.getLogoutUrl())
 				.permitAll();
 
-		http.logout().logoutUrl(properties.getLogoutUrl())
-				.logoutSuccessHandler(logoutSuccessHandler).clearAuthentication(true)
-				.permitAll();
+		http.logout().logoutUrl(properties.getLogoutUrl()).logoutSuccessHandler(logoutSuccessHandler)
+				.clearAuthentication(true).permitAll();
 
 		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 				.accessDeniedHandler(accessDeniedHandler);
@@ -68,8 +65,7 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 	 * 自定义认证过滤器
 	 */
 	private DunwuLoginFilter customLoginFilter() {
-		DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(
-				properties.getLoginUrl(), userManager);
+		DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(properties.getLoginUrl(), userManager);
 		customLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 		customLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
 		return customLoginFilter;

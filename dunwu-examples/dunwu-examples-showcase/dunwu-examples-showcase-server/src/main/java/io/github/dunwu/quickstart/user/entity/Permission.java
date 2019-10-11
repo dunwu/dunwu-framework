@@ -1,14 +1,12 @@
 package io.github.dunwu.quickstart.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.dunwu.data.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import io.github.dunwu.data.entity.BaseEntity;
 
 /**
  * 权限表数据实体

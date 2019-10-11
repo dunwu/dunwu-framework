@@ -1,9 +1,9 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
+import io.github.dunwu.data.service.ServiceImpl;
 import io.github.dunwu.quickstart.user.entity.Role;
 import io.github.dunwu.quickstart.user.mapper.RoleMapper;
 import io.github.dunwu.quickstart.user.service.RoleService;
-import io.github.dunwu.data.service.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-09-17
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
-		implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
 }

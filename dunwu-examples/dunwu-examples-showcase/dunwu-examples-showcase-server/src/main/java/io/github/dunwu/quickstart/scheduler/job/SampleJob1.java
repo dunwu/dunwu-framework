@@ -1,8 +1,8 @@
 package io.github.dunwu.quickstart.scheduler.job;
 
+import io.github.dunwu.annotation.JobHandler;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
-import io.github.dunwu.annotation.JobHandler;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

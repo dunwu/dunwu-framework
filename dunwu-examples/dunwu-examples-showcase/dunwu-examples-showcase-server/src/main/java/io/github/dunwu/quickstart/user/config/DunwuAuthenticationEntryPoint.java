@@ -31,8 +31,8 @@ public class DunwuAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	}
 
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException {
+	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+			throws IOException, ServletException {
 		BaseResult baseResult = ResultUtil.failBaseResult(AppCode.ERROR_AUTHENTICATION);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);

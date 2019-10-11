@@ -19,6 +19,14 @@ public class SampleJob2 implements IJobHandler {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+	@Override
+	public BaseResult execute(String params) {
+		JsonMapper jsonMapper = JsonMapper.nonNullMapper();
+		Person person = jsonMapper.fromJson(params, Person.class);
+		log.info("person = {}", person.toString());
+		return ResultUtil.successBaseResult();
+	}
+
 	@Data
 	@ToString
 	static class Person {
@@ -29,14 +37,6 @@ public class SampleJob2 implements IJobHandler {
 
 		private String sex;
 
-	}
-
-	@Override
-	public BaseResult execute(String params) {
-		JsonMapper jsonMapper = JsonMapper.nonNullMapper();
-		Person person = jsonMapper.fromJson(params, Person.class);
-		log.info("person = {}", person.toString());
-		return ResultUtil.successBaseResult();
 	}
 
 }

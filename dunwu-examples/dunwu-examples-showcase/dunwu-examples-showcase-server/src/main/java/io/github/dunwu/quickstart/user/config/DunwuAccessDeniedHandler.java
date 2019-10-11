@@ -31,8 +31,8 @@ public class DunwuAccessDeniedHandler implements AccessDeniedHandler {
 	}
 
 	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException e) throws IOException, ServletException {
+	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e)
+			throws IOException, ServletException {
 		BaseResult result = ResultUtil.failBaseResult(AppCode.UNAUTHORIZED);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
