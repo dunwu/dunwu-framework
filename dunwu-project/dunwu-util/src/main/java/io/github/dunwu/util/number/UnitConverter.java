@@ -22,6 +22,16 @@ import java.util.regex.Pattern;
  */
 public class UnitConverter {
 
+	public static final String TIME_UNIT_DAY = "d";
+
+	public static final String TIME_UNIT_HOUR = "h";
+
+	public static final String TIME_UNIT_MINUTE = "m";
+
+	public static final String TIME_UNIT_SECOND = "s";
+
+	public static final String TIME_UNIT_MILLI_SECOND = "ms";
+
 	private static final long K = 1024L;
 
 	private static final long M = K * 1024;
@@ -39,16 +49,6 @@ public class UnitConverter {
 	private static final long MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
 
 	private static final Pattern NUMBER_AND_UNIT = Pattern.compile("(\\d+)([a-zA-Z]+)?");
-
-	public static final String TIME_UNIT_DAY = "d";
-
-	public static final String TIME_UNIT_HOUR = "h";
-
-	public static final String TIME_UNIT_MINUTE = "m";
-
-	public static final String TIME_UNIT_SECOND = "s";
-
-	public static final String TIME_UNIT_MILLI_SECOND = "ms";
 
 	/**
 	 * 将带单位的时间字符串转化为毫秒数. 单位包括不分大小写的ms(毫秒),s(秒),m(分钟),h(小时),d(日),y(年) 不带任何单位的话，默认单位是毫秒
@@ -78,8 +78,7 @@ public class UnitConverter {
 		case TIME_UNIT_DAY:
 			return number * MILLIS_PER_DAY;
 		default:
-			throw new IllegalArgumentException(
-					"unknown time unit :" + unitStr.toLowerCase());
+			throw new IllegalArgumentException("unknown time unit :" + unitStr.toLowerCase());
 		}
 	}
 
@@ -133,22 +132,18 @@ public class UnitConverter {
 		}
 
 		if (bytes < M) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk",
-					bytes * 1d / K);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk", bytes * 1d / K);
 		}
 
 		if (bytes < G) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm",
-					bytes * 1d / M);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm", bytes * 1d / M);
 		}
 
 		if (bytes < T) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg",
-					bytes * 1d / G);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg", bytes * 1d / G);
 		}
 
-		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft",
-				bytes * 1d / T);
+		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft", bytes * 1d / T);
 	}
 
 	/**
@@ -175,8 +170,7 @@ public class UnitConverter {
 					millis * 1d / MILLIS_PER_HOUR);
 		}
 
-		return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fd",
-				millis * 1d / MILLIS_PER_DAY);
+		return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fd", millis * 1d / MILLIS_PER_DAY);
 	}
 
 	/**
@@ -192,17 +186,14 @@ public class UnitConverter {
 		}
 
 		if (millis < MILLIS_PER_HOUR) {
-			return String.format("%02dm%02ds", millis / MILLIS_PER_MINUTE,
-					(millis / MILLIS_PER_SECOND) % 60);
+			return String.format("%02dm%02ds", millis / MILLIS_PER_MINUTE, (millis / MILLIS_PER_SECOND) % 60);
 		}
 
 		if (millis < MILLIS_PER_DAY) {
-			return String.format("%02dh%02dm", millis / MILLIS_PER_HOUR,
-					(millis / MILLIS_PER_MINUTE) % 60);
+			return String.format("%02dh%02dm", millis / MILLIS_PER_HOUR, (millis / MILLIS_PER_MINUTE) % 60);
 		}
 
-		return String.format("%dd%02dh", millis / MILLIS_PER_DAY,
-				(millis / MILLIS_PER_HOUR) % 24);
+		return String.format("%dd%02dh", millis / MILLIS_PER_DAY, (millis / MILLIS_PER_HOUR) % 24);
 	}
 
 }

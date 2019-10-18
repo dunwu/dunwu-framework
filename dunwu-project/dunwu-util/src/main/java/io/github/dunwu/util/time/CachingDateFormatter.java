@@ -1,8 +1,8 @@
 package io.github.dunwu.util.time;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * DateFormat.format()消耗较大，如果时间戳是递增的，而且同一单位内有多次format()，使用用本类减少重复调用. copy from Log4j2
@@ -27,8 +27,7 @@ public class CachingDateFormatter {
 		onSecond = fastDateFormat.getPattern().indexOf("SSS") == -1;
 
 		long current = System.currentTimeMillis();
-		this.cachedTime = new AtomicReference<CachedTime>(
-				new CachedTime(current, fastDateFormat.format(current)));
+		this.cachedTime = new AtomicReference<CachedTime>(new CachedTime(current, fastDateFormat.format(current)));
 	}
 
 	public String format(final long timestampMillis) {
@@ -37,8 +36,7 @@ public class CachingDateFormatter {
 		long timestamp = onSecond ? timestampMillis / 1000 : timestampMillis;
 
 		if (timestamp != cached.timestamp) {
-			final CachedTime newCachedTime = new CachedTime(timestamp,
-					fastDateFormat.format(timestampMillis));
+			final CachedTime newCachedTime = new CachedTime(timestamp, fastDateFormat.format(timestampMillis));
 			if (cachedTime.compareAndSet(cached, newCachedTime)) {
 				cached = newCachedTime;
 			}

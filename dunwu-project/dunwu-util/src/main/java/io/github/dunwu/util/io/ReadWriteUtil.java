@@ -81,8 +81,7 @@ public class ReadWriteUtil {
 	/**
 	 * 简单写入String到OutputStream.
 	 */
-	public static void write(final String data, final OutputStream output)
-			throws IOException {
+	public static void write(final String data, final OutputStream output) throws IOException {
 		if (data != null) {
 			output.write(data.getBytes(StandardCharsets.UTF_8));
 		}
@@ -111,14 +110,12 @@ public class ReadWriteUtil {
 	 *
 	 * @see {@link ByteStreams#copy}
 	 */
-	public static long copy(final InputStream input, final OutputStream output)
-			throws IOException {
+	public static long copy(final InputStream input, final OutputStream output) throws IOException {
 		return ByteStreams.copy(input, output);
 	}
 
 	public static BufferedReader toBufferedReader(final Reader reader) {
-		return reader instanceof BufferedReader ? (BufferedReader) reader
-				: new BufferedReader(reader);
+		return reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
 	}
 
 	public static final InputStream bytes2InputStream(byte[] bytes) {

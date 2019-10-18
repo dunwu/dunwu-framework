@@ -1,8 +1,9 @@
 package io.github.dunwu.util.number;
 
-import static org.assertj.core.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class UnitConverterTest {
 
@@ -14,8 +15,7 @@ public class UnitConverterTest {
 		assertThat(UnitConverter.toDurationMillis("12ms")).isEqualTo(12);
 		assertThat(UnitConverter.toDurationMillis("12m")).isEqualTo(12 * 60 * 1000);
 		assertThat(UnitConverter.toDurationMillis("12h")).isEqualTo(12l * 60 * 60 * 1000);
-		assertThat(UnitConverter.toDurationMillis("12d"))
-				.isEqualTo(12l * 24 * 60 * 60 * 1000);
+		assertThat(UnitConverter.toDurationMillis("12d")).isEqualTo(12l * 24 * 60 * 60 * 1000);
 
 		try {
 			assertThat(UnitConverter.toDurationMillis("12a")).isEqualTo(12 * 60 * 1000);
@@ -42,8 +42,7 @@ public class UnitConverterTest {
 		assertThat(UnitConverter.toBytes("12M")).isEqualTo(12 * 1024 * 1024);
 
 		assertThat(UnitConverter.toBytes("12G")).isEqualTo(12l * 1024 * 1024 * 1024);
-		assertThat(UnitConverter.toBytes("12T"))
-				.isEqualTo(12l * 1024 * 1024 * 1024 * 1024);
+		assertThat(UnitConverter.toBytes("12T")).isEqualTo(12l * 1024 * 1024 * 1024 * 1024);
 
 		try {
 			UnitConverter.toBytes("12x");
@@ -69,29 +68,19 @@ public class UnitConverterTest {
 		assertThat(UnitConverter.toSizeUnit(1522L, 0)).isEqualTo("   1k");
 		assertThat(UnitConverter.toSizeUnit(1522L, 1)).isEqualTo("   1.5k");
 
-		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 200, 0))
-				.isEqualTo("   2m");
-		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 600, 0))
-				.isEqualTo("   3m");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 200, 0)).isEqualTo("   2m");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 600, 0)).isEqualTo("   3m");
 
-		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 140, 1))
-				.isEqualTo("   2.1m");
-		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 160, 1))
-				.isEqualTo("   2.2m");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 140, 1)).isEqualTo("   2.1m");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 2 + 1024 * 160, 1)).isEqualTo("   2.2m");
 
-		assertThat(
-				UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 0))
-						.isEqualTo("   2g");
-		assertThat(
-				UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 1))
-						.isEqualTo("   2.2g");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 0)).isEqualTo("   2g");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 1)).isEqualTo("   2.2g");
 
-		assertThat(UnitConverter.toSizeUnit(
-				1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 0))
-						.isEqualTo("   2t");
-		assertThat(UnitConverter.toSizeUnit(
-				1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 1))
-						.isEqualTo("   2.2t");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 0))
+				.isEqualTo("   2t");
+		assertThat(UnitConverter.toSizeUnit(1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 1))
+				.isEqualTo("   2.2t");
 
 	}
 

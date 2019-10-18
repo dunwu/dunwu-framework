@@ -1,13 +1,13 @@
 package io.github.dunwu.util.reflect;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * 获取Class信息的工具类 1. 获取类名，包名，循环向上的全部父类，全部接口 2. 其他便捷函数
@@ -121,13 +121,12 @@ public class ClassUtil {
 		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
 		if ((index >= params.length) || (index < 0)) {
-			logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName()
-					+ "'s Parameterized Type: " + params.length);
+			logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
+					+ params.length);
 			return Object.class;
 		}
 		if (!(params[index] instanceof Class)) {
-			logger.warn(clazz.getSimpleName()
-					+ " not set the actual class on superclass generic parameter");
+			logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
 			return Object.class;
 		}
 

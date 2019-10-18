@@ -1,15 +1,15 @@
 package io.github.dunwu.util.collection;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.collect.Ordering;
+import io.github.dunwu.util.collection.type.ConcurrentHashSet;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.collection.type.ConcurrentHashSet;
-
-import com.google.common.collect.Ordering;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class SetUtilTest {
 
@@ -72,8 +72,7 @@ public class SetUtilTest {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
-		Set<String> set7 = SetUtil
-				.newSetFromMap(MapUtil.<String, Boolean>newConcurrentSortedMap());
+		Set<String> set7 = SetUtil.newSetFromMap(MapUtil.<String, Boolean>newConcurrentSortedMap());
 	}
 
 	@Test

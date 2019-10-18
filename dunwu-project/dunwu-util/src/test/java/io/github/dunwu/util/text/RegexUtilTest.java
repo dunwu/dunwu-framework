@@ -29,8 +29,7 @@ public class RegexUtilTest {
 			});
 		}
 
-		List<String> matchValues2 = RegexUtil.getMatchValuesInJson(content2,
-				"judgementId");
+		List<String> matchValues2 = RegexUtil.getMatchValuesInJson(content2, "judgementId");
 		if (CollectionUtils.isNotEmpty(matchValues2)) {
 			matchValues2.forEach(item -> {
 				System.out.println(item);
@@ -211,10 +210,8 @@ public class RegexUtilTest {
 		@Test
 		@DisplayName("正则校验全是英文字母")
 		public void isAllEnglishChar() {
-			Assertions
-					.assertTrue(RegexUtil.isAllEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-			Assertions
-					.assertTrue(RegexUtil.isAllEnglishChar("abcdefghijklmnopqrstuvwxyz"));
+			Assertions.assertTrue(RegexUtil.isAllEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			Assertions.assertTrue(RegexUtil.isAllEnglishChar("abcdefghijklmnopqrstuvwxyz"));
 			Assertions.assertFalse(RegexUtil.isAllEnglishChar("How are you?"));
 			Assertions.assertFalse(RegexUtil.isAllEnglishChar("你奈我何"));
 		}
@@ -222,19 +219,15 @@ public class RegexUtilTest {
 		@Test
 		@DisplayName("正则校验全是大写字母")
 		public void isAllUpperEnglishChar() {
-			Assertions.assertTrue(
-					RegexUtil.isAllUpperEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-			Assertions.assertFalse(
-					RegexUtil.isAllUpperEnglishChar("abcdefghijklmnopqrstuvwxyz"));
+			Assertions.assertTrue(RegexUtil.isAllUpperEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			Assertions.assertFalse(RegexUtil.isAllUpperEnglishChar("abcdefghijklmnopqrstuvwxyz"));
 		}
 
 		@Test
 		@DisplayName("正则校验全是小写字母")
 		public void isAllLowerEnglishChar() {
-			Assertions.assertTrue(
-					RegexUtil.isAllLowerEnglishChar("abcdefghijklmnopqrstuvwxyz"));
-			Assertions.assertFalse(
-					RegexUtil.isAllLowerEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			Assertions.assertTrue(RegexUtil.isAllLowerEnglishChar("abcdefghijklmnopqrstuvwxyz"));
+			Assertions.assertFalse(RegexUtil.isAllLowerEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 		}
 
 		@Test
@@ -249,10 +242,8 @@ public class RegexUtilTest {
 		@Test
 		@DisplayName("正则校验全是非单词字符")
 		public void isNoneWordChar() {
-			Assertions
-					.assertFalse(RegexUtil.isNoneWordChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-			Assertions
-					.assertFalse(RegexUtil.isNoneWordChar("abcdefghijklmnopqrstuvwxyz"));
+			Assertions.assertFalse(RegexUtil.isNoneWordChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			Assertions.assertFalse(RegexUtil.isNoneWordChar("abcdefghijklmnopqrstuvwxyz"));
 			Assertions.assertFalse(RegexUtil.isNoneWordChar("0123456789"));
 			Assertions.assertFalse(RegexUtil.isNoneWordChar("_"));
 		}
@@ -311,8 +302,7 @@ public class RegexUtilTest {
 		@Test
 		@DisplayName("校验含有 Markdonw ![]() ")
 		public void isMarkdownImageTag() {
-			String newstr = RegexUtil.replaceAllMatchContent(
-					"![asgad](http://www.baidu.com/test.png)",
+			String newstr = RegexUtil.replaceAllMatchContent("![asgad](http://www.baidu.com/test.png)",
 					RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![](");
 			System.out.println(newstr);
 		}

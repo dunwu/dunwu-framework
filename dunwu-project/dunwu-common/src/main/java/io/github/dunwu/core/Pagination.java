@@ -96,8 +96,7 @@ public class Pagination<T> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size
-				+ ", total=" + total + '}';
+		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size + ", total=" + total + '}';
 	}
 
 }

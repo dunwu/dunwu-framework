@@ -1,52 +1,18 @@
 package io.github.dunwu.util.concurrent;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.base.ExceptionUtil;
+import io.github.dunwu.util.concurrent.type.BaseFuture;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.base.ExceptionUtil;
-import io.github.dunwu.util.concurrent.type.BaseFuture;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class BasicFutureTest {
-
-	public static class MyFuture<T> extends BaseFuture<T> {
-
-		@Override
-		protected void onCompleted(T result) {
-			System.out.println("onCompleted:" + result);
-		}
-
-		@Override
-		protected void onFailed(Exception ex) {
-			System.out.println("onFailed:" + ex.getMessage());
-		}
-
-		@Override
-		protected void onCancelled() {
-			System.out.println("onCancelled");
-		}
-
-	}
-
-	private static class Tasks {
-
-		public static void success(MyFuture<String> future) {
-			future.completed("haha");
-		}
-
-		public static void fail(MyFuture<String> future) {
-			future.failed(new RuntimeException("wuwu"));
-		}
-
-		public static void cancel(MyFuture<String> future) {
-			future.cancel(true);
-		}
-
-	}
 
 	@Test
 	public void test() throws InterruptedException, ExecutionException {
@@ -86,6 +52,43 @@ public class BasicFutureTest {
 		}
 		catch (CancellationException cae) {
 
+		}
+
+	}
+
+
+	public static class MyFuture<T> extends BaseFuture<T> {
+
+		@Override
+		protected void onCompleted(T result) {
+			System.out.println("onCompleted:" + result);
+		}
+
+		@Override
+		protected void onFailed(Exception ex) {
+			System.out.println("onFailed:" + ex.getMessage());
+		}
+
+		@Override
+		protected void onCancelled() {
+			System.out.println("onCancelled");
+		}
+
+	}
+
+
+	private static class Tasks {
+
+		public static void success(MyFuture<String> future) {
+			future.completed("haha");
+		}
+
+		public static void fail(MyFuture<String> future) {
+			future.failed(new RuntimeException("wuwu"));
+		}
+
+		public static void cancel(MyFuture<String> future) {
+			future.cancel(true);
 		}
 
 	}

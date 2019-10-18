@@ -1,13 +1,12 @@
 package io.github.dunwu.util.io;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.io.Files;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.jar.JarFile;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.io.Files;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResourceUtilTest {
 
@@ -15,24 +14,21 @@ public class ResourceUtilTest {
 	public void test() throws IOException {
 		// getResoruce
 		assertThat(ResourceUtil.toString("test.txt")).contains("ABCDEFG");
-		assertThat(ResourceUtil.toString(ResourceUtilTest.class, "/test.txt"))
-				.contains("ABCDEFG");
+		assertThat(ResourceUtil.toString(ResourceUtilTest.class, "/test.txt")).contains("ABCDEFG");
 		assertThat(ResourceUtil.toLines("test.txt")).containsExactly("ABCDEFG", "ABC");
-		assertThat(ResourceUtil.toLines(ResourceUtilTest.class, "/test.txt"))
-				.containsExactly("ABCDEFG", "ABC");
+		assertThat(ResourceUtil.toLines(ResourceUtilTest.class, "/test.txt")).containsExactly("ABCDEFG", "ABC");
 
 		// getResoruce 处理重复的资源
 		System.out.println(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
 		assertThat(ResourceUtil.toString("META-INF/MANIFEST.MF")).contains("Manifest");
 
 		// getResources
-		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF").size())
-				.isGreaterThan(1);
+		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF").size()).isGreaterThan(1);
 
 		System.out.println(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF"));
 
-		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF",
-				ResourceUtilTest.class.getClassLoader()).size()).isGreaterThan(1);
+		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF", ResourceUtilTest.class.getClassLoader())
+				.size()).isGreaterThan(1);
 
 	}
 

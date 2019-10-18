@@ -1,12 +1,11 @@
 package io.github.dunwu.util.text;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.base.Splitter;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.base.Splitter;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MoreStringUtilTest {
 

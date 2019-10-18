@@ -1,8 +1,6 @@
 package io.github.dunwu.util.base;
 
-import java.io.PrintWriter;
-import java.lang.reflect.UndeclaredThrowableException;
-
+import com.google.common.base.Throwables;
 import io.github.dunwu.util.base.annotation.NotNull;
 import io.github.dunwu.util.base.annotation.Nullable;
 import io.github.dunwu.util.base.type.CloneableException;
@@ -12,7 +10,8 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import com.google.common.base.Throwables;
+import java.io.PrintWriter;
+import java.lang.reflect.UndeclaredThrowableException;
 
 /**
  * 关于异常的工具类. 1. Checked/Uncheked及Wrap(如ExecutionException)的转换. 2. 打印Exception的辅助函数.
@@ -53,8 +52,7 @@ public class ExceptionUtil {
 	 * 使用的UncheckedException同理.
 	 */
 	public static Throwable unwrap(@Nullable Throwable t) {
-		if (t instanceof UncheckedException
-				|| t instanceof java.util.concurrent.ExecutionException
+		if (t instanceof UncheckedException || t instanceof java.util.concurrent.ExecutionException
 				|| t instanceof java.lang.reflect.InvocationTargetException
 				|| t instanceof UndeclaredThrowableException) {
 			return t.getCause();
@@ -102,8 +100,7 @@ public class ExceptionUtil {
 		final String message = StringUtils.defaultString(t.getMessage());
 		Throwable cause = getRootCause(t);
 
-		StringBuilder sb = new StringBuilder(128).append(clsName).append(": ")
-				.append(message);
+		StringBuilder sb = new StringBuilder(128).append(clsName).append(": ").append(message);
 		if (cause != t) {
 			sb.append("; <---").append(toStringWithShortName(cause));
 		}
@@ -124,8 +121,7 @@ public class ExceptionUtil {
 	/**
 	 * 获取某种类型的cause，如果没有则返回空 copy from Jodd ExceptionUtil
 	 */
-	public static <T extends Throwable> T findCause(@NotNull Throwable throwable,
-			Class<T> cause) {
+	public static <T extends Throwable> T findCause(@NotNull Throwable throwable, Class<T> cause) {
 		while (throwable != null) {
 			if (throwable.getClass().equals(cause)) {
 				return (T) throwable;
@@ -163,10 +159,9 @@ public class ExceptionUtil {
 	 * 		MyClass.class, "mymethod");
 	 * </pre>
 	 */
-	public static <T extends Throwable> T setStackTrace(@NotNull T throwable,
-			Class<?> throwClass, String throwClazz) {
-		throwable.setStackTrace(new StackTraceElement[] {
-				new StackTraceElement(throwClass.getName(), throwClazz, null, -1) });
+	public static <T extends Throwable> T setStackTrace(@NotNull T throwable, Class<?> throwClass, String throwClazz) {
+		throwable.setStackTrace(
+				new StackTraceElement[] { new StackTraceElement(throwClass.getName(), throwClazz, null, -1) });
 		return throwable;
 	}
 

@@ -36,16 +36,13 @@ class DynamicTests {
 
 	@TestFactory
 	Iterator<DynamicTest> dynamicTestsFromIterator() {
-		return Arrays
-				.asList(dynamicTest("5th dynamic test", () -> assertTrue(true)),
-						dynamicTest("6th dynamic test", () -> assertEquals(4, 2 * 2)))
-				.iterator();
+		return Arrays.asList(dynamicTest("5th dynamic test", () -> assertTrue(true)),
+				dynamicTest("6th dynamic test", () -> assertEquals(4, 2 * 2))).iterator();
 	}
 
 	@TestFactory
 	DynamicTest[] dynamicTestsFromArray() {
-		return new DynamicTest[] {
-				dynamicTest("7th dynamic test", () -> assertTrue(true)),
+		return new DynamicTest[] { dynamicTest("7th dynamic test", () -> assertTrue(true)),
 				dynamicTest("8th dynamic test", () -> assertEquals(4, 2 * 2)) };
 	}
 
@@ -97,18 +94,12 @@ class DynamicTests {
 
 	@TestFactory
 	Stream<DynamicNode> dynamicTestsWithContainers() {
-		return Stream
-				.of("A", "B", "C").map(
-						input -> dynamicContainer("Container " + input, Stream
-								.of(dynamicTest("not null", () -> assertNotNull(input)),
-										dynamicContainer("properties",
-												Stream.of(
-														dynamicTest("length > 0",
-																() -> assertTrue(input
-																		.length() > 0)),
-														dynamicTest("not empty",
-																() -> assertFalse(input
-																		.isEmpty())))))));
+		return Stream.of("A", "B", "C")
+				.map(input -> dynamicContainer("Container " + input,
+						Stream.of(dynamicTest("not null", () -> assertNotNull(input)),
+								dynamicContainer("properties",
+										Stream.of(dynamicTest("length > 0", () -> assertTrue(input.length() > 0)),
+												dynamicTest("not empty", () -> assertFalse(input.isEmpty())))))));
 	}
 
 }

@@ -27,8 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
-@EnableConfigurationProperties({ DunwuWebProperties.class,
-		DunwuWebSecurityProperties.class })
+@EnableConfigurationProperties({ DunwuWebProperties.class, DunwuWebSecurityProperties.class })
 public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 
 	private final DunwuWebProperties dunwuWebProperties;
@@ -43,10 +42,8 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("swagger-ui.html")
-				.addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars/**")
-				.addResourceLocations("classpath:/META-INF/resources/webjars/");
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	/**
@@ -79,8 +76,7 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		if (dunwuWebProperties.getHttpDebugEnable()) {
-			registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**")
-					.order(1);
+			registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**").order(1);
 		}
 	}
 

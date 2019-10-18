@@ -6,11 +6,11 @@ import java.util.List;
 // Generate GFM support TOC tag
 public class Toc {
 
+	public static final char CHAR_SPACE = ' ';
+
 	private final static String TOC_TAG_BEFORE = "[TOC]";
 
 	private final static String TOC_TAG_AFTER = "<!-- GFM-TOC -->";
-
-	public static final char CHAR_SPACE = ' ';
 
 	// catalogue level
 	private static int level = 4;
@@ -83,8 +83,7 @@ public class Toc {
 			if (line.contains("```")) {
 				isCode = !isCode;
 			}
-			else if (line.startsWith("#") && !isCode
-					&& getLevelOfTitle(line) <= Toc.level) {
+			else if (line.startsWith("#") && !isCode && getLevelOfTitle(line) <= Toc.level) {
 				titles.add(line);
 			}
 		}

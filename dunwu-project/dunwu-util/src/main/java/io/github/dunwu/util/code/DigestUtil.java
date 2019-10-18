@@ -13,12 +13,6 @@ import java.util.Base64;
  */
 public class DigestUtil {
 
-	public static String PRIVATE_KEY = "天王盖地虎";
-
-	public static String PUBLIC_KEY = "宝塔镇河妖";
-
-	private static final String HMAC = "HMAC";
-
 	public static final IDigest MD2 = Digest.getInstance(DigestTypeEnum.MD2);
 
 	public static final IDigest MD5 = Digest.getInstance(DigestTypeEnum.MD5);
@@ -31,20 +25,21 @@ public class DigestUtil {
 
 	public static final IDigest SHA512 = Digest.getInstance(DigestTypeEnum.SHA512);
 
-	public static final IDigest HMAC_MD5 = HmacDigest
-			.getInstance(DigestTypeEnum.HMAC_MD5);
+	public static final IDigest HMAC_MD5 = HmacDigest.getInstance(DigestTypeEnum.HMAC_MD5);
 
-	public static final IDigest HMAC_SHA1 = HmacDigest
-			.getInstance(DigestTypeEnum.HMAC_SHA1);
+	public static final IDigest HMAC_SHA1 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA1);
 
-	public static final IDigest HMAC_SHA256 = HmacDigest
-			.getInstance(DigestTypeEnum.HMAC_SHA256);
+	public static final IDigest HMAC_SHA256 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA256);
 
-	public static final IDigest HMAC_SHA384 = HmacDigest
-			.getInstance(DigestTypeEnum.HMAC_SHA384);
+	public static final IDigest HMAC_SHA384 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA384);
 
-	public static final IDigest HMAC_SHA512 = HmacDigest
-			.getInstance(DigestTypeEnum.HMAC_SHA512);
+	public static final IDigest HMAC_SHA512 = HmacDigest.getInstance(DigestTypeEnum.HMAC_SHA512);
+
+	private static final String HMAC = "HMAC";
+
+	public static String PRIVATE_KEY = "天王盖地虎";
+
+	public static String PUBLIC_KEY = "宝塔镇河妖";
 
 	public static IDigest getInstance(String type) {
 
@@ -86,8 +81,7 @@ public class DigestUtil {
 		return instace;
 	}
 
-	public static KeyPair genKeyPair(String algorithm, int keySize)
-			throws NoSuchAlgorithmException {
+	public static KeyPair genKeyPair(String algorithm, int keySize) throws NoSuchAlgorithmException {
 
 		// 初始化密钥对生成器
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);
@@ -97,6 +91,34 @@ public class DigestUtil {
 		return keyPairGen.genKeyPair();
 	}
 
+	/**
+	 * 数字摘要类型
+	 */
+	public enum DigestTypeEnum {
+
+		/**
+		 * 常规数字摘要算法
+		 */
+		MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA384("SHA-384"), SHA512("SHA-512"),
+
+		/**
+		 * HMAC 数字摘要算法
+		 */
+		HMAC_MD5("HmacMD5"), HMAC_SHA1("HmacSHA1"), HMAC_SHA256("HmacSHA256"), HMAC_SHA384("HmacSHA384"), HMAC_SHA512(
+				"HmacSHA512");
+
+		private final String value;
+
+		DigestTypeEnum(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+	}
+
 	public interface IDigest {
 
 		byte[] digest(byte[] input);
@@ -104,6 +126,7 @@ public class DigestUtil {
 		byte[] digestWithBase64(byte[] input);
 
 	}
+
 
 	public static class Digest implements IDigest {
 
@@ -138,6 +161,7 @@ public class DigestUtil {
 
 	}
 
+
 	public static class HmacDigest implements IDigest {
 
 		private Mac mac;
@@ -169,35 +193,6 @@ public class DigestUtil {
 		@Override
 		public byte[] digestWithBase64(byte[] input) {
 			return Base64.getUrlEncoder().encode(mac.doFinal(input));
-		}
-
-	}
-
-	/**
-	 * 数字摘要类型
-	 */
-	public enum DigestTypeEnum {
-
-		/**
-		 * 常规数字摘要算法
-		 */
-		MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA384(
-				"SHA-384"), SHA512("SHA-512"),
-
-		/**
-		 * HMAC 数字摘要算法
-		 */
-		HMAC_MD5("HmacMD5"), HMAC_SHA1("HmacSHA1"), HMAC_SHA256(
-				"HmacSHA256"), HMAC_SHA384("HmacSHA384"), HMAC_SHA512("HmacSHA512");
-
-		private final String value;
-
-		DigestTypeEnum(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
 		}
 
 	}

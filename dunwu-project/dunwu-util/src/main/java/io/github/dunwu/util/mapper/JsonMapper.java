@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public class JsonMapper {
 
-	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
-
 	public static final JsonMapper INSTANCE = new JsonMapper();
+
+	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
 	private ObjectMapper mapper;
 
@@ -120,17 +120,14 @@ public class JsonMapper {
 	/**
 	 * 构造Collection类型.
 	 */
-	public JavaType buildCollectionType(Class<? extends Collection> collectionClass,
-			Class<?> elementClass) {
-		return mapper.getTypeFactory().constructCollectionType(collectionClass,
-				elementClass);
+	public JavaType buildCollectionType(Class<? extends Collection> collectionClass, Class<?> elementClass) {
+		return mapper.getTypeFactory().constructCollectionType(collectionClass, elementClass);
 	}
 
 	/**
 	 * 构造Map类型.
 	 */
-	public JavaType buildMapType(Class<? extends Map> mapClass, Class<?> keyClass,
-			Class<?> valueClass) {
+	public JavaType buildMapType(Class<? extends Map> mapClass, Class<?> keyClass, Class<?> valueClass) {
 		return mapper.getTypeFactory().constructMapType(mapClass, keyClass, valueClass);
 	}
 
@@ -142,12 +139,10 @@ public class JsonMapper {
 			mapper.readerForUpdating(object).readValue(jsonString);
 		}
 		catch (JsonProcessingException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object
-					+ " error.", e);
+			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
 		}
 		catch (IOException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object
-					+ " error.", e);
+			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
 		}
 	}
 

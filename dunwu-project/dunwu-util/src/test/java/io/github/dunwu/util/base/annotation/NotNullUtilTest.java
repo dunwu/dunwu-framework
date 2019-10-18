@@ -8,6 +8,18 @@ import org.junit.jupiter.api.Test;
  */
 public class NotNullUtilTest {
 
+	@Test
+	public void test() {
+		MyBean myBean = new MyBean(null, "jack");
+		try {
+			NotNullUtil.check(myBean);
+		}
+		catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	static class MyBean {
 
 		@NotNull
@@ -36,17 +48,6 @@ public class NotNullUtilTest {
 			this.name = name;
 		}
 
-	}
-
-	@Test
-	public void test() {
-		MyBean myBean = new MyBean(null, "jack");
-		try {
-			NotNullUtil.check(myBean);
-		}
-		catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

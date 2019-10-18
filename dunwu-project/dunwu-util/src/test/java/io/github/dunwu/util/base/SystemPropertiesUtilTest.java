@@ -1,10 +1,11 @@
 package io.github.dunwu.util.base;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import io.github.dunwu.util.base.SystemPropertiesUtil.BasePropertiesListener;
 import io.github.dunwu.util.number.RandomUtil;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class SystemPropertiesUtilTest {
 
@@ -202,11 +203,11 @@ public class SystemPropertiesUtilTest {
 
 	public static class TestPropertiesListener extends BasePropertiesListener {
 
+		public String newValue;
+
 		public TestPropertiesListener(String propertyName) {
 			super(propertyName);
 		}
-
-		public String newValue;
 
 		@Override
 		public void onChange(String propertyName, String value) {

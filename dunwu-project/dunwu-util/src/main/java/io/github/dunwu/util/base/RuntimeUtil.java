@@ -51,8 +51,7 @@ public class RuntimeUtil {
 	 * 返回输入的JVM参数列表
 	 */
 	public static String getVmArguments() {
-		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
-				.getInputArguments();
+		List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
 		return StringUtils.join(vmArguments, " ");
 	}
 
@@ -69,8 +68,8 @@ public class RuntimeUtil {
 	 * 注册JVM关闭时的钩子程序
 	 */
 	public static void addShutdownHook(Runnable runnable) {
-		Runtime.getRuntime().addShutdownHook(new Thread(runnable,
-				"Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
+		Runtime.getRuntime().addShutdownHook(
+				new Thread(runnable, "Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
 	}
 
 	//////// 通过StackTrace 获得当前方法的调用者 ////

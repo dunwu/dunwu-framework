@@ -351,8 +351,7 @@ public interface IService<T> {
 	 * {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
 	 * @param mapper 转换函数
 	 */
-	<V> DataListResult<V> listObjs(Wrapper<T> queryWrapper,
-			Function<? super Object, V> mapper);
+	<V> DataListResult<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
 
 	/**
 	 * 查询全部记录
@@ -393,8 +392,7 @@ public interface IService<T> {
 	 * @param queryWrapper 实体对象封装操作类
 	 * {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
 	 */
-	PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination,
-			Wrapper<T> queryWrapper);
+	PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination, Wrapper<T> queryWrapper);
 
 	/**
 	 * 无条件翻页查询

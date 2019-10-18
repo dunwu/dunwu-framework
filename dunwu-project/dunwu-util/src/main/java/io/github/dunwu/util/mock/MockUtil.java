@@ -25,23 +25,21 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MockUtil {
 
-	private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
 	public static final int CHINESE_NAME_2 = 2;
 
 	public static final int CHINESE_NAME_3 = 3;
+
+	private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	public static String anyDate(final Date min, final Date max) {
 		return anyDate(min, max, DEFAULT_DATE_FORMAT);
 	}
 
 	public static String anyDate(final Date min, final Date max, String pattern) {
-		return anyDate(DateUtil.date2LocalDateTime(min), DateUtil.date2LocalDateTime(max),
-				pattern);
+		return anyDate(DateUtil.date2LocalDateTime(min), DateUtil.date2LocalDateTime(max), pattern);
 	}
 
-	public static String anyDate(final LocalDateTime min, final LocalDateTime max,
-			final String pattern) {
+	public static String anyDate(final LocalDateTime min, final LocalDateTime max, final String pattern) {
 		long minSeconds = min.toEpochSecond(ZoneOffset.UTC);
 		long maxSeconds = max.toEpochSecond(ZoneOffset.UTC);
 		long random = ThreadLocalRandom.current().nextLong(minSeconds, maxSeconds);
@@ -72,30 +70,23 @@ public class MockUtil {
 
 		Random rdint = new Random();
 		int index = rdint.nextInt(10);
-		String ip = num2ip(range[index][0]
-				+ new Random().nextInt(range[index][1] - range[index][0]));
+		String ip = num2ip(range[index][0] + new Random().nextInt(range[index][1] - range[index][0]));
 		return ip;
 	}
 
 	public static String anyMac() {
 		Random random = new Random();
-		String[] mac = { String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)) };
+		String[] mac = { String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+				String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+				String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)) };
 		return StringUtils.join(mac);
 	}
 
 	public static String anyMac(String separator) {
 		Random random = new Random();
-		String[] mac = { String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)),
-				String.format("%02x", random.nextInt(0xff)) };
+		String[] mac = { String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+				String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)),
+				String.format("%02x", random.nextInt(0xff)), String.format("%02x", random.nextInt(0xff)) };
 		return String.join(separator, mac);
 	}
 
@@ -106,22 +97,20 @@ public class MockUtil {
 		b[1] = ((ip >> 16) & 0xff);
 		b[2] = ((ip >> 8) & 0xff);
 		b[3] = (ip & 0xff);
-		result = Integer.toString(b[0]) + "." + Integer.toString(b[1]) + "."
-				+ Integer.toString(b[2]) + "." + Integer.toString(b[3]);
+		result = Integer.toString(b[0]) + "." + Integer.toString(b[1]) + "." + Integer.toString(b[2]) + "."
+				+ Integer.toString(b[3]);
 		return result;
 	}
 
 	public static String anyDomain() {
 		String domain1 = RandomStringUtils.randomAlphabetic(2, 11);
 		String domain2 = RandomStringUtils.randomAlphabetic(2, 4);
-		return new StringBuilder().append(domain1.toLowerCase()).append(".")
-				.append(domain2.toLowerCase()).toString();
+		return new StringBuilder().append(domain1.toLowerCase()).append(".").append(domain2.toLowerCase()).toString();
 	}
 
 	public static String anyEmail() {
 		String name = RandomStringUtils.randomAlphabetic(2, 11);
-		return new StringBuilder().append(name.toLowerCase()).append("@")
-				.append(anyDomain()).toString();
+		return new StringBuilder().append(name.toLowerCase()).append("@").append(anyDomain()).toString();
 	}
 
 	public static String anyFirstName() {

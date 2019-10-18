@@ -26,12 +26,11 @@ public class HttpDebugInterceptor extends HandlerInterceptorAdapter {
 	 * 拦截请求，打印请求信息 This implementation always returns {@code true}.
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler) throws Exception {
-		log.debug("[{} \"{}\"] params = {}, host = {}, ip = {}, port = {}",
-				request.getMethod(), request.getRequestURI(), request.getQueryString(),
-				request.getRemoteHost(), ServletUtil.getRealRemoteAddr(request),
-				request.getRemotePort());
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		log.debug("[{} \"{}\"] params = {}, host = {}, ip = {}, port = {}", request.getMethod(),
+				request.getRequestURI(), request.getQueryString(), request.getRemoteHost(),
+				ServletUtil.getRealRemoteAddr(request), request.getRemotePort());
 		request.setAttribute(START_TIMESTAMP, System.currentTimeMillis());
 		return true;
 	}
@@ -40,29 +39,29 @@ public class HttpDebugInterceptor extends HandlerInterceptorAdapter {
 	 * This implementation is empty.
 	 */
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			@Nullable ModelAndView modelAndView) throws Exception {
 	}
 
 	/**
 	 * 拦截应答，打印应答信息 This implementation is empty.
 	 */
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-			Object handler, @Nullable Exception ex) throws Exception {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+			@Nullable Exception ex) throws Exception {
 		long currentTime = System.currentTimeMillis();
 		long startTime = Long.valueOf(request.getAttribute(START_TIMESTAMP).toString());
 		long time = (currentTime - startTime) / 1000;
-		log.debug("[{} \"{}\"] completed. status = {}, time = {} ms", request.getMethod(),
-				request.getRequestURI(), response.getStatus(), time);
+		log.debug("[{} \"{}\"] completed. status = {}, time = {} ms", request.getMethod(), request.getRequestURI(),
+				response.getStatus(), time);
 	}
 
 	/**
 	 * This implementation is empty.
 	 */
 	@Override
-	public void afterConcurrentHandlingStarted(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
+	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 	}
 
 }

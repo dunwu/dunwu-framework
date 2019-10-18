@@ -13,11 +13,32 @@ public class RsaUtil {
 
 	public static final RsaDigest RSA = RsaDigest.getInstance(RsaTypeEnum.RSA);
 
-	public static final RsaDigest MD5_WITH_RSA = RsaDigest
-			.getInstance(RsaTypeEnum.MD5_WITH_RSA);
+	public static final RsaDigest MD5_WITH_RSA = RsaDigest.getInstance(RsaTypeEnum.MD5_WITH_RSA);
 
-	public static final RsaDigest SHA1_WITH_RSA = RsaDigest
-			.getInstance(RsaTypeEnum.SHA1_WITH_RSA);
+	public static final RsaDigest SHA1_WITH_RSA = RsaDigest.getInstance(RsaTypeEnum.SHA1_WITH_RSA);
+
+	/**
+	 * 数字摘要类型
+	 */
+	public enum RsaTypeEnum {
+
+		/**
+		 * DSA 数字摘要算法
+		 */
+		RSA("RSA"), MD5_WITH_RSA("MD5withRSA"), SHA1_WITH_RSA("SHA1withRSA");
+
+		private final String value;
+
+		RsaTypeEnum(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+	}
+
 
 	public static class RsaDigest implements ISignature {
 
@@ -72,8 +93,7 @@ public class RsaUtil {
 		}
 
 		@Override
-		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
-				throws Exception {
+		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext) throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -86,8 +106,7 @@ public class RsaUtil {
 			return signature.verify(ciphertext);
 		}
 
-		public byte[] encryptByPublicKey(byte[] plaintext, byte[] publicKey)
-				throws Exception {
+		public byte[] encryptByPublicKey(byte[] plaintext, byte[] publicKey) throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -99,8 +118,7 @@ public class RsaUtil {
 			return cipher.doFinal(plaintext);
 		}
 
-		public byte[] decryptByPrivateKey(byte[] ciphertext, byte[] privateKey)
-				throws Exception {
+		public byte[] decryptByPrivateKey(byte[] ciphertext, byte[] privateKey) throws Exception {
 			// 取得私钥
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -112,8 +130,7 @@ public class RsaUtil {
 			return cipher.doFinal(ciphertext);
 		}
 
-		public byte[] encryptByPrivateKey(byte[] plaintext, byte[] privateKey)
-				throws Exception {
+		public byte[] encryptByPrivateKey(byte[] plaintext, byte[] privateKey) throws Exception {
 			// 取得私钥
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -125,8 +142,7 @@ public class RsaUtil {
 			return cipher.doFinal(plaintext);
 		}
 
-		public byte[] decryptByPublicKey(byte[] ciphertext, byte[] publicKey)
-				throws Exception {
+		public byte[] decryptByPublicKey(byte[] ciphertext, byte[] publicKey) throws Exception {
 			// 取得私钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -152,28 +168,6 @@ public class RsaUtil {
 				return this.keyPair.getPublic().getEncoded();
 			}
 			return null;
-		}
-
-	}
-
-	/**
-	 * 数字摘要类型
-	 */
-	public enum RsaTypeEnum {
-
-		/**
-		 * DSA 数字摘要算法
-		 */
-		RSA("RSA"), MD5_WITH_RSA("MD5withRSA"), SHA1_WITH_RSA("SHA1withRSA");
-
-		private final String value;
-
-		RsaTypeEnum(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
 		}
 
 	}

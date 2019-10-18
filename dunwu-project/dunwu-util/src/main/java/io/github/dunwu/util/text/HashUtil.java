@@ -2,15 +2,8 @@ package io.github.dunwu.util.text;
 
 import com.google.common.hash.Hashing;
 import io.github.dunwu.util.base.annotation.NotNull;
-import io.github.dunwu.util.base.annotation.Nullable;
-import org.apache.commons.lang3.Validate;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.zip.CRC32;
 
 /**
@@ -73,8 +66,7 @@ public class HashUtil {
 	 * 对输入字符串进行murmur32散列, 返回值可能是负数
 	 */
 	public static int murmur32AsInt(@NotNull String input) {
-		return Hashing.murmur3_32(MURMUR_SEED).hashString(input, StandardCharsets.UTF_8)
-				.asInt();
+		return Hashing.murmur3_32(MURMUR_SEED).hashString(input, StandardCharsets.UTF_8).asInt();
 	}
 
 	/**
@@ -88,8 +80,7 @@ public class HashUtil {
 	 * 对输入字符串进行murmur128散列, 返回值可能是负数
 	 */
 	public static long murmur128AsLong(@NotNull String input) {
-		return Hashing.murmur3_128(MURMUR_SEED).hashString(input, StandardCharsets.UTF_8)
-				.asLong();
+		return Hashing.murmur3_128(MURMUR_SEED).hashString(input, StandardCharsets.UTF_8).asLong();
 	}
 
 }

@@ -1,10 +1,11 @@
 package io.github.dunwu.util.concurrent;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import io.github.dunwu.util.concurrent.Sampler.AlwaysSampler;
 import io.github.dunwu.util.concurrent.Sampler.NeverSampler;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class SamplerTest {
 
@@ -17,8 +18,7 @@ public class SamplerTest {
 				hits++;
 			}
 		}
-		System.out.println(
-				"sample 10.5% in 10000 hits should close to 1050, actual is " + hits);
+		System.out.println("sample 10.5% in 10000 hits should close to 1050, actual is " + hits);
 
 		assertThat(hits).isBetween(900, 1200);
 		//////////
@@ -30,8 +30,7 @@ public class SamplerTest {
 				hits++;
 			}
 		}
-		System.out.println(
-				"sample 0.5% in 10000 hits should close to 50, actual is " + hits);
+		System.out.println("sample 0.5% in 10000 hits should close to 50, actual is " + hits);
 		assertThat(hits).isBetween(20, 100);
 
 	}

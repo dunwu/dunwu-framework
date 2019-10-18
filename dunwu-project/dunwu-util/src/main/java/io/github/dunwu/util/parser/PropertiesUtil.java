@@ -32,19 +32,16 @@ public class PropertiesUtil {
 
 	//////////////////////////////////// 读取Properties ////////////////////////////////////
 
-	public static String getString(Properties properties, String key,
-			String defaultValue) {
+	public static String getString(Properties properties, String key, String defaultValue) {
 		return properties.getProperty(key, defaultValue);
 	}
 
-	public static Boolean getBoolean(Properties properties, String key,
-			Boolean defaultValue) {
+	public static Boolean getBoolean(Properties properties, String key, Boolean defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Boolean.valueOf(value);
 	}
 
-	public static Integer getInt(Properties properties, String key,
-			Integer defaultValue) {
+	public static Integer getInt(Properties properties, String key, Integer defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Integer.valueOf(value);
 	}
@@ -54,8 +51,7 @@ public class PropertiesUtil {
 		return Long.valueOf(value);
 	}
 
-	public static Double getDouble(Properties properties, String key,
-			Double defaultValue) {
+	public static Double getDouble(Properties properties, String key, Double defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Double.valueOf(value);
 	}

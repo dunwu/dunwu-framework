@@ -22,8 +22,7 @@ public class CookieUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static void addCookie(HttpServletRequest request, HttpServletResponse response,
-			String key, String value) {
+	public static void addCookie(HttpServletRequest request, HttpServletResponse response, String key, String value) {
 		Cookie cookie = new Cookie(key, value);
 		cookie.setPath(request.getContextPath());
 		response.addCookie(cookie);
@@ -57,8 +56,7 @@ public class CookieUtil {
 	 * @param path
 	 * @param domain
 	 */
-	public static void removeCookie(HttpServletResponse response, String key, String path,
-			String domain) {
+	public static void removeCookie(HttpServletResponse response, String key, String path, String domain) {
 		Cookie cookie = new Cookie(key, null);
 
 		if (StringUtils.isEmpty(path)) {

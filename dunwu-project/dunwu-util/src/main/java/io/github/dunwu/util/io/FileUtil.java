@@ -26,15 +26,13 @@ public class FileUtil {
 	private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
 
 		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-				throws IOException {
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 			Files.delete(file);
 			return FileVisitResult.CONTINUE;
 		}
 
 		@Override
-		public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-				throws IOException {
+		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
 			Files.delete(dir);
 			return FileVisitResult.CONTINUE;
 		}
@@ -55,8 +53,7 @@ public class FileUtil {
 	 * 读取文件到String.
 	 */
 	public static String toString(final File file) throws IOException {
-		return com.google.common.io.Files.asCharSource(file, StandardCharsets.UTF_8)
-				.read();
+		return com.google.common.io.Files.asCharSource(file, StandardCharsets.UTF_8).read();
 	}
 
 	/**
@@ -71,13 +68,11 @@ public class FileUtil {
 	/**
 	 * 简单写入String到File.
 	 */
-	public static void write(final CharSequence data, final File file)
-			throws IOException {
+	public static void write(final CharSequence data, final File file) throws IOException {
 		Validate.notNull(file);
 		Validate.notNull(data);
 
-		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
-				StandardCharsets.UTF_8)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
 			writer.append(data);
 		}
 	}
@@ -85,13 +80,12 @@ public class FileUtil {
 	/**
 	 * 追加String到File.
 	 */
-	public static void append(final CharSequence data, final File file)
-			throws IOException {
+	public static void append(final CharSequence data, final File file) throws IOException {
 		Validate.notNull(file);
 		Validate.notNull(data);
 
-		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
-				StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8,
+				StandardOpenOption.APPEND)) {
 			writer.append(data);
 		}
 	}
@@ -304,16 +298,13 @@ public class FileUtil {
 
 		final boolean rename = from.renameTo(to);
 		if (!rename) {
-			if (to.getCanonicalPath()
-					.startsWith(from.getCanonicalPath() + File.separator)) {
-				throw new IOException("Cannot move directory: " + from
-						+ " to a subdirectory of itself: " + to);
+			if (to.getCanonicalPath().startsWith(from.getCanonicalPath() + File.separator)) {
+				throw new IOException("Cannot move directory: " + from + " to a subdirectory of itself: " + to);
 			}
 			copyDir(from, to);
 			deleteDir(from);
 			if (from.exists()) {
-				throw new IOException("Failed to delete original directory '" + from
-						+ "' after copy to '" + to + '\'');
+				throw new IOException("Failed to delete original directory '" + from + "' after copy to '" + to + '\'');
 			}
 		}
 	}
@@ -529,8 +520,8 @@ public class FileUtil {
 
 	public static Long getFileCreateTime(String fullName) {
 		Path path = Paths.get(fullName);
-		BasicFileAttributeView basicview = Files.getFileAttributeView(path,
-				BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+		BasicFileAttributeView basicview = Files.getFileAttributeView(path, BasicFileAttributeView.class,
+				LinkOption.NOFOLLOW_LINKS);
 		try {
 			BasicFileAttributes attr = basicview.readAttributes();
 			FileTime createTime = attr.creationTime();

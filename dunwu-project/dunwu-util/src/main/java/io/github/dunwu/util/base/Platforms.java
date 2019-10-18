@@ -1,8 +1,8 @@
 package io.github.dunwu.util.base;
 
-import java.io.File;
-
 import org.apache.commons.lang3.SystemUtils;
+
+import java.io.File;
 
 /**
  * 关于系统设定，平台信息的变量(via Common Lang SystemUtils)

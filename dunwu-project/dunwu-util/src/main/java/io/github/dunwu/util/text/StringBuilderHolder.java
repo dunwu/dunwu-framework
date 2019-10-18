@@ -18,6 +18,8 @@ public class StringBuilderHolder {
 		}
 	};
 
+	private int initSize;
+
 	// 独立创建的ThreadLocal的StringBuilder
 	private ThreadLocal<StringBuilder> stringBuilder = new ThreadLocal<StringBuilder>() {
 		@Override
@@ -25,8 +27,6 @@ public class StringBuilderHolder {
 			return new StringBuilder(initSize);
 		}
 	};
-
-	private int initSize;
 
 	/**
 	 * 创建独立的Holder. 用于StringBuilder在使用过程中，会调用其他可能也使用StringBuilderHolder的子函数.

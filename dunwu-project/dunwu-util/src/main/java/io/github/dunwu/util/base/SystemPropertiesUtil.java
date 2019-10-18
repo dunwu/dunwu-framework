@@ -84,8 +84,7 @@ public class SystemPropertiesUtil {
 	 * 读取Double类型的系统变量，为空时返回默认值.
 	 */
 	public static Double getDouble(String propertyName, Double defaultValue) {
-		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName),
-				null);
+		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName), null);
 		return propertyValue != null ? propertyValue : defaultValue;
 	}
 
@@ -94,8 +93,7 @@ public class SystemPropertiesUtil {
 	/**
 	 * 合并系统变量(-D)，环境变量 和默认值，以系统变量优先
 	 */
-	public static String getString(String propertyName, String envName,
-			String defaultValue) {
+	public static String getString(String propertyName, String envName, String defaultValue) {
 		checkEnvName(envName);
 		String propertyValue = System.getProperty(propertyName);
 		if (propertyValue != null) {
@@ -110,11 +108,9 @@ public class SystemPropertiesUtil {
 	/**
 	 * 合并系统变量(-D)，环境变量 和默认值，以系统变量优先
 	 */
-	public static Integer getInteger(String propertyName, String envName,
-			Integer defaultValue) {
+	public static Integer getInteger(String propertyName, String envName, Integer defaultValue) {
 		checkEnvName(envName);
-		Integer propertyValue = NumberUtil.toIntObject(System.getProperty(propertyName),
-				null);
+		Integer propertyValue = NumberUtil.toIntObject(System.getProperty(propertyName), null);
 		if (propertyValue != null) {
 			return propertyValue;
 		}
@@ -129,8 +125,7 @@ public class SystemPropertiesUtil {
 	 */
 	public static Long getLong(String propertyName, String envName, Long defaultValue) {
 		checkEnvName(envName);
-		Long propertyValue = NumberUtil.toLongObject(System.getProperty(propertyName),
-				null);
+		Long propertyValue = NumberUtil.toLongObject(System.getProperty(propertyName), null);
 		if (propertyValue != null) {
 			return propertyValue;
 		}
@@ -143,11 +138,9 @@ public class SystemPropertiesUtil {
 	/**
 	 * 合并系统变量(-D)，环境变量 和默认值，以系统变量优先
 	 */
-	public static Double getDouble(String propertyName, String envName,
-			Double defaultValue) {
+	public static Double getDouble(String propertyName, String envName, Double defaultValue) {
 		checkEnvName(envName);
-		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName),
-				null);
+		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName), null);
 		if (propertyValue != null) {
 			return propertyValue;
 		}
@@ -160,11 +153,9 @@ public class SystemPropertiesUtil {
 	/**
 	 * 合并系统变量(-D)，环境变量 和默认值，以系统变量优先
 	 */
-	public static Boolean getBoolean(String propertyName, String envName,
-			Boolean defaultValue) {
+	public static Boolean getBoolean(String propertyName, String envName, Boolean defaultValue) {
 		checkEnvName(envName);
-		Boolean propertyValue = BooleanUtil
-				.toBooleanObject(System.getProperty(propertyName), false);
+		Boolean propertyValue = BooleanUtil.toBooleanObject(System.getProperty(propertyName), false);
 		if (propertyValue != null) {
 			return propertyValue;
 		}
@@ -179,8 +170,7 @@ public class SystemPropertiesUtil {
 	 */
 	private static void checkEnvName(String envName) {
 		if (envName == null || envName.indexOf(SEPARATOR) != -1) {
-			throw new IllegalArgumentException(
-					"envName " + envName + "is null or has dot which is not valid");
+			throw new IllegalArgumentException("envName " + envName + "is null or has dot which is not valid");
 		}
 	}
 
@@ -192,14 +182,12 @@ public class SystemPropertiesUtil {
 	 *
 	 * @see ListenableProperties
 	 */
-	public static synchronized void registerSystemPropertiesListener(
-			BasePropertiesListener listener) {
+	public static synchronized void registerSystemPropertiesListener(BasePropertiesListener listener) {
 		Properties currentProperties = System.getProperties();
 
 		// 将System的properties实现替换为ListenableProperties
 		if (!(currentProperties instanceof ListenableProperties)) {
-			ListenableProperties newProperties = new ListenableProperties(
-					currentProperties);
+			ListenableProperties newProperties = new ListenableProperties(currentProperties);
 			System.setProperties(newProperties);
 			currentProperties = newProperties;
 		}

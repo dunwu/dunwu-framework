@@ -25,8 +25,8 @@ public class ServletUtil {
 	 * 设置让浏览器弹出下载对话框的Header,不同浏览器使用不同的编码方式.
 	 * @param fileName 下载后的文件名.
 	 */
-	public static void setFileDownloadHeader(HttpServletRequest request,
-			HttpServletResponse response, String fileName, byte[] bytes) {
+	public static void setFileDownloadHeader(HttpServletRequest request, HttpServletResponse response, String fileName,
+			byte[] bytes) {
 		response.reset();
 		Collection<String> types = MimeUtil.getMimeTypes(bytes);
 		response.setContentType(types.toArray(new MimeType[types.size()])[0].toString());
@@ -41,23 +41,19 @@ public class ServletUtil {
 				if (agent.contains(WebConstant.BrowserType.firefox.name())
 						|| agent.contains(WebConstant.BrowserType.chrome.name())
 						|| agent.contains(WebConstant.BrowserType.safari.name())) {
-					encodedfileName = "filename=\""
-							+ new String(fileName.getBytes(), "ISO8859-1") + "\"";
+					encodedfileName = "filename=\"" + new String(fileName.getBytes(), "ISO8859-1") + "\"";
 				}
 				else if (agent.contains(WebConstant.BrowserType.msie.name())) {
-					encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
-							+ "\"";
+					encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"";
 				}
 				else if (agent.contains(WebConstant.BrowserType.opera.name())) {
 					encodedfileName = "filename*=UTF-8\"" + fileName + "\"";
 				}
 				else {
-					encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
-							+ "\"";
+					encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"";
 				}
 			}
-			response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-					"attachment; " + encodedfileName);
+			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; " + encodedfileName);
 		}
 		catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

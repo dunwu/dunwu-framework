@@ -47,8 +47,7 @@ import java.util.List;
  */
 @Configuration
 @EnableTransactionManagement
-@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class,
-		MybatisMapWrapperFactory.class })
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class, MybatisMapWrapperFactory.class })
 @ConditionalOnSingleCandidate(DataSource.class)
 @AutoConfigureAfter(MybatisConfiguration.class)
 @EnableConfigurationProperties({ DunwuMybatisProperties.class })
@@ -140,18 +139,16 @@ public class DunwuMybatisAutoConfiguration {
 
 	private void setConfigForJdk8(ObjectMapper objectMapper) {
 		JavaTimeModule timeModule = new JavaTimeModule();
-		timeModule.addSerializer(LocalDate.class,
-				new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		timeModule.addDeserializer(LocalDate.class,
 				new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-		timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(
-				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
-				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-				.registerModule(timeModule).registerModule(new ParameterNamesModule())
-				.registerModule(new Jdk8Module());
+		timeModule.addSerializer(LocalDateTime.class,
+				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		timeModule.addDeserializer(LocalDateTime.class,
+				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false).registerModule(timeModule)
+				.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module());
 	}
 
 }

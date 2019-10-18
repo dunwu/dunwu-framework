@@ -1,9 +1,9 @@
 package io.github.dunwu.util.collection.type;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import io.github.dunwu.util.collection.SetUtil;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConcurrentHashSetTest {
 

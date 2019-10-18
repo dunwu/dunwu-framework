@@ -1,8 +1,8 @@
 package io.github.dunwu.util.collection;
 
-import java.util.Comparator;
-
 import io.github.dunwu.util.collection.type.SortedArrayList;
+
+import java.util.Comparator;
 
 /**
  * 特殊的List类型

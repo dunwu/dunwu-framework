@@ -1,11 +1,11 @@
 package io.github.dunwu.util.concurrent;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-
-import org.junit.jupiter.api.Test;
 import io.github.dunwu.util.concurrent.type.ThreadLocalContext;
 import io.github.dunwu.util.number.RandomUtil;
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
 public class ThreadLocalContextTest {
 
@@ -29,8 +29,8 @@ public class ThreadLocalContextTest {
 				ThreadUtil.sleep(RandomUtil.nextLong(100, 300));
 				System.out.println((char[]) ThreadLocalContext.get("myname"));
 				ThreadLocalContext.reset();
-				System.out.println("shoud null for " + Thread.currentThread().getName()
-						+ ":" + ThreadLocalContext.get("myname"));
+				System.out.println(
+						"shoud null for " + Thread.currentThread().getName() + ":" + ThreadLocalContext.get("myname"));
 				countdown.countDown();
 			}
 		};

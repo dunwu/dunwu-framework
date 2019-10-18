@@ -29,8 +29,7 @@ public class UrlResourceUtil {
 	 */
 	public static File asFile(String generalPath) throws IOException {
 		if (StringUtils.startsWith(generalPath, CLASSPATH_PREFIX)) {
-			String resourceName = StringUtils.substringAfter(generalPath,
-					CLASSPATH_PREFIX);
+			String resourceName = StringUtils.substringAfter(generalPath, CLASSPATH_PREFIX);
 			return getFileByUrl(ResourceUtil.asUrl(resourceName));
 		}
 		try {
@@ -48,8 +47,7 @@ public class UrlResourceUtil {
 	 */
 	public static InputStream asStream(String generalPath) throws IOException {
 		if (StringUtils.startsWith(generalPath, CLASSPATH_PREFIX)) {
-			String resourceName = StringUtils.substringAfter(generalPath,
-					CLASSPATH_PREFIX);
+			String resourceName = StringUtils.substringAfter(generalPath, CLASSPATH_PREFIX);
 			return ResourceUtil.asStream(resourceName);
 		}
 
@@ -66,10 +64,8 @@ public class UrlResourceUtil {
 	private static File getFileByUrl(URL fileUrl) throws FileNotFoundException {
 		Validate.notNull(fileUrl, "Resource URL must not be null");
 		if (!URL_PROTOCOL_FILE.equals(fileUrl.getProtocol())) {
-			throw new FileNotFoundException(
-					"URL cannot be resolved to absolute file path "
-							+ "because it does not reside in the file system: "
-							+ fileUrl);
+			throw new FileNotFoundException("URL cannot be resolved to absolute file path "
+					+ "because it does not reside in the file system: " + fileUrl);
 		}
 		try {
 			return new File(toUri(fileUrl.toString()).getSchemeSpecificPart());

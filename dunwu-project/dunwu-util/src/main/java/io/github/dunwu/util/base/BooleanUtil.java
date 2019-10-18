@@ -18,8 +18,7 @@ public class BooleanUtil extends BooleanUtils {
 	 * 支持true/false,on/off, y/n, yes/no的转换, str为空或无法分析时返回defaultValue
 	 */
 	public static Boolean toBooleanObject(String str, boolean defaultValue) {
-		return BooleanUtils.toBooleanDefaultIfNull(BooleanUtils.toBooleanObject(str),
-				defaultValue);
+		return BooleanUtils.toBooleanDefaultIfNull(BooleanUtils.toBooleanObject(str), defaultValue);
 	}
 
 }

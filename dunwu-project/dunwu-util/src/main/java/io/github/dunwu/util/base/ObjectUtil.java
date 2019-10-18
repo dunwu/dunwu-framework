@@ -1,11 +1,10 @@
 package io.github.dunwu.util.base;
 
-import java.util.Arrays;
-
-import io.github.dunwu.util.base.annotation.Nullable;
-
 import com.google.common.base.Objects;
+import io.github.dunwu.util.base.annotation.Nullable;
 import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.Arrays;
 
 /**
  * 1. Object打印优化，主要解决数组的打印 2. 多个对象的HashCode串联
@@ -13,10 +12,6 @@ import org.apache.commons.lang3.ObjectUtils;
 public class ObjectUtil {
 
 	private static final String NULL = "null";
-
-	public void method() {
-		ObjectUtils.allNotNull();
-	}
 
 	/**
 	 * JDK7 引入的Null安全的equals
@@ -124,6 +119,10 @@ public class ObjectUtil {
 		}
 		sb.append('}');
 		return sb.toString();
+	}
+
+	public void method() {
+		ObjectUtils.allNotNull();
 	}
 
 }

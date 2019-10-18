@@ -128,8 +128,7 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 * 将此appender添加到root logger中.
 	 */
 	public void addToRootLogger() {
-		Logger logger = (Logger) LoggerFactory
-				.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		Logger logger = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.addAppender(this);
 	}
 
@@ -153,8 +152,7 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 * 将此appender从root logger中移除.
 	 */
 	public void removeFromRootLogger() {
-		Logger logger = (Logger) LoggerFactory
-				.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		Logger logger = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.detachAppender(this);
 	}
 

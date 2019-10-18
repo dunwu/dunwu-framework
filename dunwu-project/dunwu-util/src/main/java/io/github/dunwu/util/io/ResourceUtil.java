@@ -59,8 +59,7 @@ public class ResourceUtil {
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static InputStream asStream(Class<?> contextClass, String resourceName)
-			throws IOException {
+	public static InputStream asStream(Class<?> contextClass, String resourceName) throws IOException {
 		return Resources.getResource(contextClass, resourceName).openStream();
 	}
 
@@ -70,34 +69,28 @@ public class ResourceUtil {
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static String toString(String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(resourceName),
-				StandardCharsets.UTF_8);
+		return Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static String toString(Class<?> contextClass, String resourceName)
-			throws IOException {
-		return Resources.toString(Resources.getResource(contextClass, resourceName),
-				StandardCharsets.UTF_8);
+	public static String toString(Class<?> contextClass, String resourceName) throws IOException {
+		return Resources.toString(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static List<String> toLines(String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(resourceName),
-				StandardCharsets.UTF_8);
+		return Resources.readLines(Resources.getResource(resourceName), StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static List<String> toLines(Class<?> contextClass, String resourceName)
-			throws IOException {
-		return Resources.readLines(Resources.getResource(contextClass, resourceName),
-				StandardCharsets.UTF_8);
+	public static List<String> toLines(Class<?> contextClass, String resourceName) throws IOException {
+		return Resources.readLines(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
 	}
 
 	///////////// 打开所有同名文件///////
@@ -106,8 +99,7 @@ public class ResourceUtil {
 		return getResourcesQuietly(resourceName, ClassLoaderUtil.getDefaultClassLoader());
 	}
 
-	public static List<URL> getResourcesQuietly(String resourceName,
-			ClassLoader contextClassLoader) {
+	public static List<URL> getResourcesQuietly(String resourceName, ClassLoader contextClassLoader) {
 		try {
 			Enumeration<URL> urls = contextClassLoader.getResources(resourceName);
 			List<URL> list = new ArrayList<URL>(10);

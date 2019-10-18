@@ -1,10 +1,6 @@
 package io.github.dunwu.util.collection.type;
 
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -12,8 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 虽然也可以通过Collections.newSetFromMap(new ConcurrentHashMap())，
  * 但声明一个单独的类型，阅读代码时能更清晰的知道set的并发友好性，代码来自JDK的SetFromMap，去除JDK8接口.
  */
-public class ConcurrentHashSet<E> extends AbstractSet<E>
-		implements Set<E>, java.io.Serializable {
+public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable {
 
 	private static final long serialVersionUID = -8672117787651310382L;
 

@@ -25,8 +25,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler) {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		if (WebConstant.HTTP_METHOD_OPTIONS.equals(request.getMethod())) {
 			return true;
 		}

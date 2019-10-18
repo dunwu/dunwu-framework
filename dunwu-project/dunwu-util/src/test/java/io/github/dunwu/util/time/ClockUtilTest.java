@@ -1,11 +1,11 @@
 package io.github.dunwu.util.time;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.time.ClockUtil.DummyClock;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.time.ClockUtil.DummyClock;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClockUtilTest {
 

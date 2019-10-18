@@ -43,10 +43,17 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	}
 
 	/**
+	 * 简便函数, 重新设定Message
+	 */
+	public CloneableRuntimeException setMessage(String message) {
+		this.message = message;
+		return this;
+	}
+
+	/**
 	 * 简便函数，定义静态异常时使用
 	 */
-	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
-			String throwMethod) {
+	public CloneableRuntimeException setStackTrace(Class<?> throwClazz, String throwMethod) {
 		ExceptionUtil.setStackTrace(this, throwClazz, throwMethod);
 		return this;
 	}
@@ -58,14 +65,6 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 		CloneableRuntimeException newException = this.clone();
 		newException.setMessage(message);
 		return newException;
-	}
-
-	/**
-	 * 简便函数, 重新设定Message
-	 */
-	public CloneableRuntimeException setMessage(String message) {
-		this.message = message;
-		return this;
 	}
 
 }

@@ -13,8 +13,7 @@ public class AppException extends RuntimeException {
 	private BaseResult result;
 
 	public AppException(BaseResult result) {
-		this.result = new BaseResult(result.getSuccess(), result.getCode(),
-				result.getMessage());
+		this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessage());
 	}
 
 	public AppException(ErrorCode appCode) {

@@ -1,19 +1,18 @@
 package io.github.dunwu.util.reflect;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.collection.ListUtil;
+import io.github.dunwu.util.mapper.BeanMapper;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.collection.ListUtil;
-import io.github.dunwu.util.mapper.BeanMapper;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BeanMapperTest {
 
 	@Test
 	public void copySingleObject() {
-		Student student = new Student("zhang3", 20, new Teacher("li4"),
-				ListUtil.newArrayList("chinese", "english"));
+		Student student = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
 
 		StudentVO studentVo = BeanMapper.map(student, StudentVO.class);
 
@@ -26,12 +25,9 @@ public class BeanMapperTest {
 
 	@Test
 	public void copyListObject() {
-		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
-				ListUtil.newArrayList("chinese", "english"));
-		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
-				ListUtil.newArrayList("chinese2", "english4"));
-		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
-				ListUtil.newArrayList("chinese3", "english5"));
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
 		List<Student> studentList = ListUtil.newArrayList(student1, student2, student3);
 
 		List<StudentVO> studentVoList = BeanMapper.mapList(studentList, StudentVO.class);
@@ -47,12 +43,9 @@ public class BeanMapperTest {
 
 	@Test
 	public void copyArrayObject() {
-		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
-				ListUtil.newArrayList("chinese", "english"));
-		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
-				ListUtil.newArrayList("chinese2", "english4"));
-		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
-				ListUtil.newArrayList("chinese3", "english5"));
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
 		Student[] studentList = new Student[] { student1, student2, student3 };
 		StudentVO[] studentVoList = BeanMapper.mapArray(studentList, StudentVO.class);
 		assertThat(studentVoList).hasSize(3);

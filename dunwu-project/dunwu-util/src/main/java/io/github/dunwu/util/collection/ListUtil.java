@@ -1,15 +1,9 @@
 package io.github.dunwu.util.collection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import com.google.common.collect.Lists;
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 关于List的工具集合. 1. 常用函数(如是否为空，sort/binarySearch/shuffle/reverse(via JDK Collection) 2.
@@ -198,8 +192,7 @@ public class ListUtil {
 	 * 二分法快速查找对象, 使用Comparable对象自身的比较. list必须已按升序排序. 如果不存在，返回一个负数，代表如果要插入这个对象，应该插入的位置
 	 * @see Collections#binarySearch(List, Object)
 	 */
-	public static <T> int binarySearch(List<? extends Comparable<? super T>> sortedList,
-			T key) {
+	public static <T> int binarySearch(List<? extends Comparable<? super T>> sortedList, T key) {
 		return Collections.binarySearch(sortedList, key);
 	}
 
@@ -207,8 +200,7 @@ public class ListUtil {
 	 * 二分法快速查找对象，使用Comparator. list必须已按升序排序. 如果不存在，返回一个负数，代表如果要插入这个对象，应该插入的位置
 	 * @see Collections#binarySearch(List, Object, Comparator)
 	 */
-	public static <T> int binarySearch(List<? extends T> sortedList, T key,
-			Comparator<? super T> c) {
+	public static <T> int binarySearch(List<? extends T> sortedList, T key, Comparator<? super T> c) {
 		return Collections.binarySearch(sortedList, key, c);
 	}
 
@@ -242,8 +234,7 @@ public class ListUtil {
 	 * list1,list2的并集（在list1或list2中的对象），产生新List 对比Apache Common Collection4 ListUtils,
 	 * 优化了初始大小
 	 */
-	public static <E> List<E> union(final List<? extends E> list1,
-			final List<? extends E> list2) {
+	public static <E> List<E> union(final List<? extends E> list1, final List<? extends E> list2) {
 		final List<E> result = new ArrayList<E>(list1.size() + list2.size());
 		result.addAll(list1);
 		result.addAll(list2);
@@ -255,8 +246,7 @@ public class ListUtil {
 	 * ListUtils，但其做了不合理的去重，因此重新改为性能较低但不去重的版本 与List.retainAll()相比，考虑了的List中相同元素出现的次数,
 	 * 如"a"在list1出现两次，而在list2中只出现一次，则交集里会保留一个"a".
 	 */
-	public static <T> List<T> intersection(final List<? extends T> list1,
-			final List<? extends T> list2) {
+	public static <T> List<T> intersection(final List<? extends T> list1, final List<? extends T> list2) {
 		List<? extends T> smaller = list1;
 		List<? extends T> larger = list2;
 		if (list1.size() > list2.size()) {
@@ -280,8 +270,7 @@ public class ListUtil {
 	 * list1, list2的差集（在list1，不在list2中的对象），产生新List.
 	 * 与List.removeAll()相比，会计算元素出现的次数，如"a"在list1出现两次，而在list2中只出现一次，则差集里会保留一个"a".
 	 */
-	public static <T> List<T> difference(final List<? extends T> list1,
-			final List<? extends T> list2) {
+	public static <T> List<T> difference(final List<? extends T> list1, final List<? extends T> list2) {
 		final List<T> result = new ArrayList<T>(list1);
 		final Iterator<? extends T> iterator = list2.iterator();
 
@@ -296,8 +285,7 @@ public class ListUtil {
 	 * list1, list2的补集（在list1或list2中，但不在交集中的对象，又叫反交集）产生新List. copy from Apache Common
 	 * Collection4 ListUtils，但其并集－交集时，初始大小没有对交集*2，所以做了修改
 	 */
-	public static <T> List<T> disjoint(final List<? extends T> list1,
-			final List<? extends T> list2) {
+	public static <T> List<T> disjoint(final List<? extends T> list1, final List<? extends T> list2) {
 		List<T> intersection = intersection(list1, list2);
 		List<T> towIntersection = union(intersection, intersection);
 		return difference(union(list1, list2), towIntersection);

@@ -1,16 +1,16 @@
 package io.github.dunwu.util.net;
 
-import static org.assertj.core.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.internal.util.io.IOUtil;
 
+import javax.net.ServerSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
 
-import javax.net.ServerSocketFactory;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.internal.util.io.IOUtil;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class NetUtilTest {
 

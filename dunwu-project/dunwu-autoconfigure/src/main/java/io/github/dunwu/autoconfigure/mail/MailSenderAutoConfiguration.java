@@ -22,14 +22,12 @@ import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.activation.MimeType;
 import javax.mail.internet.MimeMessage;
@@ -61,13 +59,10 @@ public class MailSenderAutoConfiguration {
 	@Bean("mailExecutor")
 	public ExecutorService mailExecutor() {
 		DunwuMailProperties.Pool pool = dunwuMailProperties.getPool();
-		ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil
-				.queuableCachedPool();
-		builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize())
-				.setKeepAliveSecs(pool.getKeepAliveSecs())
+		ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil.queuableCachedPool();
+		builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize()).setKeepAliveSecs(pool.getKeepAliveSecs())
 				.setQueueSize(pool.getQueueSize())
-				.setThreadFactory(ThreadPoolUtil
-						.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
+				.setThreadFactory(ThreadPoolUtil.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
 				.setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
 		return builder.build();
 	}

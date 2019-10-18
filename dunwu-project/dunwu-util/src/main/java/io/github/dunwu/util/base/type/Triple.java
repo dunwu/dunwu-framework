@@ -25,6 +25,13 @@ public class Triple<L, M, R> {
 		this.right = right;
 	}
 
+	/**
+	 * 根据等号左边的泛型，自动构造合适的Triple
+	 */
+	public static <L, M, R> Triple<L, M, R> of(@Nullable L left, @Nullable M middle, @Nullable R right) {
+		return new Triple<L, M, R>(left, middle, right);
+	}
+
 	@Nullable
 	public L getLeft() {
 		return left;
@@ -88,14 +95,6 @@ public class Triple<L, M, R> {
 	@Override
 	public String toString() {
 		return "Triple [left=" + left + ", middle=" + middle + ", right=" + right + ']';
-	}
-
-	/**
-	 * 根据等号左边的泛型，自动构造合适的Triple
-	 */
-	public static <L, M, R> Triple<L, M, R> of(@Nullable L left, @Nullable M middle,
-			@Nullable R right) {
-		return new Triple<L, M, R>(left, middle, right);
 	}
 
 }

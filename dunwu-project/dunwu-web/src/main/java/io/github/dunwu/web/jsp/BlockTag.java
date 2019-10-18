@@ -32,8 +32,7 @@ public class BlockTag extends TagSupport {
 			pageContext.getOut().write(overriedContent);
 		}
 		catch (IOException e) {
-			throw new JspException(
-					"try to override jsp content failed, block name:" + name, e);
+			throw new JspException("try to override jsp content failed, block name:" + name, e);
 		}
 		return EVAL_PAGE;
 	}

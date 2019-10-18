@@ -1,11 +1,11 @@
 package io.github.dunwu.util.concurrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 由程序触发的ThreadDump，打印到日志中. 因为ThreadDump本身会造成JVM停顿，所以加上了开关和最少间隔时间的选项(默认不限制)
@@ -60,8 +60,7 @@ public class ThreadDumpper {
 			}
 		}
 
-		logger.info("Thread dump by ThreadDumpper"
-				+ (reasonMsg != null ? (" for " + reasonMsg) : ""));
+		logger.info("Thread dump by ThreadDumpper" + (reasonMsg != null ? (" for " + reasonMsg) : ""));
 
 		Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
 		// 两条日志间的时间间隔，是VM被thread dump堵塞的时间.
@@ -80,10 +79,9 @@ public class ThreadDumpper {
 	 * 打印全部的stack，重新实现threadInfo的toString()函数，因为默认最多只打印8层的stack.
 	 * 同时，不再打印lockedMonitors和lockedSynchronizers.
 	 */
-	private String dumpThreadInfo(Thread thread, StackTraceElement[] stackTrace,
-			StringBuilder sb) {
-		sb.append('\"').append(thread.getName()).append("\" Id=").append(thread.getId())
-				.append(' ').append(thread.getState());
+	private String dumpThreadInfo(Thread thread, StackTraceElement[] stackTrace, StringBuilder sb) {
+		sb.append('\"').append(thread.getName()).append("\" Id=").append(thread.getId()).append(' ')
+				.append(thread.getState());
 		sb.append('\n');
 		int i = 0;
 		for (; i < Math.min(maxStackLevel, stackTrace.length); i++) {

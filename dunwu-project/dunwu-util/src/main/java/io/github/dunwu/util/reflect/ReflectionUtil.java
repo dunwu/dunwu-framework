@@ -34,8 +34,7 @@ public class ReflectionUtil {
 	/**
 	 * 循环遍历，按属性名获取前缀为set的函数，并设为可访问
 	 */
-	public static Method getSetterMethod(Class<?> clazz, String propertyName,
-			Class<?> parameterType) {
+	public static Method getSetterMethod(Class<?> clazz, String propertyName, Class<?> parameterType) {
 		String setterMethodName = SETTER_PREFIX + StringUtils.capitalize(propertyName);
 		return getMethod(clazz, setterMethodName, parameterType);
 	}
@@ -61,8 +60,7 @@ public class ReflectionUtil {
 	 * 方法需要被多次调用时，先使用本函数先取得Method，然后调用Method.invoke(Object obj, Object... args)
 	 * 因为getMethod() 不能获取父类的private函数, 因此采用循环向上的getDeclaredMethod();
 	 */
-	public static Method getMethod(final Class<?> clazz, final String methodName,
-			Class<?>... parameterTypes) {
+	public static Method getMethod(final Class<?> clazz, final String methodName, Class<?>... parameterTypes) {
 		Method method = MethodUtils.getMatchingMethod(clazz, methodName, parameterTypes);
 		if (method != null) {
 			makeAccessible(method);
@@ -75,13 +73,11 @@ public class ReflectionUtil {
 	 * 如果有多个同名函数返回第一个 方法需要被多次调用时，先使用本函数先取得Method，然后调用Method.invoke(Object obj, Object...
 	 * args) 因为getMethod() 不能获取父类的private函数, 因此采用循环向上的getDeclaredMethods()
 	 */
-	public static Method getAccessibleMethodByName(final Class clazz,
-			final String methodName) {
+	public static Method getAccessibleMethodByName(final Class clazz, final String methodName) {
 		Validate.notNull(clazz, "clazz can't be null");
 		Validate.notEmpty(methodName, "methodName can't be blank");
 
-		for (Class<?> searchType = clazz; searchType != Object.class; searchType = searchType
-				.getSuperclass()) {
+		for (Class<?> searchType = clazz; searchType != Object.class; searchType = searchType.getSuperclass()) {
 			Method[] methods = searchType.getDeclaredMethods();
 			for (Method method : methods) {
 				if (method.getName().equals(methodName)) {
@@ -102,8 +98,7 @@ public class ReflectionUtil {
 	public static Field getField(final Class clazz, final String fieldName) {
 		Validate.notNull(clazz, "clazz can't be null");
 		Validate.notEmpty(fieldName, "fieldName can't be blank");
-		for (Class<?> superClass = clazz; superClass != Object.class; superClass = superClass
-				.getSuperclass()) {
+		for (Class<?> superClass = clazz; superClass != Object.class; superClass = superClass.getSuperclass()) {
 			try {
 				Field field = superClass.getDeclaredField(fieldName);
 				makeAccessible(field);
@@ -124,8 +119,8 @@ public class ReflectionUtil {
 	public static <T> T invokeGetter(Object obj, String propertyName) {
 		Method method = getGetterMethod(obj.getClass(), propertyName);
 		if (method == null) {
-			throw new IllegalArgumentException("Could not find getter method ["
-					+ propertyName + "] on target [" + obj + ']');
+			throw new IllegalArgumentException(
+					"Could not find getter method [" + propertyName + "] on target [" + obj + ']');
 		}
 		return invokeMethod(obj, method);
 	}
@@ -136,8 +131,8 @@ public class ReflectionUtil {
 	public static void invokeSetter(Object obj, String propertyName, Object value) {
 		Method method = getSetterMethod(obj.getClass(), propertyName, value.getClass());
 		if (method == null) {
-			throw new IllegalArgumentException("Could not find getter method ["
-					+ propertyName + "] on target [" + obj + ']');
+			throw new IllegalArgumentException(
+					"Could not find getter method [" + propertyName + "] on target [" + obj + ']');
 		}
 		invokeMethod(obj, method, value);
 	}
@@ -148,8 +143,7 @@ public class ReflectionUtil {
 	public static <T> T getFieldValue(final Object obj, final String fieldName) {
 		Field field = getField(obj.getClass(), fieldName);
 		if (field == null) {
-			throw new IllegalArgumentException(
-					"Could not find field [" + fieldName + "] on target [" + obj + ']');
+			throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + obj + ']');
 		}
 		return getFieldValue(obj, field);
 	}
@@ -169,12 +163,10 @@ public class ReflectionUtil {
 	/**
 	 * 直接设置对象属性值, 无视private/protected修饰符, 不经过setter函数. 性能较差, 用于单次调用的场景
 	 */
-	public static void setFieldValue(final Object obj, final String fieldName,
-			final Object value) {
+	public static void setFieldValue(final Object obj, final String fieldName, final Object value) {
 		Field field = getField(obj.getClass(), fieldName);
 		if (field == null) {
-			throw new IllegalArgumentException(
-					"Could not find field [" + fieldName + "] on target [" + obj + ']');
+			throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + obj + ']');
 		}
 		setField(obj, field, value);
 	}
@@ -233,14 +225,12 @@ public class ReflectionUtil {
 	 * 反射调用对象方法, 无视private/protected修饰符. 根据参数类型参数进行匹配, 支持方法参数定义是接口，父类，原子类型等情况
 	 * 性能较低，仅用于单次调用.
 	 */
-	public static <T> T invokeMethod(final Object obj, final String methodName,
-			final Object[] args, final Class<?>[] parameterTypes) {
+	public static <T> T invokeMethod(final Object obj, final String methodName, final Object[] args,
+			final Class<?>[] parameterTypes) {
 		Method method = getMethod(obj.getClass(), methodName, parameterTypes);
 		if (method == null) {
-			throw new IllegalArgumentException(
-					"Could not find method [" + methodName + "] with parameter types:"
-							+ ObjectUtil.toPrettyString(parameterTypes) + " on class ["
-							+ obj.getClass() + ']');
+			throw new IllegalArgumentException("Could not find method [" + methodName + "] with parameter types:"
+					+ ObjectUtil.toPrettyString(parameterTypes) + " on class [" + obj.getClass() + ']');
 		}
 		return invokeMethod(obj, method, args);
 	}
@@ -249,12 +239,11 @@ public class ReflectionUtil {
 	 * 反射调用对象方法, 无视private/protected修饰符 只匹配函数名，如果有多个同名函数调用第一个. 用于确信只有一个同名函数, 但参数类型不确定的情况.
 	 * 性能较低，仅用于单次调用.
 	 */
-	public static <T> T invokeMethodByName(final Object obj, final String methodName,
-			final Object[] args) {
+	public static <T> T invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
 		Method method = getAccessibleMethodByName(obj.getClass(), methodName);
 		if (method == null) {
-			throw new IllegalArgumentException("Could not find method [" + methodName
-					+ "] on class [" + obj.getClass() + ']');
+			throw new IllegalArgumentException(
+					"Could not find method [" + methodName + "] on class [" + obj.getClass() + ']');
 		}
 		return invokeMethod(obj, method, args);
 	}
@@ -306,8 +295,7 @@ public class ReflectionUtil {
 	 */
 	public static void makeAccessible(Field field) {
 		if (!field.isAccessible()) {
-			if (!Modifier.isPublic(field.getModifiers())
-					|| !Modifier.isPublic(field.getDeclaringClass().getModifiers())
+			if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())
 					|| Modifier.isFinal(field.getModifiers())) {
 				field.setAccessible(true);
 			}
@@ -318,13 +306,11 @@ public class ReflectionUtil {
 	 * 将反射时的checked exception转换为unchecked exception.
 	 */
 	public static RuntimeException convertReflectionExceptionToUnchecked(Exception e) {
-		if ((e instanceof IllegalAccessException)
-				|| (e instanceof NoSuchMethodException)) {
+		if ((e instanceof IllegalAccessException) || (e instanceof NoSuchMethodException)) {
 			return new IllegalArgumentException(e);
 		}
 		else if (e instanceof InvocationTargetException) {
-			return new RuntimeException(
-					((InvocationTargetException) e).getTargetException());
+			return new RuntimeException(((InvocationTargetException) e).getTargetException());
 		}
 		else if (e instanceof RuntimeException) {
 			return (RuntimeException) e;

@@ -15,38 +15,6 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
-	public static List<String> getMatchValuesInJson(final String text, final String key) {
-		String pattern = String.format("\"%s\":\"?(\\w+)\"?", key);
-		return getMatchValues(text, pattern);
-	}
-
-	public static List<String> getMatchValues(final String text, final String pattern) {
-		return getMatchValues(text, Pattern.compile(pattern));
-	}
-
-	public static List<String> getMatchValues(final String text, final Pattern pattern) {
-		Matcher matcher = pattern.matcher(text);
-		if (matcher.find()) {
-			int count = matcher.groupCount();
-			List<String> list = new LinkedList<>();
-			for (int i = 1; i <= count; i++) {
-				list.add(matcher.group(i));
-			}
-			return list;
-		}
-		return null;
-	}
-
-	public static String replaceAllMatchContent(final String text, final String pattern,
-			final String dest) {
-		Pattern p = Pattern.compile(pattern);
-		Matcher m = p.matcher(text);
-		return m.replaceAll(dest);
-	}
-
-	// --------------------------------------------- 实用校验器
-	// -----------------------------------------------------
-
 	/** 最实用的正则 */
 	public static final String REGEX_ID_CARD_15 = "^((1[1-5]|2[1-3]|3[1-7]|4[1-3]|5[0-4]|6[1-5])\\d{4})((\\d{2}((0[13578]|1[02])(0[1-9]|[12]\\d|3[01])|"
 			+ "(0[13456789]|1[012])(0[1-9]|[12]\\d|30)|02(0[1-9]|1\\d|2[0-8])))|([02468][048]|[13579][26])0229)"
@@ -60,6 +28,9 @@ public class RegexUtil {
 
 	public static final String REGEX_EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 
+	// --------------------------------------------- 实用校验器
+	// -----------------------------------------------------
+
 	public static final String REGEX_URI = "^(ht|f)(tp|tps)\\://[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3})?(/\\S*)?$";
 
 	public static final String REGEX_IPV4 = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
@@ -68,8 +39,7 @@ public class RegexUtil {
 	public static final String REGEX_IPV6 = "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,"
 			+ "6}:[0-9a-fA-F]{1,"
 			+ "4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,"
-			+ "3}|"
-			+ "([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,"
+			+ "3}|" + "([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,"
 			+ "5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,"
 			+ "4})"
 			+ "{0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}"
@@ -114,9 +84,38 @@ public class RegexUtil {
 
 	public static final String REGEX_MARKDOWN_IMAGE_TAG = "!\\[.+\\]";
 
+	public static List<String> getMatchValuesInJson(final String text, final String key) {
+		String pattern = String.format("\"%s\":\"?(\\w+)\"?", key);
+		return getMatchValues(text, pattern);
+	}
+
+	public static List<String> getMatchValues(final String text, final String pattern) {
+		return getMatchValues(text, Pattern.compile(pattern));
+	}
+
+	public static List<String> getMatchValues(final String text, final Pattern pattern) {
+		Matcher matcher = pattern.matcher(text);
+		if (matcher.find()) {
+			int count = matcher.groupCount();
+			List<String> list = new LinkedList<>();
+			for (int i = 1; i <= count; i++) {
+				list.add(matcher.group(i));
+			}
+			return list;
+		}
+		return null;
+	}
+
+	public static String replaceAllMatchContent(final String text, final String pattern, final String dest) {
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(text);
+		return m.replaceAll(dest);
+	}
+
 	/********************************************
 	 * 最常用的正则
 	 ********************************************/
+
 	/**
 	 * 校验15位身份证号有效 描述：由15位数字组成。排列顺序从左至右依次为：六位数字地区码；六位数字出生日期；三位顺序号，其中15位男为单数，女为双数。
 	 * 匹配：110001700101031 不匹配：110001701501031

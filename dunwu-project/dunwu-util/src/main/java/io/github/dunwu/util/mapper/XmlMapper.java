@@ -5,24 +5,19 @@
  *******************************************************************************/
 package io.github.dunwu.util.mapper;
 
+import io.github.dunwu.util.base.ExceptionUtil;
+import io.github.dunwu.util.reflect.ClassUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
+import javax.xml.bind.*;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.namespace.QName;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.namespace.QName;
-
-import io.github.dunwu.util.base.ExceptionUtil;
-import io.github.dunwu.util.reflect.ClassUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 /**
  * 使用Jaxb2.0实现XML<->Java Object的Mapper. 在创建时需要设定所有需要序列化的Root对象的Class.
@@ -74,14 +69,13 @@ public class XmlMapper {
 	/**
 	 * Java Collection->Xml with encoding, 特别支持Root Element是Collection的情形.
 	 */
-	public static String toXml(Collection<?> root, String rootName, Class clazz,
-			String encoding) {
+	public static String toXml(Collection<?> root, String rootName, Class clazz, String encoding) {
 		try {
 			CollectionWrapper wrapper = new CollectionWrapper();
 			wrapper.collection = root;
 
-			JAXBElement<CollectionWrapper> wrapperElement = new JAXBElement<CollectionWrapper>(
-					new QName(rootName), CollectionWrapper.class, wrapper);
+			JAXBElement<CollectionWrapper> wrapperElement = new JAXBElement<CollectionWrapper>(new QName(rootName),
+					CollectionWrapper.class, wrapper);
 
 			StringWriter writer = new StringWriter();
 			createMarshaller(clazz, encoding).marshal(wrapperElement, writer);
@@ -150,8 +144,8 @@ public class XmlMapper {
 				jaxbContexts.putIfAbsent(clazz, jaxbContext);
 			}
 			catch (JAXBException ex) {
-				throw new RuntimeException("Could not instantiate JAXBContext for class ["
-						+ clazz + "]: " + ex.getMessage(), ex);
+				throw new RuntimeException(
+						"Could not instantiate JAXBContext for class [" + clazz + "]: " + ex.getMessage(), ex);
 			}
 		}
 		return jaxbContext;

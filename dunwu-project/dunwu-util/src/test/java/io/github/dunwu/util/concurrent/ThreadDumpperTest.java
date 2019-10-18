@@ -11,22 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThreadDumpperTest {
 
-	public static class LongRunTask implements Runnable {
-
-		private CountDownLatch countDownLatch;
-
-		public LongRunTask(CountDownLatch countDownLatch) {
-			this.countDownLatch = countDownLatch;
-		}
-
-		@Override
-		public void run() {
-			countDownLatch.countDown();
-			ThreadUtil.sleep(5, TimeUnit.SECONDS);
-		}
-
-	}
-
 	@Test
 	public void test() throws InterruptedException {
 		ExecutorService executor = ThreadPoolUtil.fixedPool().setPoolSize(10).build();
@@ -54,6 +38,23 @@ public class ThreadDumpperTest {
 		assertThat(appender.getAllLogs()).hasSize(0);
 
 		executor.shutdownNow();
+
+	}
+
+
+	public static class LongRunTask implements Runnable {
+
+		private CountDownLatch countDownLatch;
+
+		public LongRunTask(CountDownLatch countDownLatch) {
+			this.countDownLatch = countDownLatch;
+		}
+
+		@Override
+		public void run() {
+			countDownLatch.countDown();
+			ThreadUtil.sleep(5, TimeUnit.SECONDS);
+		}
 
 	}
 

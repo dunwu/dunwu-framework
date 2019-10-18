@@ -1,10 +1,10 @@
 package io.github.dunwu.util.collection;
 
+import com.google.common.collect.EvictingQueue;
+
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
-
-import com.google.common.collect.EvictingQueue;
 
 /**
  * 特殊类型Queue:LIFO的Stack, LRU的Queue
@@ -27,8 +27,7 @@ public class MoreQueues {
 	 * @see Collections#asLifoQueue()
 	 */
 	public static <E> Queue<E> createConcurrentStack() {
-		return (Queue<E>) Collections
-				.asLifoQueue(QueueUtil.newConcurrentNonBlockingDeque());
+		return (Queue<E>) Collections.asLifoQueue(QueueUtil.newConcurrentNonBlockingDeque());
 	}
 
 	//////////////// 特殊类型Queue：LRUQueue ///////////

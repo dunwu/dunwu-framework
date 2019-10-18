@@ -31,8 +31,8 @@ public class CorsInceptor extends HandlerInterceptorAdapter {
 	private final String ORIGIN = "Origin";
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 		if (StringUtils.isBlank(WHITELIST_REGEX) || StringUtils.isBlank(HEADER_KEY)) {
 			throw new ServletException("读取跨域过滤器的配置参数失败");
 		}
@@ -64,9 +64,8 @@ public class CorsInceptor extends HandlerInterceptorAdapter {
 
 		log.debug("对 origin = {} 放开跨域限制", origin);
 		response.addHeader("Access-Control-Allow-Origin", origin);
-		response.addHeader("Access-Control-Allow-Headers",
-				"Content-Type, X-Requested-With, Keep-Alive, User-Agent"
-						+ "Authorization, X-Token, Session, SessionId");
+		response.addHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Keep-Alive, User-Agent"
+				+ "Authorization, X-Token, Session, SessionId");
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 		response.addHeader("Access-Control-Allow-Credentials", "true");
 

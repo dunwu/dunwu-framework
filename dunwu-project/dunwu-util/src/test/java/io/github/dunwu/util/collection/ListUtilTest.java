@@ -1,13 +1,13 @@
 package io.github.dunwu.util.collection;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Ordering;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ListUtilTest {
 
@@ -140,8 +140,7 @@ public class ListUtilTest {
 		List<String> list2 = ListUtil.newArrayList("4", "5", "6", "7", "6", "6");
 
 		List<String> result = ListUtil.union(list1, list2);
-		assertThat(result).containsExactly("1", "2", "3", "6", "6", "4", "5", "6", "7",
-				"6", "6");
+		assertThat(result).containsExactly("1", "2", "3", "6", "6", "4", "5", "6", "7", "6", "6");
 
 		List<String> result2 = ListUtil.intersection(list1, list2);
 		assertThat(result2).containsExactly("6", "6");

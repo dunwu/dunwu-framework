@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-06
  */
-public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
-		implements IService<T> {
+public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implements IService<T> {
 
 	protected Log log = LogFactory.getLog(getClass());
 
@@ -69,8 +68,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 	 * @param sqlSession session
 	 */
 	protected void closeSqlSession(SqlSession sqlSession) {
-		SqlSessionUtils.closeSqlSession(sqlSession,
-				GlobalConfigUtils.currentSessionFactory(currentModelClass()));
+		SqlSessionUtils.closeSqlSession(sqlSession, GlobalConfigUtils.currentSessionFactory(currentModelClass()));
 	}
 
 	/**
@@ -79,8 +77,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 	 * @return ignore
 	 */
 	protected String sqlStatement(SqlMethod sqlMethod) {
-		return SqlHelper.table(currentModelClass())
-				.getSqlStatement(sqlMethod.getMethod());
+		return SqlHelper.table(currentModelClass()).getSqlStatement(sqlMethod.getMethod());
 	}
 
 	@Override
@@ -119,17 +116,14 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 		Assert.notEmpty(entityList, "error: entityList must not be empty");
 		Class<?> cls = currentModelClass();
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-		Assert.notNull(tableInfo,
-				"error: can not execute. because can not find cache of TableInfo for entity!");
+		Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
 		String keyProperty = tableInfo.getKeyProperty();
-		Assert.notEmpty(keyProperty,
-				"error: can not execute. because can not find column for id from entity!");
+		Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
 		try (SqlSession batchSqlSession = sqlSessionBatch()) {
 			int i = 0;
 			for (T entity : entityList) {
 				Object idVal = ReflectionKit.getMethodValue(cls, entity, keyProperty);
-				if (StringUtils.checkValNull(idVal)
-						|| Objects.isNull(getById((Serializable) idVal))) {
+				if (StringUtils.checkValNull(idVal) || Objects.isNull(getById((Serializable) idVal))) {
 					batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
 				}
 				else {
@@ -244,16 +238,12 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 		if (null != entity) {
 			Class<?> cls = entity.getClass();
 			TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-			Assert.notNull(tableInfo,
-					"error: can not execute. because can not find cache of TableInfo for entity!");
+			Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
 			String keyProperty = tableInfo.getKeyProperty();
-			Assert.notEmpty(keyProperty,
-					"error: can not execute. because can not find column for id from entity!");
-			Object idVal = ReflectionKit.getMethodValue(cls, entity,
-					tableInfo.getKeyProperty());
-			return StringUtils.checkValNull(idVal)
-					|| Objects.isNull(getById((Serializable) idVal)) ? save(entity)
-							: updateById(entity);
+			Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
+			Object idVal = ReflectionKit.getMethodValue(cls, entity, tableInfo.getKeyProperty());
+			return StringUtils.checkValNull(idVal) || Objects.isNull(getById((Serializable) idVal)) ? save(entity)
+					: updateById(entity);
 		}
 
 		return ResultUtil.successBaseResult();
@@ -285,15 +275,13 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
 	@Override
 	public DataResult<Map<String, Object>> getMap(Wrapper<T> queryWrapper) {
-		Map<String, Object> map = SqlHelper.getObject(log,
-				baseMapper.selectMaps(queryWrapper));
+		Map<String, Object> map = SqlHelper.getObject(log, baseMapper.selectMaps(queryWrapper));
 		return ResultUtil.successDataResult(map);
 	}
 
 	@Override
 	public DataResult<Integer> count(Wrapper<T> queryWrapper) {
-		return ResultUtil.successDataResult(
-				SqlHelper.retCount(baseMapper.selectCount(queryWrapper)));
+		return ResultUtil.successDataResult(SqlHelper.retCount(baseMapper.selectCount(queryWrapper)));
 	}
 
 	@Override
@@ -303,8 +291,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
 	@Override
 	public PageResult<T> page(Pagination<T> pagination, Wrapper<T> queryWrapper) {
-		IPage<T> resultPage = baseMapper
-				.selectPage(PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
+		IPage<T> resultPage = baseMapper.selectPage(PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
 		return ResultUtil.successPageResult(PageUtil.transToPagination(resultPage));
 	}
 
@@ -314,24 +301,21 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 	}
 
 	@Override
-	public <V> DataListResult<V> listObjs(Wrapper<T> queryWrapper,
-			Function<? super Object, V> mapper) {
-		List<V> list = baseMapper.selectObjs(queryWrapper).stream()
-				.filter(Objects::nonNull).map(mapper).collect(Collectors.toList());
+	public <V> DataListResult<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
+		List<V> list = baseMapper.selectObjs(queryWrapper).stream().filter(Objects::nonNull).map(mapper)
+				.collect(Collectors.toList());
 		return ResultUtil.successDataListResult(list);
 	}
 
 	@Override
-	public PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination,
-			Wrapper<T> queryWrapper) {
-		IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(
-				PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
+	public PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination, Wrapper<T> queryWrapper) {
+		IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(PageUtil.transToMybatisPlusPage(pagination),
+				queryWrapper);
 		return ResultUtil.successPageResult(PageUtil.transToPagination(resultPage));
 	}
 
 	@Override
-	public <V> DataResult<V> getObj(Wrapper<T> queryWrapper,
-			Function<? super Object, V> mapper) {
+	public <V> DataResult<V> getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
 		List<V> list = (List<V>) listObjs(queryWrapper, mapper).getData();
 		V entity = SqlHelper.getObject(log, list);
 		return ResultUtil.successDataResult(entity);

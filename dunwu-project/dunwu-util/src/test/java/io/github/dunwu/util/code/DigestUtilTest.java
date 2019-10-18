@@ -16,6 +16,41 @@ public class DigestUtilTest {
 
 	private static final int COUNT = 10000;
 
+	private void doDigest(DigestUtil.IDigest digest) {
+		List<String> originList = new ArrayList<>();
+		List<String> digestList = new ArrayList<>();
+
+		long begin = System.currentTimeMillis();
+		for (int i = 0; i < COUNT; i++) {
+			String msg = MockUtil.anyLetterString(3, 50);
+			byte[] bytes = digest.digest(msg.getBytes());
+			originList.add(msg);
+			digestList.add(new String(bytes));
+		}
+		long end = System.currentTimeMillis();
+
+		System.out.println("digest 总耗时：" + (end - begin) + "ms");
+		System.out.println("digest 平均耗时：" + (end - begin) / COUNT + "ms");
+	}
+
+	private void doDigestWithBase64(DigestUtil.IDigest digest) {
+		List<String> originList = new ArrayList<>();
+		List<String> digestList = new ArrayList<>();
+
+		long begin = System.currentTimeMillis();
+		for (int i = 0; i < COUNT; i++) {
+			String msg = MockUtil.anyLetterString(3, 50);
+			byte[] bytes = digest.digestWithBase64(msg.getBytes());
+			originList.add(msg);
+			digestList.add(new String(bytes));
+		}
+		long end = System.currentTimeMillis();
+
+		System.out.println("digestWithBase64 总耗时：" + (end - begin) + "ms");
+		System.out.println("digestWithBase64 平均耗时：" + (end - begin) / COUNT + "ms");
+	}
+
+
 	@Nested
 	class MessageDigestTest {
 
@@ -63,6 +98,7 @@ public class DigestUtilTest {
 
 	}
 
+
 	@Nested
 	class HmacMessageDigestTest {
 
@@ -101,40 +137,6 @@ public class DigestUtilTest {
 			doDigestWithBase64(DigestUtil.HMAC_SHA512);
 		}
 
-	}
-
-	private void doDigest(DigestUtil.IDigest digest) {
-		List<String> originList = new ArrayList<>();
-		List<String> digestList = new ArrayList<>();
-
-		long begin = System.currentTimeMillis();
-		for (int i = 0; i < COUNT; i++) {
-			String msg = MockUtil.anyLetterString(3, 50);
-			byte[] bytes = digest.digest(msg.getBytes());
-			originList.add(msg);
-			digestList.add(new String(bytes));
-		}
-		long end = System.currentTimeMillis();
-
-		System.out.println("digest 总耗时：" + (end - begin) + "ms");
-		System.out.println("digest 平均耗时：" + (end - begin) / COUNT + "ms");
-	}
-
-	private void doDigestWithBase64(DigestUtil.IDigest digest) {
-		List<String> originList = new ArrayList<>();
-		List<String> digestList = new ArrayList<>();
-
-		long begin = System.currentTimeMillis();
-		for (int i = 0; i < COUNT; i++) {
-			String msg = MockUtil.anyLetterString(3, 50);
-			byte[] bytes = digest.digestWithBase64(msg.getBytes());
-			originList.add(msg);
-			digestList.add(new String(bytes));
-		}
-		long end = System.currentTimeMillis();
-
-		System.out.println("digestWithBase64 总耗时：" + (end - begin) + "ms");
-		System.out.println("digestWithBase64 平均耗时：" + (end - begin) / COUNT + "ms");
 	}
 
 }

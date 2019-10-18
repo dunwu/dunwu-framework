@@ -53,8 +53,7 @@ public class NumberUtil extends NumberUtils {
 		}
 
 		int index = value.startsWith("-") ? 1 : 0;
-		return value.startsWith("0x", index) || value.startsWith("0X", index)
-				|| value.startsWith("#", index);
+		return value.startsWith("0x", index) || value.startsWith("0X", index) || value.startsWith("#", index);
 	}
 
 	/////////// 将字符串转化为原始类型数字/////////

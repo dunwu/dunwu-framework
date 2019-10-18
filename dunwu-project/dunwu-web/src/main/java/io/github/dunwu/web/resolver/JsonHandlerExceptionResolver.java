@@ -29,8 +29,7 @@ import java.util.*;
  */
 public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 
-	public static final Logger log = LoggerFactory
-			.getLogger(JsonHandlerExceptionResolver.class);
+	public static final Logger log = LoggerFactory.getLogger(JsonHandlerExceptionResolver.class);
 
 	private static final String KEY = "exception";
 
@@ -43,18 +42,16 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 	}
 
 	@Override
-	public ModelAndView resolveException(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception exception) {
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
+			Exception exception) {
 		ExceptionMetadata exceptionMetadata = logException(handler, request, exception);
-		BaseResult result = buildJsonResponse(request, exception,
-				exceptionMetadata.getErrorId());
+		BaseResult result = buildJsonResponse(request, exception, exceptionMetadata.getErrorId());
 		ModelAndView view = new ModelAndView(errorView);
 		view.addObject(KEY, result);
 		return view;
 	}
 
-	private BaseResult buildJsonResponse(HttpServletRequest request, Throwable throwable,
-			String errorId) {
+	private BaseResult buildJsonResponse(HttpServletRequest request, Throwable throwable, String errorId) {
 		while (throwable.getCause() != null) {
 			throwable = throwable.getCause();
 		}
@@ -65,8 +62,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 			ConstraintViolationException constraintViolationException = (ConstraintViolationException) throwable;
 			code = "YA-400";
 			data = new ArrayList<>();
-			for (ConstraintViolation<?> constraintViolation : constraintViolationException
-					.getConstraintViolations()) {
+			for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
 				Map<String, String> map = new HashMap<>(2);
 				map.put("message", constraintViolation.getMessage());
 				map.put("propertyPath", constraintViolation.getPropertyPath().toString());
@@ -80,8 +76,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 		else {
 			code = AppCode.FAIL.getCode();
 		}
-		Locale locale = (Locale) request.getSession()
-				.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
+		Locale locale = (Locale) request.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
 		String message;
 		try {
 			message = messageSource.getMessage(code, args, locale);
@@ -97,8 +92,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 		return ResultUtil.failBaseResult(code, message);
 	}
 
-	private ExceptionMetadata logException(Object handler, HttpServletRequest request,
-			Exception exception) {
+	private ExceptionMetadata logException(Object handler, HttpServletRequest request, Exception exception) {
 		ExceptionMetadata exceptionMetadata = new ExceptionMetadata();
 		try {
 			buildExceptionMetadata(exceptionMetadata, handler, request);
@@ -113,8 +107,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 				logger.error(exceptionMetadata.getParameterMap(), exception);
 			}
 			else {
-				log.error(handler + " execute failed, error id is:"
-						+ exceptionMetadata.getErrorId(), exception);
+				log.error(handler + " execute failed, error id is:" + exceptionMetadata.getErrorId(), exception);
 			}
 		}
 		catch (Exception e) {
@@ -123,20 +116,18 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 		return exceptionMetadata;
 	}
 
-	private void buildExceptionMetadata(ExceptionMetadata exceptionMetadata,
-			Object handler, HttpServletRequest request) {
+	private void buildExceptionMetadata(ExceptionMetadata exceptionMetadata, Object handler,
+			HttpServletRequest request) {
 		if (handler != null && HandlerMethod.class.isAssignableFrom(handler.getClass())) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Class<?> beanType = handlerMethod.getBeanType();
 			String methodName = handlerMethod.getMethod().getName();
-			RequestMapping controllerRequestMapping = beanType
-					.getDeclaredAnnotation(RequestMapping.class);
+			RequestMapping controllerRequestMapping = beanType.getDeclaredAnnotation(RequestMapping.class);
 			String classMapping = "";
 			if (controllerRequestMapping != null) {
 				classMapping = controllerRequestMapping.value()[0];
 			}
-			RequestMapping methodRequestMapping = handlerMethod
-					.getMethodAnnotation(RequestMapping.class);
+			RequestMapping methodRequestMapping = handlerMethod.getMethodAnnotation(RequestMapping.class);
 			String methodMapping = "";
 			if (methodRequestMapping != null) {
 				methodMapping = methodRequestMapping.value()[0];
@@ -178,24 +169,12 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 
 		private boolean isHandlerMethod;
 
-		public void setMethodName(String methodName) {
-			this.methodName = methodName;
-		}
-
 		public void setClassMapping(String classMapping) {
 			this.classMapping = classMapping;
 		}
 
 		public void setMethodMapping(String methodMapping) {
 			this.methodMapping = methodMapping;
-		}
-
-		public void setBeanType(Class<?> beanType) {
-			this.beanType = beanType;
-		}
-
-		public void setParameterMap(Map<String, String[]> parameterMap) {
-			this.parameterMap = parameterMap;
 		}
 
 		public boolean isHandlerMethod() {
@@ -218,12 +197,24 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 			return getBeanType().getSimpleName() + "." + methodName + "()";
 		}
 
+		public void setMethodName(String methodName) {
+			this.methodName = methodName;
+		}
+
 		public Class<?> getBeanType() {
 			return beanType;
 		}
 
+		public void setBeanType(Class<?> beanType) {
+			this.beanType = beanType;
+		}
+
 		public String getParameterMap() {
 			return JsonMapper.defaultMapper().toJson(parameterMap);
+		}
+
+		public void setParameterMap(Map<String, String[]> parameterMap) {
+			this.parameterMap = parameterMap;
 		}
 
 	}
@@ -238,8 +229,8 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 		}
 
 		@Override
-		public void render(Map<String, ?> model, HttpServletRequest request,
-				HttpServletResponse response) throws Exception {
+		public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
 			response.setContentType(CONTENT_TYPE);
 			String json = JsonMapper.defaultMapper().toJson(model.get(KEY));
 			response.getOutputStream().write(json.getBytes());

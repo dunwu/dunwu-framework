@@ -44,6 +44,14 @@ public class CloneableException extends Exception implements Cloneable {
 	}
 
 	/**
+	 * 简便函数, 重新设定Message
+	 */
+	public CloneableException setMessage(String message) {
+		this.message = message;
+		return this;
+	}
+
+	/**
 	 * 简便函数，定义静态异常时使用
 	 */
 	public CloneableException setStackTrace(Class<?> throwClazz, String throwMethod) {
@@ -58,14 +66,6 @@ public class CloneableException extends Exception implements Cloneable {
 		CloneableException newException = this.clone();
 		newException.setMessage(message);
 		return newException;
-	}
-
-	/**
-	 * 简便函数, 重新设定Message
-	 */
-	public CloneableException setMessage(String message) {
-		this.message = message;
-		return this;
 	}
 
 }

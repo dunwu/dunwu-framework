@@ -1,10 +1,11 @@
 package io.github.dunwu.util.time;
 
-import static org.assertj.core.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class DateUtilTest {
 
@@ -92,8 +93,7 @@ public class DateUtilTest {
 		assertThat(DateUtil.isSameTime(DateUtil.endOfHour(date), endHour)).isTrue();
 		assertThat(DateUtil.isSameTime(DateUtil.nextHour(date), nextHour)).isTrue();
 
-		assertThat(DateUtil.isSameTime(DateUtil.beginOfMinute(date), beginMinute))
-				.isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.beginOfMinute(date), beginMinute)).isTrue();
 		assertThat(DateUtil.isSameTime(DateUtil.endOfMinute(date), endMinute)).isTrue();
 		assertThat(DateUtil.isSameTime(DateUtil.nextMinute(date), nextMinute)).isTrue();
 	}
@@ -128,15 +128,11 @@ public class DateUtilTest {
 		assertThat(DateUtil.isSameTime(DateUtil.addHours(date, 1), expectDate5)).isTrue();
 		assertThat(DateUtil.isSameTime(DateUtil.subHours(date, 2), expectDate6)).isTrue();
 
-		assertThat(DateUtil.isSameTime(DateUtil.addMinutes(date, 1), expectDate7))
-				.isTrue();
-		assertThat(DateUtil.isSameTime(DateUtil.subMinutes(date, 2), expectDate8))
-				.isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.addMinutes(date, 1), expectDate7)).isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.subMinutes(date, 2), expectDate8)).isTrue();
 
-		assertThat(DateUtil.isSameTime(DateUtil.addSeconds(date, 1), expectDate9))
-				.isTrue();
-		assertThat(DateUtil.isSameTime(DateUtil.subSeconds(date, 2), expectDate10))
-				.isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.addSeconds(date, 1), expectDate9)).isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.subSeconds(date, 2), expectDate10)).isTrue();
 
 	}
 
@@ -151,17 +147,12 @@ public class DateUtilTest {
 		Date expectedDate6 = new Date(116, 10, 1, 10, 10, 10);
 
 		assertThat(DateUtil.isSameDay(DateUtil.setDays(date, 3), expectedDate)).isTrue();
-		assertThat(DateUtil.isSameDay(DateUtil.setMonths(date, 11), expectedDate2))
-				.isTrue();
-		assertThat(DateUtil.isSameDay(DateUtil.setYears(date, 2017), expectedDate3))
-				.isTrue();
+		assertThat(DateUtil.isSameDay(DateUtil.setMonths(date, 11), expectedDate2)).isTrue();
+		assertThat(DateUtil.isSameDay(DateUtil.setYears(date, 2017), expectedDate3)).isTrue();
 
-		assertThat(DateUtil.isSameTime(DateUtil.setHours(date, 9), expectedDate4))
-				.isTrue();
-		assertThat(DateUtil.isSameTime(DateUtil.setMinutes(date, 9), expectedDate5))
-				.isTrue();
-		assertThat(DateUtil.isSameTime(DateUtil.setSeconds(date, 10), expectedDate6))
-				.isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.setHours(date, 9), expectedDate4)).isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.setMinutes(date, 9), expectedDate5)).isTrue();
+		assertThat(DateUtil.isSameTime(DateUtil.setSeconds(date, 10), expectedDate6)).isTrue();
 
 	}
 

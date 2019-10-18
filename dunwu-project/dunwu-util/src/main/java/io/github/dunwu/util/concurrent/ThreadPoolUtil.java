@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ThreadPoolUtil {
 
+	private static RejectedExecutionHandler defaultRejectHandler = new ThreadPoolExecutor.AbortPolicy();
+
 	/**
 	 * 按照ExecutorService JavaDoc示例代码编写的Graceful Shutdown方法. 先使用shutdown,
 	 * 停止接收新任务并尝试完成所有已存在任务.
@@ -35,19 +37,17 @@ public class ThreadPoolUtil {
 	 * @see MoreExecutors#shutdownAndAwaitTermination(java.util.concurrent.ExecutorService,
 	 * long, java.util.concurrent.TimeUnit)
 	 */
-	public static boolean gracefulShutdown(@Nullable ExecutorService threadPool,
-			int shutdownTimeoutMills) {
-		return threadPool == null || MoreExecutors.shutdownAndAwaitTermination(threadPool,
-				shutdownTimeoutMills, TimeUnit.MILLISECONDS);
+	public static boolean gracefulShutdown(@Nullable ExecutorService threadPool, int shutdownTimeoutMills) {
+		return threadPool == null
+				|| MoreExecutors.shutdownAndAwaitTermination(threadPool, shutdownTimeoutMills, TimeUnit.MILLISECONDS);
 	}
 
 	/**
 	 * @see ThreadPoolUtil#gracefulShutdown
 	 */
-	public static boolean gracefulShutdown(@Nullable ExecutorService threadPool,
-			int shutdownTimeout, TimeUnit timeUnit) {
-		return threadPool == null || MoreExecutors.shutdownAndAwaitTermination(threadPool,
-				shutdownTimeout, timeUnit);
+	public static boolean gracefulShutdown(@Nullable ExecutorService threadPool, int shutdownTimeout,
+			TimeUnit timeUnit) {
+		return threadPool == null || MoreExecutors.shutdownAndAwaitTermination(threadPool, shutdownTimeout, timeUnit);
 	}
 
 	/**
@@ -64,13 +64,9 @@ public class ThreadPoolUtil {
 	 *
 	 * @see ThreadFactoryBuilder
 	 */
-	public static ThreadFactory buildThreadFactory(@NotNull String threadNamePrefix,
-			@NotNull boolean daemon) {
-		return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d")
-				.setDaemon(daemon).build();
+	public static ThreadFactory buildThreadFactory(@NotNull String threadNamePrefix, @NotNull boolean daemon) {
+		return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d").setDaemon(daemon).build();
 	}
-
-	private static RejectedExecutionHandler defaultRejectHandler = new ThreadPoolExecutor.AbortPolicy();
 
 	/**
 	 * @see FixedThreadPoolBuilder
@@ -99,6 +95,28 @@ public class ThreadPoolUtil {
 	public static QueuableCachedThreadPoolBuilder queuableCachedPool() {
 		return new QueuableCachedThreadPoolBuilder();
 	}
+
+	/**
+	 * 优先使用threadFactory，否则如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
+	 */
+	private static ThreadFactory createThreadFactory(ThreadFactory threadFactory, String threadNamePrefix,
+			Boolean daemon) {
+		if (threadFactory != null) {
+			return threadFactory;
+		}
+
+		if (threadNamePrefix != null) {
+			if (daemon != null) {
+				return ThreadPoolUtil.buildThreadFactory(threadNamePrefix, daemon);
+			}
+			else {
+				return ThreadPoolUtil.buildThreadFactory(threadNamePrefix);
+			}
+		}
+
+		return Executors.defaultThreadFactory();
+	}
+
 
 	/**
 	 * 创建FixedThreadPool.建议必须设置queueSize保证有界。 1. 任务提交时, 如果线程数还没达到poolSize即创建新线程并绑定任务
@@ -164,8 +182,7 @@ public class ThreadPoolUtil {
 			return this;
 		}
 
-		public FixedThreadPoolBuilder setRejectHanlder(
-				RejectedExecutionHandler rejectHandler) {
+		public FixedThreadPoolBuilder setRejectHanlder(RejectedExecutionHandler rejectHandler) {
 			this.rejectHandler = rejectHandler;
 			return this;
 		}
@@ -185,11 +202,12 @@ public class ThreadPoolUtil {
 				rejectHandler = defaultRejectHandler;
 			}
 
-			return new ThreadPoolExecutor(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS,
-					queue, threadFactory, rejectHandler);
+			return new ThreadPoolExecutor(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS, queue, threadFactory,
+					rejectHandler);
 		}
 
 	}
+
 
 	/**
 	 * 创建CachedThreadPool, maxSize建议设置 1. 任务提交时,
@@ -263,8 +281,7 @@ public class ThreadPoolUtil {
 			return this;
 		}
 
-		public CachedThreadPoolBuilder setRejectHanlder(
-				RejectedExecutionHandler rejectHandler) {
+		public CachedThreadPoolBuilder setRejectHanlder(RejectedExecutionHandler rejectHandler) {
 			this.rejectHandler = rejectHandler;
 			return this;
 		}
@@ -277,12 +294,12 @@ public class ThreadPoolUtil {
 				rejectHandler = defaultRejectHandler;
 			}
 
-			return new ThreadPoolExecutor(minSize, maxSize, keepAliveSecs,
-					TimeUnit.SECONDS, new SynchronousQueue<>(), threadFactory,
-					rejectHandler);
+			return new ThreadPoolExecutor(minSize, maxSize, keepAliveSecs, TimeUnit.SECONDS, new SynchronousQueue<>(),
+					threadFactory, rejectHandler);
 		}
 
 	}
+
 
 	/*
 	 * 创建ScheduledPool.
@@ -317,12 +334,12 @@ public class ThreadPoolUtil {
 		}
 
 		public ScheduledThreadPoolExecutor build() {
-			threadFactory = createThreadFactory(threadFactory, threadNamePrefix,
-					Boolean.TRUE);
+			threadFactory = createThreadFactory(threadFactory, threadNamePrefix, Boolean.TRUE);
 			return new ScheduledThreadPoolExecutor(poolSize, threadFactory);
 		}
 
 	}
+
 
 	/**
 	 * 从Tomcat移植过来的可扩展可用Queue缓存任务的ThreadPool
@@ -373,8 +390,7 @@ public class ThreadPoolUtil {
 		/**
 		 * 与threadNamePrefix互斥, 优先使用ThreadFactory
 		 */
-		public QueuableCachedThreadPoolBuilder setThreadFactory(
-				ThreadFactory threadFactory) {
+		public QueuableCachedThreadPoolBuilder setThreadFactory(ThreadFactory threadFactory) {
 			this.threadFactory = threadFactory;
 			return this;
 		}
@@ -382,8 +398,7 @@ public class ThreadPoolUtil {
 		/**
 		 * 与threadFactory互斥, 优先使用ThreadFactory
 		 */
-		public QueuableCachedThreadPoolBuilder setThreadNamePrefix(
-				String threadNamePrefix) {
+		public QueuableCachedThreadPoolBuilder setThreadNamePrefix(String threadNamePrefix) {
 			this.threadNamePrefix = threadNamePrefix;
 			return this;
 		}
@@ -396,8 +411,7 @@ public class ThreadPoolUtil {
 			return this;
 		}
 
-		public QueuableCachedThreadPoolBuilder setRejectHanlder(
-				RejectedExecutionHandler rejectHandler) {
+		public QueuableCachedThreadPoolBuilder setRejectHanlder(RejectedExecutionHandler rejectHandler) {
 			this.rejectHandler = rejectHandler;
 			return this;
 		}
@@ -410,13 +424,12 @@ public class ThreadPoolUtil {
 				rejectHandler = defaultRejectHandler;
 			}
 
-			return new QueuableCachedThreadPool(minSize, maxSize, keepAliveSecs,
-					TimeUnit.SECONDS,
-					new QueuableCachedThreadPool.ControllableQueue(queueSize),
-					threadFactory, rejectHandler);
+			return new QueuableCachedThreadPool(minSize, maxSize, keepAliveSecs, TimeUnit.SECONDS,
+					new QueuableCachedThreadPool.ControllableQueue(queueSize), threadFactory, rejectHandler);
 		}
 
 	}
+
 
 	/**
 	 * From Tomcat 8.5.6, 传统的FixedThreadPool有Queue但线程数量不变，而CachedThreadPool线程数可变但没有Queue
@@ -425,8 +438,7 @@ public class ThreadPoolUtil {
 	 * https://github
 	 * .com/apache/tomcat/blob/trunk/java/org/apache/tomcat/util/threads/ThreadPoolExecutor.java
 	 */
-	public static class QueuableCachedThreadPool
-			extends java.util.concurrent.ThreadPoolExecutor {
+	public static class QueuableCachedThreadPool extends java.util.concurrent.ThreadPoolExecutor {
 
 		/**
 		 * The number of tasks submitted but not yet finished. This includes tasks in the
@@ -436,12 +448,10 @@ public class ThreadPoolUtil {
 		 */
 		private final AtomicInteger submittedCount = new AtomicInteger(0);
 
-		public QueuableCachedThreadPool(int corePoolSize, int maximumPoolSize,
-				long keepAliveTime, TimeUnit unit,
-				QueuableCachedThreadPool.ControllableQueue workQueue,
-				ThreadFactory threadFactory, RejectedExecutionHandler handler) {
-			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-					threadFactory, handler);
+		public QueuableCachedThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
+				QueuableCachedThreadPool.ControllableQueue workQueue, ThreadFactory threadFactory,
+				RejectedExecutionHandler handler) {
+			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 			workQueue.setParent(this);
 			prestartAllCoreThreads(); // NOSOANR
 		}
@@ -520,18 +530,15 @@ public class ThreadPoolUtil {
 
 			public boolean force(Runnable o) {
 				if (parent.isShutdown()) {
-					throw new RejectedExecutionException(
-							"Executor not running, can't force a command into the queue");
+					throw new RejectedExecutionException("Executor not running, can't force a command into the queue");
 				}
 				return super.offer(o); // forces the item onto the queue, to be used if
 										// the task is rejected
 			}
 
-			public boolean force(Runnable o, long timeout, TimeUnit unit)
-					throws InterruptedException {
+			public boolean force(Runnable o, long timeout, TimeUnit unit) throws InterruptedException {
 				if (parent.isShutdown()) {
-					throw new RejectedExecutionException(
-							"Executor not running, can't force a command into the queue");
+					throw new RejectedExecutionException("Executor not running, can't force a command into the queue");
 				}
 				return super.offer(o, timeout, unit); // forces the item onto the queue,
 														// to be used if the task is
@@ -562,27 +569,6 @@ public class ThreadPoolUtil {
 
 		}
 
-	}
-
-	/**
-	 * 优先使用threadFactory，否则如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
-	 */
-	private static ThreadFactory createThreadFactory(ThreadFactory threadFactory,
-			String threadNamePrefix, Boolean daemon) {
-		if (threadFactory != null) {
-			return threadFactory;
-		}
-
-		if (threadNamePrefix != null) {
-			if (daemon != null) {
-				return ThreadPoolUtil.buildThreadFactory(threadNamePrefix, daemon);
-			}
-			else {
-				return ThreadPoolUtil.buildThreadFactory(threadNamePrefix);
-			}
-		}
-
-		return Executors.defaultThreadFactory();
 	}
 
 }

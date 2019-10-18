@@ -11,8 +11,7 @@ public class NumberUtilTest {
 	@Test
 	public void toBytes() {
 		byte[] bytes = NumberUtil.toBytes(1);
-		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0,
-				(byte) 1);
+		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0, (byte) 1);
 
 		bytes = NumberUtil.toBytes(257);
 		assertThat(bytes).containsSequence((byte) 0, (byte) 0, (byte) 1, (byte) 1);
@@ -203,10 +202,8 @@ public class NumberUtilTest {
 	@Test
 	public void numberToEnWords() {
 		Assertions.assertEquals("One Hundred Twenty Three", NumberUtil.intToEnWords(123));
-		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five",
-				NumberUtil.intToEnWords(12345));
-		Assertions.assertEquals(
-				"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five", NumberUtil.intToEnWords(12345));
+		Assertions.assertEquals("One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
 				NumberUtil.intToEnWords(1234567));
 		Assertions.assertEquals(
 				"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",

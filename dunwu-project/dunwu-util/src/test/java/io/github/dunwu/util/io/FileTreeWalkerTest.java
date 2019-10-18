@@ -1,13 +1,13 @@
 package io.github.dunwu.util.io;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.dunwu.util.number.RandomUtil;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import io.github.dunwu.util.number.RandomUtil;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileTreeWalkerTest {
 
@@ -21,17 +21,13 @@ public class FileTreeWalkerTest {
 		List<File> files = FileTreeWalker.listFile(tmpDir);
 		assertThat(files).hasSize(0);
 
-		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(),
-				"tmp-" + RandomUtil.nextInt()) + ".tmp");
-		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(),
-				"tmp-" + RandomUtil.nextInt()) + ".abc");
+		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(), "tmp-" + RandomUtil.nextInt()) + ".tmp");
+		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(), "tmp-" + RandomUtil.nextInt()) + ".abc");
 
-		String childDir = FilePathUtil.concat(tmpDir.getAbsolutePath(),
-				"tmp-" + RandomUtil.nextInt());
+		String childDir = FilePathUtil.concat(tmpDir.getAbsolutePath(), "tmp-" + RandomUtil.nextInt());
 		FileUtil.makesureDirExists(childDir);
 
-		FileUtil.touch(
-				FilePathUtil.concat(childDir, "tmp-" + RandomUtil.nextInt()) + ".tmp");
+		FileUtil.touch(FilePathUtil.concat(childDir, "tmp-" + RandomUtil.nextInt()) + ".tmp");
 
 		all = FileTreeWalker.listAll(tmpDir);
 		assertThat(all).hasSize(5);
@@ -59,12 +55,10 @@ public class FileTreeWalkerTest {
 		assertThat(files).hasSize(0);
 
 		// antpath
-		files = FileTreeWalker.listFileWithAntPath(tmpDir,
-				"**" + File.separator + "*.tmp");
+		files = FileTreeWalker.listFileWithAntPath(tmpDir, "**" + File.separator + "*.tmp");
 		assertThat(files).hasSize(2);
 
-		files = FileTreeWalker.listFileWithAntPath(tmpDir,
-				"*" + File.separator + "*.tmp");
+		files = FileTreeWalker.listFileWithAntPath(tmpDir, "*" + File.separator + "*.tmp");
 		assertThat(files).hasSize(1);
 
 		files = FileTreeWalker.listFileWithAntPath(tmpDir, "*.tp");

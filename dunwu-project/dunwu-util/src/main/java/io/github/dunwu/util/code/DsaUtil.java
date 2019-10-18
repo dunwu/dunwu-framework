@@ -12,8 +12,30 @@ public class DsaUtil {
 
 	public static final ISignature DSA = DsaDigest.getInstance(DsaTypeEnum.DSA);
 
-	public static final ISignature SHA1_WITH_DSA = DsaDigest
-			.getInstance(DsaTypeEnum.SHA1_WITH_DSA);
+	public static final ISignature SHA1_WITH_DSA = DsaDigest.getInstance(DsaTypeEnum.SHA1_WITH_DSA);
+
+	/**
+	 * 数字摘要类型
+	 */
+	public enum DsaTypeEnum {
+
+		/**
+		 * DSA 数字摘要算法
+		 */
+		DSA("DSA"), SHA1_WITH_DSA("SHA1withDSA");
+
+		private final String value;
+
+		DsaTypeEnum(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+	}
+
 
 	public static class DsaDigest implements ISignature {
 
@@ -68,8 +90,7 @@ public class DsaUtil {
 		}
 
 		@Override
-		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
-				throws Exception {
+		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext) throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_DSA);
@@ -96,28 +117,6 @@ public class DsaUtil {
 				return this.keyPair.getPublic().getEncoded();
 			}
 			return null;
-		}
-
-	}
-
-	/**
-	 * 数字摘要类型
-	 */
-	public enum DsaTypeEnum {
-
-		/**
-		 * DSA 数字摘要算法
-		 */
-		DSA("DSA"), SHA1_WITH_DSA("SHA1withDSA");
-
-		private final String value;
-
-		DsaTypeEnum(String value) {
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
 		}
 
 	}

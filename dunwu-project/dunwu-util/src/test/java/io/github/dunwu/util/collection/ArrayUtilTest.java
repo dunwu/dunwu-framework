@@ -19,13 +19,11 @@ public class ArrayUtilTest {
 		Arrays.sort(arrays);
 		assertThat(arrays).containsExactly("a", "b", "c", "d", "e", "g", "i");
 		ArrayUtil.shuffle(arrays);
-		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-				"should not be equal to origin array");
+		Assertions.assertFalse(Arrays.equals(arrays, arraysClone), "should not be equal to origin array");
 		// System.out.println(Arrays.toString(arrays));
 		Arrays.sort(arrays);
 		ArrayUtil.shuffle(arrays, RandomUtil.secureRandom());
-		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-				"should not be equal to origin array");
+		Assertions.assertFalse(Arrays.equals(arrays, arraysClone), "should not be equal to origin array");
 	}
 
 	@Test

@@ -1,13 +1,12 @@
 package io.github.dunwu.util.collection;
 
-import static org.assertj.core.api.Assertions.*;
+import com.google.common.collect.Ordering;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Ordering;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CollectionUtilTest {
 
@@ -64,10 +63,8 @@ public class CollectionUtilTest {
 		assertThat(CollectionUtil.minAndMax(list).getLeft()).isEqualTo(1);
 		assertThat(CollectionUtil.minAndMax(list).getRight()).isEqualTo(101);
 
-		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getLeft())
-				.isEqualTo(1);
-		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getRight())
-				.isEqualTo(101);
+		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getLeft()).isEqualTo(1);
+		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getRight()).isEqualTo(101);
 	}
 
 	@Test
@@ -92,11 +89,9 @@ public class CollectionUtilTest {
 		List<Integer> list = ArrayUtil.asList(3, 5, 7, 4, 2, 6, 9);
 
 		assertThat(CollectionUtil.top(list, 3)).containsExactly(9, 7, 6);
-		assertThat(CollectionUtil.top(list, 3, Ordering.natural().reverse()))
-				.containsExactly(2, 3, 4);
+		assertThat(CollectionUtil.top(list, 3, Ordering.natural().reverse())).containsExactly(2, 3, 4);
 		assertThat(CollectionUtil.bottom(list, 3)).containsExactly(2, 3, 4);
-		assertThat(CollectionUtil.bottom(list, 3, Ordering.natural().reverse()))
-				.containsExactly(9, 7, 6);
+		assertThat(CollectionUtil.bottom(list, 3, Ordering.natural().reverse())).containsExactly(9, 7, 6);
 	}
 
 }

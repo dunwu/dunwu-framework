@@ -35,28 +35,21 @@ public class RsaUtilTest {
 		doTestSignAndVerify(RsaUtil.SHA1_WITH_RSA);
 	}
 
-	private void doTestEncryptByPublicAndDecryptByPrivate(RsaUtil.RsaDigest rsaDigest)
-			throws Exception {
-		byte[] ciphertext = rsaDigest.encryptByPublicKey(TEST_CONTENT,
-				rsaDigest.getPublicKey());
-		byte[] plaintext = rsaDigest.decryptByPrivateKey(ciphertext,
-				rsaDigest.getPrivateKey());
+	private void doTestEncryptByPublicAndDecryptByPrivate(RsaUtil.RsaDigest rsaDigest) throws Exception {
+		byte[] ciphertext = rsaDigest.encryptByPublicKey(TEST_CONTENT, rsaDigest.getPublicKey());
+		byte[] plaintext = rsaDigest.decryptByPrivateKey(ciphertext, rsaDigest.getPrivateKey());
 		Assertions.assertArrayEquals(TEST_CONTENT, plaintext);
 	}
 
-	private void doTestEncryptByPrivateAndDecryptByPublic(RsaUtil.RsaDigest rsaDigest)
-			throws Exception {
-		byte[] ciphertext = rsaDigest.encryptByPrivateKey(TEST_CONTENT,
-				rsaDigest.getPrivateKey());
-		byte[] plaintext = rsaDigest.decryptByPublicKey(ciphertext,
-				rsaDigest.getPublicKey());
+	private void doTestEncryptByPrivateAndDecryptByPublic(RsaUtil.RsaDigest rsaDigest) throws Exception {
+		byte[] ciphertext = rsaDigest.encryptByPrivateKey(TEST_CONTENT, rsaDigest.getPrivateKey());
+		byte[] plaintext = rsaDigest.decryptByPublicKey(ciphertext, rsaDigest.getPublicKey());
 		Assertions.assertArrayEquals(TEST_CONTENT, plaintext);
 	}
 
 	private void doTestSignAndVerify(RsaUtil.RsaDigest rsaDigest) throws Exception {
 		byte[] ciphertext = rsaDigest.sign(TEST_CONTENT, rsaDigest.getPrivateKey());
-		boolean verify = rsaDigest.verify(TEST_CONTENT, rsaDigest.getPublicKey(),
-				ciphertext);
+		boolean verify = rsaDigest.verify(TEST_CONTENT, rsaDigest.getPublicKey(), ciphertext);
 		Assertions.assertTrue(verify);
 	}
 

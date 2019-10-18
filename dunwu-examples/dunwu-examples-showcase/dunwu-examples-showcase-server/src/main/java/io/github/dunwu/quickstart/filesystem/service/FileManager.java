@@ -76,7 +76,7 @@ public interface FileManager {
 		}
 
 		if (StringUtils.isBlank(uploadFileDTO.getFileName())) {
-			String fileName = IdUtil.uuid2() + FileSystemConstant.FILE_SEPARATOR + extension.toLowerCase();
+			String fileName = IdUtil.randomUuid2() + FileSystemConstant.FILE_SEPARATOR + extension.toLowerCase();
 			uploadFileDTO.setFileName(fileName);
 		}
 

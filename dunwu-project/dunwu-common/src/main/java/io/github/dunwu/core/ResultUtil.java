@@ -18,8 +18,7 @@ public class ResultUtil {
 	 * @return Result
 	 */
 	public static BaseResult successBaseResult() {
-		return new BaseResult(true, AppCode.SUCCESS.getCode(),
-				AppCode.SUCCESS.getMessage());
+		return new BaseResult(true, AppCode.SUCCESS.getCode(), AppCode.SUCCESS.getMessage());
 	}
 
 	/**
@@ -46,8 +45,7 @@ public class ResultUtil {
 	 * @return Result
 	 */
 	public static BaseResult failBaseResult(ErrorCode errorCode, Object... params) {
-		return new BaseResult(false, errorCode.getCode(), errorCode.getTemplate(),
-				params);
+		return new BaseResult(false, errorCode.getCode(), errorCode.getTemplate(), params);
 	}
 
 	/**
@@ -77,8 +75,7 @@ public class ResultUtil {
 	 * @param params 错误信息参数
 	 * @return Result
 	 */
-	public static BaseResult failBaseResult(String code, String template,
-			Object... params) {
+	public static BaseResult failBaseResult(String code, String template, Object... params) {
 		return new BaseResult(false, code, template, params);
 	}
 
@@ -89,8 +86,7 @@ public class ResultUtil {
 	 * @return DataResult
 	 */
 	public static <T> DataResult<T> successDataResult(T data) {
-		return new DataResult<>(data, true, AppCode.SUCCESS.getCode(),
-				AppCode.SUCCESS.getMessage());
+		return new DataResult<>(data, true, AppCode.SUCCESS.getCode(), AppCode.SUCCESS.getMessage());
 	}
 
 	/**
@@ -140,8 +136,7 @@ public class ResultUtil {
 	 * @param params 错误信息参数
 	 * @return Result
 	 */
-	public static <T> DataResult<T> failDataResult(String code, String template,
-			Object... params) {
+	public static <T> DataResult<T> failDataResult(String code, String template, Object... params) {
 		return new DataResult<>(null, false, code, template, params);
 	}
 
@@ -152,8 +147,7 @@ public class ResultUtil {
 	 * @return Result
 	 */
 	public static <T> DataListResult<T> successDataListResult(Collection<T> list) {
-		return new DataListResult<>(list, true, AppCode.SUCCESS.getCode(),
-				AppCode.SUCCESS.getMessage());
+		return new DataListResult<>(list, true, AppCode.SUCCESS.getCode(), AppCode.SUCCESS.getMessage());
 	}
 
 	/**
@@ -193,8 +187,7 @@ public class ResultUtil {
 	 * @param <T> 数据类型
 	 * @return DataListResult
 	 */
-	public static <T> DataListResult<T> failDataListResult(String code,
-			List<String> messages) {
+	public static <T> DataListResult<T> failDataListResult(String code, List<String> messages) {
 		return new DataListResult<>(null, false, code, messages);
 	}
 
@@ -206,8 +199,7 @@ public class ResultUtil {
 	 * @param <T> 数据类型
 	 * @return DataListResult
 	 */
-	public static <T> DataListResult<T> failDataListResult(String code, String template,
-			Object... params) {
+	public static <T> DataListResult<T> failDataListResult(String code, String template, Object... params) {
 		return new DataListResult<>(null, false, code, template, params);
 	}
 
@@ -218,8 +210,7 @@ public class ResultUtil {
 	 * @return PageResult
 	 */
 	public static <T> PageResult<T> successPageResult(Pagination<T> page) {
-		return new PageResult<>(page, true, AppCode.SUCCESS.getCode(),
-				AppCode.SUCCESS.getMessage());
+		return new PageResult<>(page, true, AppCode.SUCCESS.getCode(), AppCode.SUCCESS.getMessage());
 	}
 
 	/**
@@ -270,8 +261,7 @@ public class ResultUtil {
 	 * @param params 信息参数
 	 * @return PageResult
 	 */
-	public static <T> PageResult<T> failPageResult(String code, String template,
-			Object... params) {
+	public static <T> PageResult<T> failPageResult(String code, String template, Object... params) {
 		return new PageResult<>(null, false, code, template, params);
 	}
 

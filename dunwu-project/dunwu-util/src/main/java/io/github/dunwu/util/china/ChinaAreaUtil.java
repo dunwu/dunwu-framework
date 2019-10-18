@@ -78,8 +78,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
-				.orElse(null);
+		return provinces.stream().filter(item -> item.getName().equals(code)).findAny().orElse(null);
 	}
 
 	/**
@@ -92,8 +91,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return provinces.stream().filter(item -> item.getName().equals(name)).findAny()
-				.orElse(null);
+		return provinces.stream().filter(item -> item.getName().equals(name)).findAny().orElse(null);
 	}
 
 	/**
@@ -106,8 +104,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return cities.stream().filter(item -> item.getCode().equals(code)).findAny()
-				.orElse(null);
+		return cities.stream().filter(item -> item.getCode().equals(code)).findAny().orElse(null);
 	}
 
 	/**
@@ -120,8 +117,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return cities.stream().filter(item -> item.getName().equals(name)).findAny()
-				.orElse(null);
+		return cities.stream().filter(item -> item.getName().equals(name)).findAny().orElse(null);
 	}
 
 	/**
@@ -134,8 +130,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return counties.stream().filter(item -> item.getCode().equals(code)).findAny()
-				.orElse(null);
+		return counties.stream().filter(item -> item.getCode().equals(code)).findAny().orElse(null);
 	}
 
 	/**
@@ -150,8 +145,7 @@ public class ChinaAreaUtil {
 			return null;
 		}
 
-		return counties.stream().filter(item -> item.getName().equals(name))
-				.collect(Collectors.toSet());
+		return counties.stream().filter(item -> item.getName().equals(name)).collect(Collectors.toSet());
 	}
 
 	private static void parseJsonData(String json) {
@@ -161,8 +155,7 @@ public class ChinaAreaUtil {
 			Province province = new Province();
 			province.setCode(jsonObject.get("code").toString());
 			province.setName(jsonObject.get("name").toString());
-			JSONArray cityArray = JSONArray
-					.parseArray(jsonObject.get("children").toString());
+			JSONArray cityArray = JSONArray.parseArray(jsonObject.get("children").toString());
 			for (int j = 0; j < cityArray.size(); j++) {
 				JSONObject cityObject = cityArray.getJSONObject(j);
 				City city = new City();

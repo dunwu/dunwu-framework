@@ -66,8 +66,7 @@ public class EncodeUtil {
 	 * @return String
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String changeCharset(String text, String newCharset)
-			throws UnsupportedEncodingException {
+	public static String changeCharset(String text, String newCharset) throws UnsupportedEncodingException {
 		if (StringUtils.isBlank(text)) {
 			return text;
 		}

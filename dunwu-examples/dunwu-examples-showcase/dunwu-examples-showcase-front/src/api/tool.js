@@ -47,3 +47,19 @@ export function getTemplateById(params) {
     params
   })
 }
+
+export function generateUuid(params) {
+  return request({
+    url: '/id/generateUuid',
+    method: 'get',
+    params
+  })
+}
+
+export function generateSnowFlakeId(params) {
+  return request({
+    url: '/id/generateSnowFlakeId',
+    method: 'get',
+    params
+  })
+}

@@ -22,6 +22,10 @@ class AssertionsTests {
 		person = new Person("John", "Doe");
 	}
 
+	private static String greeting() {
+		return "Hello, World!";
+	}
+
 	@Test
 	void standardAssertions() {
 		assertEquals(2, 2);
@@ -113,9 +117,6 @@ class AssertionsTests {
 		});
 	}
 
-	private static String greeting() {
-		return "Hello, World!";
-	}
 
 	static class Person {
 

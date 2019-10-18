@@ -1,10 +1,9 @@
 package io.github.dunwu.util.io;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.io.Files;
 import io.github.dunwu.util.base.Platforms;
 import io.github.dunwu.util.text.MoreStringUtil;
-
-import com.google.common.io.Files;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 关于文件路径的工具集. 这个类只适合处理纯字符串的路径，如果是File对象或者Path对象的路径处理，建议直接使用Path类的方法。
@@ -18,10 +17,8 @@ public class FilePathUtil {
 	 */
 	public static String normalizePath(String path) {
 		if (Platforms.FILE_PATH_SEPARATOR_CHAR == Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR
-				&& StringUtils.indexOf(path,
-						Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR) != -1) {
-			return StringUtils.replaceChars(path,
-					Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR,
+				&& StringUtils.indexOf(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR) != -1) {
+			return StringUtils.replaceChars(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR,
 					Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR);
 		}
 		return path;
@@ -48,14 +45,12 @@ public class FilePathUtil {
 			concatName.append(baseName).append(appendName[0]);
 		}
 		else {
-			concatName.append(baseName).append(Platforms.FILE_PATH_SEPARATOR_CHAR)
-					.append(appendName[0]);
+			concatName.append(baseName).append(Platforms.FILE_PATH_SEPARATOR_CHAR).append(appendName[0]);
 		}
 
 		if (appendName.length > 1) {
 			for (int i = 1; i < appendName.length; i++) {
-				concatName.append(Platforms.FILE_PATH_SEPARATOR_CHAR)
-						.append(appendName[i]);
+				concatName.append(Platforms.FILE_PATH_SEPARATOR_CHAR).append(appendName[i]);
 			}
 		}
 
@@ -72,8 +67,7 @@ public class FilePathUtil {
 			return parentPath;
 		}
 
-		parentPath = MoreStringUtil.removeEnd(parentPath,
-				Platforms.FILE_PATH_SEPARATOR_CHAR);
+		parentPath = MoreStringUtil.removeEnd(parentPath, Platforms.FILE_PATH_SEPARATOR_CHAR);
 
 		int idx = parentPath.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
 		if (idx >= 0) {

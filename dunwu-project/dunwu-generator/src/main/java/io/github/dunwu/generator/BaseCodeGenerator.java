@@ -44,8 +44,7 @@ public abstract class BaseCodeGenerator {
 
 		// 将配置项注入 AutoGenerator
 		AutoGenerator generator = new AutoGenerator();
-		generator.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc)
-				.setStrategy(sc).setCfg(cfg).setTemplate(tc)
+		generator.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc).setStrategy(sc).setCfg(cfg).setTemplate(tc)
 				.setTemplateEngine(new FreemarkerTemplateEngine());
 		generator.execute();
 	}
@@ -84,8 +83,7 @@ public abstract class BaseCodeGenerator {
 	 * @param pc PackageConfig
 	 * @return {@link StrategyConfig}
 	 */
-	public abstract StrategyConfig getStrategyConfig(Properties properties,
-			PackageConfig pc);
+	public abstract StrategyConfig getStrategyConfig(Properties properties, PackageConfig pc);
 
 	/**
 	 * 自定义配置
@@ -93,8 +91,7 @@ public abstract class BaseCodeGenerator {
 	 * @param pc PackageConfig
 	 * @return {@link InjectionConfig}
 	 */
-	public abstract InjectionConfig getInjectionConfig(Properties properties,
-			PackageConfig pc);
+	public abstract InjectionConfig getInjectionConfig(Properties properties, PackageConfig pc);
 
 	/**
 	 * 模板配置

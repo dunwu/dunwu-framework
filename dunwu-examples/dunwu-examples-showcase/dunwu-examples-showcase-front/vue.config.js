@@ -46,11 +46,11 @@ module.exports = {
           ['^' + '/dev-api']: ''
         }
       },
-      '/preview-api': {
+      '/stage-api': {
         target: `http://localhost:9527`,
         changeOrigin: true,
         pathRewrite: {
-          ['^' + '/preview-api']: ''
+          ['^' + '/stage-api']: ''
         }
       }
     },

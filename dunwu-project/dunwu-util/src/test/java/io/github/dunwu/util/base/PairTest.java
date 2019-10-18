@@ -1,10 +1,10 @@
 package io.github.dunwu.util.base;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import io.github.dunwu.util.base.type.Pair;
 import io.github.dunwu.util.base.type.Triple;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PairTest {
 
@@ -36,8 +36,7 @@ public class PairTest {
 		assertThat(triple.equals(triple4)).isFalse();
 		assertThat(triple.equals(pair)).isFalse();
 		assertThat(triple.hashCode() != triple2.hashCode()).isTrue();
-		assertThat(triple.toString())
-				.isEqualTo("Triple [left=haha, middle=hehe, right=1]");
+		assertThat(triple.toString()).isEqualTo("Triple [left=haha, middle=hehe, right=1]");
 
 		assertThat(triple.getLeft()).isEqualTo("haha");
 		assertThat(triple.getMiddle()).isEqualTo("hehe");

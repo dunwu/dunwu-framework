@@ -1,16 +1,10 @@
 package io.github.dunwu.util.collection;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
+import com.google.common.collect.Sets;
 import io.github.dunwu.util.base.annotation.Nullable;
 import io.github.dunwu.util.collection.type.ConcurrentHashSet;
 
-import com.google.common.collect.Sets;
+import java.util.*;
 
 /**
  * 关于Set的工具集合. 1. 各种Set的创建函数, 包括ConcurrentHashSet 2. 集合运算函数(交集，并集等,from guava)
@@ -63,8 +57,7 @@ public class SetUtil {
 	 * 根据等号左边的类型，构造类型正确的TreeSet, 并设置comparator.
 	 * @see com.google.common.collect.Sets#newTreeSet(Comparator)
 	 */
-	public static <T> TreeSet<T> newSortedSet(
-			@Nullable Comparator<? super T> comparator) {
+	public static <T> TreeSet<T> newSortedSet(@Nullable Comparator<? super T> comparator) {
 		return Sets.newTreeSet(comparator);
 	}
 
@@ -123,8 +116,7 @@ public class SetUtil {
 	 * set1, set2的并集（在set1或set2的对象）的只读view，不复制产生新的Set对象.
 	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
-	public static <E> Set<E> unionView(final Set<? extends E> set1,
-			final Set<? extends E> set2) {
+	public static <E> Set<E> unionView(final Set<? extends E> set1, final Set<? extends E> set2) {
 		return Sets.union(set1, set2);
 	}
 
@@ -148,8 +140,7 @@ public class SetUtil {
 	 * set1, set2的补集（在set1或set2中，但不在交集中的对象，又叫反交集）的只读view，不复制产生新的Set对象.
 	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
-	public static <E> Set<E> disjointView(final Set<? extends E> set1,
-			final Set<? extends E> set2) {
+	public static <E> Set<E> disjointView(final Set<? extends E> set1, final Set<? extends E> set2) {
 		return Sets.symmetricDifference(set1, set2);
 	}
 

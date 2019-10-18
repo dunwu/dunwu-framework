@@ -1,16 +1,16 @@
 package io.github.dunwu.util.number;
 
+import io.github.dunwu.util.base.MoreValidate;
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.Validate;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.Validate;
-import io.github.dunwu.util.base.MoreValidate;
 
 /**
  * 随机数工具集. 1. 获取无锁的ThreadLocalRandom, 性能较佳的SecureRandom 2.
@@ -222,8 +222,7 @@ public class RandomUtil {
 	 * 随机字母或数字，固定长度
 	 */
 	public static String randomStringFixLength(int length) {
-		return RandomStringUtils.random(length, 0, 0, true, true, null,
-				threadLocalRandom());
+		return RandomStringUtils.random(length, 0, 0, true, true, null, threadLocalRandom());
 	}
 
 	/**
@@ -237,25 +236,21 @@ public class RandomUtil {
 	 * 随机字母或数字，随机长度
 	 */
 	public static String randomStringRandomLength(int minLength, int maxLength) {
-		return RandomStringUtils.random(nextInt(minLength, maxLength), 0, 0, true, true,
-				null, threadLocalRandom());
+		return RandomStringUtils.random(nextInt(minLength, maxLength), 0, 0, true, true, null, threadLocalRandom());
 	}
 
 	/**
 	 * 随机字母或数字，随机长度
 	 */
-	public static String randomStringRandomLength(Random random, int minLength,
-			int maxLength) {
-		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 0, 0, true,
-				true, null, random);
+	public static String randomStringRandomLength(Random random, int minLength, int maxLength) {
+		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 0, 0, true, true, null, random);
 	}
 
 	/**
 	 * 随机字母，固定长度
 	 */
 	public static String randomLetterFixLength(int length) {
-		return RandomStringUtils.random(length, 0, 0, true, false, null,
-				threadLocalRandom());
+		return RandomStringUtils.random(length, 0, 0, true, false, null, threadLocalRandom());
 	}
 
 	/**
@@ -269,25 +264,21 @@ public class RandomUtil {
 	 * 随机字母，随机长度
 	 */
 	public static String randomLetterRandomLength(int minLength, int maxLength) {
-		return RandomStringUtils.random(nextInt(minLength, maxLength), 0, 0, true, false,
-				null, threadLocalRandom());
+		return RandomStringUtils.random(nextInt(minLength, maxLength), 0, 0, true, false, null, threadLocalRandom());
 	}
 
 	/**
 	 * 随机字母，随机长度
 	 */
-	public static String randomLetterRandomLength(Random random, int minLength,
-			int maxLength) {
-		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 0, 0, true,
-				false, null, random);
+	public static String randomLetterRandomLength(Random random, int minLength, int maxLength) {
+		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 0, 0, true, false, null, random);
 	}
 
 	/**
 	 * 随机ASCII字符(含字母，数字及其他符号)，固定长度
 	 */
 	public static String randomAsciiFixLength(int length) {
-		return RandomStringUtils.random(length, 32, 127, false, false, null,
-				threadLocalRandom());
+		return RandomStringUtils.random(length, 32, 127, false, false, null, threadLocalRandom());
 	}
 
 	/**
@@ -301,17 +292,15 @@ public class RandomUtil {
 	 * 随机ASCII字符(含字母，数字及其他符号)，随机长度
 	 */
 	public static String randomAsciiRandomLength(int minLength, int maxLength) {
-		return RandomStringUtils.random(nextInt(minLength, maxLength), 32, 127, false,
-				false, null, threadLocalRandom());
+		return RandomStringUtils.random(nextInt(minLength, maxLength), 32, 127, false, false, null,
+				threadLocalRandom());
 	}
 
 	/**
 	 * 随机ASCII字符(含字母，数字及其他符号)，随机长度
 	 */
-	public static String randomAsciiRandomLength(Random random, int minLength,
-			int maxLength) {
-		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 32, 127,
-				false, false, null, random);
+	public static String randomAsciiRandomLength(Random random, int minLength, int maxLength) {
+		return RandomStringUtils.random(nextInt(random, minLength, maxLength), 32, 127, false, false, null, random);
 	}
 
 	public static <E extends Enum<E>> E randomEnum(final Class<E> enumClass) {

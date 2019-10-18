@@ -1,5 +1,6 @@
 package io.github.dunwu.util.code;
 
+import io.github.dunwu.util.code.support.SnowFlakeId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,42 +15,45 @@ public class IdUtilTest {
 	public static final int COUNT = 100000;
 
 	@Test
-	public void test() {
-		System.out.println("randomUuid: " + IdUtil.randomUuid());
-		System.out.println("uuid2: " + IdUtil.uuid2());
-		System.out.println("randomLong: " + IdUtil.randomLong());
-		System.out.println("randomBase64: " + IdUtil.randomBase64(8));
-	}
-
-	@Test
-	public void randomId8() {
+	void randomUuid() {
+		long begin = System.currentTimeMillis();
 		Set<String> ids = new HashSet<>();
 		for (int i = 0; i < COUNT; i++) {
-			String id = IdUtil.randomId8();
+			String id = IdUtil.randomUuid();
 			ids.add(id);
-			// System.out.println("base32Hex: " + id);
 		}
+		long end = System.currentTimeMillis();
+		System.out.println("耗时：" + (end - begin));
 		Assertions.assertEquals(ids.size(), COUNT);
 	}
 
 	@Test
-	void testDistributedId() {
+	void randomUuid2() {
+		long begin = System.currentTimeMillis();
+		Set<String> ids = new HashSet<>();
+		for (int i = 0; i < COUNT; i++) {
+			String id = IdUtil.randomUuid2();
+			ids.add(id);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("耗时：" + (end - begin));
+		Assertions.assertEquals(ids.size(), COUNT);
+	}
+
+	@Test
+	void testSnowFlakeId() {
+		SnowFlakeId snowFlakeId = IdUtil.newSnowFlakeId(2, 3);
 		long begin = System.currentTimeMillis();
 		Set<Long> set = new HashSet<>();
 		for (int i = 0; i < COUNT; i++) {
-			IdUtil.DistributedId worker = new IdUtil.DistributedId(1, 1, i);
-			long id = worker.nextId();
-			set.add(id);
-			try {
-				Thread.sleep(1);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			set.add(snowFlakeId.generate());
 		}
-		Assertions.assertEquals(set.size(), COUNT);
 		long end = System.currentTimeMillis();
-		System.out.println("[DistributedId] time: " + (end - begin) + " ms");
+		System.out.println("耗时：" + (end - begin));
+		Assertions.assertEquals(set.size(), COUNT);
+		set.forEach(item -> {
+			System.out.println(item.toString());
+		});
 	}
 
 }

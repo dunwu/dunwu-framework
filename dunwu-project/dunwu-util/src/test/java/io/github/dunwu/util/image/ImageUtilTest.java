@@ -19,8 +19,7 @@ import java.util.List;
 class ImageUtilTest {
 
 	static final String[] INPUT_FILE = { "D:\\Temp\\logo.png", "D:\\Temp\\logo2.png" };
-	static final String[] OUTPUT_FILE = { "D:\\Temp\\new-logo.png",
-			"D:\\Temp\\new-logo2.png" };
+	static final String[] OUTPUT_FILE = { "D:\\Temp\\new-logo.png", "D:\\Temp\\new-logo2.png" };
 
 	@Test
 	@Disabled("展示如何输出图片")

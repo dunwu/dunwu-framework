@@ -24,8 +24,7 @@ public class MoreStringUtil extends StringUtils {
 	 * @param expectParts 预估分割后的List大小，初始化数据更精准
 	 * @return 如果为null返回null, 如果为""返回空数组
 	 */
-	public static List<String> split(@Nullable final String str, final char separatorChar,
-			int expectParts) {
+	public static List<String> split(@Nullable final String str, final char separatorChar, int expectParts) {
 		if (str == null) {
 			return null;
 		}

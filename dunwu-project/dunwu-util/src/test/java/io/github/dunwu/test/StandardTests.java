@@ -15,6 +15,11 @@ class StandardTests {
 		System.out.println("call beforeAll()");
 	}
 
+	@AfterAll
+	static void afterAll() {
+		System.out.println("call afterAll()");
+	}
+
 	@BeforeEach
 	void beforeEach() {
 		System.out.println("call beforeEach()");
@@ -41,11 +46,6 @@ class StandardTests {
 	@AfterEach
 	void afterEach() {
 		System.out.println("call afterEach()");
-	}
-
-	@AfterAll
-	static void afterAll() {
-		System.out.println("call afterAll()");
 	}
 
 }

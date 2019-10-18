@@ -33,7 +33,7 @@ export default {
         cc: [],
         subject: 'Dunwu 系统测试邮件',
         text: `<h1 style="text-align: center;">欢迎您使用 Dunwu 发送邮件</h1>
-          <p style="text-align: center; font-size: 15px;"><img src="http://dunwu.test.upcdn.net/images/others/zp.png" /></p>
+          <p style="text-align: center; font-size: 15px;"><img src="http://dunwu.test.upcdn.net/common/logo/zp.png" /></p>
           <ul>
           <li><strong>⭐ <a href="https://github.com/dunwu/dunwu" target="_blank" rel="noopener">Dunwu 项目</a></strong></li>
           <li><strong>🌟 <a href="https://github.com/dunwu" target="_blank" rel="noopener">我的 Github</a></strong></li>

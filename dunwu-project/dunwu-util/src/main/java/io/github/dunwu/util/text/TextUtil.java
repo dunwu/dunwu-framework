@@ -31,8 +31,7 @@ public class TextUtil {
 
 		for (int i = 1; i <= m; i++) {
 			for (int j = 1; j <= n; j++) {
-				if (text.charAt(i - 1) == wildcard.charAt(j - 1)
-						|| wildcard.charAt(j - 1) == CHAR_ANYONE_WILDCARD) {
+				if (text.charAt(i - 1) == wildcard.charAt(j - 1) || wildcard.charAt(j - 1) == CHAR_ANYONE_WILDCARD) {
 					f[i][j] = f[i - 1][j - 1];
 				}
 				if (wildcard.charAt(j - 1) == CHAR_ALL_WILDCARD) {
@@ -66,8 +65,7 @@ public class TextUtil {
 	public static String maskText(String text) {
 		if (RegexUtil.isEmail(text)) {
 			int atIndex = text.indexOf('@');
-			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1))
-					.toLowerCase();
+			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1)).toLowerCase();
 		}
 		else if (RegexUtil.isMobile(text)) {
 			String digits = text.replaceAll("\\D+", "");

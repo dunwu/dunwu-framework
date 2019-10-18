@@ -1,9 +1,9 @@
 package io.github.dunwu.util.number;
 
-import java.math.RoundingMode;
-
 import com.google.common.math.IntMath;
 import com.google.common.math.LongMath;
+
+import java.math.RoundingMode;
 
 /**
  * 数学相关工具类.包括 1. 2的倍数的计算 2. 其他函数如安全的取模，可控制取整方向的相除，乘方，开方等。

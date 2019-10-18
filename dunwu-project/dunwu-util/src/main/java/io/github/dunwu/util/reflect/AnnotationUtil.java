@@ -38,13 +38,11 @@ public class AnnotationUtil {
 		return anns;
 	}
 
-	private static <A extends Annotation> void getSuperAnnotations(
-			Class<A> annotationType, Set<Annotation> visited) {
+	private static <A extends Annotation> void getSuperAnnotations(Class<A> annotationType, Set<Annotation> visited) {
 		Annotation[] anns = annotationType.getDeclaredAnnotations();
 
 		for (Annotation ann : anns) {
-			if (!ann.annotationType().getName().startsWith("java.lang")
-					&& visited.add(ann)) {
+			if (!ann.annotationType().getName().startsWith("java.lang") && visited.add(ann)) {
 				getSuperAnnotations(ann.annotationType(), visited);
 			}
 		}
@@ -54,8 +52,8 @@ public class AnnotationUtil {
 	 * 找出所有标注了该annotation的公共属性，循环遍历父类. 暂未支持Spring风格Annotation继承Annotation copy from
 	 * org.unitils.util.AnnotationUtils
 	 */
-	public static <T extends Annotation> Set<Field> getAnnotatedPublicFields(
-			Class<? extends Object> clazz, Class<T> annotation) {
+	public static <T extends Annotation> Set<Field> getAnnotatedPublicFields(Class<? extends Object> clazz,
+			Class<T> annotation) {
 
 		if (Object.class.equals(clazz)) {
 			return Collections.emptySet();
@@ -77,8 +75,8 @@ public class AnnotationUtil {
 	 * 找出所有标注了该annotation的属性，循环遍历父类，包含private属性. 暂未支持Spring风格Annotation继承Annotation copy
 	 * from org.unitils.util.AnnotationUtils
 	 */
-	public static <T extends Annotation> Set<Field> getAnnotatedFields(
-			Class<? extends Object> clazz, Class<T> annotation) {
+	public static <T extends Annotation> Set<Field> getAnnotatedFields(Class<? extends Object> clazz,
+			Class<T> annotation) {
 		if (Object.class.equals(clazz)) {
 			return Collections.emptySet();
 		}
@@ -97,8 +95,7 @@ public class AnnotationUtil {
 	 * 找出所有标注了该annotation的公共方法(含父类的公共函数)，循环其接口. 暂未支持Spring风格Annotation继承Annotation
 	 * 另，如果子类重载父类的公共函数，父类函数上的annotation不会继承，只有接口上的annotation会被继承.
 	 */
-	public static <T extends Annotation> Set<Method> getAnnotatedPublicMethods(
-			Class<?> clazz, Class<T> annotation) {
+	public static <T extends Annotation> Set<Method> getAnnotatedPublicMethods(Class<?> clazz, Class<T> annotation) {
 		// 已递归到Objebt.class, 停止递归
 		if (Object.class.equals(clazz)) {
 			return Collections.emptySet();
@@ -112,8 +109,7 @@ public class AnnotationUtil {
 
 		for (Method method : methods) {
 			// 如果当前方法有标注，或定义了该方法的所有接口有标注
-			if (method.getAnnotation(annotation) != null
-					|| searchOnInterfaces(method, annotation, ifcs)) {
+			if (method.getAnnotation(annotation) != null || searchOnInterfaces(method, annotation, ifcs)) {
 				annotatedMethods.add(method);
 			}
 		}
@@ -121,12 +117,11 @@ public class AnnotationUtil {
 		return annotatedMethods;
 	}
 
-	private static <T extends Annotation> boolean searchOnInterfaces(Method method,
-			Class<T> annotationType, List<Class<?>> ifcs) {
+	private static <T extends Annotation> boolean searchOnInterfaces(Method method, Class<T> annotationType,
+			List<Class<?>> ifcs) {
 		for (Class<?> iface : ifcs) {
 			try {
-				Method equivalentMethod = iface.getMethod(method.getName(),
-						method.getParameterTypes());
+				Method equivalentMethod = iface.getMethod(method.getName(), method.getParameterTypes());
 				if (equivalentMethod.getAnnotation(annotationType) != null) {
 					return true;
 				}

@@ -1,8 +1,8 @@
 package io.github.dunwu.util.number;
 
-import static org.assertj.core.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RandomUtilTest {
 
@@ -67,38 +67,29 @@ public class RandomUtilTest {
 		System.out.println(RandomUtil.randomStringFixLength(5));
 		System.out.println(RandomUtil.randomStringRandomLength(5, 10));
 
-		System.out.println(
-				RandomUtil.randomStringFixLength(RandomUtil.threadLocalRandom(), 5));
-		System.out.println(RandomUtil
-				.randomStringRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
+		System.out.println(RandomUtil.randomStringFixLength(RandomUtil.threadLocalRandom(), 5));
+		System.out.println(RandomUtil.randomStringRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
 
 		assertThat(RandomUtil.randomStringFixLength(5)).hasSize(5);
-		assertThat(RandomUtil.randomStringFixLength(RandomUtil.threadLocalRandom(), 5))
-				.hasSize(5);
+		assertThat(RandomUtil.randomStringFixLength(RandomUtil.threadLocalRandom(), 5)).hasSize(5);
 
 		System.out.println(RandomUtil.randomLetterFixLength(5));
 		System.out.println(RandomUtil.randomLetterRandomLength(5, 10));
 
-		System.out.println(
-				RandomUtil.randomLetterFixLength(RandomUtil.threadLocalRandom(), 5));
-		System.out.println(RandomUtil
-				.randomLetterRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
+		System.out.println(RandomUtil.randomLetterFixLength(RandomUtil.threadLocalRandom(), 5));
+		System.out.println(RandomUtil.randomLetterRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
 
 		assertThat(RandomUtil.randomLetterFixLength(5)).hasSize(5);
-		assertThat(RandomUtil.randomLetterFixLength(RandomUtil.threadLocalRandom(), 5))
-				.hasSize(5);
+		assertThat(RandomUtil.randomLetterFixLength(RandomUtil.threadLocalRandom(), 5)).hasSize(5);
 
 		System.out.println(RandomUtil.randomAsciiFixLength(5));
 		System.out.println(RandomUtil.randomAsciiRandomLength(5, 10));
 
-		System.out.println(
-				RandomUtil.randomAsciiFixLength(RandomUtil.threadLocalRandom(), 5));
-		System.out.println(RandomUtil
-				.randomAsciiRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
+		System.out.println(RandomUtil.randomAsciiFixLength(RandomUtil.threadLocalRandom(), 5));
+		System.out.println(RandomUtil.randomAsciiRandomLength(RandomUtil.threadLocalRandom(), 5, 10));
 
 		assertThat(RandomUtil.randomAsciiFixLength(5)).hasSize(5);
-		assertThat(RandomUtil.randomAsciiFixLength(RandomUtil.threadLocalRandom(), 5))
-				.hasSize(5);
+		assertThat(RandomUtil.randomAsciiFixLength(RandomUtil.threadLocalRandom(), 5)).hasSize(5);
 	}
 
 	public void test0() {

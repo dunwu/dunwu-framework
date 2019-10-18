@@ -45,8 +45,7 @@ public class DateUtil {
 
 	public static final int MONTH_FEBRUARY = 2;
 
-	private static final int[] MONTH_LENGTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
-			30, 31 };
+	private static final int[] MONTH_LENGTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 	//////// 日期比较 ///////////
 
@@ -55,16 +54,14 @@ public class DateUtil {
 	 *
 	 * @see DateUtils#isSameDay(Date, Date)
 	 */
-	public static boolean isSameDay(@NotNull final Date date1,
-			@NotNull final Date date2) {
+	public static boolean isSameDay(@NotNull final Date date1, @NotNull final Date date2) {
 		return DateUtils.isSameDay(date1, date2);
 	}
 
 	/**
 	 * 是否同一时刻.
 	 */
-	public static boolean isSameTime(@NotNull final Date date1,
-			@NotNull final Date date2) {
+	public static boolean isSameTime(@NotNull final Date date1, @NotNull final Date date2) {
 		// date.getMillisOf() 比date.getTime()快
 		return date1.compareTo(date2) == 0;
 	}
@@ -72,11 +69,9 @@ public class DateUtil {
 	/**
 	 * 判断日期是否在范围内，包含相等的日期
 	 */
-	public static boolean isBetween(@NotNull final Date date, @NotNull final Date start,
-			@NotNull final Date end) {
+	public static boolean isBetween(@NotNull final Date date, @NotNull final Date start, @NotNull final Date end) {
 		if (date == null || start == null || end == null || start.after(end)) {
-			throw new IllegalArgumentException(
-					"some date parameters is null or dateBein after dateEnd");
+			throw new IllegalArgumentException("some date parameters is null or dateBein after dateEnd");
 		}
 		return !date.before(start) && !date.after(end);
 	}
@@ -313,8 +308,7 @@ public class DateUtil {
 	 * 2017-1-20 07:33:23, 则返回2017-1-16 00:00:00
 	 */
 	public static Date beginOfWeek(@NotNull final Date date) {
-		return DateUtils.truncate(DateUtil.subDays(date, DateUtil.getDayOfWeek(date) - 1),
-				Calendar.DATE);
+		return DateUtils.truncate(DateUtil.subDays(date, DateUtil.getDayOfWeek(date) - 1), Calendar.DATE);
 	}
 
 	/**
@@ -328,8 +322,7 @@ public class DateUtil {
 	 * 2017-1-23 07:33:23, 则返回2017-1-22 00:00:00
 	 */
 	public static Date nextWeek(@NotNull final Date date) {
-		return DateUtils.truncate(DateUtil.addDays(date, 8 - DateUtil.getDayOfWeek(date)),
-				Calendar.DATE);
+		return DateUtils.truncate(DateUtil.addDays(date, 8 - DateUtil.getDayOfWeek(date)), Calendar.DATE);
 	}
 
 	/**

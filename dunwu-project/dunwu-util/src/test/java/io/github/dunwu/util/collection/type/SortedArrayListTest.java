@@ -1,12 +1,12 @@
 package io.github.dunwu.util.collection.type;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
+import com.google.common.collect.Ordering;
 import io.github.dunwu.util.collection.ListUtil;
 import io.github.dunwu.util.collection.MoreLists;
+import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.Ordering;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class SortedArrayListTest {
 
@@ -43,8 +43,7 @@ public class SortedArrayListTest {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
-		SortedArrayList<String> list2 = MoreLists
-				.createSortedArrayList(Ordering.natural());
+		SortedArrayList<String> list2 = MoreLists.createSortedArrayList(Ordering.natural());
 		list2.addAll(ListUtil.newArrayList("3", "1", "2"));
 		assertThat(list2).containsExactly("1", "2", "3");
 	}

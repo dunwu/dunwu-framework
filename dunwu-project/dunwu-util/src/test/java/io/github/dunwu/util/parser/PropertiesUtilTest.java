@@ -13,8 +13,7 @@ public class PropertiesUtilTest {
 
 	@Test
 	void testLoadFromFile() throws IOException {
-		Properties properties = PropertiesUtil
-				.loadFromFile("classpath://application.properties");
+		Properties properties = PropertiesUtil.loadFromFile("classpath://application.properties");
 
 		assertThat(PropertiesUtil.getInt(properties, "dunwu.min", 0)).isEqualTo(1);
 		assertThat(PropertiesUtil.getInt(properties, "dunwu.max", 0)).isEqualTo(10);
@@ -28,26 +27,22 @@ public class PropertiesUtilTest {
 		assertThat(PropertiesUtil.getString(properties, "dunwu.min", "")).isEqualTo("1");
 		assertThat(PropertiesUtil.getString(properties, "dunwu.max", "")).isEqualTo("10");
 
-		assertThat(PropertiesUtil.getBoolean(properties, "dunwu.enabled", false))
-				.isTrue();
+		assertThat(PropertiesUtil.getBoolean(properties, "dunwu.enabled", false)).isTrue();
 
 		assertThat(PropertiesUtil.getList(properties, "dunwu.nodes")).isNotEmpty();
 	}
 
 	@Test
 	void testLoadFromString() throws IOException {
-		Properties properties = PropertiesUtil
-				.loadFromString("dunwu.min=1\ndunwu.max=10\ndunwu.enabled=true");
+		Properties properties = PropertiesUtil.loadFromString("dunwu.min=1\ndunwu.max=10\ndunwu.enabled=true");
 		assertThat(PropertiesUtil.getInt(properties, "dunwu.min", 0)).isEqualTo(1);
 		assertThat(PropertiesUtil.getInt(properties, "dunwu.max", 0)).isEqualTo(10);
-		assertThat(PropertiesUtil.getBoolean(properties, "dunwu.enabled", false))
-				.isTrue();
+		assertThat(PropertiesUtil.getBoolean(properties, "dunwu.enabled", false)).isTrue();
 	}
 
 	@Test
 	void testToMap() throws IOException {
-		Properties properties = PropertiesUtil
-				.loadFromString("dunwu.min=1\ndunwu.max=10\ndunwu.enabled=true");
+		Properties properties = PropertiesUtil.loadFromString("dunwu.min=1\ndunwu.max=10\ndunwu.enabled=true");
 		Map<String, String> map = PropertiesUtil.toMap(properties);
 		assertThat(map).isNotEmpty();
 	}

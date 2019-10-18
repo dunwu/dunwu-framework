@@ -26,8 +26,7 @@ public class BeanMapper {
 	/**
 	 * 简单的复制出新对象ArrayList
 	 */
-	public static <S, D> List<D> mapList(Iterable<S> sourceList,
-			Class<D> destinationClass) {
+	public static <S, D> List<D> mapList(Iterable<S> sourceList, Class<D> destinationClass) {
 		List<D> destionationList = new ArrayList<D>();
 		for (S source : sourceList) {
 			if (source != null) {
@@ -40,8 +39,7 @@ public class BeanMapper {
 	/**
 	 * 简单复制出新对象数组
 	 */
-	public static <S, D> D[] mapArray(final S[] sourceArray,
-			final Class<D> destinationClass) {
+	public static <S, D> D[] mapArray(final S[] sourceArray, final Class<D> destinationClass) {
 		D[] destinationArray = ArrayUtil.newArray(destinationClass, sourceArray.length);
 
 		int i = 0;

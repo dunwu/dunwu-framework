@@ -29,8 +29,7 @@ public class MockUtilTest {
 		LocalDateTime max = LocalDateTime.of(2018, 12, 6, 23, 59, 59);
 
 		String date = MockUtil.anyDate(min, max, DATE_PATTERN);
-		System.out
-				.println("MockUtil.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+		System.out.println("MockUtil.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
 		Assertions.assertTrue(DateUtil.verify(date, DATE_PATTERN));
 
 		Date date2 = MockUtil.anyDate(min, max);
@@ -123,8 +122,7 @@ public class MockUtilTest {
 	@RepeatedTest(10)
 	void anySimpleCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println(
-				"随机简体中文字组成的字符串：" + MockUtil.anyChineseSimpleLetterString(10, count));
+		System.out.println("随机简体中文字组成的字符串：" + MockUtil.anyChineseSimpleLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
