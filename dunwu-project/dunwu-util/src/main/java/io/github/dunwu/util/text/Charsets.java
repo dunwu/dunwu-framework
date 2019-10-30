@@ -18,7 +18,7 @@ public interface Charsets {
 
 	String UTF_8_NAME = StandardCharsets.UTF_8.name();
 
-	String ASCII_NAME = StandardCharsets.US_ASCII.name();
+	String ANSI_NAME = StandardCharsets.US_ASCII.name();
 
 	String ISO_8859_1_NAME = StandardCharsets.ISO_8859_1.name();
 
