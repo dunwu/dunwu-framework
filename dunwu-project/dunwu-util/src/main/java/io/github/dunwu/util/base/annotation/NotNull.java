@@ -9,6 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 参数不允许为 null 标记注解
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
 @Documented

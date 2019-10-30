@@ -29,12 +29,12 @@ public class MarkdownFormatHelperTest {
 					continue;
 				}
 				convertMdFilesInDir(f);
-			}
-			else {
+			} else {
 				String fileExtension = FileUtil.getFileExtension(f);
 				if (fileExtension.equals("md")) {
 					String srcPath = f.getAbsolutePath();
-					String destPath = f.getAbsolutePath().replace(SRC_DIR_PATH, DEST_DIR_PATH);
+					String destPath = f.getAbsolutePath().replace(SRC_DIR_PATH,
+						DEST_DIR_PATH);
 					System.out.println(srcPath);
 					System.out.println(destPath);
 					System.out.println();

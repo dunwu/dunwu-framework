@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 运行时工具类 1.取得当前进程PID, JVM参数 2.注册JVM关闭钩子, 获得CPU核数 3.通过StackTrace
- * 获得当前方法的类名方法名，调用者的类名方法名(获取StackTrace有消耗，不要滥用)
+ * 运行时工具类 1.取得当前进程PID, JVM参数 2.注册JVM关闭钩子, 获得CPU核数 3.通过StackTrace 获得当前方法的类名方法名，调用者的类名方法名(获取StackTrace有消耗，不要滥用)
  */
 public class RuntimeUtil {
 
@@ -34,8 +33,7 @@ public class RuntimeUtil {
 
 		try {
 			return Integer.parseInt(split[0]);
-		}
-		catch (Exception e) { // NOSONAR
+		} catch (Exception e) { // NOSONAR
 			return -1;
 		}
 	}
@@ -51,7 +49,8 @@ public class RuntimeUtil {
 	 * 返回输入的JVM参数列表
 	 */
 	public static String getVmArguments() {
-		List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
+			.getInputArguments();
 		return StringUtils.join(vmArguments, " ");
 	}
 
@@ -68,8 +67,8 @@ public class RuntimeUtil {
 	 * 注册JVM关闭时的钩子程序
 	 */
 	public static void addShutdownHook(Runnable runnable) {
-		Runtime.getRuntime().addShutdownHook(
-				new Thread(runnable, "Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
+		Runtime.getRuntime().addShutdownHook(new Thread(runnable,
+			"Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
 	}
 
 	//////// 通过StackTrace 获得当前方法的调用者 ////
@@ -82,8 +81,7 @@ public class RuntimeUtil {
 		if (stacktrace.length >= MAX_STACKTRACE_LENGTH) {
 			StackTraceElement element = stacktrace[3];
 			return element.getClassName();
-		}
-		else {
+		} else {
 			return StringUtils.EMPTY;
 		}
 	}
@@ -96,8 +94,7 @@ public class RuntimeUtil {
 		if (stacktrace.length >= MAX_STACKTRACE_LENGTH) {
 			StackTraceElement element = stacktrace[3];
 			return element.getClassName() + '.' + element.getMethodName() + "()";
-		}
-		else {
+		} else {
 			return StringUtils.EMPTY;
 		}
 	}
@@ -110,8 +107,7 @@ public class RuntimeUtil {
 		if (stacktrace.length >= MAX_STACKTRACE_LENGTH) {
 			StackTraceElement element = stacktrace[2];
 			return element.getClassName();
-		}
-		else {
+		} else {
 			return StringUtils.EMPTY;
 		}
 	}
@@ -124,8 +120,7 @@ public class RuntimeUtil {
 		if (stacktrace.length >= MAX_STACKTRACE_LENGTH) {
 			StackTraceElement element = stacktrace[2];
 			return element.getClassName() + '.' + element.getMethodName() + "()";
-		}
-		else {
+		} else {
 			return StringUtils.EMPTY;
 		}
 	}

@@ -28,7 +28,8 @@ public class Triple<L, M, R> {
 	/**
 	 * 根据等号左边的泛型，自动构造合适的Triple
 	 */
-	public static <L, M, R> Triple<L, M, R> of(@Nullable L left, @Nullable M middle, @Nullable R right) {
+	public static <L, M, R> Triple<L, M, R> of(@Nullable L left, @Nullable M middle,
+		@Nullable R right) {
 		return new Triple<L, M, R>(left, middle, right);
 	}
 
@@ -69,24 +70,21 @@ public class Triple<L, M, R> {
 			if (other.left != null) {
 				return false;
 			}
-		}
-		else if (!left.equals(other.left)) {
+		} else if (!left.equals(other.left)) {
 			return false;
 		}
 		if (middle == null) {
 			if (other.middle != null) {
 				return false;
 			}
-		}
-		else if (!middle.equals(other.middle)) {
+		} else if (!middle.equals(other.middle)) {
 			return false;
 		}
 		if (right == null) {
 			if (other.right != null) {
 				return false;
 			}
-		}
-		else if (!right.equals(other.right)) {
+		} else if (!right.equals(other.right)) {
 			return false;
 		}
 		return true;

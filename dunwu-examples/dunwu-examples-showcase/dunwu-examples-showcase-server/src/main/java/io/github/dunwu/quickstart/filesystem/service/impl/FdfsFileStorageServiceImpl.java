@@ -16,8 +16,7 @@ import java.io.IOException;
 /**
  * FastDFS 文件存储服务
  * <p>
- * 文件将被存储在 FastDFS 中的
- * {@link io.github.dunwu.quickstart.filesystem.config.FileSystemProperties.Fdfs#group}
+ * 文件将被存储在 FastDFS 中的 {@link io.github.dunwu.quickstart.filesystem.config.FileSystemProperties.Fdfs#group}
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see <a href="https://github.com/happyfish100/fastdfs/wiki">fastdfs wiki</a>
@@ -34,8 +33,10 @@ public class FdfsFileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		StorePath storePath = storageClient.uploadFile(fileSystemProperties.getFdfs().getGroup(),
-				uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(), uploadFileDTO.getExtension());
+		StorePath storePath = storageClient.uploadFile(
+			fileSystemProperties.getFdfs().getGroup(),
+			uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(),
+			uploadFileDTO.getExtension());
 		return storePath.getFullPath();
 	}
 
@@ -48,8 +49,9 @@ public class FdfsFileStorageServiceImpl implements FileStorageService {
 	@Override
 	public FileDTO getContent(FileDTO fileDTO) throws IOException {
 		StorePath path = StorePath.parseFromUrl(fileDTO.getStoreUrl());
-		byte[] bytes = storageClient.downloadFile(fileSystemProperties.getFdfs().getGroup(), path.getPath(),
-				new DownloadByteArray());
+		byte[] bytes = storageClient.downloadFile(
+			fileSystemProperties.getFdfs().getGroup(), path.getPath(),
+			new DownloadByteArray());
 		fileDTO.setContent(bytes);
 		return fileDTO;
 	}

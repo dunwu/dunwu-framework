@@ -41,7 +41,8 @@ public class DataResult<T> extends BaseResult {
 		this.data = data;
 	}
 
-	public DataResult(T data, Boolean success, String code, String message, Object... params) {
+	public DataResult(T data, Boolean success, String code, String message,
+		Object... params) {
 		super(success, code, message, params);
 		this.data = data;
 	}

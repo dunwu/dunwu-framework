@@ -29,6 +29,7 @@ public class ArrayUtil {
 
 	/**
 	 * 判断数组是否为空
+	 *
 	 * @param array
 	 * @param <T>
 	 * @return
@@ -49,22 +50,12 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组.
-	 * 本函数等价于list.toArray(new String[0]); 用户也可以直接用后者.
-	 * https://shipilev.net/blog/2016/arrays-wisdom-ancients/
+	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组. 本函数等价于list.toArray(new String[0]);
+	 * 用户也可以直接用后者. https://shipilev.net/blog/2016/arrays-wisdom-ancients/
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toArray(Collection<T> col, Class<T> type) {
 		return col.toArray((T[]) Array.newInstance(type, 0));
-	}
-
-	/**
-	 * Swaps the two specified elements in the specified array.
-	 */
-	private static void swap(Object[] arr, int i, int j) {
-		Object tmp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = tmp;
 	}
 
 	/**
@@ -74,8 +65,7 @@ public class ArrayUtil {
 		if (array != null && array.length > 1) {
 			Random rand = new Random();
 			return shuffle(array, rand);
-		}
-		else {
+		} else {
 			return array;
 		}
 	}
@@ -90,6 +80,15 @@ public class ArrayUtil {
 			}
 		}
 		return array;
+	}
+
+	/**
+	 * Swaps the two specified elements in the specified array.
+	 */
+	private static void swap(Object[] arr, int i, int j) {
+		Object tmp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = tmp;
 	}
 
 	/**
@@ -149,6 +148,7 @@ public class ArrayUtil {
 
 	/**
 	 * 获取展示数组内容的字符串
+	 *
 	 * @param list
 	 * @param begin
 	 * @param end
@@ -183,8 +183,9 @@ public class ArrayUtil {
 	 * <p>
 	 * 然后从len-2里随机产生下一个随机数，如此类推
 	 * </p>
-	 * @param min 指定范围最小值
-	 * @param max 指定范围最大值
+	 *
+	 * @param min    指定范围最小值
+	 * @param max    指定范围最大值
 	 * @param length 随机数个数
 	 * @return int[] 随机数结果集
 	 */
@@ -217,8 +218,9 @@ public class ArrayUtil {
 
 	/**
 	 * 随机指定范围内N个重复的Int数组。
-	 * @param min 指定范围最小值
-	 * @param max 指定范围最大值
+	 *
+	 * @param min    指定范围最小值
+	 * @param max    指定范围最大值
 	 * @param length 随机数个数
 	 * @return 随机数结果集
 	 */
@@ -247,8 +249,9 @@ public class ArrayUtil {
 	 * <p>
 	 * 然后从len-2里随机产生下一个随机数，如此类推
 	 * </p>
-	 * @param min 指定范围最小值
-	 * @param max 指定范围最大值
+	 *
+	 * @param min    指定范围最小值
+	 * @param max    指定范围最大值
 	 * @param length 随机数个数
 	 * @return int[] 随机数结果集
 	 */
@@ -281,8 +284,9 @@ public class ArrayUtil {
 
 	/**
 	 * 随机指定范围内N个重复的Integer数组。
-	 * @param min 指定范围最小值
-	 * @param max 指定范围最大值
+	 *
+	 * @param min    指定范围最小值
+	 * @param max    指定范围最大值
 	 * @param length 随机数个数
 	 * @return 随机数结果集
 	 */

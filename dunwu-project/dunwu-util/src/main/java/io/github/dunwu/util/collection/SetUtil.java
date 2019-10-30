@@ -13,6 +13,7 @@ public class SetUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的HashSet.
+	 *
 	 * @see com.google.common.collect.Sets#newHashSet()
 	 */
 	public static <T> HashSet<T> newHashSet() {
@@ -21,6 +22,7 @@ public class SetUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的HashSet, 并初始化元素.
+	 *
 	 * @see com.google.common.collect.Sets#newHashSet(Object...)
 	 */
 	@SuppressWarnings("unchecked")
@@ -30,6 +32,7 @@ public class SetUtil {
 
 	/**
 	 * HashSet涉及HashMap大小，因此建议在构造时传入需要初始的集合，其他如TreeSet不需要.
+	 *
 	 * @see com.google.common.collect.Sets#newHashSet(Iterable)
 	 */
 	public static <T> HashSet<T> newHashSet(Iterable<? extends T> elements) {
@@ -38,6 +41,7 @@ public class SetUtil {
 
 	/**
 	 * 创建HashSet并设置初始大小，因为HashSet内部是HashMap，会计算LoadFactor后的真实大小.
+	 *
 	 * @see com.google.common.collect.Sets#newHashSetWithExpectedSize(int)
 	 */
 	public static <T> HashSet<T> newHashSetWithCapacity(int expectedSize) {
@@ -46,6 +50,7 @@ public class SetUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的TreeSet, 通过实现了Comparable的元素自身进行排序.
+	 *
 	 * @see com.google.common.collect.Sets#newTreeSet()
 	 */
 	@SuppressWarnings("rawtypes")
@@ -55,9 +60,11 @@ public class SetUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的TreeSet, 并设置comparator.
+	 *
 	 * @see com.google.common.collect.Sets#newTreeSet(Comparator)
 	 */
-	public static <T> TreeSet<T> newSortedSet(@Nullable Comparator<? super T> comparator) {
+	public static <T> TreeSet<T> newSortedSet(
+		@Nullable Comparator<? super T> comparator) {
 		return Sets.newTreeSet(comparator);
 	}
 
@@ -72,6 +79,7 @@ public class SetUtil {
 
 	/**
 	 * 返回一个空的结构特殊的Set，节约空间. 注意返回的Set不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#emptySet()
 	 */
 	public static final <T> Set<T> emptySet() {
@@ -80,6 +88,7 @@ public class SetUtil {
 
 	/**
 	 * 如果set为null，转化为一个安全的空Set. 注意返回的Set不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#emptySet()
 	 */
 	public static <T> Set<T> emptySetIfNull(final Set<T> set) {
@@ -88,6 +97,7 @@ public class SetUtil {
 
 	/**
 	 * 返回只含一个元素但结构特殊的Set，节约空间. 注意返回的Set不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#singleton(Object)
 	 */
 	public static final <T> Set<T> singletonSet(T o) {
@@ -96,6 +106,7 @@ public class SetUtil {
 
 	/**
 	 * 返回包装后不可修改的Set. 如果尝试修改，会抛出UnsupportedOperationException
+	 *
 	 * @see Collections#unmodifiableSet(Set)
 	 */
 	public static <T> Set<T> unmodifiableSet(Set<? extends T> s) {
@@ -104,6 +115,7 @@ public class SetUtil {
 
 	/**
 	 * 从Map构造Set的大杀器, 可以用来制造各种Set
+	 *
 	 * @see Collections#newSetFromMap(Map)
 	 */
 	public static <T> Set<T> newSetFromMap(Map<T, Boolean> map) {
@@ -113,34 +125,32 @@ public class SetUtil {
 	//////////////// from guava的集合运算函数/////////////
 
 	/**
-	 * set1, set2的并集（在set1或set2的对象）的只读view，不复制产生新的Set对象.
-	 * 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的并集（在set1或set2的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
-	public static <E> Set<E> unionView(final Set<? extends E> set1, final Set<? extends E> set2) {
+	public static <E> Set<E> unionView(final Set<? extends E> set1,
+		final Set<? extends E> set2) {
 		return Sets.union(set1, set2);
 	}
 
 	/**
-	 * set1, set2的交集（同时在set1和set2的对象）的只读view，不复制产生新的Set对象.
-	 * 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的交集（同时在set1和set2的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> intersectionView(final Set<E> set1, final Set<?> set2) {
 		return Sets.intersection(set1, set2);
 	}
 
 	/**
-	 * set1, set2的差集（在set1，不在set2中的对象）的只读view，不复制产生新的Set对象.
-	 * 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的差集（在set1，不在set2中的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> differenceView(final Set<E> set1, final Set<?> set2) {
 		return Sets.difference(set1, set2);
 	}
 
 	/**
-	 * set1, set2的补集（在set1或set2中，但不在交集中的对象，又叫反交集）的只读view，不复制产生新的Set对象.
-	 * 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的补集（在set1或set2中，但不在交集中的对象，又叫反交集）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
-	public static <E> Set<E> disjointView(final Set<? extends E> set1, final Set<? extends E> set2) {
+	public static <E> Set<E> disjointView(final Set<? extends E> set1,
+		final Set<? extends E> set2) {
 		return Sets.symmetricDifference(set1, set2);
 	}
 

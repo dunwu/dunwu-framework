@@ -8,13 +8,15 @@ public interface ISignature {
 
 	byte[] sign(byte[] plaintext, byte[] privateKey) throws Exception;
 
-	boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext) throws Exception;
+	boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
+		throws Exception;
 
 	byte[] getPrivateKey();
 
 	byte[] getPublicKey();
 
-	default KeyPair genKeyPair(String algorithm, int keySize) throws NoSuchAlgorithmException {
+	default KeyPair genKeyPair(String algorithm, int keySize)
+		throws NoSuchAlgorithmException {
 
 		// 初始化密钥对生成器
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);

@@ -12,14 +12,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    app,
-    errorLog,
-    permission,
-    settings,
-    tagsView,
-    user
-  },
-  getters
+    app, errorLog, permission, settings, tagsView, user
+  }, getters
 })
 
 export default store

@@ -31,11 +31,9 @@ export default {
     }
     // parameter 1 is must be "Element" type
     addResizeListener(window.document.body, el.resizeListener)
-  },
-  inserted(el, binding, vnode) {
+  }, inserted(el, binding, vnode) {
     doResize(el, binding, vnode)
-  },
-  unbind(el) {
+  }, unbind(el) {
     removeResizeListener(window.document.body, el.resizeListener)
   }
 }

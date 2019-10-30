@@ -12,7 +12,8 @@ public class DsaUtil {
 
 	public static final ISignature DSA = DsaDigest.getInstance(DsaTypeEnum.DSA);
 
-	public static final ISignature SHA1_WITH_DSA = DsaDigest.getInstance(DsaTypeEnum.SHA1_WITH_DSA);
+	public static final ISignature SHA1_WITH_DSA = DsaDigest
+		.getInstance(DsaTypeEnum.SHA1_WITH_DSA);
 
 	/**
 	 * 数字摘要类型
@@ -33,9 +34,7 @@ public class DsaUtil {
 		public String getValue() {
 			return value;
 		}
-
 	}
-
 
 	public static class DsaDigest implements ISignature {
 
@@ -58,8 +57,7 @@ public class DsaUtil {
 		public static ISignature getInstance(String type) {
 			try {
 				return new DsaDigest(type);
-			}
-			catch (NoSuchAlgorithmException e) {
+			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -68,8 +66,7 @@ public class DsaUtil {
 		public static ISignature getInstance(DsaTypeEnum type) {
 			try {
 				return new DsaDigest(type.getValue());
-			}
-			catch (NoSuchAlgorithmException e) {
+			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -90,7 +87,8 @@ public class DsaUtil {
 		}
 
 		@Override
-		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext) throws Exception {
+		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
+			throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_DSA);

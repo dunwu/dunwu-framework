@@ -36,7 +36,8 @@ public class PairTest {
 		assertThat(triple.equals(triple4)).isFalse();
 		assertThat(triple.equals(pair)).isFalse();
 		assertThat(triple.hashCode() != triple2.hashCode()).isTrue();
-		assertThat(triple.toString()).isEqualTo("Triple [left=haha, middle=hehe, right=1]");
+		assertThat(triple.toString())
+			.isEqualTo("Triple [left=haha, middle=hehe, right=1]");
 
 		assertThat(triple.getLeft()).isEqualTo("haha");
 		assertThat(triple.getMiddle()).isEqualTo("hehe");

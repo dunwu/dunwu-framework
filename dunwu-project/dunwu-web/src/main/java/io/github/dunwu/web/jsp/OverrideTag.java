@@ -32,13 +32,13 @@ public class OverrideTag extends BodyTagSupport {
 		return EVAL_PAGE;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	private boolean isOverrided() {
 		String newName = BLOCK + name;
 		return pageContext.getRequest().getAttribute(newName) != null;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

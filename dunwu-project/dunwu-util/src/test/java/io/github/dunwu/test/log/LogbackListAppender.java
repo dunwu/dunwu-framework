@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * 在List中保存日志的Appender, 用于测试Logback的日志输出. 在测试开始前,
- * 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
+ * 在List中保存日志的Appender, 用于测试Logback的日志输出. 在测试开始前, 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
@@ -29,25 +28,31 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 		return appender;
 	}
 
+	/**
+	 * 将此appender添加到logger中.
+	 */
+	public void addToLogger(Class<?> loggerClass) {
+		Logger logger = (Logger) LoggerFactory.getLogger(loggerClass);
+		logger.addAppender(this);
+	}
+
 	public static LogbackListAppender create(String loggerName) {
 		LogbackListAppender appender = new LogbackListAppender();
 		appender.addToLogger(loggerName);
 		return appender;
 	}
 
+	/**
+	 * 将此appender添加到logger中.
+	 */
+	public void addToLogger(String loggerName) {
+		Logger logger = (Logger) LoggerFactory.getLogger(loggerName);
+		logger.addAppender(this);
+	}
+
 	@Override
 	protected void append(ILoggingEvent e) {
 		logs.add(e);
-	}
-
-	/**
-	 * 返回之前append的第一个log.
-	 */
-	public ILoggingEvent getFirstLog() {
-		if (logs.isEmpty()) {
-			return null;
-		}
-		return logs.get(0);
 	}
 
 	/**
@@ -61,13 +66,13 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	}
 
 	/**
-	 * 返回之前append的最后一个log.
+	 * 返回之前append的第一个log.
 	 */
-	public ILoggingEvent getLastLog() {
+	public ILoggingEvent getFirstLog() {
 		if (logs.isEmpty()) {
 			return null;
 		}
-		return Iterables.getLast(logs);
+		return logs.get(0);
 	}
 
 	/**
@@ -78,6 +83,16 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 			return null;
 		}
 		return getLastLog().getFormattedMessage();
+	}
+
+	/**
+	 * 返回之前append的最后一个log.
+	 */
+	public ILoggingEvent getLastLog() {
+		if (logs.isEmpty()) {
+			return null;
+		}
+		return Iterables.getLast(logs);
 	}
 
 	/**
@@ -109,26 +124,11 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	}
 
 	/**
-	 * 将此appender添加到logger中.
-	 */
-	public void addToLogger(String loggerName) {
-		Logger logger = (Logger) LoggerFactory.getLogger(loggerName);
-		logger.addAppender(this);
-	}
-
-	/**
-	 * 将此appender添加到logger中.
-	 */
-	public void addToLogger(Class<?> loggerClass) {
-		Logger logger = (Logger) LoggerFactory.getLogger(loggerClass);
-		logger.addAppender(this);
-	}
-
-	/**
 	 * 将此appender添加到root logger中.
 	 */
 	public void addToRootLogger() {
-		Logger logger = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		Logger logger = (Logger) LoggerFactory
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.addAppender(this);
 	}
 
@@ -152,7 +152,8 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 * 将此appender从root logger中移除.
 	 */
 	public void removeFromRootLogger() {
-		Logger logger = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		Logger logger = (Logger) LoggerFactory
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.detachAppender(this);
 	}
 

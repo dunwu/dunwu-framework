@@ -24,14 +24,11 @@ public class TxtFileUtil {
 			}
 
 			br.close();
-		}
-		catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -54,8 +51,7 @@ public class TxtFileUtil {
 				bw.write("\n");
 			}
 			bw.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -73,11 +69,9 @@ public class TxtFileUtil {
 
 			fis.close();
 			fos.close();
-		}
-		catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
-		}
-		catch (IOException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
@@ -89,8 +83,7 @@ public class TxtFileUtil {
 		for (File file : dir.listFiles()) {
 			if (file.isFile()) {
 				file.delete();
-			}
-			else {
+			} else {
 				deleteDirectory(file.toString());
 			}
 		}

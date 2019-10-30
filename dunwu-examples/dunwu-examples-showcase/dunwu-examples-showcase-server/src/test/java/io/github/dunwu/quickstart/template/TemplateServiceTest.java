@@ -40,7 +40,8 @@ public class TemplateServiceTest {
 		params.put("to", MAIL_TO);
 		params.put("checkCode", "123456");
 		String content;
-		content = templateService.mergeTemplate(TemplateService.TMPL_MAIL_CHECKCODE, params);
+		content = templateService.mergeTemplate(TemplateService.TMPL_MAIL_CHECKCODE,
+			params);
 
 		MailDTO mailDTO = new MailDTO();
 		mailDTO.setTo(new String[] { MAIL_TO });

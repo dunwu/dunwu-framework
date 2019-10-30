@@ -30,5 +30,4 @@ public enum TriggerStatusEnum {
 	public Integer getKey() {
 		return this.key;
 	}
-
 }

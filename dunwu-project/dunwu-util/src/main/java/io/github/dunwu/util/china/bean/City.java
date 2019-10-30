@@ -21,14 +21,6 @@ public class City implements Comparable<City> {
 		counties = new TreeSet<>();
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -58,6 +50,14 @@ public class City implements Comparable<City> {
 		return this.getCode().compareToIgnoreCase(o.getCode());
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	@Override
 	public int hashCode() {
 		int prime = 31;
@@ -80,8 +80,7 @@ public class City implements Comparable<City> {
 		City city = (City) obj;
 		if (city.getCode().equals(this.getCode())) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

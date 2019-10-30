@@ -14,9 +14,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * 关于Map的工具集合， 1. 常用函数(如是否为空, 两个map的Diff对比，针对value值的排序) 2. 对于并发Map，增加putIfAbsent(返回最终值版),
- * createIfAbsent这两个重要函数(from Common Lang) 3. 便捷的构造函数(via guava,Java
- * Collections，并增加了用数组，List等方式初始化Map的函数) 4. JDK Collections的empty,singleton
+ * 关于Map的工具集合， 1. 常用函数(如是否为空, 两个map的Diff对比，针对value值的排序) 2. 对于并发Map，增加putIfAbsent(返回最终值版), createIfAbsent这两个重要函数(from
+ * Common Lang) 3. 便捷的构造函数(via guava,Java Collections，并增加了用数组，List等方式初始化Map的函数) 4. JDK Collections的empty,singleton
  */
 @SuppressWarnings("unchecked")
 public class MapUtil {
@@ -38,23 +37,14 @@ public class MapUtil {
 	}
 
 	/**
-	 * ConcurrentMap的putIfAbsent()返回之前的Value，此函数封装返回最终存储在Map中的Value
-	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#putIfAbsent(ConcurrentMap,
-	 * Object, Object)
+	 * 如果Key不存在则创建，返回最后存储在Map中的Value. 如果创建Value对象有一定成本, 直接使用PutIfAbsent可能重复浪费，则使用此类，传入一个被回调的ValueCreator，Lazy创建对象。
+	 *
+	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#createIfAbsent(ConcurrentMap, Object,
+	 * org.apache.commons.lang3.concurrent.ConcurrentInitializer)
 	 */
-	public static <K, V> V putIfAbsentReturnLast(@NotNull final ConcurrentMap<K, V> map, final K key, final V value) {
-		final V result = map.putIfAbsent(key, value);
-		return result != null ? result : value;
-	}
-
-	/**
-	 * 如果Key不存在则创建，返回最后存储在Map中的Value. 如果创建Value对象有一定成本,
-	 * 直接使用PutIfAbsent可能重复浪费，则使用此类，传入一个被回调的ValueCreator，Lazy创建对象。
-	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#createIfAbsent(ConcurrentMap,
-	 * Object, org.apache.commons.lang3.concurrent.ConcurrentInitializer)
-	 */
-	public static <K, V> V createIfAbsentReturnLast(@NotNull final ConcurrentMap<K, V> map, final K key,
-			@NotNull final ValueCreator<? extends V> creator) {
+	public static <K, V> V createIfAbsentReturnLast(
+		@NotNull final ConcurrentMap<K, V> map, final K key,
+		@NotNull final ValueCreator<? extends V> creator) {
 		final V value = map.get(key);
 		if (value == null) {
 			return putIfAbsentReturnLast(map, key, creator.get());
@@ -63,11 +53,24 @@ public class MapUtil {
 	}
 
 	/**
+	 * ConcurrentMap的putIfAbsent()返回之前的Value，此函数封装返回最终存储在Map中的Value
+	 *
+	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#putIfAbsent(ConcurrentMap, Object, Object)
+	 */
+	public static <K, V> V putIfAbsentReturnLast(@NotNull final ConcurrentMap<K, V> map,
+		final K key, final V value) {
+		final V result = map.putIfAbsent(key, value);
+		return result != null ? result : value;
+	}
+
+	/**
 	 * 根据等号左边的类型, 构造类型正确的HashMap. 注意HashMap中有0.75的加载因子的影响, 需要进行运算后才能正确初始化HashMap的大小.
 	 * 加载因子也是HashMap中减少Hash冲突的重要一环，如果读写频繁，总记录数不多的Map，可以比默认值0.75进一步降低，建议0.5
+	 *
 	 * @see com.google.common.collect.Maps#newHashMap(int)
 	 */
-	public static <K, V> HashMap<K, V> newHashMapWithCapacity(int expectedSize, float loadFactor) {
+	public static <K, V> HashMap<K, V> newHashMapWithCapacity(int expectedSize,
+		float loadFactor) {
 		int finalSize = (int) ((double) expectedSize / loadFactor + 1.0F);
 		return new HashMap<K, V>(finalSize, loadFactor);
 	}
@@ -77,9 +80,10 @@ public class MapUtil {
 	/**
 	 * 根据等号左边的类型, 构造类型正确的HashMap. 同时初始化元素.
 	 */
-	public static <K, V> HashMap<K, V> newHashMap(@NotNull final K[] keys, @NotNull final V[] values) {
-		Validate.isTrue(keys.length == values.length, "keys.length is %s  but values.length is %s", keys.length,
-				values.length);
+	public static <K, V> HashMap<K, V> newHashMap(@NotNull final K[] keys,
+		@NotNull final V[] values) {
+		Validate.isTrue(keys.length == values.length,
+			"keys.length is %s  but values.length is %s", keys.length, values.length);
 
 		HashMap<K, V> map = new HashMap<K, V>(keys.length * 2);
 
@@ -93,9 +97,10 @@ public class MapUtil {
 	/**
 	 * 根据等号左边的类型, 构造类型正确的HashMap. 同时初始化元素.
 	 */
-	public static <K, V> HashMap<K, V> newHashMap(@NotNull final List<K> keys, @NotNull final List<V> values) {
-		Validate.isTrue(keys.size() == values.size(), "keys.length is %s  but values.length is %s", keys.size(),
-				values.size());
+	public static <K, V> HashMap<K, V> newHashMap(@NotNull final List<K> keys,
+		@NotNull final List<V> values) {
+		Validate.isTrue(keys.size() == values.size(),
+			"keys.length is %s  but values.length is %s", keys.size(), values.size());
 
 		HashMap<K, V> map = new HashMap<K, V>(keys.size() * 2);
 		Iterator<K> keyIt = keys.iterator();
@@ -110,6 +115,7 @@ public class MapUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的TreeMap.
+	 *
 	 * @see com.google.common.collect.Maps#newTreeMap()
 	 */
 	@SuppressWarnings("rawtypes")
@@ -119,16 +125,19 @@ public class MapUtil {
 
 	/**
 	 * 根据等号左边的类型，构造类型正确的TreeMap.
+	 *
 	 * @see com.google.common.collect.Maps#newTreeMap(Comparator)
 	 */
-	public static <C, K extends C, V> TreeMap<K, V> newSortedMap(@Nullable Comparator<C> comparator) {
+	public static <C, K extends C, V> TreeMap<K, V> newSortedMap(
+		@Nullable Comparator<C> comparator) {
 		return Maps.newTreeMap(comparator);
 	}
 
 	/**
 	 * 相比HashMap，当key是枚举类时, 性能与空间占用俱佳.
 	 */
-	public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(@NotNull Class<K> type) {
+	public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(
+		@NotNull Class<K> type) {
 		return new EnumMap<K, V>(Preconditions.checkNotNull(type));
 	}
 
@@ -141,6 +150,7 @@ public class MapUtil {
 
 	/**
 	 * 返回一个空的结构特殊的Map，节约空间. 注意返回的Map不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#emptyMap()
 	 */
 	public static final <K, V> Map<K, V> emptyMap() {
@@ -151,6 +161,7 @@ public class MapUtil {
 
 	/**
 	 * 如果map为null，转化为一个安全的空Map. 注意返回的Map不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#emptyMap()
 	 */
 	public static <K, V> Map<K, V> emptyMapIfNull(final Map<K, V> map) {
@@ -159,6 +170,7 @@ public class MapUtil {
 
 	/**
 	 * 返回一个只含一个元素但结构特殊的Map，节约空间. 注意返回的Map不可写, 写入会抛出UnsupportedOperationException.
+	 *
 	 * @see Collections#singletonMap(Object, Object)
 	 */
 	public static <K, V> Map<K, V> singletonMap(final K key, final V value) {
@@ -167,26 +179,31 @@ public class MapUtil {
 
 	/**
 	 * 返回包装后不可修改的Map. 如果尝试修改，会抛出UnsupportedOperationException
+	 *
 	 * @see Collections#unmodifiableMap(Map)
 	 */
-	public static <K, V> Map<K, V> unmodifiableMap(final Map<? extends K, ? extends V> m) {
+	public static <K, V> Map<K, V> unmodifiableMap(
+		final Map<? extends K, ? extends V> m) {
 		return Collections.unmodifiableMap(m);
 	}
 
 	/**
 	 * 返回包装后不可修改的有序Map.
+	 *
 	 * @see Collections#unmodifiableSortedMap(SortedMap)
 	 */
-	public static <K, V> SortedMap<K, V> unmodifiableSortedMap(final SortedMap<K, ? extends V> m) {
+	public static <K, V> SortedMap<K, V> unmodifiableSortedMap(
+		final SortedMap<K, ? extends V> m) {
 		return Collections.unmodifiableSortedMap(m);
 	}
 
 	/**
 	 * 对两个Map进行比较，返回MapDifference，然后各种妙用. 包括key的差集，key的交集，以及key相同但value不同的元素。
+	 *
 	 * @see com.google.common.collect.MapDifference
 	 */
-	public static <K, V> MapDifference<K, V> difference(Map<? extends K, ? extends V> left,
-			Map<? extends K, ? extends V> right) {
+	public static <K, V> MapDifference<K, V> difference(
+		Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
 		return Maps.difference(left, right);
 	}
 
@@ -194,23 +211,20 @@ public class MapUtil {
 
 	/**
 	 * 对一个Map按Value进行排序，返回排序LinkedHashMap，多用于Value是Counter的情况.
+	 *
 	 * @param reverse 按Value的倒序 or 正序排列
 	 */
-	public static <K, V extends Comparable> Map<K, V> sortByValue(Map<K, V> map, final boolean reverse) {
-		return sortByValueInternal(map, reverse ? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
-				: new ComparableEntryValueComparator<K, V>());
+	public static <K, V extends Comparable> Map<K, V> sortByValue(Map<K, V> map,
+		final boolean reverse) {
+		return sortByValueInternal(map, reverse
+			? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
+			: new ComparableEntryValueComparator<K, V>());
 	}
 
 	//////////// 按值排序及取TOP N的操作 /////////
 
-	/**
-	 * 对一个Map按Value进行排序，返回排序LinkedHashMap.
-	 */
-	public static <K, V> Map<K, V> sortByValue(Map<K, V> map, final Comparator<? super V> comparator) {
-		return sortByValueInternal(map, new EntryValueComparator<K, V>(comparator));
-	}
-
-	private static <K, V> Map<K, V> sortByValueInternal(Map<K, V> map, Comparator<Entry<K, V>> comparator) {
+	private static <K, V> Map<K, V> sortByValueInternal(Map<K, V> map,
+		Comparator<Entry<K, V>> comparator) {
 		Set<Entry<K, V>> entrySet = map.entrySet();
 		Entry<K, V>[] entryArray = entrySet.toArray(new Entry[0]);
 
@@ -224,22 +238,27 @@ public class MapUtil {
 	}
 
 	/**
-	 * 对一个Map按Value进行排序，返回排序LinkedHashMap，最多只返回n条，多用于Value是Counter的情况.
-	 * @param reverse 按Value的倒序 or 正序排列
+	 * 对一个Map按Value进行排序，返回排序LinkedHashMap.
 	 */
-	public static <K, V extends Comparable> Map<K, V> topByValue(Map<K, V> map, final boolean reverse, int n) {
-		return topByValueInternal(map, n, reverse ? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
-				: new ComparableEntryValueComparator<K, V>());
+	public static <K, V> Map<K, V> sortByValue(Map<K, V> map,
+		final Comparator<? super V> comparator) {
+		return sortByValueInternal(map, new EntryValueComparator<K, V>(comparator));
 	}
 
 	/**
-	 * 对一个Map按Value进行排序，返回排序LinkedHashMap, 最多只返回n条，多用于Value是Counter的情况.
+	 * 对一个Map按Value进行排序，返回排序LinkedHashMap，最多只返回n条，多用于Value是Counter的情况.
+	 *
+	 * @param reverse 按Value的倒序 or 正序排列
 	 */
-	public static <K, V> Map<K, V> topByValue(Map<K, V> map, final Comparator<? super V> comparator, int n) {
-		return topByValueInternal(map, n, new EntryValueComparator<K, V>(comparator));
+	public static <K, V extends Comparable> Map<K, V> topByValue(Map<K, V> map,
+		final boolean reverse, int n) {
+		return topByValueInternal(map, n, reverse
+			? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
+			: new ComparableEntryValueComparator<K, V>());
 	}
 
-	private static <K, V> Map<K, V> topByValueInternal(Map<K, V> map, int n, Comparator<Entry<K, V>> comparator) {
+	private static <K, V> Map<K, V> topByValueInternal(Map<K, V> map, int n,
+		Comparator<Entry<K, V>> comparator) {
 		Set<Entry<K, V>> entrySet = map.entrySet();
 		Entry<K, V>[] entryArray = entrySet.toArray(new Entry[0]);
 		Arrays.sort(entryArray, comparator);
@@ -251,6 +270,14 @@ public class MapUtil {
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;
+	}
+
+	/**
+	 * 对一个Map按Value进行排序，返回排序LinkedHashMap, 最多只返回n条，多用于Value是Counter的情况.
+	 */
+	public static <K, V> Map<K, V> topByValue(Map<K, V> map,
+		final Comparator<? super V> comparator, int n) {
+		return topByValueInternal(map, n, new EntryValueComparator<K, V>(comparator));
 	}
 
 	/**
@@ -267,9 +294,8 @@ public class MapUtil {
 
 	}
 
-
 	private static final class ComparableEntryValueComparator<K, V extends Comparable>
-			implements Comparator<Entry<K, V>> {
+		implements Comparator<Entry<K, V>> {
 
 		@Override
 		public int compare(Entry<K, V> o1, Entry<K, V> o2) {
@@ -278,7 +304,8 @@ public class MapUtil {
 
 	}
 
-	private static final class EntryValueComparator<K, V> implements Comparator<Entry<K, V>> {
+	private static final class EntryValueComparator<K, V>
+		implements Comparator<Entry<K, V>> {
 
 		private final Comparator<? super V> comparator;
 

@@ -42,8 +42,7 @@ public class ExecuteMethodJobHandler extends QuartzJobBean {
 			if (StringUtils.isNotBlank(beanName)) {
 				bean = SpringUtil.getBean(beanName);
 				clazz = bean.getClass();
-			}
-			else {
+			} else {
 				clazz = Class.forName(beanType);
 				bean = SpringUtil.getBean(clazz);
 			}
@@ -56,13 +55,13 @@ public class ExecuteMethodJobHandler extends QuartzJobBean {
 			JobKey jobKey = jobDetail.getKey();
 			BaseResult baseResult = (BaseResult) method.invoke(bean, methodParams);
 			if (baseResult != null && baseResult.getSuccess()) {
-				log.info("jobGroup = {}, jobName = {} execute success.", jobKey.getGroup(), jobKey.getName());
+				log.info("jobGroup = {}, jobName = {} execute success.",
+					jobKey.getGroup(), jobKey.getName());
+			} else {
+				log.info("jobGroup = {}, jobName = {} execute failed.", jobKey.getGroup(),
+					jobKey.getName());
 			}
-			else {
-				log.info("jobGroup = {}, jobName = {} execute failed.", jobKey.getGroup(), jobKey.getName());
-			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -25,7 +25,6 @@ public class ClockUtilTest {
 
 		clock.setNanoTime(150);
 		assertThat(clock.nanoTime()).isEqualTo(150);
-
 	}
 
 	@Test
@@ -34,8 +33,7 @@ public class ClockUtilTest {
 			DummyClock clock = ClockUtil.useDummyClock(2000);
 			clock.increaseTime(1000);
 			assertThat(ClockUtil.elapsedTime(2000)).isEqualTo(1000);
-		}
-		finally {
+		} finally {
 			ClockUtil.useDefaultClock();
 		}
 	}

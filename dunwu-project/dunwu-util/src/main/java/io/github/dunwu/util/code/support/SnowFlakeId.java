@@ -2,13 +2,12 @@ package io.github.dunwu.util.code.support;
 
 /**
  * Twitter 的 Snowflake 算法实现，用于生成分布式 ID
- *
+ * <p>
  * 协议格式： 0 - 41位时间戳 - 5位数据中心标识 - 5位机器标识 - 12位序列号
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ * @see <a href= "https://github.com/beyondfengyu/DistributedID/blob/master/src/main/java/com/wolfbe/distributedid/core/SnowFlake.java">SnowFlake.java</a>
  * @since 2019/10/18
- * @see <a href=
- * "https://github.com/beyondfengyu/DistributedID/blob/master/src/main/java/com/wolfbe/distributedid/core/SnowFlake.java">SnowFlake.java</a>
  */
 public class SnowFlakeId {
 
@@ -72,15 +71,18 @@ public class SnowFlakeId {
 
 	/**
 	 * 通过单例模式来获取实例 分布式部署服务时，数据节点标识和机器标识作为联合键必须唯一
+	 *
 	 * @param dataCenterId 数据节点标识ID
-	 * @param machineId 机器标识ID
+	 * @param machineId    机器标识ID
 	 */
 	public SnowFlakeId(long dataCenterId, long machineId) {
 		if (dataCenterId > MAX_DATACENTER_NUM || dataCenterId < 0) {
-			throw new IllegalArgumentException("dataCenterId can't be greater than MAX_DATACENTER_NUM or less than 0");
+			throw new IllegalArgumentException(
+				"dataCenterId can't be greater than MAX_DATACENTER_NUM or less than 0");
 		}
 		if (machineId > MAX_MACHINE_NUM || machineId < 0) {
-			throw new IllegalArgumentException("machineId can't be greater than MAX_MACHINE_NUM or less than 0");
+			throw new IllegalArgumentException(
+				"machineId can't be greater than MAX_MACHINE_NUM or less than 0");
 		}
 		this.dataCenterId = dataCenterId;
 		this.machineId = machineId;
@@ -88,6 +90,7 @@ public class SnowFlakeId {
 
 	/**
 	 * 产生下一个ID
+	 *
 	 * @return long
 	 */
 	public synchronized long generate() {
@@ -103,8 +106,7 @@ public class SnowFlakeId {
 			if (sequence == 0L) {
 				currStamp = getNextMill();
 			}
-		}
-		else {
+		} else {
 			// 不同毫秒内，序列号置为0
 			sequence = 0L;
 		}
@@ -112,9 +114,9 @@ public class SnowFlakeId {
 		lastStamp = currStamp;
 
 		return (currStamp - START_STAMP) << TIMESTMP_LEFT // 时间戳部分
-				| dataCenterId << DATACENTER_LEFT // 数据中心部分
-				| machineId << MACHINE_LEFT // 机器标识部分
-				| sequence; // 序列号部分
+			| dataCenterId << DATACENTER_LEFT // 数据中心部分
+			| machineId << MACHINE_LEFT // 机器标识部分
+			| sequence; // 序列号部分
 	}
 
 	private long getNextMill() {

@@ -21,7 +21,8 @@ import java.util.Map;
  * @since 2019-09-12
  */
 @Service
-public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> implements TemplateService {
+public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template>
+	implements TemplateService {
 
 	private final Configuration freemarkConfig;
 
@@ -30,7 +31,8 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> i
 	}
 
 	@Override
-	public String mergeTemplate(String tmplFile, Map params) throws IOException, TemplateException {
+	public String mergeTemplate(String tmplFile, Map params)
+		throws IOException, TemplateException {
 		freemarker.template.Template template = freemarkConfig.getTemplate(tmplFile);
 		StringWriter stringWriter = new StringWriter();
 		template.process(params, stringWriter);

@@ -3,8 +3,7 @@ package io.github.dunwu.util.time;
 import java.util.Date;
 
 /**
- * 日期提供者, 使用它而不是直接取得系统时间, 方便测试.
- * 平时使用DEFAULT，测试时替换为DummyClock，可准确控制时间变化而不用Thread.sleep()等待时间流逝.
+ * 日期提供者, 使用它而不是直接取得系统时间, 方便测试. 平时使用DEFAULT，测试时替换为DummyClock，可准确控制时间变化而不用Thread.sleep()等待时间流逝.
  */
 public class ClockUtil {
 
@@ -15,6 +14,13 @@ public class ClockUtil {
 	 */
 	public static long elapsedTime(long beginTime) {
 		return currentTimeMillis() - beginTime;
+	}
+
+	/**
+	 * 系统当前时间戳
+	 */
+	public static long currentTimeMillis() {
+		return instance.currentTimeMillis();
 	}
 
 	/**
@@ -53,13 +59,6 @@ public class ClockUtil {
 	 */
 	public static Date currentDate() {
 		return instance.currentDate();
-	}
-
-	/**
-	 * 系统当前时间戳
-	 */
-	public static long currentTimeMillis() {
-		return instance.currentTimeMillis();
 	}
 
 	/**
@@ -123,13 +122,13 @@ public class ClockUtil {
 			this(System.currentTimeMillis());
 		}
 
-		public DummyClock(Date date) {
-			this(date.getTime());
-		}
-
 		public DummyClock(long time) {
 			this.time = time;
 			this.nanoTme = System.nanoTime();
+		}
+
+		public DummyClock(Date date) {
+			this(date.getTime());
 		}
 
 		@Override

@@ -50,7 +50,6 @@ public class DigestUtilTest {
 		System.out.println("digestWithBase64 平均耗时：" + (end - begin) / COUNT + "ms");
 	}
 
-
 	@Nested
 	class MessageDigestTest {
 
@@ -97,7 +96,6 @@ public class DigestUtilTest {
 		}
 
 	}
-
 
 	@Nested
 	class HmacMessageDigestTest {

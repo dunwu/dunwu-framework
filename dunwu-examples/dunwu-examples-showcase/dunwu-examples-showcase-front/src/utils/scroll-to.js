@@ -9,7 +9,12 @@ Math.easeInOutQuad = function(t, b, c, d) {
 
 // requestAnimationFrame for Smart Animating http://goo.gl/sx5sts
 var requestAnimFrame = (function() {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) { window.setTimeout(callback, 1000 / 60) }
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    function(callback) {
+      window.setTimeout(callback, 1000 / 60)
+    }
 })()
 
 /**
@@ -23,7 +28,9 @@ function move(amount) {
 }
 
 function position() {
-  return document.documentElement.scrollTop || document.body.parentNode.scrollTop || document.body.scrollTop
+  return document.documentElement.scrollTop ||
+    document.body.parentNode.scrollTop ||
+    document.body.scrollTop
 }
 
 /**

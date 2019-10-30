@@ -113,25 +113,29 @@ public class CryptoUtilTest {
 		// encryptAndDecrypt(CryptoUtil.getAesCbcNoPadding(Bytes16Key));
 	}
 
-	private void encryptAndDecrypt(ICrypto crypto) throws BadPaddingException, IllegalBlockSizeException {
+	private void encryptAndDecrypt(ICrypto crypto)
+		throws BadPaddingException, IllegalBlockSizeException {
 		test1(crypto);
 		test2(crypto);
 		test3(crypto);
 	}
 
-	private void test1(ICrypto crypto) throws BadPaddingException, IllegalBlockSizeException {
+	private void test1(ICrypto crypto)
+		throws BadPaddingException, IllegalBlockSizeException {
 		byte[] ciphertext = crypto.encryptToBytes(TEST_CONTENT.getBytes());
 		byte[] plaintext = crypto.decryptToBytes(ciphertext);
 		Assertions.assertArrayEquals(TEST_CONTENT.getBytes(), plaintext);
 	}
 
-	private void test2(ICrypto crypto) throws BadPaddingException, IllegalBlockSizeException {
+	private void test2(ICrypto crypto)
+		throws BadPaddingException, IllegalBlockSizeException {
 		byte[] ciphertext = crypto.encryptToBytes(TEST_CONTENT);
 		byte[] plaintext = crypto.decryptToBytes(ciphertext);
 		Assertions.assertArrayEquals(TEST_CONTENT.getBytes(), plaintext);
 	}
 
-	private void test3(ICrypto crypto) throws BadPaddingException, IllegalBlockSizeException {
+	private void test3(ICrypto crypto)
+		throws BadPaddingException, IllegalBlockSizeException {
 		String ciphertext = crypto.encryptToString(TEST_CONTENT.getBytes());
 		byte[] plaintext = crypto.decryptToBytes(ciphertext);
 		Assertions.assertArrayEquals(TEST_CONTENT.getBytes(), plaintext);

@@ -15,13 +15,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -38,8 +38,9 @@ public class MailServiceImpl implements MailService {
 
 	private final DunwuMailProperties mailProperties;
 
-	public MailServiceImpl(JavaMailSender javaMailSender, DunwuMailProperties mailProperties,
-			@Qualifier("mailExecutor") ExecutorService mailExecutor) {
+	public MailServiceImpl(JavaMailSender javaMailSender,
+		DunwuMailProperties mailProperties,
+		@Qualifier("mailExecutor") ExecutorService mailExecutor) {
 		this.javaMailSender = javaMailSender;
 		this.mailExecutor = mailExecutor;
 		this.mailProperties = mailProperties;
@@ -50,8 +51,7 @@ public class MailServiceImpl implements MailService {
 		Future<?> future;
 		if (mailDTO.getHtml()) {
 			future = mailExecutor.submit(() -> sendMimeMessage(mailDTO));
-		}
-		else {
+		} else {
 			future = mailExecutor.submit(() -> sendSimpleMessage(mailDTO));
 		}
 
@@ -62,62 +62,8 @@ public class MailServiceImpl implements MailService {
 	public void sendBatch(List<MailDTO> mailDTOS, boolean html) {
 		if (html) {
 			mailExecutor.submit(() -> sendMimeMessage(mailDTOS));
-		}
-		else {
+		} else {
 			mailExecutor.submit(() -> sendSimpleMessage(mailDTOS));
-		}
-	}
-
-	private void sendSimpleMessage(MailDTO mailDTO) {
-		SimpleMailMessage simpleMailMessage = BeanMapper.map(mailDTO, SimpleMailMessage.class);
-		if (StringUtils.isBlank(mailDTO.getFrom())) {
-			simpleMailMessage.setFrom(mailProperties.getFrom());
-		}
-
-		try {
-			javaMailSender.send(simpleMailMessage);
-			if (log.isDebugEnabled()) {
-				log.debug("发送 SIMPLE 邮件成功");
-			}
-		}
-		catch (MailException e) {
-			log.error("发送 SIMPLE 邮件失败", e);
-		}
-	}
-
-	private void sendSimpleMessage(List<MailDTO> mailDTOS) {
-		if (CollectionUtils.isEmpty(mailDTOS)) {
-			return;
-		}
-
-		List<SimpleMailMessage> simpleMailMessages = BeanMapper.mapList(mailDTOS, SimpleMailMessage.class);
-		for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
-			if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
-				simpleMailMessage.setFrom(mailProperties.getFrom());
-			}
-		}
-
-		try {
-			javaMailSender.send(simpleMailMessages.toArray(new SimpleMailMessage[] {}));
-			if (log.isDebugEnabled()) {
-				log.debug("批量发送 SIMPLE 邮件成功");
-			}
-		}
-		catch (MailException e) {
-			log.error("批量发送 SIMPLE 邮件失败", e);
-		}
-	}
-
-	private void sendMimeMessage(MailDTO mailDTO) {
-		try {
-			MimeMessage mimeMessage = fillMimeMessage(mailDTO);
-			javaMailSender.send(mimeMessage);
-			if (log.isDebugEnabled()) {
-				log.debug("发送 MIME 邮件成功");
-			}
-		}
-		catch (MessagingException | MailException e) {
-			log.error("发送 MIME 邮件失败", e);
 		}
 	}
 
@@ -127,8 +73,7 @@ public class MailServiceImpl implements MailService {
 			MimeMessage mimeMessage = null;
 			try {
 				mimeMessage = fillMimeMessage(mailDTO);
-			}
-			catch (MessagingException e) {
+			} catch (MessagingException e) {
 				log.error("批量发送 MIME 邮件失败", e);
 			}
 			messages.add(mimeMessage);
@@ -140,15 +85,66 @@ public class MailServiceImpl implements MailService {
 		}
 	}
 
+	private void sendSimpleMessage(List<MailDTO> mailDTOS) {
+		if (CollectionUtils.isEmpty(mailDTOS)) {
+			return;
+		}
+
+		List<SimpleMailMessage> simpleMailMessages = BeanMapper.mapList(mailDTOS,
+			SimpleMailMessage.class);
+		for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
+			if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
+				simpleMailMessage.setFrom(mailProperties.getFrom());
+			}
+		}
+
+		try {
+			javaMailSender.send(simpleMailMessages.toArray(new SimpleMailMessage[] {}));
+			if (log.isDebugEnabled()) {
+				log.debug("批量发送 SIMPLE 邮件成功");
+			}
+		} catch (MailException e) {
+			log.error("批量发送 SIMPLE 邮件失败", e);
+		}
+	}
+
+	private void sendMimeMessage(MailDTO mailDTO) {
+		try {
+			MimeMessage mimeMessage = fillMimeMessage(mailDTO);
+			javaMailSender.send(mimeMessage);
+			if (log.isDebugEnabled()) {
+				log.debug("发送 MIME 邮件成功");
+			}
+		} catch (MessagingException | MailException e) {
+			log.error("发送 MIME 邮件失败", e);
+		}
+	}
+
+	private void sendSimpleMessage(MailDTO mailDTO) {
+		SimpleMailMessage simpleMailMessage = BeanMapper.map(mailDTO,
+			SimpleMailMessage.class);
+		if (StringUtils.isBlank(mailDTO.getFrom())) {
+			simpleMailMessage.setFrom(mailProperties.getFrom());
+		}
+
+		try {
+			javaMailSender.send(simpleMailMessage);
+			if (log.isDebugEnabled()) {
+				log.debug("发送 SIMPLE 邮件成功");
+			}
+		} catch (MailException e) {
+			log.error("发送 SIMPLE 邮件失败", e);
+		}
+	}
+
 	private MimeMessage fillMimeMessage(MailDTO mailDTO) throws MessagingException {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true,
-				mailProperties.getDefaultEncoding().toString());
+			mailProperties.getDefaultEncoding().toString());
 
 		if (StringUtils.isBlank(mailDTO.getFrom())) {
 			messageHelper.setFrom(mailProperties.getFrom());
-		}
-		else {
+		} else {
 			messageHelper.setFrom(mailDTO.getFrom());
 		}
 		messageHelper.setTo(mailDTO.getTo());

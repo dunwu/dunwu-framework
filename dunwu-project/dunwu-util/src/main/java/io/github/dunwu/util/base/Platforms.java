@@ -40,7 +40,7 @@ public class Platforms {
 
 	// Java版本
 	public static final String JAVA_SPECIFICATION_VERSION = SystemUtils.JAVA_SPECIFICATION_VERSION; // e.g.
-																									// 1.8
+	// 1.8
 
 	public static final String JAVA_VERSION = SystemUtils.JAVA_VERSION; // e.g. 1.8.0_102
 

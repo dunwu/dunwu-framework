@@ -14,9 +14,10 @@ public class IOUtilTest {
 
 	@Test
 	public void read() throws IOException {
-		assertThat(ReadWriteUtil.toString(ResourceUtil.asStream("test.txt"))).isEqualTo("ABCDEFG\nABC");
-		assertThat(ReadWriteUtil.toLines(ResourceUtil.asStream("test.txt"))).hasSize(2).containsExactly("ABCDEFG",
-				"ABC");
+		assertThat(ReadWriteUtil.toString(ResourceUtil.asStream("test.txt")))
+			.isEqualTo("ABCDEFG\nABC");
+		assertThat(ReadWriteUtil.toLines(ResourceUtil.asStream("test.txt"))).hasSize(2)
+			.containsExactly("ABCDEFG", "ABC");
 	}
 
 	@Test
@@ -27,7 +28,8 @@ public class IOUtilTest {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		ReadWriteUtil.write("hahahaha", out);
-		assertThat(new String(out.toByteArray(), StandardCharsets.UTF_8)).isEqualTo("hahahaha");
+		assertThat(new String(out.toByteArray(), StandardCharsets.UTF_8))
+			.isEqualTo("hahahaha");
 
 		ReadWriteUtil.closeQuietly(out);
 		ReadWriteUtil.closeQuietly((Closeable) null);

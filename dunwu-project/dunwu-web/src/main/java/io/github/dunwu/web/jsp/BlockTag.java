@@ -1,8 +1,8 @@
 package io.github.dunwu.web.jsp;
 
+import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.io.IOException;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -30,20 +30,20 @@ public class BlockTag extends TagSupport {
 
 		try {
 			pageContext.getOut().write(overriedContent);
-		}
-		catch (IOException e) {
-			throw new JspException("try to override jsp content failed, block name:" + name, e);
+		} catch (IOException e) {
+			throw new JspException(
+				"try to override jsp content failed, block name:" + name, e);
 		}
 		return EVAL_PAGE;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	private String getOverriedContent() {
 		String newName = BLOCK + name;
 		return (String) pageContext.getRequest().getAttribute(newName);
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

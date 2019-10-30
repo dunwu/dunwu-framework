@@ -19,14 +19,14 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 自定义登录处理器
@@ -40,18 +40,21 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 	private final UserManager userManager;
 
 	DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager) {
-		super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
+		super(new AntPathRequestMatcher(defaultFilterProcessesUrl,
+			HttpMethod.POST.name()));
 		this.userManager = userManager;
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException, IOException, ServletException {
+	public Authentication attemptAuthentication(HttpServletRequest request,
+		HttpServletResponse response)
+		throws AuthenticationException, IOException, ServletException {
 
 		ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
 		String requestBody = getRequestBody(request);
-		Map<String, String> map = objectMapper.readValue(requestBody, new TypeReference<Map<String, String>>() {
-		});
+		Map<String, String> map = objectMapper.readValue(requestBody,
+			new TypeReference<Map<String, String>>() {
+			});
 		String username = map.get("username");
 		String password = map.get("password");
 
@@ -78,7 +81,8 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 	/**
 	 * 获取请求体
 	 */
-	private String getRequestBody(HttpServletRequest request) throws AuthenticationException {
+	private String getRequestBody(HttpServletRequest request)
+		throws AuthenticationException {
 		try {
 			StringBuilder stringBuilder = new StringBuilder();
 			InputStream inputStream = request.getInputStream();
@@ -88,8 +92,7 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 				stringBuilder.append(new String(bs, 0, len));
 			}
 			return stringBuilder.toString();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			log.error("get request body error.");
 		}
 		throw new AuthenticationServiceException("invalid request body");

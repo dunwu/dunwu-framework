@@ -14,8 +14,7 @@ public class MathUtilTest {
 		try {
 			assertThat(MathUtil.nextPowerOfTwo(-5)).isEqualTo(8);
 			fail("should fail here");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			assertThat(e).isInstanceOf(IllegalArgumentException.class);
 		}
 		assertThat(MathUtil.nextPowerOfTwo(5)).isEqualTo(8);
@@ -43,7 +42,6 @@ public class MathUtilTest {
 		assertThat(MathUtil.modByPowerOfTwo(32, 16)).isEqualTo(0);
 		assertThat(MathUtil.modByPowerOfTwo(65, 16)).isEqualTo(1);
 		assertThat(MathUtil.modByPowerOfTwo(-1, 16)).isEqualTo(15);
-
 	}
 
 	@Test

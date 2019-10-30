@@ -13,6 +13,7 @@ public class ByteUtil {
 
 	/**
 	 * Byte[] -> byte[]
+	 *
 	 * @param origin Byte[]
 	 * @return byte[]
 	 */
@@ -31,6 +32,7 @@ public class ByteUtil {
 
 	/**
 	 * byte[] -> Byte[]
+	 *
 	 * @param origin byte[]
 	 * @return Byte[]
 	 */

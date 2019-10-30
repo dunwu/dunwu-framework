@@ -6,8 +6,8 @@ import java.lang.reflect.Field;
  * Nullable 注解处理器
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2019-03-31
  * @see NotNull
+ * @since 2019-03-31
  */
 public class NotNullUtil {
 
@@ -18,7 +18,8 @@ public class NotNullUtil {
 				field.setAccessible(true);
 				Object value = field.get(obj);
 				if (value == null) {
-					String msg = String.format("%s 类中的 %s 字段不能为空！", obj.getClass().getName(), field.getName());
+					String msg = String.format("%s 类中的 %s 字段不能为空！",
+						obj.getClass().getName(), field.getName());
 					throw new NullPointerException(msg);
 				}
 			}

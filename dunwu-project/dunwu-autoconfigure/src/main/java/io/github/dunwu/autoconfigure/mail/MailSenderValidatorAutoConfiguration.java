@@ -11,8 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 
 /**
- * {@link EnableAutoConfiguration Auto configuration} for testing mail service
- * connectivity on startup.
+ * {@link EnableAutoConfiguration Auto configuration} for testing mail service connectivity on startup.
  *
  * @author Eddú Meléndez
  * @author Stephane Nicoll
@@ -34,8 +33,7 @@ public class MailSenderValidatorAutoConfiguration {
 	public void validateConnection() {
 		try {
 			this.mailSender.testConnection();
-		}
-		catch (MessagingException ex) {
+		} catch (MessagingException ex) {
 			throw new IllegalStateException("Mail server is not available", ex);
 		}
 	}

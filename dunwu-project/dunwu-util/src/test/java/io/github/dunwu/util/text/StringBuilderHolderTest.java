@@ -21,8 +21,7 @@ public class StringBuilderHolderTest {
 			public void run() {
 				try {
 					barrier.await();
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -52,7 +51,6 @@ public class StringBuilderHolderTest {
 		}
 
 		countdown.await();
-
 	}
 
 }

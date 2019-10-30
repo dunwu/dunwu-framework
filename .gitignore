@@ -2,7 +2,7 @@
 # more gitignore templates see https://github.com/github/gitignore
 # ---------------------------------------------------------------------
 
-# ---------------------------- java ----------------------------
+# ------------------------------- java -------------------------------
 # compiled folders
 classes
 target
@@ -24,13 +24,14 @@ logs
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
 
 # maven plugin temp files
 .flattened-pom.xml
 
-################ JAVASCRIPT ################
+
+# ------------------------------- javascript -------------------------------
 # dependencies
 node_modules
 
@@ -48,11 +49,11 @@ yarn-error.log*
 bundle*.js
 
 
-################ IDEA ################
+# ------------------------------- intellij -------------------------------
 .idea
 *.iml
 
 
-################ Eclipse ################
+# ------------------------------- eclipse -------------------------------
 .classpath
 .project

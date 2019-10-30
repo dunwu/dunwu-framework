@@ -5,10 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JDK并没有提供ConcurrenHashSet，考虑到JDK的HashSet也是基于HashMap实现的，因此ConcurrenHashSet也由ConcurrenHashMap完成。
- * 虽然也可以通过Collections.newSetFromMap(new ConcurrentHashMap())，
- * 但声明一个单独的类型，阅读代码时能更清晰的知道set的并发友好性，代码来自JDK的SetFromMap，去除JDK8接口.
+ * 虽然也可以通过Collections.newSetFromMap(new ConcurrentHashMap())， 但声明一个单独的类型，阅读代码时能更清晰的知道set的并发友好性，代码来自JDK的SetFromMap，去除JDK8接口.
  */
-public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable {
+public class ConcurrentHashSet<E> extends AbstractSet<E>
+	implements Set<E>, java.io.Serializable {
 
 	private static final long serialVersionUID = -8672117787651310382L;
 
@@ -22,8 +22,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	}
 
 	@Override
-	public void clear() {
-		m.clear();
+	public Iterator<E> iterator() {
+		return s.iterator();
 	}
 
 	@Override
@@ -42,21 +42,6 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	}
 
 	@Override
-	public boolean remove(Object o) {
-		return m.remove(o) != null;
-	}
-
-	@Override
-	public boolean add(E e) {
-		return m.put(e, Boolean.TRUE) == null;
-	}
-
-	@Override
-	public Iterator<E> iterator() {
-		return s.iterator();
-	}
-
-	@Override
 	public Object[] toArray() {
 		return s.toArray();
 	}
@@ -67,18 +52,13 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	}
 
 	@Override
-	public String toString() {
-		return s.toString();
+	public boolean add(E e) {
+		return m.put(e, Boolean.TRUE) == null;
 	}
 
 	@Override
-	public int hashCode() {
-		return s.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o == this || s.equals(o);
+	public boolean remove(Object o) {
+		return m.remove(o) != null;
 	}
 
 	@Override
@@ -87,13 +67,33 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) {
-		return s.removeAll(c);
+	public boolean retainAll(Collection<?> c) {
+		return s.retainAll(c);
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c) {
-		return s.retainAll(c);
+	public void clear() {
+		m.clear();
+	}
+
+	@Override
+	public String toString() {
+		return s.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o == this || s.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return s.hashCode();
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return s.removeAll(c);
 	}
 
 }

@@ -16,32 +16,25 @@ import java.util.*;
  */
 public class PropertiesUtil {
 
-	public static Map<String, String> toMap(Properties properties) {
-		Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
-		Map<String, String> map = new HashMap<>(entrySet.size());
-		for (Object o : entrySet) {
-			Map.Entry entry = (Map.Entry) o;
-			map.put((String) entry.getKey(), (String) entry.getValue());
-		}
-		return map;
-	}
-
 	public static <K, V> Properties toProperties(Map<K, V> map) {
 		return MapUtils.toProperties(map);
 	}
 
-	//////////////////////////////////// 读取Properties ////////////////////////////////////
-
-	public static String getString(Properties properties, String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
-	}
-
-	public static Boolean getBoolean(Properties properties, String key, Boolean defaultValue) {
+	public static Boolean getBoolean(Properties properties, String key,
+		Boolean defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Boolean.valueOf(value);
 	}
 
-	public static Integer getInt(Properties properties, String key, Integer defaultValue) {
+	//////////////////////////////////// 读取Properties ////////////////////////////////////
+
+	public static String getString(Properties properties, String key,
+		String defaultValue) {
+		return properties.getProperty(key, defaultValue);
+	}
+
+	public static Integer getInt(Properties properties, String key,
+		Integer defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Integer.valueOf(value);
 	}
@@ -51,7 +44,8 @@ public class PropertiesUtil {
 		return Long.valueOf(value);
 	}
 
-	public static Double getDouble(Properties properties, String key, Double defaultValue) {
+	public static Double getDouble(Properties properties, String key,
+		Double defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Double.valueOf(value);
 	}
@@ -67,25 +61,21 @@ public class PropertiesUtil {
 		return list;
 	}
 
+	public static Map<String, String> toMap(Properties properties) {
+		Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
+		Map<String, String> map = new HashMap<>(entrySet.size());
+		for (Object o : entrySet) {
+			Map.Entry entry = (Map.Entry) o;
+			map.put((String) entry.getKey(), (String) entry.getValue());
+		}
+		return map;
+	}
+
 	//////////////////////////////////// 加载Properties ////////////////////////////////////
 
 	/**
-	 * 从文件路径加载 properties。
-	 * <p>
-	 * 默认使用 utf-8编码解析文件
-	 * <p>
-	 * 路径支持从外部文件或resources文件加载, "file://"或无前缀代表外部文件, "classpath://"代表resources
-	 */
-	public static Properties loadFromFile(String file) throws IOException {
-		Properties properties = new Properties();
-		InputStream inputStream = UrlResourceUtil.asStream(file);
-		Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-		properties.load(reader);
-		return properties;
-	}
-
-	/**
 	 * 从多个文件路径加载 properties
+	 *
 	 * @param files
 	 * @return
 	 * @throws IOException
@@ -99,6 +89,21 @@ public class PropertiesUtil {
 		for (String file : files) {
 			properties.putAll(loadFromFile(file));
 		}
+		return properties;
+	}
+
+	/**
+	 * 从文件路径加载 properties。
+	 * <p>
+	 * 默认使用 utf-8编码解析文件
+	 * <p>
+	 * 路径支持从外部文件或resources文件加载, "file://"或无前缀代表外部文件, "classpath://"代表resources
+	 */
+	public static Properties loadFromFile(String file) throws IOException {
+		Properties properties = new Properties();
+		InputStream inputStream = UrlResourceUtil.asStream(file);
+		Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+		properties.load(reader);
 		return properties;
 	}
 

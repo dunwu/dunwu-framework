@@ -18,18 +18,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.*;
 
 /**
  * @author xiaolongzuo
  */
 public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 
-	public static final Logger log = LoggerFactory.getLogger(JsonHandlerExceptionResolver.class);
+	public static final Logger log = LoggerFactory
+		.getLogger(JsonHandlerExceptionResolver.class);
 
 	private static final String KEY = "exception";
 
@@ -42,57 +43,18 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 	}
 
 	@Override
-	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Exception exception) {
+	public ModelAndView resolveException(HttpServletRequest request,
+		HttpServletResponse response, Object handler, Exception exception) {
 		ExceptionMetadata exceptionMetadata = logException(handler, request, exception);
-		BaseResult result = buildJsonResponse(request, exception, exceptionMetadata.getErrorId());
+		BaseResult result = buildJsonResponse(request, exception,
+			exceptionMetadata.getErrorId());
 		ModelAndView view = new ModelAndView(errorView);
 		view.addObject(KEY, result);
 		return view;
 	}
 
-	private BaseResult buildJsonResponse(HttpServletRequest request, Throwable throwable, String errorId) {
-		while (throwable.getCause() != null) {
-			throwable = throwable.getCause();
-		}
-		String code;
-		Object[] args = new Object[0];
-		Object data = null;
-		if (throwable instanceof ConstraintViolationException) {
-			ConstraintViolationException constraintViolationException = (ConstraintViolationException) throwable;
-			code = "YA-400";
-			data = new ArrayList<>();
-			for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
-				Map<String, String> map = new HashMap<>(2);
-				map.put("message", constraintViolation.getMessage());
-				map.put("propertyPath", constraintViolation.getPropertyPath().toString());
-				((List) data).add(map);
-			}
-		}
-		else if (throwable instanceof AppException) {
-			AppException exception = (AppException) throwable;
-			code = exception.getResult().getCode();
-		}
-		else {
-			code = AppCode.FAIL.getCode();
-		}
-		Locale locale = (Locale) request.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-		String message;
-		try {
-			message = messageSource.getMessage(code, args, locale);
-		}
-		catch (NoSuchMessageException e) {
-			if (throwable instanceof AppException && throwable.getMessage() != null) {
-				message = throwable.getMessage();
-			}
-			else {
-				throw e;
-			}
-		}
-		return ResultUtil.failBaseResult(code, message);
-	}
-
-	private ExceptionMetadata logException(Object handler, HttpServletRequest request, Exception exception) {
+	private ExceptionMetadata logException(Object handler, HttpServletRequest request,
+		Exception exception) {
 		ExceptionMetadata exceptionMetadata = new ExceptionMetadata();
 		try {
 			buildExceptionMetadata(exceptionMetadata, handler, request);
@@ -105,29 +67,70 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 				logger.error(exceptionMetadata.getMethodName());
 				logger.error("ParameterMap is:");
 				logger.error(exceptionMetadata.getParameterMap(), exception);
+			} else {
+				log.error(handler + " execute failed, error id is:"
+					+ exceptionMetadata.getErrorId(), exception);
 			}
-			else {
-				log.error(handler + " execute failed, error id is:" + exceptionMetadata.getErrorId(), exception);
-			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.error(handler + " execute failed.", exception);
 		}
 		return exceptionMetadata;
 	}
 
-	private void buildExceptionMetadata(ExceptionMetadata exceptionMetadata, Object handler,
-			HttpServletRequest request) {
+	private BaseResult buildJsonResponse(HttpServletRequest request, Throwable throwable,
+		String errorId) {
+		while (throwable.getCause() != null) {
+			throwable = throwable.getCause();
+		}
+		String code;
+		Object[] args = new Object[0];
+		Object data = null;
+		if (throwable instanceof ConstraintViolationException) {
+			ConstraintViolationException constraintViolationException = (ConstraintViolationException) throwable;
+			code = "YA-400";
+			data = new ArrayList<>();
+			for (ConstraintViolation<?> constraintViolation : constraintViolationException
+				.getConstraintViolations()) {
+				Map<String, String> map = new HashMap<>(2);
+				map.put("message", constraintViolation.getMessage());
+				map.put("propertyPath", constraintViolation.getPropertyPath().toString());
+				((List) data).add(map);
+			}
+		} else if (throwable instanceof AppException) {
+			AppException exception = (AppException) throwable;
+			code = exception.getResult().getCode();
+		} else {
+			code = AppCode.FAIL.getCode();
+		}
+		Locale locale = (Locale) request.getSession()
+			.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
+		String message;
+		try {
+			message = messageSource.getMessage(code, args, locale);
+		} catch (NoSuchMessageException e) {
+			if (throwable instanceof AppException && throwable.getMessage() != null) {
+				message = throwable.getMessage();
+			} else {
+				throw e;
+			}
+		}
+		return ResultUtil.failBaseResult(code, message);
+	}
+
+	private void buildExceptionMetadata(ExceptionMetadata exceptionMetadata,
+		Object handler, HttpServletRequest request) {
 		if (handler != null && HandlerMethod.class.isAssignableFrom(handler.getClass())) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Class<?> beanType = handlerMethod.getBeanType();
 			String methodName = handlerMethod.getMethod().getName();
-			RequestMapping controllerRequestMapping = beanType.getDeclaredAnnotation(RequestMapping.class);
+			RequestMapping controllerRequestMapping = beanType
+				.getDeclaredAnnotation(RequestMapping.class);
 			String classMapping = "";
 			if (controllerRequestMapping != null) {
 				classMapping = controllerRequestMapping.value()[0];
 			}
-			RequestMapping methodRequestMapping = handlerMethod.getMethodAnnotation(RequestMapping.class);
+			RequestMapping methodRequestMapping = handlerMethod
+				.getMethodAnnotation(RequestMapping.class);
 			String methodMapping = "";
 			if (methodRequestMapping != null) {
 				methodMapping = methodRequestMapping.value()[0];
@@ -142,8 +145,7 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 			exceptionMetadata.setClassMapping(classMapping);
 			exceptionMetadata.setMethodMapping(methodMapping);
 			exceptionMetadata.setParameterMap(request.getParameterMap());
-		}
-		else {
+		} else {
 			exceptionMetadata.setHandlerMethod(false);
 		}
 	}
@@ -229,8 +231,8 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 		}
 
 		@Override
-		public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
-				throws Exception {
+		public void render(Map<String, ?> model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 			response.setContentType(CONTENT_TYPE);
 			String json = JsonMapper.defaultMapper().toJson(model.get(KEY));
 			response.getOutputStream().write(json.getBytes());

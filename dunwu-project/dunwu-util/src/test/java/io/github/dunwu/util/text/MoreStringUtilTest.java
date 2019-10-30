@@ -31,7 +31,6 @@ public class MoreStringUtilTest {
 
 		result = splitter.splitToList("\\a\\b\\c");
 		assertThat(result).hasSize(3).containsSequence("a", "b", "c");
-
 	}
 
 	@Test
@@ -56,7 +55,6 @@ public class MoreStringUtilTest {
 		assertThat(MoreStringUtil.replaceLast("abcc", 'c', 'c')).isEqualTo("abcc");
 		assertThat(MoreStringUtil.replaceLast("", 'c', 'c')).isEqualTo("");
 		assertThat(MoreStringUtil.replaceLast(null, 'c', 'c')).isNull();
-
 	}
 
 	@Test

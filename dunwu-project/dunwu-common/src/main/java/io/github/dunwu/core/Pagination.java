@@ -61,6 +61,17 @@ public class Pagination<T> implements Serializable {
 		return this;
 	}
 
+	public long getPages() {
+		if (getSize() == 0) {
+			return 0L;
+		}
+		long pages = getTotal() / getSize();
+		if (getTotal() % getSize() != 0) {
+			pages++;
+		}
+		return pages;
+	}
+
 	public long getSize() {
 		return size;
 	}
@@ -79,24 +90,14 @@ public class Pagination<T> implements Serializable {
 		return this;
 	}
 
-	public long getPages() {
-		if (getSize() == 0) {
-			return 0L;
-		}
-		long pages = getTotal() / getSize();
-		if (getTotal() % getSize() != 0) {
-			pages++;
-		}
-		return pages;
-	}
-
 	public Pagination setPages(long pages) {
 		return this;
 	}
 
 	@Override
 	public String toString() {
-		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size + ", total=" + total + '}';
+		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size
+			+ ", total=" + total + '}';
 	}
 
 }

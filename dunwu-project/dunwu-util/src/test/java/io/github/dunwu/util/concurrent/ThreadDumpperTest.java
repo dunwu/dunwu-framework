@@ -38,9 +38,7 @@ public class ThreadDumpperTest {
 		assertThat(appender.getAllLogs()).hasSize(0);
 
 		executor.shutdownNow();
-
 	}
-
 
 	public static class LongRunTask implements Runnable {
 

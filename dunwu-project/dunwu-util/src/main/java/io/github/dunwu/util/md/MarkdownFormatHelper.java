@@ -37,8 +37,7 @@ public class MarkdownFormatHelper {
 
 			if (text.contains("```")) {
 				isCode = !isCode;
-			}
-			else if (!isCode) {
+			} else if (!isCode) {
 				// text = changeMathJaxToCodeCogs(text);
 				text = convertImgTag(text);
 				// text = addSpaceInHtmlTag(text);
@@ -66,7 +65,8 @@ public class MarkdownFormatHelper {
 	}
 
 	public static String convertImgTag(final String text) {
-		String newstr = RegexUtil.replaceAllMatchContent(text, RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
+		String newstr = RegexUtil.replaceAllMatchContent(text,
+			RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
 
 		boolean hasPic = newstr.contains("![]");
 		if (!hasPic) {
@@ -145,12 +145,10 @@ public class MarkdownFormatHelper {
 			if (isLineMath(text)) {
 				startIdx = text.indexOf("$$");
 				endIdx = text.indexOf("$$", startIdx + 1);
-			}
-			else if (isInLineMath(text)) {
+			} else if (isInLineMath(text)) {
 				startIdx = text.indexOf("$");
 				endIdx = text.indexOf("$", startIdx + 1);
-			}
-			else {
+			} else {
 				sb.append(text);
 				break;
 			}
@@ -162,10 +160,12 @@ public class MarkdownFormatHelper {
 			}
 			String mathJaxContent = text.substring(startIdx, endIdx);
 			mathJaxContent = mathJaxContent.replaceAll(" ", "");
-			mathJaxContent = "<img src=\"https://latex.codecogs.com/gif.latex?" + mathJaxContent + "\"/>";
+			mathJaxContent = "<img src=\"https://latex.codecogs.com/gif.latex?"
+				+ mathJaxContent + "\"/>";
 
 			if (isLineMath(text)) {
-				mathJaxContent = "<div align=\"center\">" + mathJaxContent + "</div> <br>";
+				mathJaxContent = "<div align=\"center\">" + mathJaxContent
+					+ "</div> <br>";
 			}
 
 			while (endIdx < text.length() && text.charAt(endIdx) == CHAR_$) {
@@ -201,7 +201,8 @@ public class MarkdownFormatHelper {
 		return idx != -1;
 	}
 
-	private static List<String> addFrontMatter(String srcFilePath, List<String> contents) {
+	private static List<String> addFrontMatter(String srcFilePath,
+		List<String> contents) {
 		if (CollectionUtils.isEmpty(contents)) {
 			return contents;
 		}

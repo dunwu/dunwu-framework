@@ -24,7 +24,8 @@ public class MarkdownFormatCmdApp {
 
 		Toc.setCatalogueLevel(3);
 
-		String newMarkdownFilePath = markdownFilePath.substring(0, markdownFilePath.length() - 3) + ".gfm.md";
+		String newMarkdownFilePath = markdownFilePath.substring(0,
+			markdownFilePath.length() - 3) + ".gfm.md";
 
 		MarkdownFormatHelper.convertToGfm(markdownFilePath, newMarkdownFilePath);
 

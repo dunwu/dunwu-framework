@@ -11,19 +11,25 @@ public class EnumUtilTest {
 
 	@Test
 	void testBits() {
-		Assertions.assertThat(EnumUtil.generateBitVector(Options.class, Options.A)).isEqualTo(1);
-		Assertions.assertThat(EnumUtil.generateBitVector(Options.class, Options.A, Options.B)).isEqualTo(3);
+		Assertions.assertThat(EnumUtil.generateBitVector(Options.class, Options.A))
+			.isEqualTo(1);
+		Assertions
+			.assertThat(
+				EnumUtil.generateBitVector(Options.class, Options.A, Options.B))
+			.isEqualTo(3);
 
-		Assertions.assertThat(EnumUtil.generateBitVector(Options.class, ListUtil.newArrayList(Options.A))).isEqualTo(1);
-		Assertions.assertThat(EnumUtil.generateBitVector(Options.class, ListUtil.newArrayList(Options.A, Options.B)))
-				.isEqualTo(3);
+		Assertions.assertThat(EnumUtil.generateBitVector(Options.class,
+			ListUtil.newArrayList(Options.A))).isEqualTo(1);
+		Assertions.assertThat(EnumUtil.generateBitVector(Options.class,
+			ListUtil.newArrayList(Options.A, Options.B))).isEqualTo(3);
 
-		Assertions.assertThat(EnumUtil.processBitVector(Options.class, 3)).hasSize(2).containsExactly(Options.A,
-				Options.B);
+		Assertions.assertThat(EnumUtil.processBitVector(Options.class, 3)).hasSize(2)
+			.containsExactly(Options.A, Options.B);
 
-		long value = EnumUtil.generateBitVector(Options.class, Options.A, Options.C, Options.D);
-		Assertions.assertThat(EnumUtil.processBitVector(Options.class, value)).hasSize(3).containsExactly(Options.A,
-				Options.C, Options.D);
+		long value = EnumUtil.generateBitVector(Options.class, Options.A, Options.C,
+			Options.D);
+		Assertions.assertThat(EnumUtil.processBitVector(Options.class, value)).hasSize(3)
+			.containsExactly(Options.A, Options.C, Options.D);
 	}
 
 	@Test
@@ -47,7 +53,6 @@ public class EnumUtilTest {
 	public enum Options {
 
 		A, B, C, D;
-
 	}
 
 }

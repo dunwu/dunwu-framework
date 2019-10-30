@@ -21,9 +21,9 @@ public class DateConverter implements Converter<String, Date> {
 
 		Date date = null;
 		try {
-			date = DateFormatUtil.parseDate(DateFormatUtil.DatePattern.PATTERN_DEFAULT_ON_SECOND, dateString);
-		}
-		catch (ParseException e) {
+			date = DateFormatUtil.parseDate(
+				DateFormatUtil.DatePattern.PATTERN_DEFAULT_ON_SECOND, dateString);
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 

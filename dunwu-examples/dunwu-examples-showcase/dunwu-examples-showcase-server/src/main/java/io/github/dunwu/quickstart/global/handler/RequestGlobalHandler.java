@@ -21,16 +21,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 系统全局异常统一处理接口
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @see <a href=
- * "https://blog.csdn.net/hao_kkkkk/article/details/80538955">Springboot项目全局异常统一处理</a>
+ * @see <a href= "https://blog.csdn.net/hao_kkkkk/article/details/80538955">Springboot项目全局异常统一处理</a>
  * @since 2019-09-11
  */
 @ControllerAdvice
@@ -42,6 +41,7 @@ public class RequestGlobalHandler {
 
 	/**
 	 * 把值绑定到Model中，使全局@RequestMapping可以获取到该值
+	 *
 	 * @param model
 	 */
 	@ModelAttribute
@@ -51,6 +51,7 @@ public class RequestGlobalHandler {
 
 	/**
 	 * 处理<code>未处理异常</code>
+	 *
 	 * @param e MethodArgumentNotValidException
 	 * @return {@link BaseResult} / {@link ModelAndView}
 	 */
@@ -62,20 +63,18 @@ public class RequestGlobalHandler {
 
 		BaseResult baseResult;
 		if (e instanceof MethodArgumentNotValidException) {
-			baseResult = resolveMethodArgumentNotValidException((MethodArgumentNotValidException) e);
-		}
-		else if (e instanceof AppException) {
+			baseResult = resolveMethodArgumentNotValidException(
+				(MethodArgumentNotValidException) e);
+		} else if (e instanceof AppException) {
 			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_SYSTEM);
-		}
-		else {
+		} else {
 			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_UNKNOWN);
 		}
 
 		WebConstant.ResponseType responseType = getResponseMode(request);
 		if (responseType == WebConstant.ResponseType.HTTP_REPONSE) {
 			return baseResult;
-		}
-		else {
+		} else {
 			Map<String, Object> map = new HashMap<>(4);
 			map.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 			map.put("requestURL", request.getRequestURL());
@@ -87,10 +86,12 @@ public class RequestGlobalHandler {
 
 	/**
 	 * 处理参数校验异常
+	 *
 	 * @param e MethodArgumentNotValidException
 	 * @return {@link BaseResult}
 	 */
-	private BaseResult resolveMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+	private BaseResult resolveMethodArgumentNotValidException(
+		final MethodArgumentNotValidException e) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("出现参数错误：\n");
 		for (ObjectError error : e.getBindingResult().getAllErrors()) {
@@ -98,7 +99,8 @@ public class RequestGlobalHandler {
 			sb.append(error.getDefaultMessage());
 			sb.append("\n");
 		}
-		return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER.getCode(), sb.toString());
+		return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER.getCode(),
+			sb.toString());
 	}
 
 	private WebConstant.ResponseType getResponseMode(HttpServletRequest request) {
@@ -106,15 +108,18 @@ public class RequestGlobalHandler {
 		String accept = request.getHeader(HttpHeaders.ACCEPT);
 		String xRequestedWith = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
 
-		if (StringUtils.isNotBlank(contentType) && contentType.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
+		if (StringUtils.isNotBlank(contentType)
+			&& contentType.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 
-		if (StringUtils.isNotBlank(accept) && accept.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
+		if (StringUtils.isNotBlank(accept)
+			&& accept.contains(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 
-		if (StringUtils.isNotBlank(xRequestedWith) && HttpHeaders.X_REQUESTED_WITH.equalsIgnoreCase(xRequestedWith)) {
+		if (StringUtils.isNotBlank(xRequestedWith)
+			&& HttpHeaders.X_REQUESTED_WITH.equalsIgnoreCase(xRequestedWith)) {
 			return WebConstant.ResponseType.HTTP_REPONSE;
 		}
 

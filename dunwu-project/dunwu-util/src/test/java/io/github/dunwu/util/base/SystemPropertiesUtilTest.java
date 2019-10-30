@@ -80,7 +80,6 @@ public class SystemPropertiesUtilTest {
 		assertThat(result9).isEqualTo("2.1");
 
 		System.clearProperty(name);
-
 	}
 
 	@Test
@@ -105,8 +104,7 @@ public class SystemPropertiesUtilTest {
 			// 非法字符
 			String result4 = SystemPropertiesUtil.getString(name, name, "123");
 			fail("should fail before");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			assertThat(e).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -217,5 +215,4 @@ public class SystemPropertiesUtilTest {
 	}
 
 	;
-
 }

@@ -12,19 +12,20 @@ public class ThreadUtilTest {
 	public void testCaller() {
 		hello();
 		new MyClass().hello();
-		assertThat(RuntimeUtil.getCurrentClass()).isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-		assertThat(RuntimeUtil.getCurrentMethod())
-				.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
-
+		assertThat(RuntimeUtil.getCurrentClass())
+			.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
+		assertThat(RuntimeUtil.getCurrentMethod()).isEqualTo(
+			"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 	}
 
 	private void hello() {
 		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
 		System.out.println(ObjectUtil.toPrettyString(stacktrace));
 
-		assertThat(RuntimeUtil.getCallerClass()).isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-		assertThat(RuntimeUtil.getCallerMethod())
-				.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
+		assertThat(RuntimeUtil.getCallerClass())
+			.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
+		assertThat(RuntimeUtil.getCallerMethod()).isEqualTo(
+			"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 	}
 
 	public static class MyClass {
@@ -33,9 +34,10 @@ public class ThreadUtilTest {
 			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
 			System.out.println(ObjectUtil.toPrettyString(stacktrace));
 
-			assertThat(RuntimeUtil.getCallerClass()).isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-			assertThat(RuntimeUtil.getCallerMethod())
-					.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
+			assertThat(RuntimeUtil.getCallerClass())
+				.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
+			assertThat(RuntimeUtil.getCallerMethod()).isEqualTo(
+				"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 		}
 
 	}

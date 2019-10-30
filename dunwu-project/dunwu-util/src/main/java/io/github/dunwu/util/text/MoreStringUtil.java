@@ -11,20 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 尽量使用Common Lang StringUtils, 基本覆盖了所有类库的StringUtils 本类仅补充少量额外方法, 尤其是针对char的运算 1. split
- * char/chars 2. 针对char的replace first/last, startWith,endWith 等
+ * 尽量使用Common Lang StringUtils, 基本覆盖了所有类库的StringUtils 本类仅补充少量额外方法, 尤其是针对char的运算 1. split char/chars 2. 针对char的replace
+ * first/last, startWith,endWith 等
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
 public class MoreStringUtil extends StringUtils {
 
 	/**
-	 * 高性能的Split，针对char的分隔符号，比JDK String自带的高效. copy from Commons Lange 3.5 StringUtils,
-	 * 做如下优化: 1. 最后不做数组转换，直接返回List. 2. 可设定List初始大小. 3. preserveAllTokens 取默认值false
+	 * 高性能的Split，针对char的分隔符号，比JDK String自带的高效. copy from Commons Lange 3.5 StringUtils, 做如下优化: 1. 最后不做数组转换，直接返回List. 2.
+	 * 可设定List初始大小. 3. preserveAllTokens 取默认值false
+	 *
 	 * @param expectParts 预估分割后的List大小，初始化数据更精准
 	 * @return 如果为null返回null, 如果为""返回空数组
 	 */
-	public static List<String> split(@Nullable final String str, final char separatorChar, int expectParts) {
+	public static List<String> split(@Nullable final String str, final char separatorChar,
+		int expectParts) {
 		if (str == null) {
 			return null;
 		}
@@ -58,6 +60,7 @@ public class MoreStringUtil extends StringUtils {
 
 	/**
 	 * 使用多个可选的char作为分割符, 还可以设置omitEmptyStrings,trimResults等配置 设置后的Splitter进行重用，不要每次创建
+	 *
 	 * @param separatorChars 比如Unix/Windows的路径分割符 "/\\"
 	 * @see com.google.common.base.Splitter
 	 */
@@ -111,16 +114,6 @@ public class MoreStringUtil extends StringUtils {
 	}
 
 	/**
-	 * 判断字符串是否以字母结尾 如果字符串为Null或空，返回false
-	 */
-	public static boolean endWith(@Nullable CharSequence s, char c) {
-		if (StringUtils.isEmpty(s)) {
-			return false;
-		}
-		return s.charAt(s.length() - 1) == c;
-	}
-
-	/**
 	 * 如果结尾字符为c, 去除掉该字符.
 	 */
 	public static String removeEnd(final String s, final char c) {
@@ -128,6 +121,16 @@ public class MoreStringUtil extends StringUtils {
 			return s.substring(0, s.length() - 1);
 		}
 		return s;
+	}
+
+	/**
+	 * 判断字符串是否以字母结尾 如果字符串为Null或空，返回false
+	 */
+	public static boolean endWith(@Nullable CharSequence s, char c) {
+		if (StringUtils.isEmpty(s)) {
+			return false;
+		}
+		return s.charAt(s.length() - 1) == c;
 	}
 
 	///////////// 其他 ////////////

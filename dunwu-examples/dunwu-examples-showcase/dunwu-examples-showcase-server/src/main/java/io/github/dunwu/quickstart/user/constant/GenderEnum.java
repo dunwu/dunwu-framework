@@ -33,5 +33,4 @@ public enum GenderEnum implements IIntegerStringEnum {
 	public String getValue() {
 		return this.value;
 	}
-
 }

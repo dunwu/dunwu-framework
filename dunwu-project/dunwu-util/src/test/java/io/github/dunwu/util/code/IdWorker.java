@@ -38,14 +38,15 @@ public class IdWorker {
 		// 这儿不就检查了一下，要求就是你传递进来的机房id和机器id不能超过32，不能小于0
 		if (workerId > maxWorkerId || workerId < 0) {
 
-			throw new IllegalArgumentException(
-					String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+			throw new IllegalArgumentException(String.format(
+				"worker Id can't be greater than %d or less than 0", maxWorkerId));
 		}
 
 		if (datacenterId > maxDatacenterId || datacenterId < 0) {
 
 			throw new IllegalArgumentException(
-					String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+				String.format("datacenter Id can't be greater than %d or less than 0",
+					maxDatacenterId));
 		}
 
 		this.workerId = workerId;
@@ -63,18 +64,6 @@ public class IdWorker {
 		}
 	}
 
-	public long getWorkerId() {
-		return workerId;
-	}
-
-	public long getDatacenterId() {
-		return datacenterId;
-	}
-
-	public long getTimestamp() {
-		return System.currentTimeMillis();
-	}
-
 	// 这个是核心方法，通过调用nextId()方法，让当前这台机器上的snowflake算法程序生成一个全局唯一的id
 	public synchronized long nextId() {
 
@@ -82,9 +71,11 @@ public class IdWorker {
 		long timestamp = timeGen();
 
 		if (timestamp < lastTimestamp) {
-			System.err.printf("clock is moving backwards. Rejecting requests until %d.", lastTimestamp);
+			System.err.printf("clock is moving backwards. Rejecting requests until %d.",
+				lastTimestamp);
 			throw new RuntimeException(String.format(
-					"Clock moved backwards. Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
+				"Clock moved backwards. Refusing to generate id for %d milliseconds",
+				lastTimestamp - timestamp));
 		}
 
 		// 下面是说假设在同一个毫秒内，又发送了一个请求生成一个id
@@ -98,9 +89,7 @@ public class IdWorker {
 			if (sequence == 0) {
 				timestamp = tilNextMillis(lastTimestamp);
 			}
-
-		}
-		else {
+		} else {
 			sequence = 0;
 		}
 
@@ -110,8 +99,13 @@ public class IdWorker {
 		// 这儿就是最核心的二进制位运算操作，生成一个64bit的id
 		// 先将当前时间戳左移，放到41 bit那儿；将机房id左移放到5 bit那儿；将机器id左移放到5 bit那儿；将序号放最后12 bit
 		// 最后拼接起来成一个64 bit的二进制数字，转换成10进制就是个long型
-		return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift)
-				| (workerId << workerIdShift) | sequence;
+		return ((timestamp - twepoch) << timestampLeftShift)
+			| (datacenterId << datacenterIdShift) | (workerId << workerIdShift)
+			| sequence;
+	}
+
+	private long timeGen() {
+		return System.currentTimeMillis();
 	}
 
 	private long tilNextMillis(long lastTimestamp) {
@@ -124,7 +118,15 @@ public class IdWorker {
 		return timestamp;
 	}
 
-	private long timeGen() {
+	public long getWorkerId() {
+		return workerId;
+	}
+
+	public long getDatacenterId() {
+		return datacenterId;
+	}
+
+	public long getTimestamp() {
 		return System.currentTimeMillis();
 	}
 

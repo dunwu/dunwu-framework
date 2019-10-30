@@ -44,13 +44,15 @@ public abstract class BaseCodeGenerator {
 
 		// 将配置项注入 AutoGenerator
 		AutoGenerator generator = new AutoGenerator();
-		generator.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc).setStrategy(sc).setCfg(cfg).setTemplate(tc)
-				.setTemplateEngine(new FreemarkerTemplateEngine());
+		generator.setGlobalConfig(gc).setDataSource(dsc).setPackageInfo(pc)
+			.setStrategy(sc).setCfg(cfg).setTemplate(tc)
+			.setTemplateEngine(new FreemarkerTemplateEngine());
 		generator.execute();
 	}
 
 	/**
 	 * 从配置文件中加载属性
+	 *
 	 * @param files 待加载的 properties 文件路径
 	 * @return {@link Properties}
 	 */
@@ -58,6 +60,7 @@ public abstract class BaseCodeGenerator {
 
 	/**
 	 * 全局配置
+	 *
 	 * @param properties Properties
 	 * @return {@link GlobalConfig}
 	 */
@@ -65,6 +68,7 @@ public abstract class BaseCodeGenerator {
 
 	/**
 	 * 数据源配置
+	 *
 	 * @param properties Properties
 	 * @return {@link DataSourceConfig}
 	 */
@@ -72,6 +76,7 @@ public abstract class BaseCodeGenerator {
 
 	/**
 	 * 包名配置
+	 *
 	 * @param properties Properties
 	 * @return {@link PackageConfig}
 	 */
@@ -79,22 +84,27 @@ public abstract class BaseCodeGenerator {
 
 	/**
 	 * 策略配置
+	 *
 	 * @param properties Properties
-	 * @param pc PackageConfig
+	 * @param pc         PackageConfig
 	 * @return {@link StrategyConfig}
 	 */
-	public abstract StrategyConfig getStrategyConfig(Properties properties, PackageConfig pc);
+	public abstract StrategyConfig getStrategyConfig(Properties properties,
+		PackageConfig pc);
 
 	/**
 	 * 自定义配置
+	 *
 	 * @param properties Properties
-	 * @param pc PackageConfig
+	 * @param pc         PackageConfig
 	 * @return {@link InjectionConfig}
 	 */
-	public abstract InjectionConfig getInjectionConfig(Properties properties, PackageConfig pc);
+	public abstract InjectionConfig getInjectionConfig(Properties properties,
+		PackageConfig pc);
 
 	/**
 	 * 模板配置
+	 *
 	 * @return {@link TemplateConfig}
 	 */
 	public abstract TemplateConfig getTemplateConfig();

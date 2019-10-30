@@ -40,15 +40,12 @@ public class Toc {
 			}
 			if (hasGenerated) {
 				ret.add(text);
-			}
-			else if (text.contains(TOC_TAG_AFTER)) {
+			} else if (text.contains(TOC_TAG_AFTER)) {
 				isInOldCatalogue = true;
-			}
-			else if (text.contains(TOC_TAG_BEFORE)) {
+			} else if (text.contains(TOC_TAG_BEFORE)) {
 				ret.add(generateCatalogue(contents));
 				hasGenerated = true;
-			}
-			else {
+			} else {
 				ret.add(text);
 			}
 		}
@@ -82,26 +79,13 @@ public class Toc {
 		for (String line : contents) {
 			if (line.contains("```")) {
 				isCode = !isCode;
-			}
-			else if (line.startsWith("#") && !isCode && getLevelOfTitle(line) <= Toc.level) {
+			} else if (line.startsWith("#") && !isCode
+				&& getLevelOfTitle(line) <= Toc.level) {
 				titles.add(line);
 			}
 		}
 
 		return titles;
-	}
-
-	private static int getLevelOfTitle(String title) {
-
-		int cnt = 0;
-
-		int idx = title.indexOf("#");
-		while (idx != -1) {
-			cnt++;
-			idx = title.indexOf("#", idx + 1);
-		}
-
-		return cnt;
 	}
 
 	private static String formatTitle(String title) {
@@ -139,6 +123,19 @@ public class Toc {
 		ret.append("(#").append(anchor).append(")");
 
 		return ret.toString();
+	}
+
+	private static int getLevelOfTitle(String title) {
+
+		int cnt = 0;
+
+		int idx = title.indexOf("#");
+		while (idx != -1) {
+			cnt++;
+			idx = title.indexOf("#", idx + 1);
+		}
+
+		return cnt;
 	}
 
 }

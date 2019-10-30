@@ -41,14 +41,6 @@ public class RandomData {
 	}
 
 	/**
-	 * 从输入list中随机返回n个对象.
-	 */
-	public static <T> List<T> randomSome(List<T> list, int n) {
-		Collections.shuffle(list);
-		return list.subList(0, n);
-	}
-
-	/**
 	 * 从输入list中随机返回随机个对象.
 	 */
 	public static <T> List<T> randomSome(List<T> list) {
@@ -57,6 +49,14 @@ public class RandomData {
 			size = 1;
 		}
 		return randomSome(list, size);
+	}
+
+	/**
+	 * 从输入list中随机返回n个对象.
+	 */
+	public static <T> List<T> randomSome(List<T> list, int n) {
+		Collections.shuffle(list);
+		return list.subList(0, n);
 	}
 
 }

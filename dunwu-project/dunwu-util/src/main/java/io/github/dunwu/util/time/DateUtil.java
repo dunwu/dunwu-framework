@@ -18,22 +18,22 @@ import java.util.Date;
 public class DateUtil {
 
 	public static final long MILLIS_PER_SECOND = 1000; // Number of milliseconds in a
-														// standard second.
+	// standard second.
 
 	public static final long MILLIS_PER_MINUTE = 60 * MILLIS_PER_SECOND; // Number of
-																			// milliseconds
-																			// in a
-																			// standard
-																			// minute.
+	// milliseconds
+	// in a
+	// standard
+	// minute.
 
 	public static final long MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE; // Number of
-																		// milliseconds in
-																		// a standard
-																		// hour.
+	// milliseconds in
+	// a standard
+	// hour.
 
 	public static final long MILLIS_PER_DAY = 24 * MILLIS_PER_HOUR; // Number of
-																	// milliseconds in a
-																	// standard day.
+	// milliseconds in a
+	// standard day.
 
 	public static final int NUM4 = 4;
 
@@ -45,7 +45,8 @@ public class DateUtil {
 
 	public static final int MONTH_FEBRUARY = 2;
 
-	private static final int[] MONTH_LENGTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	private static final int[] MONTH_LENGTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
+		30, 31 };
 
 	//////// 日期比较 ///////////
 
@@ -54,14 +55,16 @@ public class DateUtil {
 	 *
 	 * @see DateUtils#isSameDay(Date, Date)
 	 */
-	public static boolean isSameDay(@NotNull final Date date1, @NotNull final Date date2) {
+	public static boolean isSameDay(@NotNull final Date date1,
+		@NotNull final Date date2) {
 		return DateUtils.isSameDay(date1, date2);
 	}
 
 	/**
 	 * 是否同一时刻.
 	 */
-	public static boolean isSameTime(@NotNull final Date date1, @NotNull final Date date2) {
+	public static boolean isSameTime(@NotNull final Date date1,
+		@NotNull final Date date2) {
 		// date.getMillisOf() 比date.getTime()快
 		return date1.compareTo(date2) == 0;
 	}
@@ -69,9 +72,11 @@ public class DateUtil {
 	/**
 	 * 判断日期是否在范围内，包含相等的日期
 	 */
-	public static boolean isBetween(@NotNull final Date date, @NotNull final Date start, @NotNull final Date end) {
+	public static boolean isBetween(@NotNull final Date date, @NotNull final Date start,
+		@NotNull final Date end) {
 		if (date == null || start == null || end == null || start.after(end)) {
-			throw new IllegalArgumentException("some date parameters is null or dateBein after dateEnd");
+			throw new IllegalArgumentException(
+				"some date parameters is null or dateBein after dateEnd");
 		}
 		return !date.before(start) && !date.after(end);
 	}
@@ -104,20 +109,6 @@ public class DateUtil {
 	 */
 	public static Date subWeeks(@NotNull final Date date, int amount) {
 		return DateUtils.addWeeks(date, -amount);
-	}
-
-	/**
-	 * 加一天
-	 */
-	public static Date addDays(@NotNull final Date date, final int amount) {
-		return DateUtils.addDays(date, amount);
-	}
-
-	/**
-	 * 减一天
-	 */
-	public static Date subDays(@NotNull final Date date, int amount) {
-		return DateUtils.addDays(date, -amount);
 	}
 
 	/**
@@ -162,8 +153,6 @@ public class DateUtil {
 		return DateUtils.addSeconds(date, -amount);
 	}
 
-	//////////// 直接设置时间//////////////
-
 	/**
 	 * 设置年份, 公元纪年.
 	 */
@@ -177,6 +166,8 @@ public class DateUtil {
 	public static Date setMonths(@NotNull final Date date, int amount) {
 		return DateUtils.setMonths(date, amount);
 	}
+
+	//////////// 直接设置时间//////////////
 
 	/**
 	 * 设置日期, 1-31.
@@ -213,35 +204,11 @@ public class DateUtil {
 		return DateUtils.setMilliseconds(date, amount);
 	}
 
-	///// 获取日期的位置//////
-
-	/**
-	 * 获得日期是一周的第几天. 已改为中国习惯，1 是Monday，而不是Sundays.
-	 */
-	public static int getDayOfWeek(@NotNull final Date date) {
-		int result = getWithMondayFirst(date, Calendar.DAY_OF_WEEK);
-		return result == 1 ? 7 : result - 1;
-	}
-
 	/**
 	 * 获得日期是一年的第几天，返回值从1开始
 	 */
 	public static int getDayOfYear(@NotNull final Date date) {
 		return get(date, Calendar.DAY_OF_YEAR);
-	}
-
-	/**
-	 * 获得日期是一月的第几周，返回值从1开始. 开始的一周，只要有一天在那个月里都算. 已改为中国习惯，1 是Monday，而不是Sunday
-	 */
-	public static int getWeekOfMonth(@NotNull final Date date) {
-		return getWithMondayFirst(date, Calendar.WEEK_OF_MONTH);
-	}
-
-	/**
-	 * 获得日期是一年的第几周，返回值从1开始. 开始的一周，只要有一天在那一年里都算.已改为中国习惯，1 是Monday，而不是Sunday
-	 */
-	public static int getWeekOfYear(@NotNull final Date date) {
-		return getWithMondayFirst(date, Calendar.WEEK_OF_YEAR);
 	}
 
 	private static int get(final Date date, int field) {
@@ -252,6 +219,15 @@ public class DateUtil {
 		return cal.get(field);
 	}
 
+	///// 获取日期的位置//////
+
+	/**
+	 * 获得日期是一月的第几周，返回值从1开始. 开始的一周，只要有一天在那个月里都算. 已改为中国习惯，1 是Monday，而不是Sunday
+	 */
+	public static int getWeekOfMonth(@NotNull final Date date) {
+		return getWithMondayFirst(date, Calendar.WEEK_OF_MONTH);
+	}
+
 	private static int getWithMondayFirst(final Date date, int field) {
 		Validate.notNull(date, "The date must not be null");
 		Calendar cal = Calendar.getInstance();
@@ -260,7 +236,12 @@ public class DateUtil {
 		return cal.get(field);
 	}
 
-	///// 获得往前往后的日期//////
+	/**
+	 * 获得日期是一年的第几周，返回值从1开始. 开始的一周，只要有一天在那一年里都算.已改为中国习惯，1 是Monday，而不是Sunday
+	 */
+	public static int getWeekOfYear(@NotNull final Date date) {
+		return getWithMondayFirst(date, Calendar.WEEK_OF_YEAR);
+	}
 
 	/**
 	 * 2016-11-10 07:33:23, 则返回2016-1-1 00:00:00
@@ -282,6 +263,8 @@ public class DateUtil {
 	public static Date nextYear(@NotNull final Date date) {
 		return DateUtils.ceiling(date, Calendar.YEAR);
 	}
+
+	///// 获得往前往后的日期//////
 
 	/**
 	 * 2016-11-10 07:33:23, 则返回2016-11-1 00:00:00
@@ -308,7 +291,23 @@ public class DateUtil {
 	 * 2017-1-20 07:33:23, 则返回2017-1-16 00:00:00
 	 */
 	public static Date beginOfWeek(@NotNull final Date date) {
-		return DateUtils.truncate(DateUtil.subDays(date, DateUtil.getDayOfWeek(date) - 1), Calendar.DATE);
+		return DateUtils.truncate(DateUtil.subDays(date, DateUtil.getDayOfWeek(date) - 1),
+			Calendar.DATE);
+	}
+
+	/**
+	 * 减一天
+	 */
+	public static Date subDays(@NotNull final Date date, int amount) {
+		return DateUtils.addDays(date, -amount);
+	}
+
+	/**
+	 * 获得日期是一周的第几天. 已改为中国习惯，1 是Monday，而不是Sundays.
+	 */
+	public static int getDayOfWeek(@NotNull final Date date) {
+		int result = getWithMondayFirst(date, Calendar.DAY_OF_WEEK);
+		return result == 1 ? 7 : result - 1;
 	}
 
 	/**
@@ -322,7 +321,15 @@ public class DateUtil {
 	 * 2017-1-23 07:33:23, 则返回2017-1-22 00:00:00
 	 */
 	public static Date nextWeek(@NotNull final Date date) {
-		return DateUtils.truncate(DateUtil.addDays(date, 8 - DateUtil.getDayOfWeek(date)), Calendar.DATE);
+		return DateUtils.truncate(DateUtil.addDays(date, 8 - DateUtil.getDayOfWeek(date)),
+			Calendar.DATE);
+	}
+
+	/**
+	 * 加一天
+	 */
+	public static Date addDays(@NotNull final Date date, final int amount) {
+		return DateUtils.addDays(date, amount);
 	}
 
 	/**
@@ -439,8 +446,7 @@ public class DateUtil {
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 			sdf.setLenient(false);// 此处指定日期/时间解析是否不严格，在true是不严格，false时为严格
 			sdf.parse(date);// 从给定字符串的开始解析文本，以生成一个日期
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 

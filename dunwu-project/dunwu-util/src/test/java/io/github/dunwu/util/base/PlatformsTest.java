@@ -12,8 +12,7 @@ public class PlatformsTest {
 		if (Platforms.IS_WINDOWS) {
 			assertThat(Platforms.FILE_PATH_SEPARATOR).isEqualTo("\\");
 			assertThat(Platforms.FILE_PATH_SEPARATOR_CHAR).isEqualTo('\\');
-		}
-		else {
+		} else {
 			assertThat(Platforms.FILE_PATH_SEPARATOR).isEqualTo("/");
 			assertThat(Platforms.FILE_PATH_SEPARATOR_CHAR).isEqualTo('/');
 		}
@@ -21,7 +20,8 @@ public class PlatformsTest {
 		System.out.println("OS_NAME:" + Platforms.OS_NAME);
 		System.out.println("OS_VERSION:" + Platforms.OS_VERSION);
 		System.out.println("OS_ARCH:" + Platforms.OS_ARCH);
-		System.out.println("JAVA_SPECIFICATION_VERSION:" + Platforms.JAVA_SPECIFICATION_VERSION);
+		System.out.println(
+			"JAVA_SPECIFICATION_VERSION:" + Platforms.JAVA_SPECIFICATION_VERSION);
 		System.out.println("JAVA_VERSION:" + Platforms.JAVA_VERSION);
 		System.out.println("JAVA_HOME:" + Platforms.JAVA_HOME);
 		System.out.println("USER_HOME:" + Platforms.USER_HOME);
@@ -37,7 +37,6 @@ public class PlatformsTest {
 			assertThat(Platforms.IS_ATLEASET_JAVA7).isTrue();
 			assertThat(Platforms.IS_ATLEASET_JAVA8).isTrue();
 		}
-
 	}
 
 }

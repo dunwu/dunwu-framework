@@ -28,14 +28,13 @@ public class IdController {
 	@GetMapping("generateUuid")
 	@ApiOperation(value = "生成随机 UUID")
 	public DataListResult<String> generateUuid(@RequestParam("num") Integer num,
-			@RequestParam("withSeparator") Boolean withSeparator) {
+		@RequestParam("withSeparator") Boolean withSeparator) {
 		int max = num < MAX ? num : MAX;
 		Set<String> ids = new HashSet<>();
 		for (int i = 0; i < max; i++) {
 			if (withSeparator) {
 				ids.add(IdUtil.randomUuid());
-			}
-			else {
+			} else {
 				ids.add(IdUtil.randomUuid2());
 			}
 		}
@@ -45,7 +44,8 @@ public class IdController {
 	@GetMapping("generateSnowFlakeId")
 	@ApiOperation(value = "生成 SnowFlake ID")
 	public DataListResult<String> generateSnowFlakeId(@RequestParam("num") Integer num,
-			@RequestParam("dataCenterId") long dataCenterId, @RequestParam("machineId") long machineId) {
+		@RequestParam("dataCenterId") long dataCenterId,
+		@RequestParam("machineId") long machineId) {
 		SnowFlakeId snowFlakeId = IdUtil.newSnowFlakeId(dataCenterId, machineId);
 		int max = num < MAX ? num : MAX;
 		Set<String> ids = new HashSet<>();

@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-parent</artifactId>
-    <version>0.4.8-SNAPSHOT</version>
-    <relativePath>../dunwu-parent</relativePath>
-  </parent>
+	<parent>
+		<groupId>io.github.dunwu</groupId>
+		<artifactId>dunwu-parent</artifactId>
+		<version>0.4.8-SNAPSHOT</version>
+		<relativePath>../dunwu-parent</relativePath>
+	</parent>
 
-  <artifactId>dunwu-data</artifactId>
-  <packaging>jar</packaging>
-  <name>dunwu-data</name>
-  <description>Dunwu 数据库脚手架</description>
+	<artifactId>dunwu-data</artifactId>
+	<packaging>jar</packaging>
+	<name>dunwu-data</name>
+	<description>Dunwu 数据库脚手架</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>io.github.dunwu</groupId>
+			<artifactId>dunwu-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>

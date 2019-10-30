@@ -13,10 +13,10 @@ CREATE TABLE `user` (
     `address`  VARCHAR(100)                 DEFAULT '' COMMENT '地址',
     `deleted`  TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_username` (`username`),
-    UNIQUE KEY `uk_email` (`email`),
-    UNIQUE KEY `uk_mobile` (`mobile`),
-    KEY `idx_name` (`name`)
+    UNIQUE KEY `uk_username`(`username`),
+    UNIQUE KEY `uk_email`(`email`),
+    UNIQUE KEY `uk_mobile`(`mobile`),
+    KEY `idx_name`(`name`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -32,7 +32,7 @@ CREATE TABLE `role` (
     `status` INT(1) UNSIGNED COMMENT '状态',
     `notes`  TEXT COMMENT '备注',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_name` (`name`)
+    UNIQUE KEY `uk_name`(`name`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -44,7 +44,7 @@ CREATE TABLE `user_role` (
     `user_id` INT(20) NOT NULL COMMENT '用户ID',
     `role_id` INT(20) NOT NULL COMMENT '角色ID',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_user_role` (`user_id`, `role_id`)
+    UNIQUE KEY `uk_user_role`(`user_id`, `role_id`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -61,7 +61,7 @@ CREATE TABLE `permission` (
     `status`     INT(1) UNSIGNED COMMENT '状态',
     `notes`      TEXT COMMENT '备注',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_name` (`name`)
+    UNIQUE KEY `uk_name`(`name`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -83,7 +83,7 @@ CREATE TABLE `menu` (
     `status`     INT(1) UNSIGNED COMMENT '状态',
     `notes`      TEXT COMMENT '备注',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_key` (`key`)
+    UNIQUE KEY `uk_key`(`key`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -104,9 +104,9 @@ CREATE TABLE `file` (
     `access_url`   VARCHAR(160)        NOT NULL COMMENT '文件访问路径',
     `update_time`  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_file_name` (`file_name`),
-    UNIQUE KEY `uk_access_url` (`access_url`),
-    UNIQUE KEY `uk_keys` (`origin_name`, `tag`, `namespace`)
+    UNIQUE KEY `uk_file_name`(`file_name`),
+    UNIQUE KEY `uk_access_url`(`access_url`),
+    UNIQUE KEY `uk_keys`(`origin_name`, `tag`, `namespace`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -118,7 +118,7 @@ CREATE TABLE `file_content` (
     `file_name` VARCHAR(128) NOT NULL COMMENT '实际文件名',
     `content`   BLOB         NOT NULL COMMENT '文件内容',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_file_name` (`file_name`)
+    UNIQUE KEY `uk_file_name`(`file_name`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -151,7 +151,7 @@ CREATE TABLE `scheduler` (
     `update_time`     DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`         TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_trigger_group_name` (`trigger_group`, `trigger_name`)
+    UNIQUE KEY `uk_trigger_group_name`(`trigger_group`, `trigger_name`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`
@@ -169,8 +169,8 @@ CREATE TABLE `template` (
     `update_time` DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`     TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_namespace_name` (`namespace`, `name`),
-    KEY `idx_tag` (`tag`)
+    UNIQUE KEY `uk_namespace_name`(`namespace`, `name`),
+    KEY `idx_tag`(`tag`)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = `UTF8MB4`

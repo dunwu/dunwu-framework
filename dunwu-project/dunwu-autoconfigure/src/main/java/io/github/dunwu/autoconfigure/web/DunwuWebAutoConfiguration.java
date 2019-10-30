@@ -20,14 +20,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Web Mvc 配置
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @see <a href=
- * "https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/web.html#mvc-config">mvc-config</a>
+ * @see <a href= "https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/web.html#mvc-config">mvc-config</a>
  * @since 2019-04-21
  */
 @Configuration
 @EnableWebMvc
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
-@EnableConfigurationProperties({ DunwuWebProperties.class, DunwuWebSecurityProperties.class })
+@EnableConfigurationProperties({ DunwuWebProperties.class,
+	DunwuWebSecurityProperties.class })
 public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 
 	private final DunwuWebProperties dunwuWebProperties;
@@ -35,15 +35,9 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 	private final DunwuWebSecurityProperties dunwuSecurityProperties;
 
 	public DunwuWebAutoConfiguration(DunwuWebProperties dunwuWebProperties,
-			DunwuWebSecurityProperties dunwuSecurityProperties) {
+		DunwuWebSecurityProperties dunwuSecurityProperties) {
 		this.dunwuWebProperties = dunwuWebProperties;
 		this.dunwuSecurityProperties = dunwuSecurityProperties;
-	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	/**
@@ -71,13 +65,23 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 
 	/**
 	 * 注入拦截器
+	 *
 	 * @param registry
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		if (dunwuWebProperties.getHttpDebugEnable()) {
-			registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**").order(1);
+			registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**")
+				.order(1);
 		}
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("swagger-ui.html")
+			.addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**")
+			.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 }

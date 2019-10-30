@@ -12,7 +12,8 @@ public class BeanMapperTest {
 
 	@Test
 	public void copySingleObject() {
-		Student student = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
+		Student student = new Student("zhang3", 20, new Teacher("li4"),
+			ListUtil.newArrayList("chinese", "english"));
 
 		StudentVO studentVo = BeanMapper.map(student, StudentVO.class);
 
@@ -20,14 +21,16 @@ public class BeanMapperTest {
 		assertThat(studentVo.getAge()).isEqualTo(20);
 		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
 		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
-
 	}
 
 	@Test
 	public void copyListObject() {
-		Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
-		Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
-		Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
+			ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
+			ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
+			ListUtil.newArrayList("chinese3", "english5"));
 		List<Student> studentList = ListUtil.newArrayList(student1, student2, student3);
 
 		List<StudentVO> studentVoList = BeanMapper.mapList(studentList, StudentVO.class);
@@ -38,14 +41,16 @@ public class BeanMapperTest {
 		assertThat(studentVo.getAge()).isEqualTo(20);
 		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
 		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
-
 	}
 
 	@Test
 	public void copyArrayObject() {
-		Student student1 = new Student("zhang3", 20, new Teacher("li4"), ListUtil.newArrayList("chinese", "english"));
-		Student student2 = new Student("zhang4", 30, new Teacher("li5"), ListUtil.newArrayList("chinese2", "english4"));
-		Student student3 = new Student("zhang5", 40, new Teacher("li6"), ListUtil.newArrayList("chinese3", "english5"));
+		Student student1 = new Student("zhang3", 20, new Teacher("li4"),
+			ListUtil.newArrayList("chinese", "english"));
+		Student student2 = new Student("zhang4", 30, new Teacher("li5"),
+			ListUtil.newArrayList("chinese2", "english4"));
+		Student student3 = new Student("zhang5", 40, new Teacher("li6"),
+			ListUtil.newArrayList("chinese3", "english5"));
 		Student[] studentList = new Student[] { student1, student2, student3 };
 		StudentVO[] studentVoList = BeanMapper.mapArray(studentList, StudentVO.class);
 		assertThat(studentVoList).hasSize(3);
@@ -55,7 +60,6 @@ public class BeanMapperTest {
 		assertThat(studentVo.getAge()).isEqualTo(20);
 		assertThat(studentVo.getTeacher().getName()).isEqualTo("li4");
 		assertThat(studentVo.getCourse()).containsExactly("chinese", "english");
-
 	}
 
 	public static class Student {

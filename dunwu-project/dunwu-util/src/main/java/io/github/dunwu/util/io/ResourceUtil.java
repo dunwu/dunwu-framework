@@ -22,10 +22,9 @@ import java.util.List;
  * <p>
  * 2.路径
  * <p>
- * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName，
- * 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/" 反而导致JarFile.getEntry(resouceName)时没有返回.
- * 指定contextClass时，class.getResource()
- * 会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass package的相对路径, 会先转为绝对路径.
+ * 不指定contextClass时，按URLClassLoader的实现, 从jar file中查找resourceName， 所以resourceName无需以"/"打头即表示jar file中的根目录，带了"/"
+ * 反而导致JarFile.getEntry(resouceName)时没有返回. 指定contextClass时，class.getResource() 会先对name进行处理再交给classLoader，打头的"/"的会被去除，不以"/"打头则表示与该contextClass
+ * package的相对路径, 会先转为绝对路径.
  * <p>
  * 3.同名资源
  * <p>
@@ -59,7 +58,8 @@ public class ResourceUtil {
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static InputStream asStream(Class<?> contextClass, String resourceName) throws IOException {
+	public static InputStream asStream(Class<?> contextClass, String resourceName)
+		throws IOException {
 		return Resources.getResource(contextClass, resourceName).openStream();
 	}
 
@@ -69,28 +69,34 @@ public class ResourceUtil {
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static String toString(String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
+		return Resources.toString(Resources.getResource(resourceName),
+			StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static String toString(Class<?> contextClass, String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
+	public static String toString(Class<?> contextClass, String resourceName)
+		throws IOException {
+		return Resources.toString(Resources.getResource(contextClass, resourceName),
+			StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
 	public static List<String> toLines(String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(resourceName), StandardCharsets.UTF_8);
+		return Resources.readLines(Resources.getResource(resourceName),
+			StandardCharsets.UTF_8);
 	}
 
 	/**
 	 * 读取文件的每一行，读取规则见本类注释.
 	 */
-	public static List<String> toLines(Class<?> contextClass, String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(contextClass, resourceName), StandardCharsets.UTF_8);
+	public static List<String> toLines(Class<?> contextClass, String resourceName)
+		throws IOException {
+		return Resources.readLines(Resources.getResource(contextClass, resourceName),
+			StandardCharsets.UTF_8);
 	}
 
 	///////////// 打开所有同名文件///////
@@ -99,7 +105,8 @@ public class ResourceUtil {
 		return getResourcesQuietly(resourceName, ClassLoaderUtil.getDefaultClassLoader());
 	}
 
-	public static List<URL> getResourcesQuietly(String resourceName, ClassLoader contextClassLoader) {
+	public static List<URL> getResourcesQuietly(String resourceName,
+		ClassLoader contextClassLoader) {
 		try {
 			Enumeration<URL> urls = contextClassLoader.getResources(resourceName);
 			List<URL> list = new ArrayList<URL>(10);
@@ -107,8 +114,7 @@ public class ResourceUtil {
 				list.add(urls.nextElement());
 			}
 			return list;
-		}
-		catch (IOException e) {// NOSONAR
+		} catch (IOException e) {// NOSONAR
 			return ListUtil.emptyList();
 		}
 	}

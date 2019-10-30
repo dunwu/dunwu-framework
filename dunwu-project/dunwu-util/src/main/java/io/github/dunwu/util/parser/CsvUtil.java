@@ -22,7 +22,8 @@ public class CsvUtil {
 		if (file == null || !file.exists()) {
 			return null;
 		}
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(new FileInputStream(file)));
 		String line = reader.readLine();
 		line = line.replaceAll("\"", "");
 		return line.split(",");
@@ -40,12 +41,13 @@ public class CsvUtil {
 		return CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
 	}
 
-	public static Iterable<CSVRecord> getRecords(String filepath, Class<? extends Enum<?>> headerEnum)
-			throws IOException {
+	public static Iterable<CSVRecord> getRecords(String filepath,
+		Class<? extends Enum<?>> headerEnum) throws IOException {
 		return getRecords(new File(filepath), headerEnum);
 	}
 
-	public static Iterable<CSVRecord> getRecords(File file, Class<? extends Enum<?>> headerEnum) throws IOException {
+	public static Iterable<CSVRecord> getRecords(File file,
+		Class<? extends Enum<?>> headerEnum) throws IOException {
 		if (file == null || !file.exists()) {
 			return null;
 		}

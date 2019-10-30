@@ -26,13 +26,15 @@ public class FileUtil {
 	private static FileVisitor<Path> deleteFileVisitor = new SimpleFileVisitor<Path>() {
 
 		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+			throws IOException {
 			Files.delete(file);
 			return FileVisitResult.CONTINUE;
 		}
 
 		@Override
-		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+		public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+			throws IOException {
 			Files.delete(dir);
 			return FileVisitResult.CONTINUE;
 		}
@@ -53,7 +55,8 @@ public class FileUtil {
 	 * 读取文件到String.
 	 */
 	public static String toString(final File file) throws IOException {
-		return com.google.common.io.Files.asCharSource(file, StandardCharsets.UTF_8).read();
+		return com.google.common.io.Files.asCharSource(file, StandardCharsets.UTF_8)
+			.read();
 	}
 
 	/**
@@ -68,11 +71,13 @@ public class FileUtil {
 	/**
 	 * 简单写入String到File.
 	 */
-	public static void write(final CharSequence data, final File file) throws IOException {
+	public static void write(final CharSequence data, final File file)
+		throws IOException {
 		Validate.notNull(file);
 		Validate.notNull(data);
 
-		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
+			StandardCharsets.UTF_8)) {
 			writer.append(data);
 		}
 	}
@@ -80,12 +85,13 @@ public class FileUtil {
 	/**
 	 * 追加String到File.
 	 */
-	public static void append(final CharSequence data, final File file) throws IOException {
+	public static void append(final CharSequence data, final File file)
+		throws IOException {
 		Validate.notNull(file);
 		Validate.notNull(data);
 
-		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8,
-				StandardOpenOption.APPEND)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
+			StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
 			writer.append(data);
 		}
 	}
@@ -104,9 +110,13 @@ public class FileUtil {
 	 *
 	 * @see {@link Files#newInputStream}
 	 */
-	public static InputStream asInputStream(File file) throws IOException {
-		Validate.notNull(file, "file is null");
-		return asInputStream(file.toPath());
+	public static InputStream asInputStream(Path path) throws IOException {
+		Validate.notNull(path, "path is null");
+		return Files.newInputStream(path);
+	}
+
+	private static Path getPath(String filePath) {
+		return Paths.get(filePath);
 	}
 
 	/**
@@ -114,9 +124,9 @@ public class FileUtil {
 	 *
 	 * @see {@link Files#newInputStream}
 	 */
-	public static InputStream asInputStream(Path path) throws IOException {
-		Validate.notNull(path, "path is null");
-		return Files.newInputStream(path);
+	public static InputStream asInputStream(File file) throws IOException {
+		Validate.notNull(file, "file is null");
+		return asInputStream(file.toPath());
 	}
 
 	/**
@@ -133,9 +143,9 @@ public class FileUtil {
 	 *
 	 * @see {@link Files#newOutputStream}
 	 */
-	public static OutputStream asOututStream(File file) throws IOException {
-		Validate.notNull(file, "file is null");
-		return asOututStream(file.toPath());
+	public static OutputStream asOututStream(Path path) throws IOException {
+		Validate.notNull(path, "path is null");
+		return Files.newOutputStream(path);
 	}
 
 	/**
@@ -143,9 +153,9 @@ public class FileUtil {
 	 *
 	 * @see {@link Files#newOutputStream}
 	 */
-	public static OutputStream asOututStream(Path path) throws IOException {
-		Validate.notNull(path, "path is null");
-		return Files.newOutputStream(path);
+	public static OutputStream asOututStream(File file) throws IOException {
+		Validate.notNull(file, "file is null");
+		return asOututStream(file.toPath());
 	}
 
 	/**
@@ -173,6 +183,8 @@ public class FileUtil {
 		return Files.newBufferedWriter(getPath(fileName), StandardCharsets.UTF_8);
 	}
 
+	///// 文件操作 /////
+
 	/**
 	 * 获取File的BufferedWriter.
 	 *
@@ -183,12 +195,11 @@ public class FileUtil {
 		return Files.newBufferedWriter(path, StandardCharsets.UTF_8);
 	}
 
-	///// 文件操作 /////
-
 	/**
 	 * 复制文件或目录, not following links.
+	 *
 	 * @param from 如果为null，或者是不存在的文件或目录，抛出异常.
-	 * @param to 如果为null，或者from是目录而to是已存在文件，或相反
+	 * @param to   如果为null，或者from是目录而to是已存在文件，或相反
 	 */
 	public static void copy(@NotNull File from, @NotNull File to) throws IOException {
 		Validate.notNull(from);
@@ -199,8 +210,9 @@ public class FileUtil {
 
 	/**
 	 * 复制文件或目录, not following links.
+	 *
 	 * @param from 如果为null，或者是不存在的文件或目录，抛出异常.
-	 * @param to 如果为null，或者from是目录而to是已存在文件，或相反
+	 * @param to   如果为null，或者from是目录而to是已存在文件，或相反
 	 */
 	public static void copy(@NotNull Path from, @NotNull Path to) throws IOException {
 		Validate.notNull(from);
@@ -208,16 +220,16 @@ public class FileUtil {
 
 		if (Files.isDirectory(from)) {
 			copyDir(from, to);
-		}
-		else {
+		} else {
 			copyFile(from, to);
 		}
 	}
 
 	/**
 	 * 文件复制.
+	 *
 	 * @param from 如果为null，或文件不存在或者是目录，，抛出异常
-	 * @param to 如果to为null，或文件存在但是一个目录，抛出异常
+	 * @param to   如果to为null，或文件存在但是一个目录，抛出异常
 	 * @see {@link Files#copy}
 	 */
 	public static void copyFile(@NotNull File from, @NotNull File to) throws IOException {
@@ -228,14 +240,19 @@ public class FileUtil {
 
 	/**
 	 * 文件复制. @see {@link Files#copy}
+	 *
 	 * @param from 如果为null，或文件不存在或者是目录，，抛出异常
-	 * @param to 如果to为null，或文件存在但是一个目录，抛出异常
+	 * @param to   如果to为null，或文件存在但是一个目录，抛出异常
 	 */
 	public static void copyFile(@NotNull Path from, @NotNull Path to) throws IOException {
 		Validate.isTrue(Files.exists(from), "%s is not exist or not a file", from);
 		Validate.notNull(to);
 		Validate.isTrue(!FileUtil.isDirExists(to), "%s is exist but it is a dir", to);
 		Files.copy(from, to);
+	}
+
+	public static boolean isDirExists(Path dirPath) {
+		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
 	}
 
 	/**
@@ -289,6 +306,19 @@ public class FileUtil {
 	}
 
 	/**
+	 * 判断文件是否存在, from Jodd.
+	 *
+	 * @see {@link Files#exists}
+	 * @see {@link Files#isRegularFile}
+	 */
+	public static boolean isFileExists(Path path) {
+		if (path == null) {
+			return false;
+		}
+		return Files.exists(path) && Files.isRegularFile(path);
+	}
+
+	/**
 	 * 目录移动/重命名
 	 */
 	public static void moveDir(@NotNull File from, @NotNull File to) throws IOException {
@@ -298,13 +328,16 @@ public class FileUtil {
 
 		final boolean rename = from.renameTo(to);
 		if (!rename) {
-			if (to.getCanonicalPath().startsWith(from.getCanonicalPath() + File.separator)) {
-				throw new IOException("Cannot move directory: " + from + " to a subdirectory of itself: " + to);
+			if (to.getCanonicalPath()
+				.startsWith(from.getCanonicalPath() + File.separator)) {
+				throw new IOException("Cannot move directory: " + from
+					+ " to a subdirectory of itself: " + to);
 			}
 			copyDir(from, to);
 			deleteDir(from);
 			if (from.exists()) {
-				throw new IOException("Failed to delete original directory '" + from + "' after copy to '" + to + '\'');
+				throw new IOException("Failed to delete original directory '" + from
+					+ "' after copy to '" + to + '\'');
 			}
 		}
 	}
@@ -333,6 +366,19 @@ public class FileUtil {
 	public static void deleteFile(@Nullable File file) throws IOException {
 		Validate.isTrue(isFileExists(file), "%s is not exist or not a file", file);
 		deleteFile(file.toPath());
+	}
+
+	/**
+	 * 判断文件是否存在, from Jodd.
+	 *
+	 * @see {@link Files#exists}
+	 * @see {@link Files#isRegularFile}
+	 */
+	public static boolean isFileExists(File file) {
+		if (file == null) {
+			return false;
+		}
+		return isFileExists(file.toPath());
 	}
 
 	/**
@@ -374,10 +420,6 @@ public class FileUtil {
 		return isDirExists(getPath(dirPath));
 	}
 
-	public static boolean isDirExists(Path dirPath) {
-		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
-	}
-
 	/**
 	 * 判断目录是否存在, from Jodd
 	 */
@@ -393,14 +435,6 @@ public class FileUtil {
 	 */
 	public static void makesureDirExists(String dirPath) throws IOException {
 		makesureDirExists(getPath(dirPath));
-	}
-
-	/**
-	 * 确保目录存在, 如不存在则创建
-	 */
-	public static void makesureDirExists(File file) throws IOException {
-		Validate.notNull(file);
-		makesureDirExists(file.toPath());
 	}
 
 	/**
@@ -422,6 +456,14 @@ public class FileUtil {
 	}
 
 	/**
+	 * 确保目录存在, 如不存在则创建
+	 */
+	public static void makesureDirExists(File file) throws IOException {
+		Validate.notNull(file);
+		makesureDirExists(file.toPath());
+	}
+
+	/**
 	 * 判断文件是否存在, from Jodd.
 	 *
 	 * @see {@link Files#exists}
@@ -432,32 +474,6 @@ public class FileUtil {
 			return false;
 		}
 		return isFileExists(getPath(fileName));
-	}
-
-	/**
-	 * 判断文件是否存在, from Jodd.
-	 *
-	 * @see {@link Files#exists}
-	 * @see {@link Files#isRegularFile}
-	 */
-	public static boolean isFileExists(File file) {
-		if (file == null) {
-			return false;
-		}
-		return isFileExists(file.toPath());
-	}
-
-	/**
-	 * 判断文件是否存在, from Jodd.
-	 *
-	 * @see {@link Files#exists}
-	 * @see {@link Files#isRegularFile}
-	 */
-	public static boolean isFileExists(Path path) {
-		if (path == null) {
-			return false;
-		}
-		return Files.exists(path) && Files.isRegularFile(path);
 	}
 
 	/**
@@ -487,10 +503,6 @@ public class FileUtil {
 		return Files.createTempFile(prefix, suffix);
 	}
 
-	private static Path getPath(String filePath) {
-		return Paths.get(filePath);
-	}
-
 	/**
 	 * 获取文件名(不包含路径)
 	 */
@@ -518,22 +530,6 @@ public class FileUtil {
 		return com.google.common.io.Files.getFileExtension(fullName);
 	}
 
-	public static Long getFileCreateTime(String fullName) {
-		Path path = Paths.get(fullName);
-		BasicFileAttributeView basicview = Files.getFileAttributeView(path, BasicFileAttributeView.class,
-				LinkOption.NOFOLLOW_LINKS);
-		try {
-			BasicFileAttributes attr = basicview.readAttributes();
-			FileTime createTime = attr.creationTime();
-			System.out.println("createTime = [" + createTime.toString() + "]");
-			return createTime.toMillis();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public static String getFileCreateTimeString(String fullName, String pattern) {
 		if (StringUtils.isEmpty(pattern)) {
 			pattern = "yyyy-MM-dd";
@@ -549,8 +545,24 @@ public class FileUtil {
 		return sdf.format(calendar.getTime());
 	}
 
+	public static Long getFileCreateTime(String fullName) {
+		Path path = Paths.get(fullName);
+		BasicFileAttributeView basicview = Files.getFileAttributeView(path,
+			BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+		try {
+			BasicFileAttributes attr = basicview.readAttributes();
+			FileTime createTime = attr.creationTime();
+			System.out.println("createTime = [" + createTime.toString() + "]");
+			return createTime.toMillis();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * 将文件名中的空白去除，并将文件名转为小写
+	 *
 	 * @param filePath
 	 */
 	public static void changeFileNameToStandard(String filePath) {
@@ -584,8 +596,7 @@ public class FileUtil {
 		for (File f : files) {
 			if (f.isDirectory()) {
 				changeFileNameToStandardInFolder(f);
-			}
-			else {
+			} else {
 				changeFileNameToStandard(f);
 			}
 		}

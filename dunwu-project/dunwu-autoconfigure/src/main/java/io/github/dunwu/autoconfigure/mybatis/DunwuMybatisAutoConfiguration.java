@@ -31,12 +31,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 
 /**
  * Spring Boot 集成 MyBatis-Plus 配置
@@ -47,7 +47,8 @@ import java.util.List;
  */
 @Configuration
 @EnableTransactionManagement
-@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class, MybatisMapWrapperFactory.class })
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class,
+	MybatisMapWrapperFactory.class })
 @ConditionalOnSingleCandidate(DataSource.class)
 @AutoConfigureAfter(MybatisConfiguration.class)
 @EnableConfigurationProperties({ DunwuMybatisProperties.class })
@@ -96,8 +97,7 @@ public class DunwuMybatisAutoConfiguration {
 	 * <p>
 	 * 设置 dev test 环境开启，不要在生产环境使用
 	 *
-	 * @see <a href=
-	 * "https://mybatis.plus/guide/performance-analysis-plugin.html">性能分析插件</a>
+	 * @see <a href= "https://mybatis.plus/guide/performance-analysis-plugin.html">性能分析插件</a>
 	 */
 	@Bean
 	@Profile({ "dev", "test" })
@@ -112,6 +112,7 @@ public class DunwuMybatisAutoConfiguration {
 	 * Json 格式化
 	 * <p>
 	 * 引入 spring-boot-starter-json ，主要目的在于针对 Java8 的一些新类型进行 Json 格式化，这里需要注册进容器
+	 *
 	 * @return ObjectMapper
 	 */
 	@Bean
@@ -139,16 +140,18 @@ public class DunwuMybatisAutoConfiguration {
 
 	private void setConfigForJdk8(ObjectMapper objectMapper) {
 		JavaTimeModule timeModule = new JavaTimeModule();
-		timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		timeModule.addSerializer(LocalDate.class,
+			new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		timeModule.addDeserializer(LocalDate.class,
-				new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-		timeModule.addSerializer(LocalDateTime.class,
-				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		timeModule.addDeserializer(LocalDateTime.class,
-				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false).registerModule(timeModule)
-				.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module());
+		timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
+			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+			.registerModule(timeModule).registerModule(new ParameterNamesModule())
+			.registerModule(new Jdk8Module());
 	}
 
 }

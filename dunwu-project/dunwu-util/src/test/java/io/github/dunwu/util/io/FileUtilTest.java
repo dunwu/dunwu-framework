@@ -27,16 +27,17 @@ public class FileUtilTest {
 			assertThat(lines).containsExactly("haha", "hehe");
 
 			FileUtil.append("kaka", file);
-			assertThat(new String(FileUtil.toByteArray(file), StandardCharsets.UTF_8)).isEqualTo("haha\nhehekaka");
-		}
-		finally {
+			assertThat(new String(FileUtil.toByteArray(file), StandardCharsets.UTF_8))
+				.isEqualTo("haha\nhehekaka");
+		} finally {
 			FileUtil.deleteFile(file);
 		}
 	}
 
 	@Test
 	public void opFiles() throws IOException {
-		File file = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testFile" + RandomUtil.nextInt()));
+		File file = new File(FilePathUtil.concat(Platforms.TMP_DIR,
+			"testFile" + RandomUtil.nextInt()));
 		FileUtil.touch(file);
 		assertThat(FileUtil.isFileExists(file)).isTrue();
 		FileUtil.touch(file);
@@ -45,8 +46,10 @@ public class FileUtilTest {
 		FileUtil.write(content, file);
 		assertThat(FileUtil.toString(file)).isEqualTo(content);
 
-		File newFile = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testFile" + RandomUtil.nextInt()));
-		File newFile2 = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testFile" + RandomUtil.nextInt()));
+		File newFile = new File(FilePathUtil.concat(Platforms.TMP_DIR,
+			"testFile" + RandomUtil.nextInt()));
+		File newFile2 = new File(FilePathUtil.concat(Platforms.TMP_DIR,
+			"testFile" + RandomUtil.nextInt()));
 
 		FileUtil.copyFile(file, newFile);
 		assertThat(FileUtil.isFileExists(newFile)).isTrue();
@@ -54,7 +57,6 @@ public class FileUtilTest {
 
 		FileUtil.moveFile(newFile, newFile2);
 		assertThat(FileUtil.toString(newFile2)).isEqualTo("haha\nhehe");
-
 	}
 
 	@Test
@@ -69,31 +71,33 @@ public class FileUtilTest {
 
 		File dir2 = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir2"));
 		FileUtil.copyDir(dir, dir2);
-		File file2 = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir2", fileName));
+		File file2 = new File(
+			FilePathUtil.concat(Platforms.TMP_DIR, "testDir2", fileName));
 		assertThat(FileUtil.toString(file2)).isEqualTo("haha\nhehe");
 
 		File dir3 = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir3"));
 		FileUtil.moveDir(dir, dir3);
-		File file3 = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir3", fileName));
+		File file3 = new File(
+			FilePathUtil.concat(Platforms.TMP_DIR, "testDir3", fileName));
 		assertThat(FileUtil.toString(file3)).isEqualTo("haha\nhehe");
 		assertThat(FileUtil.isDirExists(dir)).isFalse();
-
 	}
 
 	@Test
 	public void fileExist() throws IOException {
 		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR)).isTrue();
-		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR + RandomUtil.nextInt())).isFalse();
+		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR + RandomUtil.nextInt()))
+			.isFalse();
 
 		File tmpFile = null;
 		try {
 			tmpFile = FileUtil.createTempFile().toFile();
 			assertThat(FileUtil.isFileExists(tmpFile)).isTrue();
 
-			assertThat(FileUtil.isFileExists(tmpFile.getAbsolutePath() + RandomUtil.nextInt())).isFalse();
-
-		}
-		finally {
+			assertThat(FileUtil
+				.isFileExists(tmpFile.getAbsolutePath() + RandomUtil.nextInt()))
+				.isFalse();
+		} finally {
 			FileUtil.deleteFile(tmpFile);
 		}
 	}
@@ -101,13 +105,16 @@ public class FileUtilTest {
 	@Test
 	public void getName() {
 
-		assertThat(FileUtil.getFileName(FilePathUtil.normalizePath("/a/d/b/abc.txt"))).isEqualTo("abc.txt");
+		assertThat(FileUtil.getFileName(FilePathUtil.normalizePath("/a/d/b/abc.txt")))
+			.isEqualTo("abc.txt");
 		assertThat(FileUtil.getFileName("abc.txt")).isEqualTo("abc.txt");
 
-		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("a/d/b/abc.txt"))).isEqualTo("txt");
-		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("/a/d/b/abc"))).isEqualTo("");
-		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("/a/d/b/abc."))).isEqualTo("");
-
+		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("a/d/b/abc.txt")))
+			.isEqualTo("txt");
+		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("/a/d/b/abc")))
+			.isEqualTo("");
+		assertThat(FileUtil.getFileExtension(FilePathUtil.normalizePath("/a/d/b/abc.")))
+			.isEqualTo("");
 	}
 
 	@Test
@@ -124,7 +131,6 @@ public class FileUtilTest {
 		try (InputStream is = FileUtil.asInputStream(tempPath.toFile());) {
 			assertThat(is).isNotNull();
 		}
-
 	}
 
 	@Test
@@ -155,7 +161,6 @@ public class FileUtilTest {
 		try (BufferedReader br = FileUtil.asBufferedReader(tempPath)) {
 			assertThat(br).isNotNull();
 		}
-
 	}
 
 	@Test
@@ -191,7 +196,8 @@ public class FileUtilTest {
 
 		FileUtil.copy(srcFile, destFile);
 
-		assertThat(Files.readFirstLine(destFile, StandardCharsets.UTF_8)).isEqualTo("test");
+		assertThat(Files.readFirstLine(destFile, StandardCharsets.UTF_8))
+			.isEqualTo("test");
 	}
 
 	@Test
@@ -225,7 +231,6 @@ public class FileUtilTest {
 		assertThat(FileUtil.isFileExists(dir + "/" + "test")).isTrue();
 
 		assertThat(FileUtil.isFileExists(dir.resolve("test").toFile())).isTrue();
-
 	}
 
 	@Test
@@ -252,13 +257,14 @@ public class FileUtilTest {
 	@Test
 	public void changeFileNameToStandard() {
 		FileUtil.changeFileNameToStandard(
-				"D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor\\Change Bidirectional Association to "
-						+ "Unidirectional - After.png");
+			"D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor\\Change Bidirectional Association to "
+				+ "Unidirectional - After.png");
 	}
 
 	@Test
 	public void changeFileNameToStandardInFolder() {
-		FileUtil.changeFileNameToStandardInFolder(new File("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor"));
+		FileUtil.changeFileNameToStandardInFolder(
+			new File("D:\\Codes\\ZP\\Others\\images\\images\\design\\refactor"));
 	}
 
 }

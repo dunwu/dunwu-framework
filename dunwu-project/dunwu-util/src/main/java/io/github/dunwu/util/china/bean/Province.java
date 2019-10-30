@@ -19,14 +19,6 @@ public class Province implements Comparable<Province> {
 		cities = new TreeSet<>();
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -46,6 +38,14 @@ public class Province implements Comparable<Province> {
 	@Override
 	public int compareTo(Province o) {
 		return this.getCode().compareToIgnoreCase(o.getCode());
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Override
@@ -70,8 +70,7 @@ public class Province implements Comparable<Province> {
 		Province province = (Province) obj;
 		if (province.getCode().equals(this.getCode())) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

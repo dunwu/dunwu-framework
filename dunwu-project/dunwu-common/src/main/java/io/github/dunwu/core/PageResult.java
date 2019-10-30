@@ -38,12 +38,14 @@ public class PageResult<T> extends BaseResult {
 		this.data = data;
 	}
 
-	public PageResult(Pagination<T> data, Boolean success, String code, List<String> messages) {
+	public PageResult(Pagination<T> data, Boolean success, String code,
+		List<String> messages) {
 		super(success, code, messages);
 		this.data = data;
 	}
 
-	public PageResult(Pagination<T> data, Boolean success, String code, String message, Object... params) {
+	public PageResult(Pagination<T> data, Boolean success, String code, String message,
+		Object... params) {
 		super(success, code, message, params);
 		this.data = data;
 	}

@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import {shallowMount} from '@vue/test-utils'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
 describe('SvgIcon.vue', () => {
@@ -17,7 +17,7 @@ describe('SvgIcon.vue', () => {
       }
     })
     expect(wrapper.classes().length).toBe(1)
-    wrapper.setProps({ className: 'test' })
+    wrapper.setProps({className: 'test'})
     expect(wrapper.classes().includes('test')).toBe(true)
   })
 })

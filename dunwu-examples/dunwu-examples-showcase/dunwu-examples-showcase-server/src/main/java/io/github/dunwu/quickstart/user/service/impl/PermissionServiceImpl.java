@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-09-17
  */
 @Service
-public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>
+	implements PermissionService {
 
 }

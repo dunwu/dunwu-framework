@@ -156,7 +156,8 @@ public class ReflectionUtilTest {
 
 		// InvocationTargetException,extract it's target exception.
 		Exception ex = new Exception();
-		e = ReflectionUtil.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
+		e = ReflectionUtil
+			.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
 		assertThat(e.getCause()).isEqualTo(ex);
 
 		// UncheckedException, ignore it.
@@ -175,10 +176,14 @@ public class ReflectionUtilTest {
 
 	public static class TestBean extends ParentBean<String, Long> {
 
-		/** 没有getter/setter的field */
+		/**
+		 * 没有getter/setter的field
+		 */
 		private int privateField = 1;
 
-		/** 有getter/setter的field */
+		/**
+		 * 有getter/setter的field
+		 */
 		private int publicField = 1;
 
 		// 通過getter函數會比屬性值+1

@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class ExceptionUtilTest {
 
-	private static RuntimeException TIMEOUT_EXCEPTION = ExceptionUtil.setStackTrace(new RuntimeException("Timeout"),
-			ExceptionUtilTest.class, "hello");
+	private static RuntimeException TIMEOUT_EXCEPTION = ExceptionUtil.setStackTrace(
+		new RuntimeException("Timeout"), ExceptionUtilTest.class, "hello");
 
-	private static CloneableException TIMEOUT_EXCEPTION2 = new CloneableException("Timeout")
-			.setStackTrace(ExceptionUtilTest.class, "hello");
+	private static CloneableException TIMEOUT_EXCEPTION2 = new CloneableException(
+		"Timeout").setStackTrace(ExceptionUtilTest.class, "hello");
 
-	private static CloneableRuntimeException TIMEOUT_EXCEPTION3 = new CloneableRuntimeException("Timeout")
-			.setStackTrace(ExceptionUtilTest.class, "hello");
+	private static CloneableRuntimeException TIMEOUT_EXCEPTION3 = new CloneableRuntimeException(
+		"Timeout").setStackTrace(ExceptionUtilTest.class, "hello");
 
 	@Test
 	public void unchecked() {
@@ -30,8 +30,7 @@ public class ExceptionUtilTest {
 		try {
 			ExceptionUtil.unchecked(exception);
 			fail("should fail before");
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			assertThat(t.getCause()).isSameAs(exception);
 		}
 
@@ -40,8 +39,7 @@ public class ExceptionUtilTest {
 		try {
 			ExceptionUtil.unchecked(error);
 			fail("should fail before");
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			assertThat(t).isSameAs(error);
 		}
 
@@ -50,11 +48,9 @@ public class ExceptionUtilTest {
 		try {
 			ExceptionUtil.unchecked(runtimeException);
 			fail("should fail before");
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			assertThat(t).isSameAs(runtimeException);
 		}
-
 	}
 
 	@Test
@@ -72,9 +68,9 @@ public class ExceptionUtilTest {
 		ExecutionException ee2 = new ExecutionException(e);
 		try {
 			ExceptionUtil.unwrapAndUnchecked(ee2);
-		}
-		catch (Throwable t) {
-			assertThat(t).isInstanceOf(UncheckedException.class).hasCauseExactlyInstanceOf(Exception.class);
+		} catch (Throwable t) {
+			assertThat(t).isInstanceOf(UncheckedException.class)
+				.hasCauseExactlyInstanceOf(Exception.class);
 		}
 	}
 
@@ -90,24 +86,32 @@ public class ExceptionUtilTest {
 	@Test
 	public void cause() {
 		IOException ioexception = new IOException("my exception");
-		IllegalStateException illegalStateException = new IllegalStateException(ioexception);
+		IllegalStateException illegalStateException = new IllegalStateException(
+			ioexception);
 		RuntimeException runtimeException = new RuntimeException(illegalStateException);
 
-		assertThat(ExceptionUtil.isCausedBy(runtimeException, IOException.class)).isTrue();
-		assertThat(ExceptionUtil.isCausedBy(runtimeException, IllegalStateException.class, IOException.class)).isTrue();
+		assertThat(ExceptionUtil.isCausedBy(runtimeException, IOException.class))
+			.isTrue();
+		assertThat(ExceptionUtil.isCausedBy(runtimeException, IllegalStateException.class,
+			IOException.class)).isTrue();
 		assertThat(ExceptionUtil.isCausedBy(runtimeException, Exception.class)).isTrue();
-		assertThat(ExceptionUtil.isCausedBy(runtimeException, IllegalAccessException.class)).isFalse();
+		assertThat(
+			ExceptionUtil.isCausedBy(runtimeException, IllegalAccessException.class))
+			.isFalse();
 
 		assertThat(ExceptionUtil.findCause(runtimeException, IllegalStateException.class))
-				.isSameAs(illegalStateException);
-		assertThat(ExceptionUtil.findCause(runtimeException, IOException.class)).isSameAs(ioexception);
-		assertThat(ExceptionUtil.findCause(runtimeException, UncheckedException.class)).isNull();
+			.isSameAs(illegalStateException);
+		assertThat(ExceptionUtil.findCause(runtimeException, IOException.class))
+			.isSameAs(ioexception);
+		assertThat(ExceptionUtil.findCause(runtimeException, UncheckedException.class))
+			.isNull();
 	}
 
 	@Test
 	public void getRootCause() {
 		IOException ioexception = new IOException("my exception");
-		IllegalStateException illegalStateException = new IllegalStateException(ioexception);
+		IllegalStateException illegalStateException = new IllegalStateException(
+			ioexception);
 		RuntimeException runtimeException = new RuntimeException(illegalStateException);
 
 		assertThat(ExceptionUtil.getRootCause(runtimeException)).isSameAs(ioexception);
@@ -118,16 +122,19 @@ public class ExceptionUtilTest {
 	@Test
 	public void buildMessage() {
 		IOException ioexception = new IOException("my exception");
-		assertThat(ExceptionUtil.toStringWithShortName(ioexception)).isEqualTo("IOException: my exception");
+		assertThat(ExceptionUtil.toStringWithShortName(ioexception))
+			.isEqualTo("IOException: my exception");
 		assertThat(ExceptionUtil.toStringWithShortName(null)).isEqualTo("");
 
-		RuntimeException runtimeExcetpion = new RuntimeException("my runtimeException", ioexception);
-		assertThat(ExceptionUtil.toStringWithRootCause(runtimeExcetpion))
-				.isEqualTo("RuntimeException: my runtimeException; <---IOException: my exception");
+		RuntimeException runtimeExcetpion = new RuntimeException("my runtimeException",
+			ioexception);
+		assertThat(ExceptionUtil.toStringWithRootCause(runtimeExcetpion)).isEqualTo(
+			"RuntimeException: my runtimeException; <---IOException: my exception");
 
 		assertThat(ExceptionUtil.toStringWithRootCause(null)).isEqualTo("");
 		// 无cause
-		assertThat(ExceptionUtil.toStringWithRootCause(ioexception)).isEqualTo("IOException: my exception");
+		assertThat(ExceptionUtil.toStringWithRootCause(ioexception))
+			.isEqualTo("IOException: my exception");
 	}
 
 	@Test
@@ -135,34 +142,42 @@ public class ExceptionUtilTest {
 		IOException ioexception = new IOException("my exception");
 		RuntimeException runtimeException = new RuntimeException(ioexception);
 
-		System.out.println(ExceptionUtil.stackTraceText(ExceptionUtil.clearStackTrace(runtimeException)));
-
+		System.out.println(ExceptionUtil
+			.stackTraceText(ExceptionUtil.clearStackTrace(runtimeException)));
 	}
 
 	@Test
 	public void staticException() {
 		assertThat(ExceptionUtil.stackTraceText(TIMEOUT_EXCEPTION)).hasLineCount(2)
-				.contains("java.lang.RuntimeException: Timeout")
-				.contains("at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
+			.contains("java.lang.RuntimeException: Timeout").contains(
+			"at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
 
 		assertThat(ExceptionUtil.stackTraceText(TIMEOUT_EXCEPTION2)).hasLineCount(2)
-				.contains("io.github.dunwu.utils.base.type.CloneableException: Timeout")
-				.contains("at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
+			.contains("io.github.dunwu.utils.base.type.CloneableException: Timeout")
+			.contains(
+				"at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
 
-		CloneableException timeoutException = TIMEOUT_EXCEPTION2.clone("Timeout for 30ms");
+		CloneableException timeoutException = TIMEOUT_EXCEPTION2
+			.clone("Timeout for 30ms");
 		assertThat(ExceptionUtil.stackTraceText(timeoutException)).hasLineCount(2)
-				.contains("io.github.dunwu.utils.base.type.CloneableException: Timeout for 30ms")
-				.contains("at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
+			.contains(
+				"io.github.dunwu.utils.base.type.CloneableException: Timeout for 30ms")
+			.contains(
+				"at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
 
 		assertThat(ExceptionUtil.stackTraceText(TIMEOUT_EXCEPTION3)).hasLineCount(2)
-				.contains("io.github.dunwu.utils.base.type.CloneableRuntimeException: Timeout")
-				.contains("at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
+			.contains(
+				"io.github.dunwu.utils.base.type.CloneableRuntimeException: Timeout")
+			.contains(
+				"at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
 
-		CloneableRuntimeException timeoutRuntimeException = TIMEOUT_EXCEPTION3.clone("Timeout for 40ms");
+		CloneableRuntimeException timeoutRuntimeException = TIMEOUT_EXCEPTION3
+			.clone("Timeout for 40ms");
 		assertThat(ExceptionUtil.stackTraceText(timeoutRuntimeException)).hasLineCount(2)
-				.contains("io.github.dunwu.utils.base.type.CloneableRuntimeException: Timeout for 40ms")
-				.contains("at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
-
+			.contains(
+				"io.github.dunwu.utils.base.type.CloneableRuntimeException: Timeout for 40ms")
+			.contains(
+				"at io.github.dunwu.utils.base.ExceptionUtilTest.hello(Unknown Source)");
 	}
 
 }

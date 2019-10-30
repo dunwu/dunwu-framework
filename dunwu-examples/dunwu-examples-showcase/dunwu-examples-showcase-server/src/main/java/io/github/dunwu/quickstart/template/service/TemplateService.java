@@ -19,6 +19,7 @@ public interface TemplateService extends IService<Template> {
 
 	String TMPL_MAIL_CHECKCODE = "templates/mail/checkcode.ftl";
 
-	String mergeTemplate(final String tmplName, Map params) throws IOException, TemplateException;
+	String mergeTemplate(final String tmplName, Map params)
+		throws IOException, TemplateException;
 
 }

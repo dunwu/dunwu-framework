@@ -28,16 +28,6 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	}
 
 	@Override
-	public CloneableRuntimeException clone() { // NOSONAR
-		try {
-			return (CloneableRuntimeException) super.clone();
-		}
-		catch (CloneNotSupportedException e) { // NOSONAR
-			return null;
-		}
-	}
-
-	@Override
 	public String getMessage() {
 		return message;
 	}
@@ -53,7 +43,8 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	/**
 	 * 简便函数，定义静态异常时使用
 	 */
-	public CloneableRuntimeException setStackTrace(Class<?> throwClazz, String throwMethod) {
+	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
+		String throwMethod) {
 		ExceptionUtil.setStackTrace(this, throwClazz, throwMethod);
 		return this;
 	}
@@ -65,6 +56,15 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 		CloneableRuntimeException newException = this.clone();
 		newException.setMessage(message);
 		return newException;
+	}
+
+	@Override
+	public CloneableRuntimeException clone() { // NOSONAR
+		try {
+			return (CloneableRuntimeException) super.clone();
+		} catch (CloneNotSupportedException e) { // NOSONAR
+			return null;
+		}
 	}
 
 }

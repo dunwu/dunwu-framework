@@ -17,12 +17,14 @@ public class CookieUtil {
 
 	/**
 	 * 添加 Cookie
+	 *
 	 * @param request
 	 * @param response
 	 * @param key
 	 * @param value
 	 */
-	public static void addCookie(HttpServletRequest request, HttpServletResponse response, String key, String value) {
+	public static void addCookie(HttpServletRequest request, HttpServletResponse response,
+		String key, String value) {
 		Cookie cookie = new Cookie(key, value);
 		cookie.setPath(request.getContextPath());
 		response.addCookie(cookie);
@@ -30,6 +32,7 @@ public class CookieUtil {
 
 	/**
 	 * 获取 Cookie
+	 *
 	 * @param request
 	 * @param key
 	 * @return
@@ -51,12 +54,14 @@ public class CookieUtil {
 
 	/**
 	 * 删除 Cookie
+	 *
 	 * @param response
 	 * @param key
 	 * @param path
 	 * @param domain
 	 */
-	public static void removeCookie(HttpServletResponse response, String key, String path, String domain) {
+	public static void removeCookie(HttpServletResponse response, String key, String path,
+		String domain) {
 		Cookie cookie = new Cookie(key, null);
 
 		if (StringUtils.isEmpty(path)) {

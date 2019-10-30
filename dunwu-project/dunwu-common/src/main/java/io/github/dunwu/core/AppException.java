@@ -13,19 +13,12 @@ public class AppException extends RuntimeException {
 	private BaseResult result;
 
 	public AppException(BaseResult result) {
-		this.result = new BaseResult(result.getSuccess(), result.getCode(), result.getMessage());
+		this.result = new BaseResult(result.getSuccess(), result.getCode(),
+			result.getMessage());
 	}
 
 	public AppException(ErrorCode appCode) {
 		this.result = ResultUtil.failBaseResult(appCode);
-	}
-
-	/**
-	 * 覆盖原方法，解决抓取堆性能开销
-	 */
-	@Override
-	public Throwable fillInStackTrace() {
-		return this;
 	}
 
 	public BaseResult getResult() {
@@ -39,6 +32,14 @@ public class AppException extends RuntimeException {
 	@Override
 	public String toString() {
 		return "AppException{" + "result=" + result + '}';
+	}
+
+	/**
+	 * 覆盖原方法，解决抓取堆性能开销
+	 */
+	@Override
+	public Throwable fillInStackTrace() {
+		return this;
 	}
 
 }

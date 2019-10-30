@@ -11,7 +11,8 @@ public class NumberUtilTest {
 	@Test
 	public void toBytes() {
 		byte[] bytes = NumberUtil.toBytes(1);
-		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0, (byte) 1);
+		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0,
+			(byte) 1);
 
 		bytes = NumberUtil.toBytes(257);
 		assertThat(bytes).containsSequence((byte) 0, (byte) 0, (byte) 1, (byte) 1);
@@ -35,8 +36,7 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toInt32(Long.valueOf(Integer.MAX_VALUE + 1l));
 			fail("should fail here");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			assertThat(e).isInstanceOf(IllegalArgumentException.class);
 		}
 	}
@@ -58,15 +58,13 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toInt("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		try {
 			NumberUtil.toInt((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.toInt("12A", 123)).isEqualTo(123);
@@ -75,17 +73,15 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toLong("12A");
 			fail("shoud fail here");
-		}
-		catch (
+		} catch (
 
-		NumberFormatException e) {
+			NumberFormatException e) {
 
 		}
 		try {
 			NumberUtil.toLong((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.toLong("12A", 123)).isEqualTo(123L);
@@ -95,16 +91,14 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toDouble("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
 		try {
 			NumberUtil.toDouble((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.toDouble("12A", 123.1)).isEqualTo(123.1);
@@ -113,8 +107,7 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toIntObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
@@ -126,8 +119,7 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toLongObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.toLongObject("12A", 123L)).isEqualTo(123L);
@@ -137,8 +129,7 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.toDoubleObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.toDoubleObject("12A", 123.1)).isEqualTo(123.1);
@@ -149,16 +140,14 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.hexToIntObject("0xHI");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
 		try {
 			NumberUtil.hexToIntObject(null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.hexToIntObject("0xHI", 123)).isEqualTo(123);
@@ -169,19 +158,16 @@ public class NumberUtilTest {
 		try {
 			NumberUtil.hexToLongObject("0xHI");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		try {
 			NumberUtil.hexToLongObject(null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberUtil.hexToLongObject("0xHI", 123L)).isEqualTo(123L);
-
 	}
 
 	@Test
@@ -196,18 +182,19 @@ public class NumberUtilTest {
 		assertThat(NumberUtil.toString(23.112d)).isEqualTo("23.112");
 		assertThat(NumberUtil.to2DigitString(23.112d)).isEqualTo("23.11");
 		assertThat(NumberUtil.to2DigitString(23.116d)).isEqualTo("23.12");
-
 	}
 
 	@Test
 	public void numberToEnWords() {
 		Assertions.assertEquals("One Hundred Twenty Three", NumberUtil.intToEnWords(123));
-		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five", NumberUtil.intToEnWords(12345));
-		Assertions.assertEquals("One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
-				NumberUtil.intToEnWords(1234567));
+		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five",
+			NumberUtil.intToEnWords(12345));
 		Assertions.assertEquals(
-				"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
-				NumberUtil.intToEnWords(1234567891));
+			"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+			NumberUtil.intToEnWords(1234567));
+		Assertions.assertEquals(
+			"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
+			NumberUtil.intToEnWords(1234567891));
 	}
 
 }

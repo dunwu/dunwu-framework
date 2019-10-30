@@ -62,8 +62,7 @@ public class DbFileStorageServiceImpl implements FileStorageService {
 		FileContent result = fileContentMapper.selectOne(new QueryWrapper<>(query));
 		if (result != null) {
 			fileDTO.setContent(result.getContent());
-		}
-		else {
+		} else {
 			log.error("查找文件失败");
 		}
 		return fileDTO;

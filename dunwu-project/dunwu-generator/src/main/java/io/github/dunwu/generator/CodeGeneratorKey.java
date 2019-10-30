@@ -2,6 +2,7 @@ package io.github.dunwu.generator;
 
 /**
  * <a href="https://mybatis.plus/guide/generator.html">MyBatis-Plus 代码生成器</a> 配置 Key
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-15
  */
@@ -15,7 +16,8 @@ public enum CodeGeneratorKey {
 	/**
 	 * 数据源驱动类
 	 */
-	SPRING_DATASOURCE_DRIVER("spring.datasource.driver-class-name", "com.mysql.cj.jdbc.Driver"),
+	SPRING_DATASOURCE_DRIVER("spring.datasource.driver-class-name",
+		"com.mysql.cj.jdbc.Driver"),
 	/**
 	 * 数据源用户名
 	 */
@@ -29,13 +31,14 @@ public enum CodeGeneratorKey {
 	/**
 	 * java 根路径
 	 */
-	MYBATIS_GENERATOR_GC_JAVA_DIR("mybatis.generator.gc.java.dir", System.getProperty("user.dir") + "/src/main/java"),
+	MYBATIS_GENERATOR_GC_JAVA_DIR("mybatis.generator.gc.java.dir",
+		System.getProperty("user.dir") + "/src/main/java"),
 
 	/**
 	 * resources 根路径
 	 */
 	MYBATIS_GENERATOR_GC_RESOURCE_DIR("mybatis.generator.gc.resources.dir",
-			System.getProperty("user.dir") + "/src/main/resources"),
+		System.getProperty("user.dir") + "/src/main/resources"),
 	/**
 	 * 是否自动生成 Swagger 注解
 	 */
@@ -44,7 +47,7 @@ public enum CodeGeneratorKey {
 	 * 作者名
 	 */
 	MYBATIS_GENERATOR_GC_AUTHOR_NAME("mybatis.generator.gc.author.name",
-			"<a href=\"mailto:forbreak@163.com\">Zhang Peng</a>"),
+		"<a href=\"mailto:forbreak@163.com\">Zhang Peng</a>"),
 	/**
 	 * Mapper xml 文件名后缀
 	 */
@@ -60,11 +63,13 @@ public enum CodeGeneratorKey {
 	/**
 	 * Service 实现类类名后缀
 	 */
-	MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME("mybatis.generator.gc.service-impl-name", "%sServiceImpl"),
+	MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME("mybatis.generator.gc.service-impl-name",
+		"%sServiceImpl"),
 	/**
 	 * Controller 类名后缀
 	 */
-	MYBATIS_GENERATOR_GC_CONTROLLER_NAME("mybatis.generator.gc.controller-name", "%sController"),
+	MYBATIS_GENERATOR_GC_CONTROLLER_NAME("mybatis.generator.gc.controller-name",
+		"%sController"),
 
 	// ------------------------------------- 包路径配置 -------------------------------------
 	/**
@@ -86,7 +91,8 @@ public enum CodeGeneratorKey {
 	/**
 	 * Service 实现类根路径
 	 */
-	MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME("mybatis.generator.pc.service.impl.name", "service.impl"),
+	MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME("mybatis.generator.pc.service.impl.name",
+		"service.impl"),
 	/**
 	 * Mapper xml 文件根路径
 	 */
@@ -100,16 +106,19 @@ public enum CodeGeneratorKey {
 	/**
 	 * Entity 类超类
 	 */
-	MYBATIS_GENERATOR_SC_SUPER_ENTITY("mybatis.generator.sc.super.entity", "io.github.dunwu.data.entity.BaseEntity"),
+	MYBATIS_GENERATOR_SC_SUPER_ENTITY("mybatis.generator.sc.super.entity",
+		"io.github.dunwu.data.entity.BaseEntity"),
 	/**
 	 * Service 类超类
 	 */
-	MYBATIS_GENERATOR_SC_SUPER_SERVICE("mybatis.generator.sc.super.service", "io.github.dunwu.data.service.IService"),
+	MYBATIS_GENERATOR_SC_SUPER_SERVICE("mybatis.generator.sc.super.service",
+		"io.github.dunwu.data.service.IService"),
 	/**
 	 * Service 实现类超类
 	 */
 	MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL("mybatis.generator.sc.super.service.impl",
-			"io.github.dunwu.data.service.ServiceImpl");
+		"io.github.dunwu.data.service.ServiceImpl");
+
 	/**
 	 * 配置参数 key
 	 */
@@ -132,5 +141,4 @@ public enum CodeGeneratorKey {
 	public String value() {
 		return value;
 	}
-
 }

@@ -31,7 +31,8 @@ import java.util.stream.Collectors;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-06
  */
-public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implements IService<T> {
+public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
+	implements IService<T> {
 
 	protected Log log = LogFactory.getLog(getClass());
 
@@ -43,50 +44,12 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		return baseMapper;
 	}
 
-	/**
-	 * 判断数据库操作是否成功
-	 * @param result 数据库操作返回影响条数
-	 * @return boolean
-	 */
-	protected boolean retBool(Integer result) {
-		return SqlHelper.retBool(result);
-	}
-
-	protected Class<T> currentModelClass() {
-		return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
-	}
-
-	/**
-	 * 批量操作 SqlSession
-	 */
-	protected SqlSession sqlSessionBatch() {
-		return SqlHelper.sqlSessionBatch(currentModelClass());
-	}
-
-	/**
-	 * 释放sqlSession
-	 * @param sqlSession session
-	 */
-	protected void closeSqlSession(SqlSession sqlSession) {
-		SqlSessionUtils.closeSqlSession(sqlSession, GlobalConfigUtils.currentSessionFactory(currentModelClass()));
-	}
-
-	/**
-	 * 获取 SqlStatement
-	 * @param sqlMethod ignore
-	 * @return ignore
-	 */
-	protected String sqlStatement(SqlMethod sqlMethod) {
-		return SqlHelper.table(currentModelClass()).getSqlStatement(sqlMethod.getMethod());
-	}
-
 	@Override
 	public DataResult<Integer> save(T entity) {
 		boolean result = retBool(baseMapper.insert(entity));
 		if (result) {
 			return ResultUtil.successDataResult(entity.getId());
-		}
-		else {
+		} else {
 			return ResultUtil.failDataResult(AppCode.ERROR_DB);
 		}
 	}
@@ -110,37 +73,22 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		return ResultUtil.successBaseResult();
 	}
 
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public BaseResult saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
-		Assert.notEmpty(entityList, "error: entityList must not be empty");
-		Class<?> cls = currentModelClass();
-		TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-		Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
-		String keyProperty = tableInfo.getKeyProperty();
-		Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
-		try (SqlSession batchSqlSession = sqlSessionBatch()) {
-			int i = 0;
-			for (T entity : entityList) {
-				Object idVal = ReflectionKit.getMethodValue(cls, entity, keyProperty);
-				if (StringUtils.checkValNull(idVal) || Objects.isNull(getById((Serializable) idVal))) {
-					batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
-				}
-				else {
-					MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
-					param.put(Constants.ENTITY, entity);
-					batchSqlSession.update(sqlStatement(SqlMethod.UPDATE_BY_ID), param);
-				}
-				// 不知道以后会不会有人说更新失败了还要执行插入 😂😂😂
-				if (i >= 1 && i % batchSize == 0) {
-					batchSqlSession.flushStatements();
-				}
-				i++;
-			}
-			batchSqlSession.flushStatements();
-		}
+	/**
+	 * 获取 SqlStatement
+	 *
+	 * @param sqlMethod ignore
+	 * @return ignore
+	 */
+	protected String sqlStatement(SqlMethod sqlMethod) {
+		return SqlHelper.table(currentModelClass())
+			.getSqlStatement(sqlMethod.getMethod());
+	}
 
-		return ResultUtil.successBaseResult();
+	/**
+	 * 批量操作 SqlSession
+	 */
+	protected SqlSession sqlSessionBatch() {
+		return SqlHelper.sqlSessionBatch(currentModelClass());
 	}
 
 	@Override
@@ -148,8 +96,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = SqlHelper.retBool(baseMapper.deleteById(id));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
@@ -160,8 +107,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = SqlHelper.retBool(baseMapper.deleteByMap(columnMap));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
@@ -171,8 +117,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = SqlHelper.retBool(baseMapper.delete(wrapper));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
@@ -182,8 +127,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = SqlHelper.retBool(baseMapper.deleteBatchIds(idList));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
@@ -193,8 +137,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = retBool(baseMapper.updateById(entity));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
@@ -204,10 +147,19 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		boolean result = retBool(baseMapper.update(entity, updateWrapper));
 		if (result) {
 			return ResultUtil.successBaseResult();
-		}
-		else {
+		} else {
 			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
 		}
+	}
+
+	/**
+	 * 判断数据库操作是否成功
+	 *
+	 * @param result 数据库操作返回影响条数
+	 * @return boolean
+	 */
+	protected boolean retBool(Integer result) {
+		return SqlHelper.retBool(result);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -238,12 +190,51 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 		if (null != entity) {
 			Class<?> cls = entity.getClass();
 			TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-			Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
+			Assert.notNull(tableInfo,
+				"error: can not execute. because can not find cache of TableInfo for entity!");
 			String keyProperty = tableInfo.getKeyProperty();
-			Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
-			Object idVal = ReflectionKit.getMethodValue(cls, entity, tableInfo.getKeyProperty());
-			return StringUtils.checkValNull(idVal) || Objects.isNull(getById((Serializable) idVal)) ? save(entity)
-					: updateById(entity);
+			Assert.notEmpty(keyProperty,
+				"error: can not execute. because can not find column for id from entity!");
+			Object idVal = ReflectionKit.getMethodValue(cls, entity,
+				tableInfo.getKeyProperty());
+			return StringUtils.checkValNull(idVal)
+				|| Objects.isNull(getById((Serializable) idVal)) ? save(entity)
+				: updateById(entity);
+		}
+
+		return ResultUtil.successBaseResult();
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResult saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
+		Assert.notEmpty(entityList, "error: entityList must not be empty");
+		Class<?> cls = currentModelClass();
+		TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
+		Assert.notNull(tableInfo,
+			"error: can not execute. because can not find cache of TableInfo for entity!");
+		String keyProperty = tableInfo.getKeyProperty();
+		Assert.notEmpty(keyProperty,
+			"error: can not execute. because can not find column for id from entity!");
+		try (SqlSession batchSqlSession = sqlSessionBatch()) {
+			int i = 0;
+			for (T entity : entityList) {
+				Object idVal = ReflectionKit.getMethodValue(cls, entity, keyProperty);
+				if (StringUtils.checkValNull(idVal)
+					|| Objects.isNull(getById((Serializable) idVal))) {
+					batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
+				} else {
+					MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
+					param.put(Constants.ENTITY, entity);
+					batchSqlSession.update(sqlStatement(SqlMethod.UPDATE_BY_ID), param);
+				}
+				// 不知道以后会不会有人说更新失败了还要执行插入 😂😂😂
+				if (i >= 1 && i % batchSize == 0) {
+					batchSqlSession.flushStatements();
+				}
+				i++;
+			}
+			batchSqlSession.flushStatements();
 		}
 
 		return ResultUtil.successBaseResult();
@@ -275,13 +266,23 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 
 	@Override
 	public DataResult<Map<String, Object>> getMap(Wrapper<T> queryWrapper) {
-		Map<String, Object> map = SqlHelper.getObject(log, baseMapper.selectMaps(queryWrapper));
+		Map<String, Object> map = SqlHelper.getObject(log,
+			baseMapper.selectMaps(queryWrapper));
 		return ResultUtil.successDataResult(map);
 	}
 
 	@Override
+	public <V> DataResult<V> getObj(Wrapper<T> queryWrapper,
+		Function<? super Object, V> mapper) {
+		List<V> list = (List<V>) listObjs(queryWrapper, mapper).getData();
+		V entity = SqlHelper.getObject(log, list);
+		return ResultUtil.successDataResult(entity);
+	}
+
+	@Override
 	public DataResult<Integer> count(Wrapper<T> queryWrapper) {
-		return ResultUtil.successDataResult(SqlHelper.retCount(baseMapper.selectCount(queryWrapper)));
+		return ResultUtil.successDataResult(
+			SqlHelper.retCount(baseMapper.selectCount(queryWrapper)));
 	}
 
 	@Override
@@ -291,7 +292,8 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 
 	@Override
 	public PageResult<T> page(Pagination<T> pagination, Wrapper<T> queryWrapper) {
-		IPage<T> resultPage = baseMapper.selectPage(PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
+		IPage<T> resultPage = baseMapper
+			.selectPage(PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
 		return ResultUtil.successPageResult(PageUtil.transToPagination(resultPage));
 	}
 
@@ -301,24 +303,33 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> implemen
 	}
 
 	@Override
-	public <V> DataListResult<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
-		List<V> list = baseMapper.selectObjs(queryWrapper).stream().filter(Objects::nonNull).map(mapper)
-				.collect(Collectors.toList());
+	public <V> DataListResult<V> listObjs(Wrapper<T> queryWrapper,
+		Function<? super Object, V> mapper) {
+		List<V> list = baseMapper.selectObjs(queryWrapper).stream()
+			.filter(Objects::nonNull).map(mapper).collect(Collectors.toList());
 		return ResultUtil.successDataListResult(list);
 	}
 
 	@Override
-	public PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination, Wrapper<T> queryWrapper) {
-		IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(PageUtil.transToMybatisPlusPage(pagination),
-				queryWrapper);
+	public PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination,
+		Wrapper<T> queryWrapper) {
+		IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(
+			PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
 		return ResultUtil.successPageResult(PageUtil.transToPagination(resultPage));
 	}
 
-	@Override
-	public <V> DataResult<V> getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
-		List<V> list = (List<V>) listObjs(queryWrapper, mapper).getData();
-		V entity = SqlHelper.getObject(log, list);
-		return ResultUtil.successDataResult(entity);
+	/**
+	 * 释放sqlSession
+	 *
+	 * @param sqlSession session
+	 */
+	protected void closeSqlSession(SqlSession sqlSession) {
+		SqlSessionUtils.closeSqlSession(sqlSession,
+			GlobalConfigUtils.currentSessionFactory(currentModelClass()));
+	}
+
+	protected Class<T> currentModelClass() {
+		return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
 	}
 
 }

@@ -36,9 +36,9 @@ CREATE TABLE `file` (
     `access_url`   VARCHAR(160)        NOT NULL COMMENT '文件访问路径',
     `update_time`  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上传时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_file_name` (`file_name`),
-    UNIQUE KEY `uk_access_url` (`access_url`),
-    UNIQUE KEY `uk_keys` (`origin_name`, `tag`, `namespace`)
+    UNIQUE KEY `uk_file_name`(`file_name`),
+    UNIQUE KEY `uk_access_url`(`access_url`),
+    UNIQUE KEY `uk_keys`(`origin_name`, `tag`, `namespace`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -53,7 +53,8 @@ LOCK TABLES `file` WRITE;
 /*!40000 ALTER TABLE `file`
     DISABLE KEYS */;
 INSERT INTO `file`
-VALUES ('1172113226503041025', 'b2a006884fb74e6b8c35b2884610525d.png', 'image', 'image', 'taiji.png', 19716, 'png',
+VALUES ('1172113226503041025', 'b2a006884fb74e6b8c35b2884610525d.png', 'image', 'image',
+        'taiji.png', 19716, 'png',
         'image/png', '0', '1172113225836146689', 'image/image/taiji.png', '2019-09-12 19:42:25');
 /*!40000 ALTER TABLE `file`
     ENABLE KEYS */;
@@ -71,7 +72,7 @@ CREATE TABLE `file_content` (
     `file_name` VARCHAR(128) NOT NULL COMMENT '实际文件名',
     `content`   BLOB         NOT NULL COMMENT '文件内容',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_file_name` (`file_name`)
+    UNIQUE KEY `uk_file_name`(`file_name`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -112,9 +113,9 @@ CREATE TABLE `login` (
     `update_time` DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`     TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_username` (`username`),
-    UNIQUE KEY `uk_email` (`email`),
-    UNIQUE KEY `uk_mobile` (`mobile`)
+    UNIQUE KEY `uk_username`(`username`),
+    UNIQUE KEY `uk_email`(`email`),
+    UNIQUE KEY `uk_mobile`(`mobile`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -129,10 +130,12 @@ LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login`
     DISABLE KEYS */;
 INSERT INTO `login`
-VALUES ('1161473704962564098', 0, 'admin', '123456', 'forbreak@163.com', '15111111111', '2019-08-14 11:04:45',
+VALUES ('1161473704962564098', 0, 'admin', '123456', 'forbreak@163.com', '15111111111',
+        '2019-08-14 11:04:45',
         '2019-08-26 14:33:51', 0),
-       ('1161479401813155842', 0, 'user', '123456', 'forbreak2@163.com', '15111111112', '2019-08-14 11:27:23',
-        '2019-08-26 14:34:07', 0);
+('1161479401813155842', 0, 'user', '123456', 'forbreak2@163.com', '15111111112',
+ '2019-08-14 11:27:23',
+ '2019-08-26 14:34:07', 0);
 /*!40000 ALTER TABLE `login`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -169,7 +172,7 @@ CREATE TABLE `scheduler` (
     `update_time`     DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`         TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_trigger_group_name` (`trigger_group`, `trigger_name`)
+    UNIQUE KEY `uk_trigger_group_name`(`trigger_group`, `trigger_name`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -184,9 +187,12 @@ LOCK TABLES `scheduler` WRITE;
 /*!40000 ALTER TABLE `scheduler`
     DISABLE KEYS */;
 INSERT INTO `scheduler`
-VALUES ('1172113692678959105', 0, 'quartzScheduler', 'trigger_group_test', 'trigger_testjob', 'test', 'testjob',
-        'sampleJob1', 'io.github.dunwu.quickstart.scheduler.job.SampleJob1', '', '天王盖地虎，宝塔镇河妖。', 1, 0,
-        '2019-09-12 19:44:15', '2019-09-12 19:44:15', 0, 0, '0/30 * * * * ? ', 0, '', '2019-09-12 19:44:15',
+VALUES ('1172113692678959105', 0, 'quartzScheduler', 'trigger_group_test', 'trigger_testjob',
+        'test', 'testjob',
+        'sampleJob1', 'io.github.dunwu.quickstart.scheduler.job.SampleJob1', '', '天王盖地虎，宝塔镇河妖。', 1,
+        0,
+        '2019-09-12 19:44:15', '2019-09-12 19:44:15', 0, 0, '0/30 * * * * ? ', 0, '',
+        '2019-09-12 19:44:15',
         '2019-09-12 19:44:15', 0);
 /*!40000 ALTER TABLE `scheduler`
     ENABLE KEYS */;
@@ -210,8 +216,8 @@ CREATE TABLE `template` (
     `update_time` DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`     TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_namespace_name` (`namespace`, `name`),
-    KEY `idx_tag` (`tag`)
+    UNIQUE KEY `uk_namespace_name`(`namespace`, `name`),
+    KEY `idx_tag`(`tag`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -258,10 +264,10 @@ CREATE TABLE `user` (
     `update_time` DATETIME                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `deleted`     TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_username` (`username`),
-    UNIQUE KEY `uk_email` (`email`),
-    UNIQUE KEY `uk_mobile` (`mobile`),
-    KEY `idx_name` (`name`)
+    UNIQUE KEY `uk_username`(`username`),
+    UNIQUE KEY `uk_email`(`email`),
+    UNIQUE KEY `uk_mobile`(`mobile`),
+    KEY `idx_name`(`name`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = `utf8mb4`
@@ -276,10 +282,14 @@ LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user`
     DISABLE KEYS */;
 INSERT INTO `user`
-VALUES ('1161473705096781826', 0, 'user', '用户', NULL, NULL, 'http://dunwu.test.upcdn.net/images/others/zp.png',
-        'forbreak2@163.com', '15111111112', '', '', '', '', '2019-08-14 11:04:45', '2019-08-26 14:35:25', 0),
-       ('1165798967011774465', 0, 'admin', '管理员', NULL, NULL, 'http://dunwu.test.upcdn.net/images/others/zp.png',
-        'forbreak@163.com', '15111111111', '', '', '', '', '2019-08-14 03:02:53', '2019-08-26 14:35:34', 0);
+VALUES ('1161473705096781826', 0, 'user', '用户', NULL, NULL,
+        'http://dunwu.test.upcdn.net/images/others/zp.png',
+        'forbreak2@163.com', '15111111112', '', '', '', '', '2019-08-14 11:04:45',
+        '2019-08-26 14:35:25', 0),
+('1165798967011774465', 0, 'admin', '管理员', NULL, NULL,
+ 'http://dunwu.test.upcdn.net/images/others/zp.png',
+ 'forbreak@163.com', '15111111111', '', '', '', '', '2019-08-14 03:02:53', '2019-08-26 14:35:34',
+ 0);
 /*!40000 ALTER TABLE `user`
     ENABLE KEYS */;
 UNLOCK TABLES;

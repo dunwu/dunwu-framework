@@ -15,7 +15,8 @@ public class PageUtil {
 	}
 
 	public static <T> Pagination<T> transToPagination(IPage<T> page) {
-		return new Pagination<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
+		return new Pagination<>(page.getCurrent(), page.getSize(), page.getTotal(),
+			page.getRecords());
 	}
 
 }

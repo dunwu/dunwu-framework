@@ -1,4 +1,4 @@
-import { formatTime } from '@/utils/index.js'
+import {formatTime} from '@/utils/index.js'
 
 describe('Utils:formatTime', () => {
   const d = new Date('2018-07-13 17:54:01') // "2018-07-13 17:54:01"

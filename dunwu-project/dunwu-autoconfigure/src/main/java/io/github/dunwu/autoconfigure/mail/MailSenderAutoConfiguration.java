@@ -29,10 +29,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.MailSender;
 
-import javax.activation.MimeType;
-import javax.mail.internet.MimeMessage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
+import javax.activation.MimeType;
+import javax.mail.internet.MimeMessage;
 
 /**
  * {@link EnableAutoConfiguration Auto configuration} for email support.
@@ -59,17 +59,20 @@ public class MailSenderAutoConfiguration {
 	@Bean("mailExecutor")
 	public ExecutorService mailExecutor() {
 		DunwuMailProperties.Pool pool = dunwuMailProperties.getPool();
-		ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil.queuableCachedPool();
-		builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize()).setKeepAliveSecs(pool.getKeepAliveSecs())
-				.setQueueSize(pool.getQueueSize())
-				.setThreadFactory(ThreadPoolUtil.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
-				.setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
+		ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil
+			.queuableCachedPool();
+		builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize())
+			.setKeepAliveSecs(pool.getKeepAliveSecs())
+			.setQueueSize(pool.getQueueSize())
+			.setThreadFactory(ThreadPoolUtil
+				.buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
+			.setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
 		return builder.build();
 	}
 
 	/**
-	 * Condition to trigger the creation of a {@link MailSender}. This kicks in if either
-	 * the host or jndi name property is set.
+	 * Condition to trigger the creation of a {@link MailSender}. This kicks in if either the host or jndi name property
+	 * is set.
 	 */
 	static class MailSenderCondition extends AnyNestedCondition {
 

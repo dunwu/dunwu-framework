@@ -29,5 +29,4 @@ public enum InvokeTypeEnum {
 	public Integer getKey() {
 		return this.key;
 	}
-
 }

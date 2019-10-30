@@ -16,8 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 1.将带单位的时间，大小字符串转换为数字. copy from Facebook https://github
- * .com/facebook/jcommon/blob/master/config/src/main/java/com/facebook/config/ConfigUtil.java
+ * 1.将带单位的时间，大小字符串转换为数字. copy from Facebook https://github .com/facebook/jcommon/blob/master/config/src/main/java/com/facebook/config/ConfigUtil.java
  * 2.将数字转为带单位的字符串
  */
 public class UnitConverter {
@@ -67,18 +66,19 @@ public class UnitConverter {
 		}
 
 		switch (unitStr.toLowerCase()) {
-		case TIME_UNIT_MILLI_SECOND:
-			return number;
-		case TIME_UNIT_SECOND:
-			return number * MILLIS_PER_SECOND;
-		case TIME_UNIT_MINUTE:
-			return number * MILLIS_PER_MINUTE;
-		case TIME_UNIT_HOUR:
-			return number * MILLIS_PER_HOUR;
-		case TIME_UNIT_DAY:
-			return number * MILLIS_PER_DAY;
-		default:
-			throw new IllegalArgumentException("unknown time unit :" + unitStr.toLowerCase());
+			case TIME_UNIT_MILLI_SECOND:
+				return number;
+			case TIME_UNIT_SECOND:
+				return number * MILLIS_PER_SECOND;
+			case TIME_UNIT_MINUTE:
+				return number * MILLIS_PER_MINUTE;
+			case TIME_UNIT_HOUR:
+				return number * MILLIS_PER_HOUR;
+			case TIME_UNIT_DAY:
+				return number * MILLIS_PER_DAY;
+			default:
+				throw new IllegalArgumentException(
+					"unknown time unit :" + unitStr.toLowerCase());
 		}
 	}
 
@@ -96,31 +96,30 @@ public class UnitConverter {
 				char unit = unitStr.toLowerCase().charAt(0);
 
 				switch (unit) {
-				case 'b':
-					return number;
-				case 'k':
-					return number * K;
-				case 'm':
-					return number * M;
-				case 'g':
-					return number * G;
-				case 't':
-					return number * T;
-				default:
-					throw new IllegalArgumentException("unknown size unit :" + unit);
+					case 'b':
+						return number;
+					case 'k':
+						return number * K;
+					case 'm':
+						return number * M;
+					case 'g':
+						return number * G;
+					case 't':
+						return number * T;
+					default:
+						throw new IllegalArgumentException("unknown size unit :" + unit);
 				}
-			}
-			else {
+			} else {
 				return number;
 			}
-		}
-		else {
+		} else {
 			throw new IllegalArgumentException("malformed size string: " + size);
 		}
 	}
 
 	/**
 	 * 从bytes转换为带单位的字符串, 单位最大只支持到G级别，四舍五入
+	 *
 	 * @param scale 小数后的精度
 	 */
 	public static String toSizeUnit(Long bytes, int scale) {
@@ -132,22 +131,27 @@ public class UnitConverter {
 		}
 
 		if (bytes < M) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk", bytes * 1d / K);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk",
+				bytes * 1d / K);
 		}
 
 		if (bytes < G) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm", bytes * 1d / M);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm",
+				bytes * 1d / M);
 		}
 
 		if (bytes < T) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg", bytes * 1d / G);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg",
+				bytes * 1d / G);
 		}
 
-		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft", bytes * 1d / T);
+		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft",
+			bytes * 1d / T);
 	}
 
 	/**
 	 * 转换毫秒为带时间单位的字符串，单位最大到day级别，四舍五入
+	 *
 	 * @param scale 小数后的精度
 	 */
 	public static String toTimeUnit(long millis, int scale) {
@@ -157,20 +161,21 @@ public class UnitConverter {
 
 		if (millis < MILLIS_PER_MINUTE) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fs",
-					millis * 1d / MILLIS_PER_SECOND);
+				millis * 1d / MILLIS_PER_SECOND);
 		}
 
 		if (millis < MILLIS_PER_HOUR) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fm",
-					millis * 1d / MILLIS_PER_MINUTE);
+				millis * 1d / MILLIS_PER_MINUTE);
 		}
 
 		if (millis < MILLIS_PER_DAY) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fh",
-					millis * 1d / MILLIS_PER_HOUR);
+				millis * 1d / MILLIS_PER_HOUR);
 		}
 
-		return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fd", millis * 1d / MILLIS_PER_DAY);
+		return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fd",
+			millis * 1d / MILLIS_PER_DAY);
 	}
 
 	/**
@@ -186,14 +191,17 @@ public class UnitConverter {
 		}
 
 		if (millis < MILLIS_PER_HOUR) {
-			return String.format("%02dm%02ds", millis / MILLIS_PER_MINUTE, (millis / MILLIS_PER_SECOND) % 60);
+			return String.format("%02dm%02ds", millis / MILLIS_PER_MINUTE,
+				(millis / MILLIS_PER_SECOND) % 60);
 		}
 
 		if (millis < MILLIS_PER_DAY) {
-			return String.format("%02dh%02dm", millis / MILLIS_PER_HOUR, (millis / MILLIS_PER_MINUTE) % 60);
+			return String.format("%02dh%02dm", millis / MILLIS_PER_HOUR,
+				(millis / MILLIS_PER_MINUTE) % 60);
 		}
 
-		return String.format("%dd%02dh", millis / MILLIS_PER_DAY, (millis / MILLIS_PER_HOUR) % 24);
+		return String.format("%dd%02dh", millis / MILLIS_PER_DAY,
+			(millis / MILLIS_PER_HOUR) % 24);
 	}
 
 }

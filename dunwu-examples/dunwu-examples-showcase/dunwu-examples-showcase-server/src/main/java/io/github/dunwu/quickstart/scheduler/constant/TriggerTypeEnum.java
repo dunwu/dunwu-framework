@@ -22,5 +22,4 @@ public enum TriggerTypeEnum {
 	public Integer getKey() {
 		return this.key;
 	}
-
 }

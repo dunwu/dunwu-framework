@@ -20,8 +20,7 @@ public class ThreadLocalContextTest {
 			public void run() {
 				try {
 					barrier.await();
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -29,8 +28,8 @@ public class ThreadLocalContextTest {
 				ThreadUtil.sleep(RandomUtil.nextLong(100, 300));
 				System.out.println((char[]) ThreadLocalContext.get("myname"));
 				ThreadLocalContext.reset();
-				System.out.println(
-						"shoud null for " + Thread.currentThread().getName() + ":" + ThreadLocalContext.get("myname"));
+				System.out.println("shoud null for " + Thread.currentThread().getName()
+					+ ":" + ThreadLocalContext.get("myname"));
 				countdown.countDown();
 			}
 		};

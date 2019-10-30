@@ -114,7 +114,8 @@ public class SchedulerController {
 
 	@PostMapping("update")
 	@ApiOperation(value = "根据 origin 条件，更新 Scheduler 记录")
-	public BaseResult update(@RequestBody Scheduler target, @RequestParam Scheduler origin) {
+	public BaseResult update(@RequestBody Scheduler target,
+		@RequestParam Scheduler origin) {
 		return service.update(target, origin);
 	}
 
@@ -186,7 +187,8 @@ public class SchedulerController {
 
 	@GetMapping("page")
 	@ApiOperation(value = "根据 entity 条件，翻页查询 SchedulerInfo 记录")
-	public PageResult<Scheduler> page(Pagination<Scheduler> pagination, Scheduler entity) {
+	public PageResult<Scheduler> page(Pagination<Scheduler> pagination,
+		Scheduler entity) {
 		return service.page(pagination, entity);
 	}
 

@@ -1,105 +1,105 @@
 {
-  "groups": [
-    {
-      "name": "dunwu.web",
-      "type": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
-      "sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties"
-    },
-    {
-      "name": "spring.mybatis",
-      "type": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties",
-      "sourceType": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties"
-    },
-    {
-      "name": "dunwu.mail",
-      "type": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties"
-    }
-  ],
-  "properties": [
-    {
-      "name": "dunwu.web.http-debug-enable",
-      "type": "java.lang.Boolean",
-      "description": "Http 请求应答debug开关.",
-      "sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
-      "defaultValue": true
-    },
-    {
-      "name": "dunwu.web.cors-enable",
-      "type": "java.lang.Boolean",
-      "description": "放开跨域限制开关.",
-      "sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
-      "defaultValue": true
-    },
-    {
-      "name": "dunwu.web.format-enable",
-      "type": "java.lang.Boolean",
-      "description": "http 数据自动格式化开关.",
-      "sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
-      "defaultValue": true
-    },
-    {
-      "name": "spring.mybatis.block-attack-enabled",
-      "type": "java.lang.Boolean",
-      "description": "攻击 SQL 阻断解析器开关.",
-      "sourceType": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties",
-      "defaultValue": true
-    },
-    {
-      "name": "dunwu.mail.domain",
-      "type": "java.lang.String",
-      "description": "Description for dunwu.mail.domain.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": "163.com"
-    },
-    {
-      "name": "dunwu.mail.from",
-      "type": "java.lang.String",
-      "description": "Description for dunwu.mail.from.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties"
-    },
-    {
-      "name": "dunwu.mail.pool.min-size",
-      "type": "java.lang.Integer",
-      "description": "Description for dunwu.mail.pool.min-size.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": 0
-    },
-    {
-      "name": "dunwu.mail.pool.max-size",
-      "type": "java.lang.Integer",
-      "description": "Description for dunwu.mail.pool.max-size.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": 1000
-    },
-    {
-      "name": "dunwu.mail.pool.keep-alive-secs",
-      "type": "java.lang.Integer",
-      "description": "Description for dunwu.mail.pool.keep-alive-secs.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": 10
-    },
-    {
-      "name": "dunwu.mail.pool.queue-size",
-      "type": "java.lang.Integer",
-      "description": "Description for dunwu.mail.pool.queue-size.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": 100
-    },
-    {
-      "name": "dunwu.mail.pool.thread-name-prefix",
-      "type": "java.lang.String",
-      "description": "Description for dunwu.mail.pool.thread-name-prefix.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": "mail-service"
-    },
-    {
-      "name": "dunwu.mail.pool.daemon",
-      "type": "java.lang.Boolean",
-      "description": "Description for dunwu.mail.pool.daemon.",
-      "sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
-      "defaultValue": true
-    }
-  ],
-  "hints": []
+	"groups": [
+		{
+			"name": "dunwu.web",
+			"type": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
+			"sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties"
+		},
+		{
+			"name": "spring.mybatis",
+			"type": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties",
+			"sourceType": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties"
+		},
+		{
+			"name": "dunwu.mail",
+			"type": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties"
+		}
+	],
+	"properties": [
+		{
+			"name": "dunwu.web.http-debug-enable",
+			"type": "java.lang.Boolean",
+			"description": "Http 请求应答debug开关.",
+			"sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
+			"defaultValue": true
+		},
+		{
+			"name": "dunwu.web.cors-enable",
+			"type": "java.lang.Boolean",
+			"description": "放开跨域限制开关.",
+			"sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
+			"defaultValue": true
+		},
+		{
+			"name": "dunwu.web.format-enable",
+			"type": "java.lang.Boolean",
+			"description": "http 数据自动格式化开关.",
+			"sourceType": "io.github.dunwu.autoconfigure.web.DunwuWebProperties",
+			"defaultValue": true
+		},
+		{
+			"name": "spring.mybatis.block-attack-enabled",
+			"type": "java.lang.Boolean",
+			"description": "攻击 SQL 阻断解析器开关.",
+			"sourceType": "io.github.dunwu.autoconfigure.mybatis.DunwuMybatisProperties",
+			"defaultValue": true
+		},
+		{
+			"name": "dunwu.mail.domain",
+			"type": "java.lang.String",
+			"description": "Description for dunwu.mail.domain.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": "163.com"
+		},
+		{
+			"name": "dunwu.mail.from",
+			"type": "java.lang.String",
+			"description": "Description for dunwu.mail.from.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties"
+		},
+		{
+			"name": "dunwu.mail.pool.min-size",
+			"type": "java.lang.Integer",
+			"description": "Description for dunwu.mail.pool.min-size.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": 0
+		},
+		{
+			"name": "dunwu.mail.pool.max-size",
+			"type": "java.lang.Integer",
+			"description": "Description for dunwu.mail.pool.max-size.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": 1000
+		},
+		{
+			"name": "dunwu.mail.pool.keep-alive-secs",
+			"type": "java.lang.Integer",
+			"description": "Description for dunwu.mail.pool.keep-alive-secs.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": 10
+		},
+		{
+			"name": "dunwu.mail.pool.queue-size",
+			"type": "java.lang.Integer",
+			"description": "Description for dunwu.mail.pool.queue-size.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": 100
+		},
+		{
+			"name": "dunwu.mail.pool.thread-name-prefix",
+			"type": "java.lang.String",
+			"description": "Description for dunwu.mail.pool.thread-name-prefix.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": "mail-service"
+		},
+		{
+			"name": "dunwu.mail.pool.daemon",
+			"type": "java.lang.Boolean",
+			"description": "Description for dunwu.mail.pool.daemon.",
+			"sourceType": "io.github.dunwu.autoconfigure.mail.DunwuMailProperties",
+			"defaultValue": true
+		}
+	],
+	"hints": []
 }

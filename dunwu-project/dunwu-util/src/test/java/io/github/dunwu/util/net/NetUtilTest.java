@@ -3,11 +3,11 @@ package io.github.dunwu.util.net;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.io.IOUtil;
 
-import javax.net.ServerSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
+import javax.net.ServerSocketFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -40,7 +40,7 @@ public class NetUtilTest {
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = ServerSocketFactory.getDefault().createServerSocket(port, 1,
-					InetAddress.getByName("localhost"));
+				InetAddress.getByName("localhost"));
 
 			assertThat(NetUtil.isPortAvailable(port)).isFalse();
 
@@ -50,16 +50,12 @@ public class NetUtilTest {
 			try {
 				int port5 = NetUtil.findRandomAvailablePort(port, port);
 				fail("should fail before");
-			}
-			catch (Throwable t) {
+			} catch (Throwable t) {
 				assertThat(t).isInstanceOf(IllegalStateException.class);
 			}
-
-		}
-		finally {
+		} finally {
 			IOUtil.close(serverSocket);
 		}
-
 	}
 
 }

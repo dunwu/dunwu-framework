@@ -1,17 +1,12 @@
 import Mock from 'mockjs'
-import { param2Obj } from '../src/utils'
+import {param2Obj} from '../src/utils'
 
 import user from './user'
 import role from './role'
 import article from './article'
 import search from './remote-search'
 
-const mocks = [
-  ...user,
-  ...role,
-  ...article,
-  ...search
-]
+const mocks = [...user, ...role, ...article, ...search]
 
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
@@ -20,7 +15,7 @@ export function mockXHR() {
   // mock patch
   // https://github.com/nuysoft/Mock/issues/300
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
-  Mock.XHR.prototype.send = function() {
+  Mock.XHR.prototype.send = function () {
     if (this.custom.xhr) {
       this.custom.xhr.withCredentials = this.withCredentials || false
 
@@ -32,15 +27,13 @@ export function mockXHR() {
   }
 
   function XHR2ExpressReqWrap(respond) {
-    return function(options) {
+    return function (options) {
       let result = null
       if (respond instanceof Function) {
-        const { body, type, url } = options
+        const {body, type, url} = options
         // https://expressjs.com/en/4x/api.html#req
         result = respond({
-          method: type,
-          body: JSON.parse(body),
-          query: param2Obj(url)
+          method: type, body: JSON.parse(body), query: param2Obj(url)
         })
       } else {
         result = respond
@@ -50,23 +43,15 @@ export function mockXHR() {
   }
 
   for (const i of mocks) {
-    Mock.mock(
-      new RegExp(i.url),
-      i.type || 'get',
-      XHR2ExpressReqWrap(i.response)
-    )
+    Mock.mock(new RegExp(i.url), i.type || 'get', XHR2ExpressReqWrap(i.response))
   }
 }
 
 // for mock server
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`/mock${url}`),
-    type: type || 'get',
-    response(req, res) {
-      res.json(
-        Mock.mock(respond instanceof Function ? respond(req, res) : respond)
-      )
+    url: new RegExp(`/mock${url}`), type: type || 'get', response(req, res) {
+      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
     }
   }
 }

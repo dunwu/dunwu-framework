@@ -2,13 +2,13 @@ package io.github.dunwu.util.code;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.Key;
+import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
-import java.util.Base64;
 
 /**
  * 加密/解密工具类
@@ -28,8 +28,7 @@ public class CryptoUtil {
 		String str = type.toUpperCase();
 		if (str.contains(AES_NAME)) {
 			return AesCrypto.getInstace(type, key);
-		}
-		else if (str.contains(DES_NAME)) {
+		} else if (str.contains(DES_NAME)) {
 			return DesCrypto.getInstace(type, key);
 		}
 		return null;
@@ -114,9 +113,7 @@ public class CryptoUtil {
 		public String getValue() {
 			return value;
 		}
-
 	}
-
 
 	/**
 	 * AES 加密/解密算法
@@ -139,14 +136,21 @@ public class CryptoUtil {
 			this.encryptCipher = Cipher.getInstance(type);
 			this.decryptCipher = Cipher.getInstance(type);
 			if (type.equals(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING.getValue())
-					|| type.equals(SymmetricCryptoEnum.AES_CBC_NOPADDING.getValue())) {
+				|| type.equals(SymmetricCryptoEnum.AES_CBC_NOPADDING.getValue())) {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-			}
-			else {
+			} else {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
 			}
+		}
+
+		private Key getKey(String key) {
+			if (StringUtils.isNotBlank(key)) {
+				return new SecretKeySpec(key.getBytes(), AES_NAME);
+			}
+
+			return new SecretKeySpec(AES_DEFAULT_KEY.getBytes(), AES_NAME);
 		}
 
 		static ICrypto getInstace(String type, String key) throws Exception {
@@ -158,39 +162,34 @@ public class CryptoUtil {
 		}
 
 		@Override
-		public byte[] encryptToBytes(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+		public byte[] encryptToBytes(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			return this.encryptCipher.doFinal(plaintext);
 		}
 
 		@Override
-		public byte[] decryptToBytes(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException {
-			return this.decryptCipher.doFinal(ciphertext);
-		}
-
-		@Override
-		public String encryptToString(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+		public String encryptToString(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			byte[] bytes = this.encryptCipher.doFinal(plaintext);
 			Base64.Encoder encoder = Base64.getUrlEncoder();
 			return encoder.encodeToString(bytes);
 		}
 
 		@Override
-		public byte[] decryptToBytes(String ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+		public byte[] decryptToBytes(byte[] ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			return this.decryptCipher.doFinal(ciphertext);
+		}
+
+		@Override
+		public byte[] decryptToBytes(String ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);
 		}
 
-		private Key getKey(String key) {
-			if (StringUtils.isNotBlank(key)) {
-				return new SecretKeySpec(key.getBytes(), AES_NAME);
-			}
-
-			return new SecretKeySpec(AES_DEFAULT_KEY.getBytes(), AES_NAME);
-		}
-
 	}
-
 
 	/**
 	 * DES 加密/解密算法
@@ -213,14 +212,21 @@ public class CryptoUtil {
 			this.encryptCipher = Cipher.getInstance(type);
 			this.decryptCipher = Cipher.getInstance(type);
 			if (type.equals(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING.getValue())
-					|| type.equals(SymmetricCryptoEnum.DES_CBC_NOPADDING.getValue())) {
+				|| type.equals(SymmetricCryptoEnum.DES_CBC_NOPADDING.getValue())) {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-			}
-			else {
+			} else {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
 			}
+		}
+
+		private Key getKey(String key) {
+			if (StringUtils.isNotBlank(key)) {
+				return new SecretKeySpec(key.getBytes(), DES_NAME);
+			}
+
+			return new SecretKeySpec(DES_DEFAULT_KEY.getBytes(), DES_NAME);
 		}
 
 		static ICrypto getInstace(String type, String key) throws Exception {
@@ -232,35 +238,31 @@ public class CryptoUtil {
 		}
 
 		@Override
-		public byte[] encryptToBytes(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+		public byte[] encryptToBytes(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			return this.encryptCipher.doFinal(plaintext);
 		}
 
 		@Override
-		public byte[] decryptToBytes(byte[] ciphertext) throws BadPaddingException, IllegalBlockSizeException {
-			return this.decryptCipher.doFinal(ciphertext);
-		}
-
-		@Override
-		public String encryptToString(byte[] plaintext) throws BadPaddingException, IllegalBlockSizeException {
+		public String encryptToString(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			byte[] bytes = this.encryptCipher.doFinal(plaintext);
 			Base64.Encoder encoder = Base64.getUrlEncoder();
 			return encoder.encodeToString(bytes);
 		}
 
 		@Override
-		public byte[] decryptToBytes(String ciphertext) throws BadPaddingException, IllegalBlockSizeException {
+		public byte[] decryptToBytes(byte[] ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			return this.decryptCipher.doFinal(ciphertext);
+		}
+
+		@Override
+		public byte[] decryptToBytes(String ciphertext)
+			throws BadPaddingException, IllegalBlockSizeException {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);
-		}
-
-		private Key getKey(String key) {
-			if (StringUtils.isNotBlank(key)) {
-				return new SecretKeySpec(key.getBytes(), DES_NAME);
-			}
-
-			return new SecretKeySpec(DES_DEFAULT_KEY.getBytes(), DES_NAME);
 		}
 
 	}
