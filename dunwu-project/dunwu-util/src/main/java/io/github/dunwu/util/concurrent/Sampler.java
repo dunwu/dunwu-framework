@@ -1,6 +1,6 @@
 package io.github.dunwu.util.concurrent;
 
-import io.github.dunwu.util.number.RandomUtil;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -44,7 +44,7 @@ public class Sampler {
 	 * 判断当前请求是否命中采样
 	 */
 	public boolean select() {
-		return RandomUtil.threadLocalRandom().nextDouble() < threshold;
+		return RandomUtils.nextDouble() < threshold;
 	}
 
 	/**

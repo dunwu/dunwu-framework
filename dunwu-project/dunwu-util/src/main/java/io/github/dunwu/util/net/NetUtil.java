@@ -2,7 +2,7 @@ package io.github.dunwu.util.net;
 
 import com.google.common.annotations.Beta;
 import io.github.dunwu.util.base.Platforms;
-import io.github.dunwu.util.base.SystemPropertiesUtil;
+import io.github.dunwu.util.system.SystemPropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

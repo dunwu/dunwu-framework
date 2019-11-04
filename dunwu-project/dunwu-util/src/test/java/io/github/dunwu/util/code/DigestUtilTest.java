@@ -1,6 +1,6 @@
 package io.github.dunwu.util.code;
 
-import io.github.dunwu.util.mock.MockUtil;
+import io.github.dunwu.util.RandomExtUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class DigestUtilTest {
 
 		long begin = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
-			String msg = MockUtil.anyLetterString(3, 50);
+			String msg = RandomExtUtils.randomLetterString(3, 50);
 			byte[] bytes = digest.digest(msg.getBytes());
 			originList.add(msg);
 			digestList.add(new String(bytes));
@@ -39,7 +39,7 @@ public class DigestUtilTest {
 
 		long begin = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
-			String msg = MockUtil.anyLetterString(3, 50);
+			String msg = RandomExtUtils.randomLetterString(3, 50);
 			byte[] bytes = digest.digestWithBase64(msg.getBytes());
 			originList.add(msg);
 			digestList.add(new String(bytes));

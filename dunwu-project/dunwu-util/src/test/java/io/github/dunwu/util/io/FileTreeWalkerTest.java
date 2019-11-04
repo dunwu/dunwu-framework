@@ -1,6 +1,6 @@
 package io.github.dunwu.util.io;
 
-import io.github.dunwu.util.number.RandomUtil;
+import io.github.dunwu.util.RandomExtUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -22,16 +22,16 @@ public class FileTreeWalkerTest {
 		assertThat(files).hasSize(0);
 
 		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(),
-			"tmp-" + RandomUtil.nextInt()) + ".tmp");
+			"tmp-" + RandomExtUtils.nextInt()) + ".tmp");
 		FileUtil.touch(FilePathUtil.concat(tmpDir.getAbsolutePath(),
-			"tmp-" + RandomUtil.nextInt()) + ".abc");
+			"tmp-" + RandomExtUtils.nextInt()) + ".abc");
 
 		String childDir = FilePathUtil.concat(tmpDir.getAbsolutePath(),
-			"tmp-" + RandomUtil.nextInt());
+			"tmp-" + RandomExtUtils.nextInt());
 		FileUtil.makesureDirExists(childDir);
 
 		FileUtil.touch(
-			FilePathUtil.concat(childDir, "tmp-" + RandomUtil.nextInt()) + ".tmp");
+			FilePathUtil.concat(childDir, "tmp-" + RandomExtUtils.nextInt()) + ".tmp");
 
 		all = FileTreeWalker.listAll(tmpDir);
 		assertThat(all).hasSize(5);

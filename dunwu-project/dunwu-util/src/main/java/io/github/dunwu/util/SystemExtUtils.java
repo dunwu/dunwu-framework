@@ -1,6 +1,7 @@
-package io.github.dunwu.util.base;
+package io.github.dunwu.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 运行时工具类 1.取得当前进程PID, JVM参数 2.注册JVM关闭钩子, 获得CPU核数 3.通过StackTrace 获得当前方法的类名方法名，调用者的类名方法名(获取StackTrace有消耗，不要滥用)
  */
-public class RuntimeUtil {
+public class SystemExtUtils extends SystemUtils {
 
 	public static final int SEPARATE_ARRAY_LENGTH = 2;
 
@@ -17,13 +18,13 @@ public class RuntimeUtil {
 
 	private static AtomicInteger shutdownHookThreadIndex = new AtomicInteger(0);
 
-	/////// RuntimeMXBean相关 //////
+	// ManagementFactory 信息
+	// -------------------------------------------------------------------------------------------------
 
 	/**
-	 * 获得当前进程的PID 当失败时返回-1
+	 * 获得当前进程的 PID，若失败时返回-1
 	 */
 	public static int getPid() {
-
 		// format: "pid@hostname"
 		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
 		String[] split = jvmName.split("@");
@@ -33,7 +34,7 @@ public class RuntimeUtil {
 
 		try {
 			return Integer.parseInt(split[0]);
-		} catch (Exception e) { // NOSONAR
+		} catch (Exception e) {
 			return -1;
 		}
 	}
@@ -46,18 +47,18 @@ public class RuntimeUtil {
 	}
 
 	/**
-	 * 返回输入的JVM参数列表
+	 * 返回输入的 JVM 参数列表
 	 */
 	public static String getVmArguments() {
-		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
-			.getInputArguments();
+		List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
 		return StringUtils.join(vmArguments, " ");
 	}
 
-	//////////// Runtime 相关////////////////
+	// Runtime 信息
+	// -------------------------------------------------------------------------------------------------
 
 	/**
-	 * 获取CPU核数
+	 * 获取 CPU 核数
 	 */
 	public static int getCores() {
 		return Runtime.getRuntime().availableProcessors();
@@ -71,7 +72,8 @@ public class RuntimeUtil {
 			"Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
 	}
 
-	//////// 通过StackTrace 获得当前方法的调用者 ////
+	// StackTrace 信息
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 通过StackTrace，获得调用者的类名. 获取StackTrace有消耗，不要滥用
@@ -124,5 +126,37 @@ public class RuntimeUtil {
 			return StringUtils.EMPTY;
 		}
 	}
+
+	// Java Version
+	// -------------------------------------------------------------------------------------------------
+	private static final float JAVA_VERSION = Float.parseFloat(JAVA_SPECIFICATION_VERSION);
+
+	public static String getJavaVersion() {
+		return JAVA_SPECIFICATION_VERSION;
+	}
+
+	public static boolean isJava6() {
+		return "1.6".equals(JAVA_SPECIFICATION_VERSION);
+	}
+
+	public static boolean isJava7() {
+		return "1.7".equals(JAVA_SPECIFICATION_VERSION);
+	}
+
+	public static boolean isJava8() {
+		return "1.8".equals(JAVA_SPECIFICATION_VERSION);
+	}
+
+	public static boolean isJava9() {
+		return "9".equals(JAVA_SPECIFICATION_VERSION);
+	}
+
+	public static boolean isGreaterThanJava8() {
+		return JAVA_VERSION > 1.8f;
+	}
+
+	// private constructor
+	// -------------------------------------------------------------------------------------------------
+	private SystemExtUtils() {}
 
 }

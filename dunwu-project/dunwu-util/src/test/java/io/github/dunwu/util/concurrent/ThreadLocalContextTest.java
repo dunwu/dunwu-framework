@@ -1,7 +1,7 @@
 package io.github.dunwu.util.concurrent;
 
+import io.github.dunwu.util.RandomExtUtils;
 import io.github.dunwu.util.concurrent.type.ThreadLocalContext;
-import io.github.dunwu.util.number.RandomUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -25,7 +25,7 @@ public class ThreadLocalContextTest {
 					e.printStackTrace();
 				}
 				ThreadLocalContext.put("myname", Thread.currentThread().getName());
-				ThreadUtil.sleep(RandomUtil.nextLong(100, 300));
+				ThreadUtil.sleep(RandomExtUtils.nextLong(100, 300));
 				System.out.println((char[]) ThreadLocalContext.get("myname"));
 				ThreadLocalContext.reset();
 				System.out.println("shoud null for " + Thread.currentThread().getName()

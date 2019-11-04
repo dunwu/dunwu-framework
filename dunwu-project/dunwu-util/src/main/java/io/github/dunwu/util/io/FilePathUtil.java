@@ -2,7 +2,6 @@ package io.github.dunwu.util.io;
 
 import com.google.common.io.Files;
 import io.github.dunwu.util.base.Platforms;
-import io.github.dunwu.util.text.MoreStringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,7 +41,7 @@ public class FilePathUtil {
 		}
 
 		StringBuilder concatName = new StringBuilder();
-		if (MoreStringUtil.endWith(baseName, Platforms.FILE_PATH_SEPARATOR_CHAR)) {
+		if (StringUtils.endsWith(baseName, Platforms.FILE_PATH_SEPARATOR)) {
 			concatName.append(baseName).append(appendName[0]);
 		} else {
 			concatName.append(baseName).append(Platforms.FILE_PATH_SEPARATOR_CHAR)
@@ -69,9 +68,7 @@ public class FilePathUtil {
 			return parentPath;
 		}
 
-		parentPath = MoreStringUtil.removeEnd(parentPath,
-			Platforms.FILE_PATH_SEPARATOR_CHAR);
-
+		parentPath = StringUtils.removeEnd(parentPath, Platforms.FILE_PATH_SEPARATOR);
 		int idx = parentPath.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
 		if (idx >= 0) {
 			parentPath = parentPath.substring(0, idx + 1);

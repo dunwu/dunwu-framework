@@ -1,7 +1,7 @@
 package io.github.dunwu.util.concurrent;
 
-import io.github.dunwu.util.base.ObjectUtil;
-import io.github.dunwu.util.base.RuntimeUtil;
+import io.github.dunwu.util.base.ObjectExtUtils;
+import io.github.dunwu.util.SystemExtUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,19 +12,19 @@ public class ThreadUtilTest {
 	public void testCaller() {
 		hello();
 		new MyClass().hello();
-		assertThat(RuntimeUtil.getCurrentClass())
+		assertThat(SystemExtUtils.getCurrentClass())
 			.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-		assertThat(RuntimeUtil.getCurrentMethod()).isEqualTo(
+		assertThat(SystemExtUtils.getCurrentMethod()).isEqualTo(
 			"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 	}
 
 	private void hello() {
 		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-		System.out.println(ObjectUtil.toPrettyString(stacktrace));
+		System.out.println(ObjectExtUtils.toPrettyString(stacktrace));
 
-		assertThat(RuntimeUtil.getCallerClass())
+		assertThat(SystemExtUtils.getCallerClass())
 			.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-		assertThat(RuntimeUtil.getCallerMethod()).isEqualTo(
+		assertThat(SystemExtUtils.getCallerMethod()).isEqualTo(
 			"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 	}
 
@@ -32,11 +32,11 @@ public class ThreadUtilTest {
 
 		public void hello() {
 			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-			System.out.println(ObjectUtil.toPrettyString(stacktrace));
+			System.out.println(ObjectExtUtils.toPrettyString(stacktrace));
 
-			assertThat(RuntimeUtil.getCallerClass())
+			assertThat(SystemExtUtils.getCallerClass())
 				.isEqualTo("io.github.dunwu.utils.concurrent.ThreadUtilTest");
-			assertThat(RuntimeUtil.getCallerMethod()).isEqualTo(
+			assertThat(SystemExtUtils.getCallerMethod()).isEqualTo(
 				"io.github.dunwu.utils.concurrent.ThreadUtilTest.testCaller()");
 		}
 

@@ -1,7 +1,7 @@
 package io.github.dunwu.util.reflect;
 
-import io.github.dunwu.util.base.ExceptionUtil;
-import io.github.dunwu.util.base.ObjectUtil;
+import io.github.dunwu.util.base.ExceptionExtUtils;
+import io.github.dunwu.util.base.ObjectExtUtils;
 import io.github.dunwu.util.base.type.UncheckedException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
@@ -65,7 +65,7 @@ public class ReflectionUtil {
 		try {
 			return (T) method.invoke(obj, args);
 		} catch (Exception e) {
-			throw ExceptionUtil.unwrapAndUnchecked(e);
+			throw ExceptionExtUtils.unwrapAndUnchecked(e);
 		}
 	}
 
@@ -263,7 +263,7 @@ public class ReflectionUtil {
 		if (method == null) {
 			throw new IllegalArgumentException(
 				"Could not find method [" + methodName + "] with parameter types:"
-					+ ObjectUtil.toPrettyString(parameterTypes) + " on class ["
+					+ ObjectExtUtils.toPrettyString(parameterTypes) + " on class ["
 					+ obj.getClass() + ']');
 		}
 		return invokeMethod(obj, method, args);
@@ -314,7 +314,7 @@ public class ReflectionUtil {
 		try {
 			return ConstructorUtils.invokeConstructor(cls, args);
 		} catch (Exception e) {
-			throw ExceptionUtil.unwrapAndUnchecked(e);
+			throw ExceptionExtUtils.unwrapAndUnchecked(e);
 		}
 	}
 

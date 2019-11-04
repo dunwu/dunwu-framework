@@ -2,6 +2,7 @@ package io.github.dunwu.util.base;
 
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -11,38 +12,73 @@ import java.util.Locale;
  * 数字的工具类. 1.原始类型数字与byte[]的双向转换(via Guava) 2.判断字符串是否数字, 是否16进制字符串(via Common Lang) 3.10机制/16进制字符串 与 原始类型数字/数字对象
  * 的双向转换(参考Common Lang自写)
  */
-public class NumberUtil extends NumberUtils {
+public class NumberExtUtils extends NumberUtils {
 
-	///////////// bytes[] 与原始类型数字转换 ///////
+	// byte[] 与原始类型互相转换
+	// -------------------------------------------------------------------------------------------------
 
-	public static byte[] toBytes(int value) {
+	public static byte[] toBytes(final short value) {
+		return Shorts.toByteArray(value);
+	}
+
+	public static byte[] toBytes(final int value) {
 		return Ints.toByteArray(value);
 	}
 
-	public static byte[] toBytes(double val) {
-		return toBytes(Double.doubleToRawLongBits(val));
-	}
-
-	public static byte[] toBytes(long value) {
+	public static byte[] toBytes(final long value) {
 		return Longs.toByteArray(value);
 	}
 
-	public static int toInt(byte[] bytes) {
+	public static byte[] toBytes(final float value) {
+		return toBytes(Float.floatToRawIntBits(value));
+	}
+
+	public static byte[] toBytes(final double value) {
+		return toBytes(Double.doubleToRawLongBits(value));
+	}
+
+	public static int parseShort(final byte[] bytes) {
+		return Shorts.fromByteArray(bytes);
+	}
+
+	public static int parseInt(final byte[] bytes) {
 		return Ints.fromByteArray(bytes);
 	}
 
-	/**
-	 * copy from ElasticSearch Numbers
-	 */
-	public static double toDouble(byte[] bytes) {
-		return Double.longBitsToDouble(toLong(bytes));
-	}
-
-	public static long toLong(byte[] bytes) {
+	public static long parseLong(final byte[] bytes) {
 		return Longs.fromByteArray(bytes);
 	}
 
-	/////// 判断字符串类型//////////
+	public static float parseFloat(final byte[] bytes) {
+		return Float.intBitsToFloat(parseInt(bytes));
+	}
+
+	public static double parseDouble(final byte[] bytes) {
+		return Double.longBitsToDouble(parseLong(bytes));
+	}
+
+	// 字符串与原始类型互相转换
+	// -------------------------------------------------------------------------------------------------
+
+	public static short parseShort(final String str) {
+		return Short.parseShort(str);
+	}
+
+	public static int parseInt(final String str) {
+		return Integer.parseInt(str);
+	}
+
+	public static long parseLong(final String str) {
+		return Long.parseLong(str);
+	}
+
+	public static double parseFloat(final String str) {
+		return Float.parseFloat(str);
+	}
+
+	public static double parseDouble(final String str) {
+		return Double.parseDouble(str);
+	}
 
 	/**
 	 * 判断字符串是否16进制
@@ -58,52 +94,6 @@ public class NumberUtil extends NumberUtils {
 	}
 
 	/////////// 将字符串转化为原始类型数字/////////
-
-	/**
-	 * 将10进制的String转化为int. 当str为空或非数字字符串时抛NumberFormatException
-	 */
-	public static int toInt(final String str) {
-		return Integer.parseInt(str);
-	}
-
-	/**
-	 * 将10进制的String安全的转化为int. 当str为空或非数字字符串时，返回default值.
-	 */
-	public static int toInt(final String str, int defaultValue) {
-		return NumberUtils.toInt(str, defaultValue);
-	}
-
-	/**
-	 * 将10进制的String安全的转化为long. 当str或非数字字符串时抛NumberFormatException
-	 */
-	public static long toLong(final String str) {
-		return Long.parseLong(str);
-	}
-
-	/**
-	 * 将10进制的String安全的转化为long. 当str为空或非数字字符串时，返回default值
-	 */
-	public static long toLong(final String str, long defaultValue) {
-		return NumberUtils.toLong(str, defaultValue);
-	}
-
-	/**
-	 * 将10进制的String安全的转化为double. 当str为空或非数字字符串时抛NumberFormatException
-	 */
-	public static double toDouble(final String str) {
-		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
-		if (str == null) {
-			throw new NumberFormatException("null");
-		}
-		return Double.parseDouble(str);
-	}
-
-	/**
-	 * 将10进制的String安全的转化为double. 当str为空或非数字字符串时，返回default值
-	 */
-	public static double toDouble(final String str, double defaultValue) {
-		return NumberUtils.toDouble(str, defaultValue);
-	}
 
 	////////////// 10进制字符串 转换对象类型数字/////////////
 
@@ -427,5 +417,7 @@ public class NumberUtil extends NumberUtils {
 		}
 
 	}
+
+	private NumberExtUtils() {}
 
 }

@@ -2,7 +2,7 @@ package io.github.dunwu.util.mapper;
 
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
-import io.github.dunwu.util.collection.ArrayUtil;
+import io.github.dunwu.util.collection.ArrayExtUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class BeanMapper {
 	 */
 	public static <S, D> D[] mapArray(final S[] sourceArray,
 		final Class<D> destinationClass) {
-		D[] destinationArray = ArrayUtil.newArray(destinationClass, sourceArray.length);
+		D[] destinationArray = ArrayExtUtils.newInstance(destinationClass, sourceArray.length);
 
 		int i = 0;
 		for (S source : sourceArray) {

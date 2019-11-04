@@ -3,6 +3,7 @@ package io.github.dunwu.util.collection;
 import com.google.common.collect.Ordering;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -71,12 +72,12 @@ public class CollectionUtilTest {
 
 	@Test
 	public void listCompare() {
-		List<String> list1 = ArrayUtil.asList("d", "a", "c", "b", "e", "i", "g");
-		List<String> list2 = ArrayUtil.asList("d", "a", "c", "b", "e", "i", "g");
+		List<String> list1 = Arrays.asList("d", "a", "c", "b", "e", "i", "g");
+		List<String> list2 = Arrays.asList("d", "a", "c", "b", "e", "i", "g");
 
-		List<String> list3 = ArrayUtil.asList("d", "c", "a", "b", "e", "i", "g");
-		List<String> list4 = ArrayUtil.asList("d", "a", "c", "b", "e");
-		List<String> list5 = ArrayUtil.asList("d", "a", "c", "b", "e", "i", "g", "x");
+		List<String> list3 = Arrays.asList("d", "c", "a", "b", "e", "i", "g");
+		List<String> list4 = Arrays.asList("d", "a", "c", "b", "e");
+		List<String> list5 = Arrays.asList("d", "a", "c", "b", "e", "i", "g", "x");
 
 		assertThat(CollectionUtil.elementsEqual(list1, list1)).isTrue();
 		assertThat(CollectionUtil.elementsEqual(list1, list2)).isTrue();
@@ -88,7 +89,7 @@ public class CollectionUtilTest {
 
 	@Test
 	public void topNAndBottomN() {
-		List<Integer> list = ArrayUtil.asList(3, 5, 7, 4, 2, 6, 9);
+		List<Integer> list = Arrays.asList(3, 5, 7, 4, 2, 6, 9);
 
 		assertThat(CollectionUtil.top(list, 3)).containsExactly(9, 7, 6);
 		assertThat(CollectionUtil.top(list, 3, Ordering.natural().reverse()))

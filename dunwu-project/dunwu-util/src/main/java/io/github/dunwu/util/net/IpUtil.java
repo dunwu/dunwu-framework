@@ -1,14 +1,13 @@
 package io.github.dunwu.util.net;
 
 import com.google.common.net.InetAddresses;
-import io.github.dunwu.util.base.NumberUtil;
-import io.github.dunwu.util.text.MoreStringUtil;
+import io.github.dunwu.util.base.NumberExtUtils;
 import io.github.dunwu.util.text.RegexUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
 
 /**
  * InetAddress工具类，基于Guava的InetAddresses. 主要包含int, String/IPV4String, InetAdress/Inet4Address之间的互相转换
@@ -89,14 +88,14 @@ public class IpUtil {
 			return null;
 		}
 
-		List<String> it = MoreStringUtil.split(ipv4Str, '.', 4);
-		if (it.size() != MAX_IP_NUM) {
+		String[] strs = StringUtils.split(ipv4Str, ".", 4);
+		if (strs.length != MAX_IP_NUM) {
 			return null;
 		}
 
 		byte[] byteAddress = new byte[4];
 		for (int i = 0; i < MAX_IP_NUM; i++) {
-			int tempInt = Integer.parseInt(it.get(i));
+			int tempInt = Integer.parseInt(strs[i]);
 			if (tempInt > 255) {
 				return null;
 			}
@@ -122,7 +121,7 @@ public class IpUtil {
 		if (byteAddress == null) {
 			return 0;
 		} else {
-			return NumberUtil.toInt(byteAddress);
+			return NumberExtUtils.parseInt(byteAddress);
 		}
 	}
 

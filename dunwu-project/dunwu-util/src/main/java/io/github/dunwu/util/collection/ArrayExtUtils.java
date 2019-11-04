@@ -4,7 +4,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import io.github.dunwu.util.base.annotation.Nullable;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -25,28 +25,14 @@ import java.util.Random;
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
-public class ArrayUtil {
-
-	/**
-	 * 判断数组是否为空
-	 *
-	 * @param array
-	 * @param <T>
-	 * @return
-	 */
-	public static <T> boolean isEmpty(T[] array) {
-		if (array == null || array.length == 0) {
-			return true;
-		}
-		return false;
-	}
+public class ArrayExtUtils extends ArrayUtils {
 
 	/**
 	 * 传入类型与大小创建数组. Array.newInstance()的性能并不差
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] newArray(Class<T> type, int length) {
-		return (T[]) Array.newInstance(type, length);
+	public static <T> T[] newInstance(final Class<?> componentType, final int length) {
+		return (T[]) Array.newInstance(componentType, length);
 	}
 
 	/**
@@ -59,62 +45,20 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 将传入的数组乱序
+	 * 添加元素到数组末尾.
 	 */
-	public static <T> T[] shuffle(T[] array) {
-		if (array != null && array.length > 1) {
-			Random rand = new Random();
-			return shuffle(array, rand);
-		} else {
-			return array;
-		}
-	}
-
-	/**
-	 * 将传入的数组乱序
-	 */
-	public static <T> T[] shuffle(T[] array, Random random) {
-		if (array != null && array.length > 1 && random != null) {
-			for (int i = array.length; i > 1; i--) {
-				swap(array, i - 1, random.nextInt(i));
-			}
-		}
-		return array;
-	}
-
-	/**
-	 * Swaps the two specified elements in the specified array.
-	 */
-	private static void swap(Object[] arr, int i, int j) {
-		Object tmp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = tmp;
+	public static <T> T[] addHead(T[] array, T element) {
+		return ObjectArrays.concat(array, element);
 	}
 
 	/**
 	 * 添加元素到数组头.
 	 */
-	public static <T> T[] concat(@Nullable T element, T[] array) {
+	public static <T> T[] addTail(T[] array, T element) {
 		return ObjectArrays.concat(element, array);
 	}
 
-	/**
-	 * 添加元素到数组末尾.
-	 */
-	public static <T> T[] concat(T[] array, @Nullable T element) {
-		return ObjectArrays.concat(array, element);
-	}
-
 	////////////////// guava Array 转换为底层为原子类型的List ///////////
-
-	/**
-	 * 原版将数组转换为List. 注意转换后的List不能写入, 否则抛出UnsupportedOperationException
-	 *
-	 * @see Arrays#asList(Object...)
-	 */
-	public static <T> List<T> asList(T... a) {
-		return Arrays.asList(a);
-	}
 
 	/**
 	 * Arrays.asList()的加强版, 返回一个底层为原始类型int的List 与保存Integer相比节约空间，同时只在读取数据时AutoBoxing.

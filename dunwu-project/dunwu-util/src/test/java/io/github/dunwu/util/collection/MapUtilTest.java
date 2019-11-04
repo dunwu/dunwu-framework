@@ -4,10 +4,7 @@ import com.google.common.collect.Ordering;
 import io.github.dunwu.util.collection.MapUtil.ValueCreator;
 import org.junit.jupiter.api.Test;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -68,7 +65,7 @@ public class MapUtilTest {
 		assertThat(map4).hasSize(2).containsEntry("1", 1).containsEntry("2", 2);
 
 		HashMap<String, Integer> map5 = MapUtil
-			.newHashMap(ArrayUtil.asList("1", "2", "3"), ArrayUtil.asList(1, 2, 3));
+			.newHashMap(Arrays.asList("1", "2", "3"), Arrays.asList(1, 2, 3));
 		assertThat(map5).hasSize(3).containsEntry("1", 1).containsEntry("2", 2)
 			.containsEntry("3", 3);
 

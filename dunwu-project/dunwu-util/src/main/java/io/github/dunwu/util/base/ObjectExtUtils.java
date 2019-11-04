@@ -1,7 +1,6 @@
 package io.github.dunwu.util.base;
 
 import com.google.common.base.Objects;
-import io.github.dunwu.util.base.annotation.Nullable;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Arrays;
@@ -9,19 +8,17 @@ import java.util.Arrays;
 /**
  * 1. Object打印优化，主要解决数组的打印 2. 多个对象的HashCode串联
  */
-public class ObjectUtil {
-
-	private static final String NULL = "null";
+public class ObjectExtUtils extends ObjectUtils {
 
 	/**
 	 * JDK7 引入的Null安全的equals
 	 */
-	public static boolean equals(@Nullable Object a, @Nullable Object b) {
-		return Objects.equal(a, b);
+	public static boolean equals(final Object object1, final Object object2) {
+		return Objects.equal(object1, object2);
 	}
 
 	/**
-	 * 多个对象的HashCode串联, 组成新的HashCode
+	 * 多个对象的 HashCode 串联, 组成新的 HashCode
 	 */
 	public static int hashCode(Object... objects) {
 		return Arrays.hashCode(objects);
@@ -32,14 +29,12 @@ public class ObjectUtil {
 	 */
 	public static String toPrettyString(Object value) {
 		if (value == null) {
-			return NULL;
+			return "null";
 		}
 
 		Class<?> type = value.getClass();
-
 		if (type.isArray()) {
-			Class componentType = type.getComponentType();
-
+			Class<?> componentType = type.getComponentType();
 			if (componentType.isPrimitive()) {
 				return primitiveArrayToString(value, componentType);
 			} else {
@@ -48,7 +43,7 @@ public class ObjectUtil {
 		} else if (value instanceof Iterable) {
 			// 因为Collection的处理也是默认调用元素的toString(),
 			// 为了处理元素是数组的情况，同样需要重载
-			return collectionToString(value);
+			return collectionToString((Iterable) value);
 		}
 
 		return value.toString();
@@ -74,7 +69,7 @@ public class ObjectUtil {
 		} else if (componentType == char.class) {
 			sb.append(Arrays.toString((char[]) value));
 		} else {
-			throw new IllegalArgumentException("unsupport array type");
+			throw new IllegalArgumentException("invalid array type");
 		}
 
 		return sb.toString();
@@ -95,8 +90,7 @@ public class ObjectUtil {
 		return sb.toString();
 	}
 
-	private static String collectionToString(Object value) {
-		Iterable iterable = (Iterable) value;
+	private static String collectionToString(Iterable iterable) {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
 		int i = 0;
@@ -109,10 +103,6 @@ public class ObjectUtil {
 		}
 		sb.append('}');
 		return sb.toString();
-	}
-
-	public void method() {
-		ObjectUtils.allNotNull();
 	}
 
 }

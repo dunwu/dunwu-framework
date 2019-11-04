@@ -5,7 +5,7 @@
  *******************************************************************************/
 package io.github.dunwu.util.mapper;
 
-import io.github.dunwu.util.base.ExceptionUtil;
+import io.github.dunwu.util.base.ExceptionExtUtils;
 import io.github.dunwu.util.reflect.ClassUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -45,7 +45,7 @@ public class XmlMapper {
 			createMarshaller(clazz, encoding).marshal(root, writer);
 			return writer.toString();
 		} catch (JAXBException e) {
-			throw ExceptionUtil.unchecked(e);
+			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class XmlMapper {
 
 			return marshaller;
 		} catch (JAXBException e) {
-			throw ExceptionUtil.unchecked(e);
+			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class XmlMapper {
 
 			return writer.toString();
 		} catch (JAXBException e) {
-			throw ExceptionUtil.unchecked(e);
+			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class XmlMapper {
 			StringReader reader = new StringReader(xml);
 			return (T) createUnmarshaller(clazz).unmarshal(reader);
 		} catch (JAXBException e) {
-			throw ExceptionUtil.unchecked(e);
+			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class XmlMapper {
 			JAXBContext jaxbContext = getJaxbContext(clazz);
 			return jaxbContext.createUnmarshaller();
 		} catch (JAXBException e) {
-			throw ExceptionUtil.unchecked(e);
+			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
 

@@ -9,7 +9,7 @@ import java.sql.Blob;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-07-24
  */
-public class ByteUtil {
+public class ByteExtUtils {
 
 	/**
 	 * Byte[] -> byte[]
@@ -62,5 +62,7 @@ public class ByteUtil {
 		in.close();
 		return out.toByteArray();
 	}
+
+	private ByteExtUtils() {}
 
 }

@@ -2,7 +2,7 @@ package io.github.dunwu.util.io;
 
 import com.google.common.io.Files;
 import io.github.dunwu.util.base.Platforms;
-import io.github.dunwu.util.number.RandomUtil;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -37,7 +37,7 @@ public class FileUtilTest {
 	@Test
 	public void opFiles() throws IOException {
 		File file = new File(FilePathUtil.concat(Platforms.TMP_DIR,
-			"testFile" + RandomUtil.nextInt()));
+			"testFile" + RandomUtils.nextInt()));
 		FileUtil.touch(file);
 		assertThat(FileUtil.isFileExists(file)).isTrue();
 		FileUtil.touch(file);
@@ -47,9 +47,9 @@ public class FileUtilTest {
 		assertThat(FileUtil.toString(file)).isEqualTo(content);
 
 		File newFile = new File(FilePathUtil.concat(Platforms.TMP_DIR,
-			"testFile" + RandomUtil.nextInt()));
+			"testFile" + RandomUtils.nextInt()));
 		File newFile2 = new File(FilePathUtil.concat(Platforms.TMP_DIR,
-			"testFile" + RandomUtil.nextInt()));
+			"testFile" + RandomUtils.nextInt()));
 
 		FileUtil.copyFile(file, newFile);
 		assertThat(FileUtil.isFileExists(newFile)).isTrue();
@@ -61,7 +61,7 @@ public class FileUtilTest {
 
 	@Test
 	public void opDir() throws IOException {
-		String fileName = "testFile" + RandomUtil.nextInt();
+		String fileName = "testFile" + RandomUtils.nextInt();
 		File dir = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir"));
 
 		File file = new File(FilePathUtil.concat(Platforms.TMP_DIR, "testDir", fileName));
@@ -86,7 +86,7 @@ public class FileUtilTest {
 	@Test
 	public void fileExist() throws IOException {
 		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR)).isTrue();
-		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR + RandomUtil.nextInt()))
+		assertThat(FileUtil.isDirExists(Platforms.TMP_DIR + RandomUtils.nextInt()))
 			.isFalse();
 
 		File tmpFile = null;
@@ -95,7 +95,7 @@ public class FileUtilTest {
 			assertThat(FileUtil.isFileExists(tmpFile)).isTrue();
 
 			assertThat(FileUtil
-				.isFileExists(tmpFile.getAbsolutePath() + RandomUtil.nextInt()))
+				.isFileExists(tmpFile.getAbsolutePath() + RandomUtils.nextInt()))
 				.isFalse();
 		} finally {
 			FileUtil.deleteFile(tmpFile);

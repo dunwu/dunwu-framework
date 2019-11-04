@@ -1,8 +1,8 @@
 package io.github.dunwu.core;
 
-import io.github.dunwu.util.text.MoreStringUtil;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -62,7 +62,7 @@ public class BaseResult implements Serializable {
 	public BaseResult(Boolean success, String code, List<String> messages) {
 		this.success = success;
 		this.code = code;
-		this.message = MoreStringUtil.mergeInLines(messages);
+		this.message = StringUtils.join(messages, "\n");
 	}
 
 }

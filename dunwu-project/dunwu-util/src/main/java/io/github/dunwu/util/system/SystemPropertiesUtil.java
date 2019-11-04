@@ -1,4 +1,7 @@
-package io.github.dunwu.util.base;
+package io.github.dunwu.util.system;
+
+import io.github.dunwu.util.base.BooleanExtUtils;
+import io.github.dunwu.util.base.NumberExtUtils;
 
 import java.util.List;
 import java.util.Properties;
@@ -18,7 +21,7 @@ public class SystemPropertiesUtil {
 	 */
 	public static Boolean getBoolean(String name) {
 		String stringResult = System.getProperty(name);
-		return BooleanUtil.toBooleanObject(stringResult);
+		return BooleanExtUtils.toBooleanObject(stringResult);
 	}
 
 	/**
@@ -26,7 +29,7 @@ public class SystemPropertiesUtil {
 	 */
 	public static Boolean getBoolean(String name, Boolean defaultValue) {
 		String stringResult = System.getProperty(name);
-		return BooleanUtil.toBooleanObject(stringResult, defaultValue);
+		return BooleanExtUtils.toBooleanDefaultIfNull(stringResult, defaultValue);
 	}
 
 	/**
@@ -75,14 +78,14 @@ public class SystemPropertiesUtil {
 	 * 读取Double类型的系统变量，为空时返回null.
 	 */
 	public static Double getDouble(String propertyName) {
-		return NumberUtil.toDoubleObject(System.getProperty(propertyName), null);
+		return NumberExtUtils.toDoubleObject(System.getProperty(propertyName), null);
 	}
 
 	/**
 	 * 读取Double类型的系统变量，为空时返回默认值.
 	 */
 	public static Double getDouble(String propertyName, Double defaultValue) {
-		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName),
+		Double propertyValue = NumberExtUtils.toDoubleObject(System.getProperty(propertyName),
 			null);
 		return propertyValue != null ? propertyValue : defaultValue;
 	}
@@ -120,12 +123,12 @@ public class SystemPropertiesUtil {
 	public static Integer getInteger(String propertyName, String envName,
 		Integer defaultValue) {
 		checkEnvName(envName);
-		Integer propertyValue = NumberUtil.toIntObject(System.getProperty(propertyName),
+		Integer propertyValue = NumberExtUtils.toIntObject(System.getProperty(propertyName),
 			null);
 		if (propertyValue != null) {
 			return propertyValue;
 		} else {
-			propertyValue = NumberUtil.toIntObject(System.getenv(envName), null);
+			propertyValue = NumberExtUtils.toIntObject(System.getenv(envName), null);
 			return propertyValue != null ? propertyValue : defaultValue;
 		}
 	}
@@ -135,12 +138,12 @@ public class SystemPropertiesUtil {
 	 */
 	public static Long getLong(String propertyName, String envName, Long defaultValue) {
 		checkEnvName(envName);
-		Long propertyValue = NumberUtil.toLongObject(System.getProperty(propertyName),
+		Long propertyValue = NumberExtUtils.toLongObject(System.getProperty(propertyName),
 			null);
 		if (propertyValue != null) {
 			return propertyValue;
 		} else {
-			propertyValue = NumberUtil.toLongObject(System.getenv(envName), null);
+			propertyValue = NumberExtUtils.toLongObject(System.getenv(envName), null);
 			return propertyValue != null ? propertyValue : defaultValue;
 		}
 	}
@@ -151,12 +154,12 @@ public class SystemPropertiesUtil {
 	public static Double getDouble(String propertyName, String envName,
 		Double defaultValue) {
 		checkEnvName(envName);
-		Double propertyValue = NumberUtil.toDoubleObject(System.getProperty(propertyName),
+		Double propertyValue = NumberExtUtils.toDoubleObject(System.getProperty(propertyName),
 			null);
 		if (propertyValue != null) {
 			return propertyValue;
 		} else {
-			propertyValue = NumberUtil.toDoubleObject(System.getenv(envName), null);
+			propertyValue = NumberExtUtils.toDoubleObject(System.getenv(envName), null);
 			return propertyValue != null ? propertyValue : defaultValue;
 		}
 	}
@@ -167,12 +170,12 @@ public class SystemPropertiesUtil {
 	public static Boolean getBoolean(String propertyName, String envName,
 		Boolean defaultValue) {
 		checkEnvName(envName);
-		Boolean propertyValue = BooleanUtil
-			.toBooleanObject(System.getProperty(propertyName), false);
+		Boolean propertyValue = BooleanExtUtils
+			.toBooleanDefaultIfNull(System.getProperty(propertyName), false);
 		if (propertyValue != null) {
 			return propertyValue;
 		} else {
-			propertyValue = BooleanUtil.toBooleanObject(System.getenv(envName), false);
+			propertyValue = BooleanExtUtils.toBooleanDefaultIfNull(System.getenv(envName), false);
 			return propertyValue != null ? propertyValue : defaultValue;
 		}
 	}

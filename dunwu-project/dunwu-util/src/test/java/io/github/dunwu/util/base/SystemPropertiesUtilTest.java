@@ -1,7 +1,8 @@
 package io.github.dunwu.util.base;
 
-import io.github.dunwu.util.base.SystemPropertiesUtil.BasePropertiesListener;
-import io.github.dunwu.util.number.RandomUtil;
+import io.github.dunwu.util.RandomExtUtils;
+import io.github.dunwu.util.system.SystemPropertiesUtil;
+import io.github.dunwu.util.system.SystemPropertiesUtil.BasePropertiesListener;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,7 +12,7 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void systemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
 
 		Boolean result0 = SystemPropertiesUtil.getBoolean(name);
 		assertThat(result0).isNull();
@@ -84,8 +85,8 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void stringSystemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
-		String envName = "ss_test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
+		String envName = "ss_test" + RandomExtUtils.nextInt();
 
 		// default 值
 		String result = SystemPropertiesUtil.getString(name, envName, "123");
@@ -113,8 +114,8 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void intSystemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
-		String envName = "ss_test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
+		String envName = "ss_test" + RandomExtUtils.nextInt();
 
 		// default 值
 		int result = SystemPropertiesUtil.getInteger(name, envName, 123);
@@ -132,8 +133,8 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void longSystemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
-		String envName = "ss_test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
+		String envName = "ss_test" + RandomExtUtils.nextInt();
 
 		// default 值
 		long result = SystemPropertiesUtil.getLong(name, envName, 123L);
@@ -151,8 +152,8 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void doubleSystemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
-		String envName = "ss_test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
+		String envName = "ss_test" + RandomExtUtils.nextInt();
 
 		// default 值
 		double result = SystemPropertiesUtil.getDouble(name, envName, 123d);
@@ -170,8 +171,8 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void booleanSystemProperty() {
-		String name = "ss.test" + RandomUtil.nextInt();
-		String envName = "ss_test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
+		String envName = "ss_test" + RandomExtUtils.nextInt();
 
 		// default 值
 		boolean result = SystemPropertiesUtil.getBoolean(name, envName, true);
@@ -189,7 +190,7 @@ public class SystemPropertiesUtilTest {
 
 	@Test
 	public void listenableProperties() {
-		String name = "ss.test" + RandomUtil.nextInt();
+		String name = "ss.test" + RandomExtUtils.nextInt();
 
 		TestPropertiesListener listener = new TestPropertiesListener(name);
 		SystemPropertiesUtil.registerSystemPropertiesListener(listener);

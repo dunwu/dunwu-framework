@@ -1,6 +1,6 @@
 package io.github.dunwu.web.util;
 
-import io.github.dunwu.util.collection.ArrayUtil;
+import io.github.dunwu.util.collection.ArrayExtUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -39,7 +39,7 @@ public class CookieUtil {
 	 */
 	public static String getCookie(HttpServletRequest request, String key) {
 		Cookie[] cookies = request.getCookies();
-		if (ArrayUtil.isEmpty(cookies) || StringUtils.isBlank(key)) {
+		if (ArrayExtUtils.isEmpty(cookies) || StringUtils.isBlank(key)) {
 			return null;
 		}
 

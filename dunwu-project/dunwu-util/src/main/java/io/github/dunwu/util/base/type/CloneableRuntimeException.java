@@ -1,6 +1,6 @@
 package io.github.dunwu.util.base.type;
 
-import io.github.dunwu.util.base.ExceptionUtil;
+import io.github.dunwu.util.base.ExceptionExtUtils;
 
 /**
  * 适用于异常信息需要变更的情况, 可通过clone()，不经过构造函数（也就避免了获得StackTrace）地从之前定义的静态异常中克隆，再设定新的异常信息
@@ -45,7 +45,7 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	 */
 	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
 		String throwMethod) {
-		ExceptionUtil.setStackTrace(this, throwClazz, throwMethod);
+		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
 		return this;
 	}
 

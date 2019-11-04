@@ -1,8 +1,5 @@
 package io.github.dunwu.util.base;
 
-import com.google.common.base.Throwables;
-import io.github.dunwu.util.base.annotation.NotNull;
-import io.github.dunwu.util.base.annotation.Nullable;
 import io.github.dunwu.util.base.type.CloneableException;
 import io.github.dunwu.util.base.type.UncheckedException;
 import io.github.dunwu.util.io.type.StringBuilderWriter;
@@ -19,7 +16,7 @@ import java.lang.reflect.UndeclaredThrowableException;
  *
  * @see CloneableException
  */
-public class ExceptionUtil {
+public class ExceptionExtUtils extends ExceptionUtils {
 
 	private static final StackTraceElement[] EMPTY_STACK_TRACE = new StackTraceElement[0];
 
@@ -28,7 +25,7 @@ public class ExceptionUtil {
 	/**
 	 * 组合unwrap与unchecked，用于处理反射/Callable的异常
 	 */
-	public static RuntimeException unwrapAndUnchecked(@Nullable Throwable t) {
+	public static RuntimeException unwrapAndUnchecked(Throwable t) {
 		throw unchecked(unwrap(t));
 	}
 
@@ -41,7 +38,7 @@ public class ExceptionUtil {
 	 *
 	 * @see ExceptionUtils#wrapAndThrow(Throwable)
 	 */
-	public static RuntimeException unchecked(@Nullable Throwable t) {
+	public static RuntimeException unchecked(Throwable t) {
 		if (t instanceof RuntimeException) {
 			throw (RuntimeException) t;
 		}
@@ -56,7 +53,7 @@ public class ExceptionUtil {
 	 * 如果是著名的包裹类，从cause中获得真正异常. 其他异常则不变. Future中使用的ExecutionException 与 反射时定义的InvocationTargetException， 真正的异常都封装在Cause中
 	 * 前面 unchecked() 使用的UncheckedException同理.
 	 */
-	public static Throwable unwrap(@Nullable Throwable t) {
+	public static Throwable unwrap(Throwable t) {
 		if (t instanceof UncheckedException
 			|| t instanceof java.util.concurrent.ExecutionException
 			|| t instanceof java.lang.reflect.InvocationTargetException
@@ -72,7 +69,7 @@ public class ExceptionUtil {
 	/**
 	 * 将StackTrace[]转换为String, 供Logger或e.printStackTrace()外的其他地方使用. 为了使用StringBuilderWriter，没有用Throwables#getStackTraceAsString(Throwable)
 	 */
-	public static String stackTraceText(@NotNull Throwable t) {
+	public static String stackTraceText(Throwable t) {
 		StringBuilderWriter stringWriter = new StringBuilderWriter();
 		t.printStackTrace(new PrintWriter(stringWriter)); // NOSONAR
 		return stringWriter.toString();
@@ -81,7 +78,7 @@ public class ExceptionUtil {
 	/**
 	 * 拼装 短异常类名: 异常信息 <-- RootCause的短异常类名: 异常信息
 	 */
-	public static String toStringWithRootCause(@Nullable Throwable t) {
+	public static String toStringWithRootCause(Throwable t) {
 		if (t == null) {
 			return StringUtils.EMPTY;
 		}
@@ -93,42 +90,21 @@ public class ExceptionUtil {
 		StringBuilder sb = new StringBuilder(128).append(clsName).append(": ")
 			.append(message);
 		if (cause != t) {
-			sb.append("; <---").append(toStringWithShortName(cause));
+			sb.append("; <---").append(ExceptionUtils.getMessage(cause));
 		}
 
 		return sb.toString();
 	}
 
 	/**
-	 * 获取异常的Root Cause. 如无底层Cause, 则返回自身
-	 *
-	 * @see Throwables#getRootCause(Throwable)
-	 */
-	public static Throwable getRootCause(@NotNull Throwable t) {
-		return Throwables.getRootCause(t);
-	}
-
-	////////// Cause 相关 /////////
-
-	/**
-	 * 拼装 短异常类名: 异常信息. 与Throwable.toString()相比使用了短类名
-	 *
-	 * @see ExceptionUtils#getMessage(Throwable)
-	 */
-	public static String toStringWithShortName(@Nullable Throwable t) {
-		return ExceptionUtils.getMessage(t);
-	}
-
-	/**
 	 * 获取某种类型的cause，如果没有则返回空 copy from Jodd ExceptionUtil
 	 */
-	public static <T extends Throwable> T findCause(@NotNull Throwable throwable,
-		Class<T> cause) {
-		while (throwable != null) {
-			if (throwable.getClass().equals(cause)) {
-				return (T) throwable;
+	public static <T extends Throwable> T findCause(Throwable t, Class<T> cause) {
+		while (t != null) {
+			if (t.getClass().equals(cause)) {
+				return (T) t;
 			}
-			throwable = throwable.getCause();
+			t = t.getCause();
 		}
 		return null;
 	}
@@ -137,7 +113,7 @@ public class ExceptionUtil {
 	 * 判断异常是否由某些底层的异常引起.
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean isCausedBy(@Nullable Throwable throwable,
+	public static boolean isCausedBy(Throwable throwable,
 		Class<? extends Exception>... causeExceptionClasses) {
 		Throwable cause = throwable;
 
@@ -161,24 +137,25 @@ public class ExceptionUtil {
 	 * 		MyClass.class, "mymethod");
 	 * </pre>
 	 */
-	public static <T extends Throwable> T setStackTrace(@NotNull T throwable,
-		Class<?> throwClass, String throwClazz) {
-		throwable.setStackTrace(new StackTraceElement[] {
+	public static <T extends Throwable> T setStackTrace(T t, Class<?> throwClass, String throwClazz) {
+		t.setStackTrace(new StackTraceElement[] {
 			new StackTraceElement(throwClass.getName(), throwClazz, null, -1) });
-		return throwable;
+		return t;
 	}
 
 	/**
 	 * 清除StackTrace. 假设StackTrace已生成, 但把它打印出来也有不小的消耗. 如果不能控制StackTrace的生成，也不能控制它的打印端(如logger)，可用此方法暴力清除Trace.
 	 * 但Cause链依然不能清除, 只能清除每一个Cause的StackTrace.
 	 */
-	public static <T extends Throwable> T clearStackTrace(@NotNull T throwable) {
-		Throwable cause = throwable;
+	public static <T extends Throwable> T clearStackTrace(T t) {
+		Throwable cause = t;
 		while (cause != null) {
 			cause.setStackTrace(EMPTY_STACK_TRACE);
 			cause = cause.getCause();
 		}
-		return throwable;
+		return t;
 	}
+
+	private ExceptionExtUtils() {}
 
 }

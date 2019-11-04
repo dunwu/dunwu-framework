@@ -1,6 +1,6 @@
 package io.github.dunwu.util.concurrent;
 
-import io.github.dunwu.util.base.ExceptionUtil;
+import io.github.dunwu.util.base.ExceptionExtUtils;
 import io.github.dunwu.util.concurrent.type.BaseFuture;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +37,7 @@ public class BasicFutureTest {
 			future3.get();
 			fail("should fail before");
 		} catch (Throwable t) {
-			assertThat(ExceptionUtil.unwrap(t)).hasMessage("wuwu");
+			assertThat(ExceptionExtUtils.unwrap(t)).hasMessage("wuwu");
 		}
 
 		// 取消

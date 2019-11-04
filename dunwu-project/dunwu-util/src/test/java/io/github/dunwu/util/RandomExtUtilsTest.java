@@ -1,6 +1,5 @@
-package io.github.dunwu.util.mock;
+package io.github.dunwu.util;
 
-import io.github.dunwu.util.RandomExtUtils;
 import io.github.dunwu.util.text.RegexUtil;
 import io.github.dunwu.util.time.DateUtil;
 import org.apache.commons.lang3.RandomUtils;
@@ -14,13 +13,100 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/**
- * MockUtil 单元测试
- *
- * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
- * @since 2018-12-04
- */
-public class MockUtilTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class RandomExtUtilsTest {
+
+	@RepeatedTest(10)
+	void getRandom() {
+		System.out.println(RandomExtUtils.secureRandom().nextInt());
+		System.out.println(RandomExtUtils.threadLocalRandom().nextInt());
+	}
+
+	@RepeatedTest(10)
+	void nextInt() {
+		int value = RandomExtUtils.nextInt();
+		assertThat(value).isBetween(0, Integer.MAX_VALUE);
+
+		value = RandomExtUtils.nextInt(RandomExtUtils.threadLocalRandom());
+		assertThat(value).isBetween(0, Integer.MAX_VALUE);
+
+		value = RandomExtUtils.nextInt(0, 10);
+		assertThat(value).isBetween(0, 10);
+
+		value = RandomExtUtils.nextInt(RandomExtUtils.threadLocalRandom(), 0, 10);
+		assertThat(value).isBetween(0, 10);
+	}
+
+	@RepeatedTest(10)
+	void nextLong() {
+		long value = RandomExtUtils.nextLong();
+		assertThat(value).isBetween(0L, Long.MAX_VALUE);
+
+		value = RandomExtUtils.nextLong(RandomExtUtils.threadLocalRandom());
+		assertThat(value).isBetween(0L, Long.MAX_VALUE);
+
+		value = RandomExtUtils.nextLong(0L, 10L);
+		assertThat(value).isBetween(0L, 10L);
+
+		value = RandomExtUtils.nextLong(RandomExtUtils.threadLocalRandom(), 0L, 10L);
+		assertThat(value).isBetween(0L, 10L);
+	}
+
+	@RepeatedTest(10)
+	void nextDouble() {
+		double value = RandomExtUtils.nextDouble();
+		assertThat(value).isBetween(0d, Double.MAX_VALUE);
+
+		value = RandomExtUtils.nextDouble(RandomExtUtils.threadLocalRandom());
+		assertThat(value).isBetween(0d, Double.MAX_VALUE);
+
+		value = RandomExtUtils.nextDouble(0d, 10d);
+		assertThat(value).isBetween(0d, 10d);
+
+		value = RandomExtUtils.nextDouble(RandomExtUtils.threadLocalRandom(), 0d, 10d);
+		assertThat(value).isBetween(0d, 10d);
+	}
+
+	@RepeatedTest(10)
+	void nextFloat() {
+		float value = RandomExtUtils.nextFloat();
+		assertThat(value).isBetween(0f, Float.MAX_VALUE);
+
+		value = RandomExtUtils.nextFloat(RandomExtUtils.threadLocalRandom());
+		assertThat(value).isBetween(0f, Float.MAX_VALUE);
+
+		value = RandomExtUtils.nextFloat(0f, 10f);
+		assertThat(value).isBetween(0f, 10f);
+
+		value = RandomExtUtils.nextFloat(RandomExtUtils.threadLocalRandom(), 0f, 10f);
+		assertThat(value).isBetween(0f, 10f);
+	}
+
+	@RepeatedTest(10)
+	void randomString() {
+		System.out.println(RandomExtUtils.randomString(5, 10));
+		System.out.println(RandomExtUtils.randomString(RandomExtUtils.threadLocalRandom(), 5, 10));
+	}
+
+	@RepeatedTest(10)
+	void randomLetter() {
+		System.out.println(RandomExtUtils.randomLetter(5, 10));
+		System.out.println(RandomExtUtils.randomLetter(RandomExtUtils.threadLocalRandom(), 5, 10));
+	}
+
+	@RepeatedTest(10)
+	void randomAscii() {
+		System.out.println(RandomExtUtils.randomAscii(5, 10));
+		System.out.println(RandomExtUtils.randomAscii(RandomExtUtils.threadLocalRandom(), 5, 10));
+	}
+
+	@RepeatedTest(10)
+	void randomEnum() {
+		System.out.println(RandomExtUtils.randomEnum(Color.class).name());
+	}
+
+	enum Color {RED, YELLOW, BLUE}
 
 	final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
 
@@ -135,38 +221,10 @@ public class MockUtilTest {
 	}
 
 	@RepeatedTest(10)
-	void mock() {
+	void randomStringInList() {
 		String[] charset = new String[] { "A", "B", "C", "D" };
 		List<String> list = Arrays.asList(charset);
 		System.out.println("random param: " + RandomExtUtils.randomStringInList(list));
-	}
-
-	@Test
-	public void test() {
-		char begin = '\u4E00';
-		char end = '\u9FA5';
-		int count = 0;
-		for (char index = begin; index <= end; index++) {
-			System.out.print(index + "\t");
-			count++;
-			if (count % 10 == 0) {
-				System.out.println("");
-			}
-		}
-		System.out.println("count: " + count);
-	}
-
-	@Test
-	public void test2() throws UnsupportedEncodingException {
-		for (int i = 0xB0; i < 0xF7; i++) {
-			for (int j = 0xA1; j < 0xFF; j++) {
-				byte[] bytes = new byte[2];
-				bytes[0] = (byte) i;
-				bytes[1] = (byte) j;
-				String s = new String(bytes, "GB2312");
-				System.out.println(s);
-			}
-		}
 	}
 
 }
