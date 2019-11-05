@@ -31,7 +31,7 @@ public class MockUtilTest {
 
 		String date = RandomExtUtils.randomDate(min, max, DATE_PATTERN);
 		System.out.println(
-				"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+			"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
 		Assertions.assertTrue(DateExtUtils.verify(date, DATE_PATTERN));
 
 		Date date2 = RandomExtUtils.randomDate(min, max);
@@ -49,7 +49,7 @@ public class MockUtilTest {
 	void anyMac() {
 		System.out.println("RandomExtUtils.anyMac(): " + RandomExtUtils.randomMac());
 		System.out.println(
-				"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
+			"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
 	}
 
 	@RepeatedTest(10)
@@ -109,14 +109,14 @@ public class MockUtilTest {
 	void anyLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out
-				.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
+			.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
 	void anyCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out.println(
-				"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
+			"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
@@ -128,7 +128,7 @@ public class MockUtilTest {
 	void anySimpleCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out.println("随机简体中文字组成的字符串："
-				+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
+			+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
 	}
 
 	@RepeatedTest(10)

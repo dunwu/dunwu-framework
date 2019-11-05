@@ -15,6 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RandomExtUtilsTest {
 
+	final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
+
 	@RepeatedTest(10)
 	void getRandom() {
 		System.out.println(RandomExtUtils.secureRandom().nextInt());
@@ -85,35 +87,27 @@ class RandomExtUtilsTest {
 	void randomString() {
 		System.out.println(RandomExtUtils.randomString(5, 10));
 		System.out.println(
-				RandomExtUtils.randomString(RandomExtUtils.threadLocalRandom(), 5, 10));
+			RandomExtUtils.randomString(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
 	void randomLetter() {
 		System.out.println(RandomExtUtils.randomLetter(5, 10));
 		System.out.println(
-				RandomExtUtils.randomLetter(RandomExtUtils.threadLocalRandom(), 5, 10));
+			RandomExtUtils.randomLetter(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
 	void randomAscii() {
 		System.out.println(RandomExtUtils.randomAscii(5, 10));
 		System.out.println(
-				RandomExtUtils.randomAscii(RandomExtUtils.threadLocalRandom(), 5, 10));
+			RandomExtUtils.randomAscii(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
 	void randomEnum() {
 		System.out.println(RandomExtUtils.randomEnum(Color.class).name());
 	}
-
-	enum Color {
-
-		RED, YELLOW, BLUE
-
-	}
-
-	final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
 
 	@RepeatedTest(10)
 	void anyDate() {
@@ -122,7 +116,7 @@ class RandomExtUtilsTest {
 
 		String date = RandomExtUtils.randomDate(min, max, DATE_PATTERN);
 		System.out.println(
-				"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+			"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
 		Assertions.assertTrue(DateExtUtils.verify(date, DATE_PATTERN));
 
 		Date date2 = RandomExtUtils.randomDate(min, max);
@@ -140,7 +134,7 @@ class RandomExtUtilsTest {
 	void anyMac() {
 		System.out.println("RandomExtUtils.anyMac(): " + RandomExtUtils.randomMac());
 		System.out.println(
-				"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
+			"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
 	}
 
 	@RepeatedTest(10)
@@ -200,14 +194,14 @@ class RandomExtUtilsTest {
 	void anyLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out
-				.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
+			.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
 	void anyCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out.println(
-				"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
+			"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
@@ -219,7 +213,7 @@ class RandomExtUtilsTest {
 	void anySimpleCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
 		System.out.println("随机简体中文字组成的字符串："
-				+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
+			+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
@@ -233,6 +227,13 @@ class RandomExtUtilsTest {
 		String[] charset = new String[] { "A", "B", "C", "D" };
 		List<String> list = Arrays.asList(charset);
 		System.out.println("random param: " + RandomExtUtils.randomStringInList(list));
+	}
+
+	enum Color {
+
+		RED,
+		YELLOW,
+		BLUE
 	}
 
 }

@@ -37,7 +37,7 @@ public class KaptchaUtil {
 	private static final int LINE_COUNT = 40;
 
 	private static final char[] CODE_SEQUENCE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-			.toCharArray();
+		.toCharArray();
 
 	public static Kaptcha create() {
 		return create(WIDTH, HEIGHT, CODE_COUNT, LINE_COUNT);
@@ -45,7 +45,7 @@ public class KaptchaUtil {
 
 	public static Kaptcha create(int width, int height, int codeCount, int lineCount) {
 		BufferedImage image = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_BGR);
+			BufferedImage.TYPE_INT_BGR);
 		Graphics2D graphics = image.createGraphics();
 		Random random = new Random();
 		graphics.setColor(Color.WHITE);
@@ -81,7 +81,7 @@ public class KaptchaUtil {
 		int y = height - 8;
 		for (int i = 0; i < codeCount; i++) {
 			String strRand = String
-					.valueOf(CODE_SEQUENCE[random.nextInt(CODE_SEQUENCE.length)]);
+				.valueOf(CODE_SEQUENCE[random.nextInt(CODE_SEQUENCE.length)]);
 			int red = random.nextInt(255);
 			int green = random.nextInt(255);
 			int blue = random.nextInt(255);
@@ -98,7 +98,7 @@ public class KaptchaUtil {
 	}
 
 	public static void toOutputStream(Kaptcha kaptcha, OutputStream output)
-			throws IOException {
+		throws IOException {
 		ImageUtil.toOutputStream(kaptcha.getImage(), output, null);
 	}
 

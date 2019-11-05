@@ -1,5 +1,6 @@
 package io.github.dunwu.test;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-11-29
  */
+@Disabled
 class AssumptionsTests {
 
 	@Test
@@ -23,7 +25,7 @@ class AssumptionsTests {
 	@Test
 	void testOnlyOnDeveloperWorkstation() {
 		assumeTrue("DEV".equals(System.getenv("ENV")),
-				() -> "Aborting test: not on developer workstation");
+			() -> "Aborting test: not on developer workstation");
 		// remainder of test
 	}
 

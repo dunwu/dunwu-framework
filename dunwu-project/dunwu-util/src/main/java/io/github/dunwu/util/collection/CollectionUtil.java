@@ -8,10 +8,8 @@ import io.github.dunwu.util.base.type.Pair;
 import java.util.*;
 
 /**
- * 通用Collection的工具集 1. 集合是否为空，取得集合中首个及最后一个元素，判断集合是否完全相等 2. 集合的最大最小值，及Top N, Bottom N
- * 关于List, Map, Queue, Set的特殊工具集，另见特定的Util.
- * 另JDK中缺少ComparableComparator和NullComparator，直到JDK8才补上。
- * 因此平时请使用guava的Ordering.natural(),fluentable的API更好用，可以链式设置nullFirst，nullLast,reverse
+ * 通用Collection的工具集 1. 集合是否为空，取得集合中首个及最后一个元素，判断集合是否完全相等 2. 集合的最大最小值，及Top N, Bottom N 关于List, Map, Queue,
+ * Set的特殊工具集，另见特定的Util. 另JDK中缺少ComparableComparator和NullComparator，直到JDK8才补上。 因此平时请使用guava的Ordering.natural(),fluentable的API更好用，可以链式设置nullFirst，nullLast,reverse
  *
  * @see com.google.common.collect.Ordering
  */
@@ -74,7 +72,7 @@ public class CollectionUtil {
 	 * 返回无序集合中的最小值，使用元素默认排序
 	 */
 	public static <T extends Object & Comparable<? super T>> T min(
-			Collection<? extends T> coll) {
+		Collection<? extends T> coll) {
 		return Collections.min(coll);
 	}
 
@@ -89,7 +87,7 @@ public class CollectionUtil {
 	 * 返回无序集合中的最大值，使用元素默认排序
 	 */
 	public static <T extends Object & Comparable<? super T>> T max(
-			Collection<? extends T> coll) {
+		Collection<? extends T> coll) {
 		return Collections.max(coll);
 	}
 
@@ -104,7 +102,7 @@ public class CollectionUtil {
 	 * 同时返回无序集合中的最小值和最大值，使用元素默认排序 在返回的Pair中，第一个为最小值，第二个为最大值
 	 */
 	public static <T extends Object & Comparable<? super T>> Pair<T, T> minAndMax(
-			Collection<? extends T> coll) {
+		Collection<? extends T> coll) {
 		Iterator<? extends T> i = coll.iterator();
 		T minCandidate = i.next();
 		T maxCandidate = minCandidate;
@@ -113,8 +111,7 @@ public class CollectionUtil {
 			T next = i.next();
 			if (next.compareTo(minCandidate) < 0) {
 				minCandidate = next;
-			}
-			else if (next.compareTo(maxCandidate) > 0) {
+			} else if (next.compareTo(maxCandidate) > 0) {
 				maxCandidate = next;
 			}
 		}
@@ -125,7 +122,7 @@ public class CollectionUtil {
 	 * 返回无序集合中的最小值和最大值 在返回的Pair中，第一个为最小值，第二个为最大值
 	 */
 	public static <T> Pair<T, T> minAndMax(Collection<? extends T> coll,
-			Comparator<? super T> comp) {
+		Comparator<? super T> comp) {
 
 		Iterator<? extends T> i = coll.iterator();
 		T minCandidate = i.next();
@@ -135,8 +132,7 @@ public class CollectionUtil {
 			T next = i.next();
 			if (comp.compare(next, minCandidate) < 0) {
 				minCandidate = next;
-			}
-			else if (comp.compare(next, maxCandidate) > 0) {
+			} else if (comp.compare(next, maxCandidate) > 0) {
 				maxCandidate = next;
 			}
 		}
@@ -169,7 +165,7 @@ public class CollectionUtil {
 	 * 返回Iterable中最小的N个对象, back by guava.
 	 */
 	public static <T> List<T> bottom(Iterable<T> coll, int n,
-			Comparator<? super T> comp) {
+		Comparator<? super T> comp) {
 		return Ordering.from(comp).leastOf(coll, n);
 	}
 

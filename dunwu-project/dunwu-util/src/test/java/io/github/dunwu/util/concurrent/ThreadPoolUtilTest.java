@@ -110,48 +110,48 @@ public class ThreadPoolUtilTest {
 		singlePool.shutdown();
 
 		ThreadPoolExecutor fixPoolWithUnlimitQueue = ThreadPoolUtil.fixedPool()
-				.setPoolSize(10).build();
+			.setPoolSize(10).build();
 		assertThat(fixPoolWithUnlimitQueue.getCorePoolSize()).isEqualTo(10);
 		assertThat(fixPoolWithUnlimitQueue.getMaximumPoolSize()).isEqualTo(10);
 		fixPoolWithUnlimitQueue.shutdown();
 
 		ThreadPoolExecutor fixPoolWithlimitQueue = ThreadPoolUtil.fixedPool()
-				.setPoolSize(10).setQueueSize(100)
-				.setThreadFactory(ThreadPoolUtil.buildThreadFactory("kaka")).build();
+			.setPoolSize(10).setQueueSize(100)
+			.setThreadFactory(ThreadPoolUtil.buildThreadFactory("kaka")).build();
 
 		assertThat(fixPoolWithlimitQueue.getQueue())
-				.isInstanceOf(ArrayBlockingQueue.class);
+			.isInstanceOf(ArrayBlockingQueue.class);
 		Thread thread = fixPoolWithlimitQueue.getThreadFactory()
-				.newThread(new Runnable() {
-					@Override
-					public void run() {
-					}
-				});
+			.newThread(new Runnable() {
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread.getName()).startsWith("kaka");
 
 		fixPoolWithlimitQueue.shutdown();
 
 		ThreadPoolExecutor fixPoolWithNamePrefix = ThreadPoolUtil.fixedPool()
-				.setPoolSize(10).setThreadNamePrefix("fixPool").build();
+			.setPoolSize(10).setThreadNamePrefix("fixPool").build();
 		Thread thread2 = fixPoolWithNamePrefix.getThreadFactory()
-				.newThread(new Runnable() {
-					@Override
-					public void run() {
-					}
-				});
+			.newThread(new Runnable() {
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread2.getName()).startsWith("fixPool");
 		assertThat(thread2.isDaemon()).isFalse();
 		fixPoolWithNamePrefix.shutdown();
 
 		ThreadPoolExecutor fixPoolWithNamePrefixAndDaemon = ThreadPoolUtil.fixedPool()
-				.setPoolSize(10).setThreadNamePrefix("fixPoolDaemon").setDaemon(true)
-				.build();
+			.setPoolSize(10).setThreadNamePrefix("fixPoolDaemon").setDaemon(true)
+			.build();
 		Thread thread3 = fixPoolWithNamePrefixAndDaemon.getThreadFactory()
-				.newThread(new Runnable() {
-					@Override
-					public void run() {
-					}
-				});
+			.newThread(new Runnable() {
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread3.getName()).startsWith("fixPoolDaemon");
 		assertThat(thread3.isDaemon()).isTrue();
 		fixPoolWithNamePrefixAndDaemon.shutdown();
@@ -167,21 +167,21 @@ public class ThreadPoolUtilTest {
 		singlePool.shutdown();
 
 		ThreadPoolExecutor sizeablePool = ThreadPoolUtil.cachedPool().setMinSize(10)
-				.setMaxSize(100).setKeepAliveSecs(20).build();
+			.setMaxSize(100).setKeepAliveSecs(20).build();
 		assertThat(sizeablePool.getCorePoolSize()).isEqualTo(10);
 		assertThat(sizeablePool.getMaximumPoolSize()).isEqualTo(100);
 		assertThat(sizeablePool.getKeepAliveTime(TimeUnit.SECONDS)).isEqualTo(20);
 		sizeablePool.shutdown();
 
 		ThreadPoolExecutor fixPoolWithNamePrefix = ThreadPoolUtil.cachedPool()
-				.setThreadNamePrefix("cachedPool").build();
+			.setThreadNamePrefix("cachedPool").build();
 		Thread thread = fixPoolWithNamePrefix.getThreadFactory()
-				.newThread(new Runnable() {
+			.newThread(new Runnable() {
 
-					@Override
-					public void run() {
-					}
-				});
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread.getName()).startsWith("cachedPool");
 		fixPoolWithNamePrefix.shutdown();
 	}
@@ -194,19 +194,19 @@ public class ThreadPoolUtilTest {
 		singlePool.shutdown();
 
 		ScheduledThreadPoolExecutor sizeablePool = ThreadPoolUtil.scheduledPool()
-				.setPoolSize(2).build();
+			.setPoolSize(2).build();
 		assertThat(sizeablePool.getCorePoolSize()).isEqualTo(2);
 		assertThat(sizeablePool.getMaximumPoolSize()).isEqualTo(Integer.MAX_VALUE);
 		sizeablePool.shutdown();
 
 		ThreadPoolExecutor fixPoolWithNamePrefix = ThreadPoolUtil.scheduledPool()
-				.setThreadNamePrefix("scheduledPool").build();
+			.setThreadNamePrefix("scheduledPool").build();
 		Thread thread = fixPoolWithNamePrefix.getThreadFactory()
-				.newThread(new Runnable() {
-					@Override
-					public void run() {
-					}
-				});
+			.newThread(new Runnable() {
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread.getName()).startsWith("scheduledPool");
 		fixPoolWithNamePrefix.shutdown();
 	}
@@ -218,25 +218,25 @@ public class ThreadPoolUtilTest {
 		assertThat(singlePool.getMaximumPoolSize()).isEqualTo(Integer.MAX_VALUE);
 		assertThat(singlePool.getKeepAliveTime(TimeUnit.SECONDS)).isEqualTo(10);
 		assertThat(singlePool.getQueue()).isInstanceOf(
-				ThreadPoolUtil.QueuableCachedThreadPool.ControllableQueue.class);
+			ThreadPoolUtil.QueuableCachedThreadPool.ControllableQueue.class);
 		singlePool.shutdown();
 
 		ThreadPoolExecutor sizeablePool = ThreadPoolUtil.queuableCachedPool()
-				.setMinSize(10).setMaxSize(100).setKeepAliveSecs(20).build();
+			.setMinSize(10).setMaxSize(100).setKeepAliveSecs(20).build();
 		assertThat(sizeablePool.getCorePoolSize()).isEqualTo(10);
 		assertThat(sizeablePool.getMaximumPoolSize()).isEqualTo(100);
 		assertThat(sizeablePool.getKeepAliveTime(TimeUnit.SECONDS)).isEqualTo(20);
 		sizeablePool.shutdown();
 
 		ThreadPoolExecutor fixPoolWithNamePrefix = ThreadPoolUtil.queuableCachedPool()
-				.setThreadNamePrefix("queuableCachedPool").build();
+			.setThreadNamePrefix("queuableCachedPool").build();
 		Thread thread = fixPoolWithNamePrefix.getThreadFactory()
-				.newThread(new Runnable() {
+			.newThread(new Runnable() {
 
-					@Override
-					public void run() {
-					}
-				});
+				@Override
+				public void run() {
+				}
+			});
 		assertThat(thread.getName()).startsWith("queuableCachedPool");
 		fixPoolWithNamePrefix.shutdown();
 	}
@@ -246,7 +246,7 @@ public class ThreadPoolUtilTest {
 		ThreadPoolUtil.QueuableCachedThreadPool threadPool = null;
 		try {
 			threadPool = ThreadPoolUtil.queuableCachedPool().setMinSize(0).setMaxSize(10)
-					.setQueueSize(10).build();
+				.setQueueSize(10).build();
 			// 线程满
 			for (int i = 0; i < 10; i++) {
 				threadPool.submit(new LongRunTask());
@@ -266,12 +266,10 @@ public class ThreadPoolUtilTest {
 			try {
 				threadPool.submit(new LongRunTask());
 				fail("should fail before");
-			}
-			catch (Throwable t) {
+			} catch (Throwable t) {
 				assertThat(t).isInstanceOf(RejectedExecutionException.class);
 			}
-		}
-		finally {
+		} finally {
 			ThreadPoolUtil.gracefulShutdown(threadPool, 1000);
 		}
 	}
@@ -322,8 +320,7 @@ public class ThreadPoolUtilTest {
 
 			try {
 				Thread.sleep(sleepTime);
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				logger.warn("InterruptedException");
 			}
 		}

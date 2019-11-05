@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-11-29
  */
+@Disabled
 class StandardTests {
 
 	@BeforeAll

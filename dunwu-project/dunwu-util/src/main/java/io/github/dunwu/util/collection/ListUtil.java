@@ -6,9 +6,8 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 关于List的工具集合. 1. 常用函数(如是否为空，sort/binarySearch/shuffle/reverse(via JDK Collection) 2.
- * 各种构造函数(from guava and JDK Collection) 3. 各种扩展List类型的创建函数 5. 集合运算：交集，并集, 差集, 补集，from
- * Commons Collection，但对其不合理的地方做了修正
+ * 关于List的工具集合. 1. 常用函数(如是否为空，sort/binarySearch/shuffle/reverse(via JDK Collection) 2. 各种构造函数(from guava and JDK
+ * Collection) 3. 各种扩展List类型的创建函数 5. 集合运算：交集，并集, 差集, 补集，from Commons Collection，但对其不合理的地方做了修正
  */
 @SuppressWarnings("unchecked")
 public class ListUtil {
@@ -209,7 +208,7 @@ public class ListUtil {
 	 * @see Collections#binarySearch(List, Object)
 	 */
 	public static <T> int binarySearch(List<? extends Comparable<? super T>> sortedList,
-			T key) {
+		T key) {
 		return Collections.binarySearch(sortedList, key);
 	}
 
@@ -219,7 +218,7 @@ public class ListUtil {
 	 * @see Collections#binarySearch(List, Object, Comparator)
 	 */
 	public static <T> int binarySearch(List<? extends T> sortedList, T key,
-			Comparator<? super T> c) {
+		Comparator<? super T> c) {
 		return Collections.binarySearch(sortedList, key, c);
 	}
 
@@ -253,11 +252,11 @@ public class ListUtil {
 	///////////////// 集合运算 ///////////////////
 
 	/**
-	 * list1, list2的补集（在list1或list2中，但不在交集中的对象，又叫反交集）产生新List. copy from Apache Common
-	 * Collection4 ListUtils，但其并集－交集时，初始大小没有对交集*2，所以做了修改
+	 * list1, list2的补集（在list1或list2中，但不在交集中的对象，又叫反交集）产生新List. copy from Apache Common Collection4
+	 * ListUtils，但其并集－交集时，初始大小没有对交集*2，所以做了修改
 	 */
 	public static <T> List<T> disjoint(final List<? extends T> list1,
-			final List<? extends T> list2) {
+		final List<? extends T> list2) {
 		List<T> intersection = intersection(list1, list2);
 		List<T> towIntersection = union(intersection, intersection);
 		return difference(union(list1, list2), towIntersection);
@@ -269,7 +268,7 @@ public class ListUtil {
 	 * 如"a"在list1出现两次，而在list2中只出现一次，则交集里会保留一个"a".
 	 */
 	public static <T> List<T> intersection(final List<? extends T> list1,
-			final List<? extends T> list2) {
+		final List<? extends T> list2) {
 		List<? extends T> smaller = list1;
 		List<? extends T> larger = list2;
 		if (list1.size() > list2.size()) {
@@ -290,11 +289,10 @@ public class ListUtil {
 	}
 
 	/**
-	 * list1,list2的并集（在list1或list2中的对象），产生新List 对比Apache Common Collection4 ListUtils,
-	 * 优化了初始大小
+	 * list1,list2的并集（在list1或list2中的对象），产生新List 对比Apache Common Collection4 ListUtils, 优化了初始大小
 	 */
 	public static <E> List<E> union(final List<? extends E> list1,
-			final List<? extends E> list2) {
+		final List<? extends E> list2) {
 		final List<E> result = new ArrayList<E>(list1.size() + list2.size());
 		result.addAll(list1);
 		result.addAll(list2);
@@ -302,11 +300,10 @@ public class ListUtil {
 	}
 
 	/**
-	 * list1, list2的差集（在list1，不在list2中的对象），产生新List.
-	 * 与List.removeAll()相比，会计算元素出现的次数，如"a"在list1出现两次，而在list2中只出现一次，则差集里会保留一个"a".
+	 * list1, list2的差集（在list1，不在list2中的对象），产生新List. 与List.removeAll()相比，会计算元素出现的次数，如"a"在list1出现两次，而在list2中只出现一次，则差集里会保留一个"a".
 	 */
 	public static <T> List<T> difference(final List<? extends T> list1,
-			final List<? extends T> list2) {
+		final List<? extends T> list2) {
 		final List<T> result = new ArrayList<T>(list1);
 		final Iterator<? extends T> iterator = list2.iterator();
 

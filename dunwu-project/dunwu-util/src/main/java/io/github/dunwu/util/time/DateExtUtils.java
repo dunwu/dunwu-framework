@@ -46,18 +46,18 @@ public class DateExtUtils extends DateUtils {
 	// 获取指定日期
 	// -------------------------------------------------------------------------------------------------
 
-	private static int get(final Date date, final int field) {
-		Validate.notNull(date, "The date must not be null");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		return calendar.get(field);
-	}
-
 	/**
 	 * 获得日期是一年的第几天，返回值从1开始
 	 */
 	public static int getDayOfYear(final Date date) {
 		return get(date, Calendar.DAY_OF_YEAR);
+	}
+
+	private static int get(final Date date, final int field) {
+		Validate.notNull(date, "The date must not be null");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar.get(field);
 	}
 
 	/**
@@ -83,22 +83,14 @@ public class DateExtUtils extends DateUtils {
 	}
 
 	/**
-	 * 获得日期是一周的第几天. 已改为中国习惯，1 是Monday，而不是Sundays.
-	 */
-	public static int getDayOfWeek(final Date date) {
-		int result = getFirstMonday(date, Calendar.DAY_OF_WEEK);
-		return result == 1 ? 7 : result - 1;
-	}
-
-	// beginOf
-	// -------------------------------------------------------------------------------------------------
-
-	/**
 	 * 2016-11-10 07:33:23, 则返回2016-11-10 00:00:00
 	 */
 	public static Date beginOfDate(final Date date) {
 		return DateUtils.truncate(date, Calendar.DATE);
 	}
+
+	// beginOf
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 2016-11-10 07:33:23, 则返回2016-1-1 00:00:00
@@ -118,7 +110,17 @@ public class DateExtUtils extends DateUtils {
 	 * 2017-1-20 07:33:23, 则返回2017-1-16 00:00:00
 	 */
 	public static Date beginOfWeek(final Date date) {
-		return DateUtils.truncate(DateUtils.addDays(date, 1 - DateExtUtils.getDayOfWeek(date)), Calendar.DATE);
+		return DateUtils.truncate(
+			DateUtils.addDays(date, 1 - DateExtUtils.getDayOfWeek(date)),
+			Calendar.DATE);
+	}
+
+	/**
+	 * 获得日期是一周的第几天. 已改为中国习惯，1 是Monday，而不是Sundays.
+	 */
+	public static int getDayOfWeek(final Date date) {
+		int result = getFirstMonday(date, Calendar.DAY_OF_WEEK);
+		return result == 1 ? 7 : result - 1;
 	}
 
 	public static Date beginOfDay(final Date date) {
@@ -139,7 +141,7 @@ public class DateExtUtils extends DateUtils {
 		return DateUtils.truncate(date, Calendar.MINUTE);
 	}
 
-	//  endOf
+	// endOf
 	// -------------------------------------------------------------------------------------------------
 
 	/**
@@ -150,48 +152,17 @@ public class DateExtUtils extends DateUtils {
 	}
 
 	/**
-	 * 2016-11-10 07:33:23, 则返回2016-12-31 23:59:59.999
-	 */
-	public static Date endOfYear(final Date date) {
-		return new Date(nextYear(date).getTime() - 1);
-	}
-
-	/**
-	 * 2016-11-10 07:33:23, 则返回2016-11-30 23:59:59.999
-	 */
-	public static Date endOfMonth(final Date date) {
-		return new Date(nextMonth(date).getTime() - 1);
-	}
-
-	/**
-	 * 2017-1-20 07:33:23, 则返回2017-1-22 23:59:59.999
-	 */
-	public static Date endOfWeek(final Date date) {
-		return new Date(nextWeek(date).getTime() - 1);
-	}
-
-	/**
-	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:59:59.999
-	 */
-	public static Date endOfHour(final Date date) {
-		return new Date(nextHour(date).getTime() - 1);
-	}
-
-	/**
-	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:33:59.999
-	 */
-	public static Date endOfMinute(final Date date) {
-		return new Date(nextMinute(date).getTime() - 1);
-	}
-
-	//  next
-	// -------------------------------------------------------------------------------------------------
-
-	/**
 	 * 2016-11-10 07:33:23, 则返回2016-11-11 00:00:00
 	 */
 	public static Date nextDate(final Date date) {
 		return DateUtils.ceiling(date, Calendar.DATE);
+	}
+
+	/**
+	 * 2016-11-10 07:33:23, 则返回2016-12-31 23:59:59.999
+	 */
+	public static Date endOfYear(final Date date) {
+		return new Date(nextYear(date).getTime() - 1);
 	}
 
 	/**
@@ -202,18 +173,43 @@ public class DateExtUtils extends DateUtils {
 	}
 
 	/**
+	 * 2016-11-10 07:33:23, 则返回2016-11-30 23:59:59.999
+	 */
+	public static Date endOfMonth(final Date date) {
+		return new Date(nextMonth(date).getTime() - 1);
+	}
+
+	/**
 	 * 2016-11-10 07:33:23, 则返回2016-12-1 00:00:00
 	 */
 	public static Date nextMonth(final Date date) {
 		return DateUtils.ceiling(date, Calendar.MONTH);
 	}
 
+	// next
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 2017-1-20 07:33:23, 则返回2017-1-22 23:59:59.999
+	 */
+	public static Date endOfWeek(final Date date) {
+		return new Date(nextWeek(date).getTime() - 1);
+	}
+
 	/**
 	 * 2017-1-23 07:33:23, 则返回2017-1-22 00:00:00
 	 */
 	public static Date nextWeek(final Date date) {
-		return DateUtils.truncate(DateExtUtils.addDays(date, 8 - DateExtUtils.getDayOfWeek(date)),
+		return DateUtils.truncate(
+			DateExtUtils.addDays(date, 8 - DateExtUtils.getDayOfWeek(date)),
 			Calendar.DATE);
+	}
+
+	/**
+	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:59:59.999
+	 */
+	public static Date endOfHour(final Date date) {
+		return new Date(nextHour(date).getTime() - 1);
 	}
 
 	/**
@@ -224,13 +220,20 @@ public class DateExtUtils extends DateUtils {
 	}
 
 	/**
+	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:33:59.999
+	 */
+	public static Date endOfMinute(final Date date) {
+		return new Date(nextMinute(date).getTime() - 1);
+	}
+
+	/**
 	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:34:00
 	 */
 	public static Date nextMinute(final Date date) {
 		return DateUtils.ceiling(date, Calendar.MINUTE);
 	}
 
-	//  isLeapYear
+	// isLeapYear
 	// -------------------------------------------------------------------------------------------------
 
 	/**
@@ -253,7 +256,7 @@ public class DateExtUtils extends DateUtils {
 		return false;
 	}
 
-	//  getMonthLength
+	// getMonthLength
 	// -------------------------------------------------------------------------------------------------
 
 	/**

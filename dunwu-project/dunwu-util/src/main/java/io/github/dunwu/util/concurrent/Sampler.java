@@ -4,8 +4,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
- * 采样器 移植 Twitter Common, 优化使用ThreadLocalRandom
- * https://github.com/twitter/commons/blob/master/src/java/com/twitter/common/util/Sampler.java
+ * 采样器 移植 Twitter Common, 优化使用ThreadLocalRandom https://github.com/twitter/commons/blob/master/src/java/com/twitter/common/util/Sampler.java
  */
 public class Sampler {
 
@@ -23,7 +22,7 @@ public class Sampler {
 	 */
 	protected Sampler(double selectPercent) {
 		Validate.isTrue((selectPercent >= 0) && (selectPercent <= 100),
-				"Invalid selectPercent value: " + selectPercent);
+			"Invalid selectPercent value: " + selectPercent);
 
 		this.threshold = selectPercent / 100;
 	}
@@ -34,11 +33,9 @@ public class Sampler {
 	public static Sampler create(Double selectPercent) {
 		if (ALWAYS.equals(selectPercent)) {
 			return new AlwaysSampler();
-		}
-		else if (NEVER.equals(selectPercent)) {
+		} else if (NEVER.equals(selectPercent)) {
 			return new NeverSampler();
-		}
-		else {
+		} else {
 			return new Sampler(selectPercent);
 		}
 	}

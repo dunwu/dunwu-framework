@@ -63,8 +63,7 @@ public class County implements Comparable<County> {
 		County county = (County) obj;
 		if (county.getCode().equals(this.getCode())) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

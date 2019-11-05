@@ -16,7 +16,8 @@ public class TextUtil {
 
 	/**
 	 * 判定源字符串是否匹配任意通配符表达式
-	 * @param text 文本内容
+	 *
+	 * @param text      文本内容
 	 * @param wildcards 通配符表达式数组
 	 * @return 匹配第几个通配符表达式
 	 */
@@ -31,7 +32,8 @@ public class TextUtil {
 
 	/**
 	 * 判定源字符串是否匹配通配符表达式
-	 * @param text 文本内容
+	 *
+	 * @param text     文本内容
 	 * @param wildcard 通配符表达式
 	 * @return true / false
 	 */
@@ -47,7 +49,7 @@ public class TextUtil {
 		for (int i = 1; i <= m; i++) {
 			for (int j = 1; j <= n; j++) {
 				if (text.charAt(i - 1) == wildcard.charAt(j - 1)
-						|| wildcard.charAt(j - 1) == CHAR_ANYONE_WILDCARD) {
+					|| wildcard.charAt(j - 1) == CHAR_ANYONE_WILDCARD) {
 					f[i][j] = f[i - 1][j - 1];
 				}
 				if (wildcard.charAt(j - 1) == CHAR_ALL_WILDCARD) {
@@ -60,6 +62,7 @@ public class TextUtil {
 
 	/**
 	 * 如果文本内容是敏感信息，则隐去部分内容
+	 *
 	 * @param text
 	 * @return
 	 */
@@ -67,9 +70,8 @@ public class TextUtil {
 		if (RegexUtil.isEmail(text)) {
 			int atIndex = text.indexOf('@');
 			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1))
-					.toLowerCase();
-		}
-		else if (RegexUtil.isMobile(text)) {
+				.toLowerCase();
+		} else if (RegexUtil.isMobile(text)) {
 			String digits = text.replaceAll("\\D+", "");
 			String local = "***-***-" + digits.substring(digits.length() - 4);
 			if (digits.length() == MOBILE_NUM_SIZE - 1) {
@@ -80,8 +82,7 @@ public class TextUtil {
 				ans += "*";
 			}
 			return ans + "-" + local;
-		}
-		else {
+		} else {
 			return text;
 		}
 	}

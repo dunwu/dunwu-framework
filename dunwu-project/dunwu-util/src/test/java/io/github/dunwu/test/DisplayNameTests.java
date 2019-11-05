@@ -1,5 +1,6 @@
 package io.github.dunwu.test;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-11-29
  */
+@Disabled
 @DisplayName("A special test case")
 class DisplayNameTests {
 

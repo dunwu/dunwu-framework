@@ -20,8 +20,7 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.namespace.QName;
 
 /**
- * 使用Jaxb2.0实现XML<->Java Object的Mapper. 在创建时需要设定所有需要序列化的Root对象的Class.
- * 特别支持Root对象是Collection的情形.
+ * 使用Jaxb2.0实现XML<->Java Object的Mapper. 在创建时需要设定所有需要序列化的Root对象的Class. 特别支持Root对象是Collection的情形.
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
@@ -45,8 +44,7 @@ public class XmlMapper {
 			StringWriter writer = new StringWriter();
 			createMarshaller(clazz, encoding).marshal(root, writer);
 			return writer.toString();
-		}
-		catch (JAXBException e) {
+		} catch (JAXBException e) {
 			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
@@ -67,8 +65,7 @@ public class XmlMapper {
 			}
 
 			return marshaller;
-		}
-		catch (JAXBException e) {
+		} catch (JAXBException e) {
 			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
@@ -80,10 +77,9 @@ public class XmlMapper {
 			try {
 				jaxbContext = JAXBContext.newInstance(clazz, CollectionWrapper.class);
 				jaxbContexts.putIfAbsent(clazz, jaxbContext);
-			}
-			catch (JAXBException ex) {
+			} catch (JAXBException ex) {
 				throw new RuntimeException("Could not instantiate JAXBContext for class ["
-						+ clazz + "]: " + ex.getMessage(), ex);
+					+ clazz + "]: " + ex.getMessage(), ex);
 			}
 		}
 		return jaxbContext;
@@ -108,20 +104,19 @@ public class XmlMapper {
 	 * Java Collection->Xml with encoding, 特别支持Root Element是Collection的情形.
 	 */
 	public static String toXml(Collection<?> root, String rootName, Class clazz,
-			String encoding) {
+		String encoding) {
 		try {
 			CollectionWrapper wrapper = new CollectionWrapper();
 			wrapper.collection = root;
 
 			JAXBElement<CollectionWrapper> wrapperElement = new JAXBElement<CollectionWrapper>(
-					new QName(rootName), CollectionWrapper.class, wrapper);
+				new QName(rootName), CollectionWrapper.class, wrapper);
 
 			StringWriter writer = new StringWriter();
 			createMarshaller(clazz, encoding).marshal(wrapperElement, writer);
 
 			return writer.toString();
-		}
-		catch (JAXBException e) {
+		} catch (JAXBException e) {
 			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
@@ -133,8 +128,7 @@ public class XmlMapper {
 		try {
 			StringReader reader = new StringReader(xml);
 			return (T) createUnmarshaller(clazz).unmarshal(reader);
-		}
-		catch (JAXBException e) {
+		} catch (JAXBException e) {
 			throw ExceptionExtUtils.unchecked(e);
 		}
 	}
@@ -146,8 +140,7 @@ public class XmlMapper {
 		try {
 			JAXBContext jaxbContext = getJaxbContext(clazz);
 			return jaxbContext.createUnmarshaller();
-		}
-		catch (JAXBException e) {
+		} catch (JAXBException e) {
 			throw ExceptionExtUtils.unchecked(e);
 		}
 	}

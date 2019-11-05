@@ -15,11 +15,11 @@ public class IPUtilTest {
 		Assertions.assertFalse(IpUtil.isValidIpv4("256.168.0.1"));
 
 		Assertions.assertTrue(
-				IpUtil.isValidIpv6("2001:0db8:85a3:0000:0000:8a2e:0370:7334"));
+			IpUtil.isValidIpv6("2001:0db8:85a3:0000:0000:8a2e:0370:7334"));
 		Assertions.assertTrue(IpUtil.isValidIpv6("2001:db8:85a3:0:0:8A2E:0370:7334"));
 		Assertions.assertTrue(IpUtil.isValidIpv6("0:0:0:0:0:0:0:0"));
 		Assertions.assertFalse(
-				IpUtil.isValidIpv6("02001:0db8:85a3:0000:0000:8a2e:0370:7334"));
+			IpUtil.isValidIpv6("02001:0db8:85a3:0000:0000:8a2e:0370:7334"));
 	}
 
 	@Test
@@ -39,16 +39,16 @@ public class IPUtilTest {
 		assertThat(IpUtil.fromInt(-1062731774).getHostAddress()).isEqualTo("192.168.0.2");
 
 		assertThat(IpUtil.fromIpString("192.168.0.1").getHostAddress())
-				.isEqualTo("192.168.0.1");
+			.isEqualTo("192.168.0.1");
 		assertThat(IpUtil.fromIpString("192.168.0.2").getHostAddress())
-				.isEqualTo("192.168.0.2");
+			.isEqualTo("192.168.0.2");
 		assertThat(IpUtil.fromIpv4String("192.168.0.1").getHostAddress())
-				.isEqualTo("192.168.0.1");
+			.isEqualTo("192.168.0.1");
 		assertThat(IpUtil.fromIpv4String("192.168.0.2").getHostAddress())
-				.isEqualTo("192.168.0.2");
+			.isEqualTo("192.168.0.2");
 
 		assertThat(IpUtil.toInt(IpUtil.fromIpString("192.168.0.1")))
-				.isEqualTo(-1062731775);
+			.isEqualTo(-1062731775);
 	}
 
 }

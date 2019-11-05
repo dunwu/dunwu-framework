@@ -1,6 +1,7 @@
 package io.github.dunwu.util.io;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import io.github.dunwu.util.SystemExtUtils;
 import io.github.dunwu.util.text.TextUtil;
 import org.apache.commons.io.FileUtils;
@@ -17,10 +18,12 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 关于文件的工具集. 主要是调用JDK自带的Files工具类，少量代码调用Guava Files。 固定encoding为UTF8. 1.文件读写 2.文件及目录操作
@@ -40,10 +43,6 @@ public class FileExtUtils extends FileUtils {
 			StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
 			writer.append(data);
 		}
-	}
-
-	public static Path getPath(String filePath) {
-		return Paths.get(filePath);
 	}
 
 	/**
@@ -94,6 +93,13 @@ public class FileExtUtils extends FileUtils {
 	}
 
 	/**
+	 * 判断文件是否存在
+	 */
+	public static boolean isFileExists(File file) {
+		return isFileExists(file.toPath());
+	}
+
+	/**
 	 * 删除文件. 如果文件不存在或者是目录，则不做修改
 	 */
 	public static void deleteFile(Path path) throws IOException {
@@ -118,22 +124,12 @@ public class FileExtUtils extends FileUtils {
 	/**
 	 * 判断文件是否存在
 	 */
-	public static boolean isFileExists(File file) {
-		return isFileExists(file.toPath());
-	}
-
-	/**
-	 * 判断文件是否存在
-	 */
 	public static boolean isFileExists(String fileName) {
 		return isFileExists(getPath(fileName));
 	}
 
-	/**
-	 * 判断目录是否存在
-	 */
-	public static boolean isDirectoryExists(Path dirPath) {
-		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
+	public static Path getPath(String filePath) {
+		return Paths.get(filePath);
 	}
 
 	/**
@@ -141,6 +137,13 @@ public class FileExtUtils extends FileUtils {
 	 */
 	public static boolean isDirectoryExists(String dirPath) {
 		return isDirectoryExists(getPath(dirPath));
+	}
+
+	/**
+	 * 判断目录是否存在
+	 */
+	public static boolean isDirectoryExists(Path dirPath) {
+		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
 	}
 
 	/**
@@ -319,43 +322,90 @@ public class FileExtUtils extends FileUtils {
 	 * 前序递归列出所有文件, 包含文件与目录，及根目录本身. 前序即先列出父目录，在列出子目录. 如要后序遍历, 直接使用Files.fileTreeTraverser()
 	 */
 	public static List<File> listAll(File rootDir) {
-		return com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(rootDir).toList();
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(com.google.common.io.Files.isFile()).collect(Collectors.toList());
 	}
 
 	/**
 	 * 前序递归列出所有文件, 只包含文件.
 	 */
 	public static List<File> listFile(File rootDir) {
-		return com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(rootDir).filter(
-			com.google.common.io.Files.isFile())
-			.toList();
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(com.google.common.io.Files.isFile()).collect(Collectors.toList());
 	}
 
 	/**
 	 * 前序递归列出所有文件, 列出后缀名匹配的文件. （后缀名不包含.）
 	 */
-	public static List<File> listFileWithExtension(final File rootDir,
-		final String extension) {
-		return com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(rootDir)
-			.filter(new FileExtensionFilter(extension)).toList();
+	public static List<File> listFileWithExtension(final File rootDir, final String extension) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new FileExtensionFilter(extension)).collect(Collectors.toList());
 	}
 
 	/**
 	 * 前序递归列出所有文件, 列出文件名匹配通配符的文件 如 ("/a/b/hello.txt", "he*") 将被返回
 	 */
-	public static List<File> listFileWithWildcardFileName(final File rootDir,
-		final String fileNamePattern) {
-		return com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(rootDir)
-			.filter(new WildcardFileNameFilter(fileNamePattern)).toList();
+	public static List<File> listFileWithWildcardFileName(final File rootDir, final String fileNamePattern) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new WildcardFileNameFilter(fileNamePattern)).collect(Collectors.toList());
 	}
 
 	/**
 	 * 前序递归列出所有文件, 列出文件名匹配正则表达式的文件 如 ("/a/b/hello.txt", "he.*\.txt") 将被返回
 	 */
-	public static List<File> listFileWithRegexFileName(final File rootDir,
-		final String regexFileNamePattern) {
-		return com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(rootDir)
-			.filter(new RegexFileNameFilter(regexFileNamePattern)).toList();
+	public static List<File> listFileWithRegexFileName(final File rootDir, final String regexFileNamePattern) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new RegexFileNameFilter(regexFileNamePattern)).collect(Collectors.toList());
+	}
+
+	/**
+	 * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
+	 */
+	public static String normalizePath(String path) {
+		if (File.separator.equals(SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR)
+			&& StringUtils.indexOf(path,
+			SystemExtUtils.LINUX_FILE_PATH_SEPARATOR) != -1) {
+			return StringUtils.replaceChars(path,
+				SystemExtUtils.LINUX_FILE_PATH_SEPARATOR,
+				SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR);
+		}
+		return path;
+	}
+
+	/**
+	 * 以拼接路径名
+	 */
+	public static String concat(String baseName, String... appendName) {
+		if (appendName.length == 0) {
+			return baseName;
+		}
+
+		StringBuilder concatName = new StringBuilder();
+		if (StringUtils.endsWith(baseName, File.separator)) {
+			concatName.append(baseName).append(appendName[0]);
+		} else {
+			concatName.append(baseName).append(File.separator).append(appendName[0]);
+		}
+
+		if (appendName.length > 1) {
+			for (int i = 1; i < appendName.length; i++) {
+				concatName.append(File.separator).append(appendName[i]);
+			}
+		}
+
+		return concatName.toString();
+	}
+
+	/**
+	 * 获得参数clazz所在的Jar文件的绝对路径
+	 */
+	public static String getJarPath(Class<?> clazz) {
+		return clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
 	}
 
 	/**
@@ -409,56 +459,9 @@ public class FileExtUtils extends FileUtils {
 
 		@Override
 		public boolean apply(File file) {
-			return file.isFile()
-				&& extension.equals(FileExtUtils.getFileExtension(file));
+			return file.isFile() && extension.equals(FileExtUtils.getFileExtension(file));
 		}
 
-	}
-
-	/**
-	 * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
-	 */
-	public static String normalizePath(String path) {
-		if (File.separator.equals(SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR)
-			&& StringUtils.indexOf(path,
-			SystemExtUtils.LINUX_FILE_PATH_SEPARATOR) != -1) {
-			return StringUtils.replaceChars(path,
-				SystemExtUtils.LINUX_FILE_PATH_SEPARATOR,
-				SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR);
-		}
-		return path;
-	}
-
-	/**
-	 * 以拼接路径名
-	 */
-	public static String concat(String baseName, String... appendName) {
-		if (appendName.length == 0) {
-			return baseName;
-		}
-
-		StringBuilder concatName = new StringBuilder();
-		if (StringUtils.endsWith(baseName, File.separator)) {
-			concatName.append(baseName).append(appendName[0]);
-		} else {
-			concatName.append(baseName).append(File.separator).append(appendName[0]);
-		}
-
-		if (appendName.length > 1) {
-			for (int i = 1; i < appendName.length; i++) {
-				concatName.append(File.separator).append(appendName[i]);
-			}
-		}
-
-		return concatName.toString();
-	}
-
-
-	/**
-	 * 获得参数clazz所在的Jar文件的绝对路径
-	 */
-	public static String getJarPath(Class<?> clazz) {
-		return clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
 	}
 
 }

@@ -52,6 +52,7 @@ public class Concurrents {
 
 	/**
 	 * 返回采样器.
+	 *
 	 * @param selectPercent 采样率，在0-100 之间，可以有小数位
 	 */
 	public static Sampler sampler(double selectPercent) {

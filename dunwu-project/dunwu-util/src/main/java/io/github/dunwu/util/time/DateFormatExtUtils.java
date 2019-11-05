@@ -38,16 +38,18 @@ public class DateFormatExtUtils extends DateFormatUtils {
 	// parseDate
 	// -------------------------------------------------------------------------------------------------
 
+	public static Date parseDate(final DatePattern datePattern, final String dateString)
+		throws ParseException {
+		return parseDate(datePattern.pattern(), dateString);
+	}
+
 	/**
 	 * 分析日期字符串, 仅用于pattern不固定的情况. 否则直接使用DateFormats中封装好的FastDateFormat. FastDateFormat.getInstance()
 	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
 	 */
-	public static Date parseDate(final String pattern, final String dateString) throws ParseException {
+	public static Date parseDate(final String pattern, final String dateString)
+		throws ParseException {
 		return FastDateFormat.getInstance(pattern).parse(dateString);
-	}
-
-	public static Date parseDate(final DatePattern datePattern, final String dateString) throws ParseException {
-		return parseDate(datePattern.pattern(), dateString);
 	}
 
 	// formatDuration
@@ -77,7 +79,8 @@ public class DateFormatExtUtils extends DateFormatUtils {
 	 *
 	 * @see DurationFormatUtils
 	 */
-	public static String formatDurationOnSecond(final Date startDate, final Date endDate) {
+	public static String formatDurationOnSecond(final Date startDate,
+		final Date endDate) {
 		return DurationFormatUtils.formatDuration(endDate.getTime() - startDate.getTime(),
 			"HH:mm:ss");
 	}
@@ -136,12 +139,14 @@ public class DateFormatExtUtils extends DateFormatUtils {
 
 		// 以T分隔日期和时间，并带时区信息，符合ISO8601规范
 		PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"),
-		PATTERN_ISO_ON_SECOND("yyyy-MM-dd'T'HH:mm:ssZZ"),
+		PATTERN_ISO_ON_SECOND(
+			"yyyy-MM-dd'T'HH:mm:ssZZ"),
 		PATTERN_ISO_ON_DATE("yyyy-MM-dd"),
 
 		// 以空格分隔日期和时间，不带时区信息
 		PATTERN_DEFAULT("yyyy-MM-dd HH:mm:ss.SSS"),
-		PATTERN_DEFAULT_ON_SECOND("yyyy-MM-dd HH:mm:ss");
+		PATTERN_DEFAULT_ON_SECOND(
+			"yyyy-MM-dd HH:mm:ss");
 
 		private String pattern;
 

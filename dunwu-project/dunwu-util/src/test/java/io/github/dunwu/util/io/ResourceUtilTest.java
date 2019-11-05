@@ -15,10 +15,10 @@ public class ResourceUtilTest {
 		// getResoruce
 		assertThat(ResourceUtil.toString("test.txt")).contains("ABCDEFG");
 		assertThat(ResourceUtil.toString(ResourceUtilTest.class, "/test.txt"))
-				.contains("ABCDEFG");
+			.contains("ABCDEFG");
 		assertThat(ResourceUtil.toLines("test.txt")).containsExactly("ABCDEFG", "ABC");
 		assertThat(ResourceUtil.toLines(ResourceUtilTest.class, "/test.txt"))
-				.containsExactly("ABCDEFG", "ABC");
+			.containsExactly("ABCDEFG", "ABC");
 
 		// getResoruce 处理重复的资源
 		System.out.println(ResourceUtil.asUrl("META-INF/MANIFEST.MF"));
@@ -26,12 +26,12 @@ public class ResourceUtilTest {
 
 		// getResources
 		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF").size())
-				.isGreaterThan(1);
+			.isGreaterThan(1);
 
 		System.out.println(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF"));
 
 		assertThat(ResourceUtil.getResourcesQuietly("META-INF/MANIFEST.MF",
-				ResourceUtilTest.class.getClassLoader()).size()).isGreaterThan(1);
+			ResourceUtilTest.class.getClassLoader()).size()).isGreaterThan(1);
 	}
 
 	@Test

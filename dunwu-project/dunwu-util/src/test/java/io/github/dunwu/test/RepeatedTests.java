@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 class RepeatedTests {
 
 	@BeforeEach
@@ -12,7 +13,7 @@ class RepeatedTests {
 		int totalRepetitions = repetitionInfo.getTotalRepetitions();
 		String methodName = testInfo.getTestMethod().get().getName();
 		System.out.println(String.format("About to execute repetition %d of %d for %s", //
-				currentRepetition, totalRepetitions, methodName));
+			currentRepetition, totalRepetitions, methodName));
 	}
 
 	@RepeatedTest(10)

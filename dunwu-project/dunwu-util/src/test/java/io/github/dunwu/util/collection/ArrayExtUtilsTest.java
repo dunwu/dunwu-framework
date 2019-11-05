@@ -20,12 +20,12 @@ class ArrayExtUtilsTest {
 		assertThat(arrays).containsExactly("a", "b", "c", "d", "e", "g", "i");
 		ArrayExtUtils.shuffle(arrays);
 		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-				"should not be equal to origin array");
+			"should not be equal to origin array");
 		// System.out.println(Arrays.toString(arrays));
 		Arrays.sort(arrays);
 		ArrayExtUtils.shuffle(arrays, RandomExtUtils.secureRandom());
 		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-				"should not be equal to origin array");
+			"should not be equal to origin array");
 	}
 
 	@Test
@@ -36,8 +36,7 @@ class ArrayExtUtilsTest {
 		try {
 			list.add("a");
 			fail("should fail before");
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 

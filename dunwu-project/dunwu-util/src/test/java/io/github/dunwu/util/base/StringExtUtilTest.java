@@ -9,7 +9,8 @@ class StringExtUtilTest {
 
 	@Test
 	void replace() {
-		Assertions.assertThat(StringExtUtil.replaceFirst("abbc", 'b', 'c')).isEqualTo("acbc");
+		Assertions.assertThat(StringExtUtil.replaceFirst("abbc", 'b', 'c'))
+			.isEqualTo("acbc");
 		assertThat(StringExtUtil.replaceFirst("abcc", 'c', 'c')).isEqualTo("abcc");
 		assertThat(StringExtUtil.replaceFirst("", 'c', 'c')).isEqualTo("");
 		assertThat(StringExtUtil.replaceFirst(null, 'c', 'c')).isNull();

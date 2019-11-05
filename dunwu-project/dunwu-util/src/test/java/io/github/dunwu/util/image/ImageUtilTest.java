@@ -21,7 +21,7 @@ class ImageUtilTest {
 	static final String[] INPUT_FILE = { "D:\\Temp\\logo.png", "D:\\Temp\\logo2.png" };
 
 	static final String[] OUTPUT_FILE = { "D:\\Temp\\new-logo.png",
-			"D:\\Temp\\new-logo2.png" };
+		"D:\\Temp\\new-logo2.png" };
 
 	@Test
 	@Disabled("展示如何输出图片")
@@ -30,8 +30,7 @@ class ImageUtilTest {
 		params.setWidth(50).setHeight(50);
 		try {
 			ImageUtil.toFile(INPUT_FILE[0], OUTPUT_FILE[0], params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -43,8 +42,7 @@ class ImageUtilTest {
 		params.setWidth(50).setHeight(50);
 		try {
 			ImageUtil.toFile(new File(INPUT_FILE[0]), new File(OUTPUT_FILE[0]), params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -57,8 +55,7 @@ class ImageUtilTest {
 		try {
 			InputStream is = new FileInputStream(new File(INPUT_FILE[0]));
 			ImageUtil.toFile(is, new File(OUTPUT_FILE[0]), params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -71,8 +68,7 @@ class ImageUtilTest {
 		try {
 			BufferedImage input = ImageIO.read(new File(INPUT_FILE[0]));
 			ImageUtil.toFile(input, new File(OUTPUT_FILE[0]), params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -95,8 +91,7 @@ class ImageUtilTest {
 
 		try {
 			ImageUtil.toFiles(input, output, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -108,8 +103,7 @@ class ImageUtilTest {
 		try {
 			OutputStream os = new FileOutputStream(new File(OUTPUT_FILE[0]));
 			ImageUtil.toOutputStream(INPUT_FILE[0], os, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -121,8 +115,7 @@ class ImageUtilTest {
 		try {
 			OutputStream os = new FileOutputStream(new File(OUTPUT_FILE[0]));
 			ImageUtil.toOutputStream(new File(INPUT_FILE[0]), os, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -135,8 +128,7 @@ class ImageUtilTest {
 			InputStream is = new FileInputStream(new File(INPUT_FILE[0]));
 			OutputStream os = new FileOutputStream(new File(OUTPUT_FILE[0]));
 			ImageUtil.toOutputStream(is, os, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -150,8 +142,7 @@ class ImageUtilTest {
 			OutputStream os = new FileOutputStream(new File(OUTPUT_FILE[0]));
 			BufferedImage image = ImageIO.read(is);
 			ImageUtil.toOutputStream(image, os, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -174,8 +165,7 @@ class ImageUtilTest {
 			}
 
 			ImageUtil.toOutputStreams(input, output, params);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -8,8 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 由程序触发的ThreadDump，打印到日志中. 因为ThreadDump本身会造成JVM停顿，所以加上了开关和最少间隔时间的选项(默认不限制)
- * 因为ThreadInfo的toString()最多只会打印8层的StackTrace，所以加上了最大打印层数的选项.(默认为8)
+ * 由程序触发的ThreadDump，打印到日志中. 因为ThreadDump本身会造成JVM停顿，所以加上了开关和最少间隔时间的选项(默认不限制) 因为ThreadInfo的toString()最多只会打印8层的StackTrace，所以加上了最大打印层数的选项.(默认为8)
  */
 public class ThreadDumpper {
 
@@ -44,6 +43,7 @@ public class ThreadDumpper {
 
 	/**
 	 * 符合条件则打印线程栈.
+	 *
 	 * @param reasonMsg 发生ThreadDump的原因
 	 */
 	public void threadDumpIfNeed(String reasonMsg) {
@@ -54,14 +54,13 @@ public class ThreadDumpper {
 		synchronized (this) {
 			if (System.currentTimeMillis() - lastThreadDumpTime < leastIntervalMills) {
 				return;
-			}
-			else {
+			} else {
 				lastThreadDumpTime = System.currentTimeMillis();
 			}
 		}
 
 		logger.info("Thread dump by ThreadDumpper"
-				+ (reasonMsg != null ? (" for " + reasonMsg) : ""));
+			+ (reasonMsg != null ? (" for " + reasonMsg) : ""));
 
 		Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
 		// 两条日志间的时间间隔，是VM被thread dump堵塞的时间.
@@ -76,13 +75,12 @@ public class ThreadDumpper {
 	}
 
 	/**
-	 * 打印全部的stack，重新实现threadInfo的toString()函数，因为默认最多只打印8层的stack.
-	 * 同时，不再打印lockedMonitors和lockedSynchronizers.
+	 * 打印全部的stack，重新实现threadInfo的toString()函数，因为默认最多只打印8层的stack. 同时，不再打印lockedMonitors和lockedSynchronizers.
 	 */
 	private String dumpThreadInfo(Thread thread, StackTraceElement[] stackTrace,
-			StringBuilder sb) {
+		StringBuilder sb) {
 		sb.append('\"').append(thread.getName()).append("\" Id=").append(thread.getId())
-				.append(' ').append(thread.getState());
+			.append(' ').append(thread.getState());
 		sb.append('\n');
 		int i = 0;
 		for (; i < Math.min(maxStackLevel, stackTrace.length); i++) {

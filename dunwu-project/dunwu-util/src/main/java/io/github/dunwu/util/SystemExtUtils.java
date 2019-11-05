@@ -20,10 +20,20 @@ public class SystemExtUtils extends SystemUtils {
 
 	public static final String LINUX_FILE_PATH_SEPARATOR = "/";
 
-	private static AtomicInteger shutdownHookThreadIndex = new AtomicInteger(0);
+	// Java Version
+	// -------------------------------------------------------------------------------------------------
+	private static final float JAVA_VERSION_VALUE = Float
+		.parseFloat(JAVA_SPECIFICATION_VERSION);
 
 	// ManagementFactory 信息
 	// -------------------------------------------------------------------------------------------------
+
+	private static AtomicInteger shutdownHookThreadIndex = new AtomicInteger(0);
+
+	// private constructor
+	// -------------------------------------------------------------------------------------------------
+	private SystemExtUtils() {
+	}
 
 	/**
 	 * 获得当前进程的 PID，若失败时返回-1
@@ -43,6 +53,9 @@ public class SystemExtUtils extends SystemUtils {
 		}
 	}
 
+	// Runtime 信息
+	// -------------------------------------------------------------------------------------------------
+
 	/**
 	 * 返回应用启动到现在的毫秒数
 	 */
@@ -59,7 +72,7 @@ public class SystemExtUtils extends SystemUtils {
 		return StringUtils.join(vmArguments, " ");
 	}
 
-	// Runtime 信息
+	// StackTrace 信息
 	// -------------------------------------------------------------------------------------------------
 
 	/**
@@ -76,9 +89,6 @@ public class SystemExtUtils extends SystemUtils {
 		Runtime.getRuntime().addShutdownHook(new Thread(runnable,
 			"Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
 	}
-
-	// StackTrace 信息
-	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 通过StackTrace，获得调用者的类名. 获取StackTrace有消耗，不要滥用
@@ -132,11 +142,6 @@ public class SystemExtUtils extends SystemUtils {
 		}
 	}
 
-	// Java Version
-	// -------------------------------------------------------------------------------------------------
-	private static final float JAVA_VERSION_VALUE = Float
-		.parseFloat(JAVA_SPECIFICATION_VERSION);
-
 	public static String getJavaVersion() {
 		return JAVA_SPECIFICATION_VERSION;
 	}
@@ -159,11 +164,6 @@ public class SystemExtUtils extends SystemUtils {
 
 	public static boolean isGreaterThanJava8() {
 		return JAVA_VERSION_VALUE > 1.8f;
-	}
-
-	// private constructor
-	// -------------------------------------------------------------------------------------------------
-	private SystemExtUtils() {
 	}
 
 }

@@ -14,13 +14,14 @@ public class StringExtUtil extends StringUtils {
 
 	/**
 	 * 替换第一个符合匹配条件的字符
-	 * @param text 目标字符串
-	 * @param search 查找的字符
+	 *
+	 * @param text    目标字符串
+	 * @param search  查找的字符
 	 * @param replace 替换的字符
 	 * @return 替换后的字符串
 	 */
 	public static String replaceFirst(final String text, final char search,
-			final char replace) {
+		final char replace) {
 		if (isBlank(text)) {
 			return null;
 		}
@@ -35,13 +36,14 @@ public class StringExtUtil extends StringUtils {
 
 	/**
 	 * 替换最后一个符合匹配条件的字符
-	 * @param text 目标字符串
-	 * @param search 查找的字符
+	 *
+	 * @param text    目标字符串
+	 * @param search  查找的字符
 	 * @param replace 替换的字符
 	 * @return 替换后的字符串
 	 */
 	public static String replaceLast(final String text, final char search,
-			final char replace) {
+		final char replace) {
 		if (isBlank(text)) {
 			return null;
 		}

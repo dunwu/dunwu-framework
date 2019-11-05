@@ -75,29 +75,47 @@ class DateExtUtilsTest {
 		Date endMinute = new Date(new Date(117, 0, 21, 12, 12, 59).getTime() + 999);
 		Date nextMinute = new Date(117, 0, 21, 12, 13, 0);
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfYear(date), beginYear)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfYear(date), endYear)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextYear(date), nextYear)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfYear(date), beginYear))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfYear(date), endYear))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextYear(date), nextYear))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfMonth(date), beginMonth)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfMonth(date), endMonth)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextMonth(date), nextMonth)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfMonth(date), beginMonth))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfMonth(date), endMonth))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextMonth(date), nextMonth))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfWeek(date), beginWeek)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfWeek(date), endWeek)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextWeek(date), nextWeek)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfWeek(date), beginWeek))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfWeek(date), endWeek))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextWeek(date), nextWeek))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfDate(date), beginDate)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfDate(date), endDate)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextDate(date), nextDate)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfDate(date), beginDate))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfDate(date), endDate))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextDate(date), nextDate))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfHour(date), beginHour)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfHour(date), endHour)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextHour(date), nextHour)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfHour(date), beginHour))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfHour(date), endHour))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextHour(date), nextHour))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfMinute(date), beginMinute)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfMinute(date), endMinute)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextMinute(date), nextMinute)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.beginOfMinute(date), beginMinute))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.endOfMinute(date), endMinute))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.nextMinute(date), nextMinute))
+			.isTrue();
 	}
 
 	@Test
@@ -118,23 +136,36 @@ class DateExtUtilsTest {
 		Date expectDate11 = new Date(106, 10, 8);
 		Date expectDate12 = new Date(106, 9, 25);
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addDays(date, 2), expectDate1)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addDays(date, -1), expectDate2)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addDays(date, 2), expectDate1))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addDays(date, -1), expectDate2))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addWeeks(date, 1), expectDate11)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addWeeks(date, -1), expectDate12)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addWeeks(date, 1), expectDate11))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addWeeks(date, -1), expectDate12))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMonths(date, 1), expectDate3)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMonths(date, -3), expectDate4)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMonths(date, 1), expectDate3))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMonths(date, -3), expectDate4))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addHours(date, 1), expectDate5)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addHours(date, -2), expectDate6)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addHours(date, 1), expectDate5))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addHours(date, -2), expectDate6))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMinutes(date, 1), expectDate7)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMinutes(date, -2), expectDate8)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMinutes(date, 1), expectDate7))
+			.isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addMinutes(date, -2), expectDate8))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addSeconds(date, 1), expectDate9)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.addSeconds(date, -2), expectDate10)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.addSeconds(date, 1), expectDate9))
+			.isTrue();
+		assertThat(
+			DateExtUtils.isSameDay(DateExtUtils.addSeconds(date, -2), expectDate10))
+			.isTrue();
 	}
 
 	@Test
@@ -147,13 +178,23 @@ class DateExtUtilsTest {
 		Date expectedDate5 = new Date(116, 10, 1, 10, 9, 1);
 		Date expectedDate6 = new Date(116, 10, 1, 10, 10, 10);
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setDays(date, 3), expectedDate)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setMonths(date, 11), expectedDate2)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setYears(date, 2017), expectedDate3)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.setDays(date, 3), expectedDate))
+			.isTrue();
+		assertThat(
+			DateExtUtils.isSameDay(DateExtUtils.setMonths(date, 11), expectedDate2))
+			.isTrue();
+		assertThat(
+			DateExtUtils.isSameDay(DateExtUtils.setYears(date, 2017), expectedDate3))
+			.isTrue();
 
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setHours(date, 9), expectedDate4)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setMinutes(date, 9), expectedDate5)).isTrue();
-		assertThat(DateExtUtils.isSameDay(DateExtUtils.setSeconds(date, 10), expectedDate6)).isTrue();
+		assertThat(DateExtUtils.isSameDay(DateExtUtils.setHours(date, 9), expectedDate4))
+			.isTrue();
+		assertThat(
+			DateExtUtils.isSameDay(DateExtUtils.setMinutes(date, 9), expectedDate5))
+			.isTrue();
+		assertThat(
+			DateExtUtils.isSameDay(DateExtUtils.setSeconds(date, 10), expectedDate6))
+			.isTrue();
 	}
 
 	@Test

@@ -37,12 +37,10 @@ public class ObjectExtUtils extends ObjectUtils {
 			Class<?> componentType = type.getComponentType();
 			if (componentType.isPrimitive()) {
 				return primitiveArrayToString(value, componentType);
-			}
-			else {
+			} else {
 				return objectArrayToString(value);
 			}
-		}
-		else if (value instanceof Iterable) {
+		} else if (value instanceof Iterable) {
 			// 因为Collection的处理也是默认调用元素的toString(),
 			// 为了处理元素是数组的情况，同样需要重载
 			return collectionToString((Iterable) value);
@@ -51,34 +49,27 @@ public class ObjectExtUtils extends ObjectUtils {
 		return value.toString();
 	}
 
-	private static String primitiveArrayToString(final Object value, final Class componentType) {
+	private static String primitiveArrayToString(final Object value,
+		final Class componentType) {
 		StringBuilder sb = new StringBuilder();
 
 		if (componentType == int.class) {
 			sb.append(Arrays.toString((int[]) value));
-		}
-		else if (componentType == long.class) {
+		} else if (componentType == long.class) {
 			sb.append(Arrays.toString((long[]) value));
-		}
-		else if (componentType == double.class) {
+		} else if (componentType == double.class) {
 			sb.append(Arrays.toString((double[]) value));
-		}
-		else if (componentType == float.class) {
+		} else if (componentType == float.class) {
 			sb.append(Arrays.toString((float[]) value));
-		}
-		else if (componentType == boolean.class) {
+		} else if (componentType == boolean.class) {
 			sb.append(Arrays.toString((boolean[]) value));
-		}
-		else if (componentType == short.class) {
+		} else if (componentType == short.class) {
 			sb.append(Arrays.toString((short[]) value));
-		}
-		else if (componentType == byte.class) {
+		} else if (componentType == byte.class) {
 			sb.append(Arrays.toString((byte[]) value));
-		}
-		else if (componentType == char.class) {
+		} else if (componentType == char.class) {
 			sb.append(Arrays.toString((char[]) value));
-		}
-		else {
+		} else {
 			throw new IllegalArgumentException("invalid array type");
 		}
 

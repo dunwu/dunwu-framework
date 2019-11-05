@@ -40,7 +40,7 @@ public class NetUtilTest {
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = ServerSocketFactory.getDefault().createServerSocket(port, 1,
-					InetAddress.getByName("localhost"));
+				InetAddress.getByName("localhost"));
 
 			assertThat(NetUtil.isPortAvailable(port)).isFalse();
 
@@ -50,12 +50,10 @@ public class NetUtilTest {
 			try {
 				int port5 = NetUtil.findRandomAvailablePort(port, port);
 				fail("should fail before");
-			}
-			catch (Throwable t) {
+			} catch (Throwable t) {
 				assertThat(t).isInstanceOf(IllegalStateException.class);
 			}
-		}
-		finally {
+		} finally {
 			IOUtil.close(serverSocket);
 		}
 	}

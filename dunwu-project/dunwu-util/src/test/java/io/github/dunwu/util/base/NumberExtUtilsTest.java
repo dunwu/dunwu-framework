@@ -12,12 +12,12 @@ class NumberExtUtilsTest {
 	void toBytes() {
 		byte[] bytes = NumberExtUtils.toBytes(1);
 		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0,
-				(byte) 1);
+			(byte) 1);
 		assertThat(NumberExtUtils.parseInt(bytes)).isEqualTo(1);
 
 		byte[] bytes2 = NumberExtUtils.toBytes(1024L);
 		assertThat(bytes2).hasSize(8).containsSequence((byte) 0, (byte) 0, (byte) 0,
-				(byte) 0, (byte) 0, (byte) 0, (byte) 4, (byte) 0);
+			(byte) 0, (byte) 0, (byte) 0, (byte) 4, (byte) 0);
 		assertThat(NumberExtUtils.parseLong(bytes2)).isEqualTo(1024L);
 
 		byte[] bytes3 = NumberExtUtils.toBytes(1.123d);
@@ -32,8 +32,7 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.toInt32(Integer.MAX_VALUE + 1L);
 			fail("should fail here");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			assertThat(e).isInstanceOf(IllegalArgumentException.class);
 		}
 	}
@@ -55,15 +54,13 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.parseInt("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		try {
 			NumberExtUtils.parseInt((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.toInt("12A", 123)).isEqualTo(123);
@@ -72,17 +69,15 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.parseLong("12A");
 			fail("shoud fail here");
-		}
-		catch (
+		} catch (
 
-		NumberFormatException e) {
+			NumberFormatException e) {
 
 		}
 		try {
 			NumberExtUtils.parseLong((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.toLong("12A", 123)).isEqualTo(123L);
@@ -92,16 +87,14 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.parseDouble("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
 		try {
 			NumberExtUtils.parseDouble((String) null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.toDouble("12A", 123.1)).isEqualTo(123.1);
@@ -110,8 +103,7 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.toIntObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
@@ -123,8 +115,7 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.toLongObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.toLongObject("12A", 123L)).isEqualTo(123L);
@@ -134,8 +125,7 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.toDoubleObject("12A");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.toDoubleObject("12A", 123.1)).isEqualTo(123.1);
@@ -146,16 +136,14 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.hexToIntObject("0xHI");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 
 		try {
 			NumberExtUtils.hexToIntObject(null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.hexToIntObject("0xHI", 123)).isEqualTo(123);
@@ -166,15 +154,13 @@ class NumberExtUtilsTest {
 		try {
 			NumberExtUtils.hexToLongObject("0xHI");
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		try {
 			NumberExtUtils.hexToLongObject(null);
 			fail("shoud fail here");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 
 		}
 		assertThat(NumberExtUtils.hexToLongObject("0xHI", 123L)).isEqualTo(123L);
@@ -197,15 +183,15 @@ class NumberExtUtilsTest {
 	@Test
 	void numberToEnWords() {
 		Assertions.assertEquals("One Hundred Twenty Three",
-				NumberExtUtils.intToEnWords(123));
+			NumberExtUtils.intToEnWords(123));
 		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five",
-				NumberExtUtils.intToEnWords(12345));
+			NumberExtUtils.intToEnWords(12345));
 		Assertions.assertEquals(
-				"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
-				NumberExtUtils.intToEnWords(1234567));
+			"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+			NumberExtUtils.intToEnWords(1234567));
 		Assertions.assertEquals(
-				"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
-				NumberExtUtils.intToEnWords(1234567891));
+			"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
+			NumberExtUtils.intToEnWords(1234567891));
 	}
 
 }

@@ -30,13 +30,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
- * 从Jodd整体复制，部分指定了index的操作不支持，如 add(index, element)
- * 修改包括：改进Comparator泛型定义，findInsertionPoint的位移改进
- * https://github.com/oblac/jodd/blob/master/jodd-core/src/main/java/jodd/util/collection/SortedArrayList.java
- * An extension of <code>ArrayList</code> that insures that all of the items added are
- * sorted. <b>This breaks original list contract!</b>. A binary search method is used to
- * provide a quick way to auto sort this list.Note: Not all methods for adding and
- * removing elements are supported.
+ * 从Jodd整体复制，部分指定了index的操作不支持，如 add(index, element) 修改包括：改进Comparator泛型定义，findInsertionPoint的位移改进
+ * https://github.com/oblac/jodd/blob/master/jodd-core/src/main/java/jodd/util/collection/SortedArrayList.java An
+ * extension of <code>ArrayList</code> that insures that all of the items added are sorted. <b>This breaks original list
+ * contract!</b>. A binary search method is used to provide a quick way to auto sort this list.Note: Not all methods for
+ * adding and removing elements are supported.
  */
 public final class SortedArrayList<E> extends ArrayList<E> {
 
@@ -87,8 +85,7 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 
 			if (delta > 0) {
 				high = mid - 1;
-			}
-			else {
+			} else {
 				low = mid + 1;
 			}
 		}
@@ -127,11 +124,10 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 	}
 
 	/**
-	 * Adds an Object to sorted list. Object is inserted at correct place, found using
-	 * binary search. If the same item exist, it will be put to the end of the range.
+	 * Adds an Object to sorted list. Object is inserted at correct place, found using binary search. If the same item
+	 * exist, it will be put to the end of the range.
 	 * <p>
-	 * This method breaks original list contract since objects are not added at the list
-	 * end, but in sorted manner.
+	 * This method breaks original list contract since objects are not added at the list end, but in sorted manner.
 	 */
 	@Override
 	public boolean add(E o) {

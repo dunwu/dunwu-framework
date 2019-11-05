@@ -18,37 +18,39 @@ public class MoreMaps {
 	 * 创建Key为弱引用的ConcurrentMap，Key对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
 	 */
 	public static <K, V> ConcurrentMap<K, V> createWeakKeyConcurrentMap(
-			int initialCapacity, int concurrencyLevel) {
+		int initialCapacity, int concurrencyLevel) {
 		return new MapMaker().weakKeys().initialCapacity(initialCapacity)
-				.concurrencyLevel(concurrencyLevel).makeMap();
+			.concurrencyLevel(concurrencyLevel).makeMap();
 	}
 
 	/**
 	 * 创建Value为弱引用的ConcurrentMap，Value对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
 	 */
 	public static <K, V> ConcurrentMap<K, V> createWeakValueConcurrentMap(
-			int initialCapacity, int concurrencyLevel) {
+		int initialCapacity, int concurrencyLevel) {
 		return new MapMaker().weakValues().initialCapacity(initialCapacity)
-				.concurrencyLevel(concurrencyLevel).makeMap();
+			.concurrencyLevel(concurrencyLevel).makeMap();
 	}
 
 	/**
 	 * 创建值为可更改的Integer的HashMap. 可更改的Integer在更改时不需要重新创建Integer对象，节约了内存
+	 *
 	 * @param initialCapacity 建议为16
-	 * @param loadFactor 建议为0.5
+	 * @param loadFactor      建议为0.5
 	 */
 	public static <K> HashMap<K, MutableInt> createMutableIntValueMap(int initialCapacity,
-			float loadFactor) {
+		float loadFactor) {
 		return new HashMap<K, MutableInt>(initialCapacity, loadFactor);
 	}
 
 	/**
 	 * 创建值为可更改的Long的HashMap. 可更改的Long在更改时不需要重新创建Long对象，节约了内存
+	 *
 	 * @param initialCapacity 建议为16
-	 * @param loadFactor 建议为0.5
+	 * @param loadFactor      建议为0.5
 	 */
 	public static <K> HashMap<K, MutableLong> createMutableLongValueMap(
-			int initialCapacity, float loadFactor) {
+		int initialCapacity, float loadFactor) {
 		return new HashMap<K, MutableLong>(initialCapacity, loadFactor);
 	}
 
@@ -62,30 +64,31 @@ public class MoreMaps {
 	/**
 	 * 以Guava的MultiMap，实现的HashMap<E,List<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiMap无线程安全的实现.
 	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
-	 * @param expectedKeys 默认为16
+	 *
+	 * @param expectedKeys         默认为16
 	 * @param expectedValuesPerKey 默认为3
 	 */
 	public static <K, V> ArrayListMultimap<K, V> createListMultiValueMap(int expectedKeys,
-			int expectedValuesPerKey) {
+		int expectedValuesPerKey) {
 		return ArrayListMultimap.create(expectedKeys, expectedValuesPerKey);
 	}
 
 	/**
-	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全,
-	 * MultiValueMap无线程安全的实现. 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
+	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiValueMap无线程安全的实现.
+	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
 	 */
 	public static <K, V extends Comparable> SortedSetMultimap<K, V> createSortedSetMultiValueMap() {
 		return MultimapBuilder.hashKeys().treeSetValues().build();
 	}
 
 	/**
-	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全,
-	 * MultiValueMap无线程安全的实现. 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
+	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiValueMap无线程安全的实现.
+	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
 	 */
 	public static <K, V> SortedSetMultimap<K, V> createSortedSetMultiValueMap(
-			Comparator<V> comparator) {
+		Comparator<V> comparator) {
 		return (SortedSetMultimap<K, V>) MultimapBuilder.hashKeys()
-				.treeSetValues(comparator);
+			.treeSetValues(comparator);
 	}
 
 	/**

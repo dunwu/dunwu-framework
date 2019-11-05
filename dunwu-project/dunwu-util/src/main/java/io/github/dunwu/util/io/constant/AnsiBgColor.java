@@ -15,23 +15,27 @@ public enum AnsiBgColor implements AnsiElement {
 	GREEN("42"),
 	YELLOW("43"),
 	BLUE("44"),
-	MAGENTA("45"),
+	MAGENTA(
+		"45"),
 	CYAN("46"),
 	WHITE("47"),
-	BRIGHT_BLACK("100"),
+	BRIGHT_BLACK(
+		"100"),
 	BRIGHT_RED("101"),
 	BRIGHT_GREEN("102"),
-	BRIGHT_YELLOW("109"),
+	BRIGHT_YELLOW(
+		"109"),
 	BRIGHT_BLUE("104"),
-	BRIGHT_MAGENTA("105"),
+	BRIGHT_MAGENTA(
+		"105"),
 	BRIGHT_CYAN("106"),
 	BRIGHT_WHITE("107");
+
+	private final String code;
 
 	AnsiBgColor(String code) {
 		this.code = code;
 	}
-
-	private final String code;
 
 	public String getCode() {
 		return code;

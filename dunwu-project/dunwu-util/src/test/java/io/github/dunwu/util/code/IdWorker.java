@@ -39,14 +39,14 @@ public class IdWorker {
 		if (workerId > maxWorkerId || workerId < 0) {
 
 			throw new IllegalArgumentException(String.format(
-					"worker Id can't be greater than %d or less than 0", maxWorkerId));
+				"worker Id can't be greater than %d or less than 0", maxWorkerId));
 		}
 
 		if (datacenterId > maxDatacenterId || datacenterId < 0) {
 
 			throw new IllegalArgumentException(
-					String.format("datacenter Id can't be greater than %d or less than 0",
-							maxDatacenterId));
+				String.format("datacenter Id can't be greater than %d or less than 0",
+					maxDatacenterId));
 		}
 
 		this.workerId = workerId;
@@ -72,10 +72,10 @@ public class IdWorker {
 
 		if (timestamp < lastTimestamp) {
 			System.err.printf("clock is moving backwards. Rejecting requests until %d.",
-					lastTimestamp);
+				lastTimestamp);
 			throw new RuntimeException(String.format(
-					"Clock moved backwards. Refusing to generate id for %d milliseconds",
-					lastTimestamp - timestamp));
+				"Clock moved backwards. Refusing to generate id for %d milliseconds",
+				lastTimestamp - timestamp));
 		}
 
 		// 下面是说假设在同一个毫秒内，又发送了一个请求生成一个id
@@ -89,8 +89,7 @@ public class IdWorker {
 			if (sequence == 0) {
 				timestamp = tilNextMillis(lastTimestamp);
 			}
-		}
-		else {
+		} else {
 			sequence = 0;
 		}
 
@@ -101,8 +100,8 @@ public class IdWorker {
 		// 先将当前时间戳左移，放到41 bit那儿；将机房id左移放到5 bit那儿；将机器id左移放到5 bit那儿；将序号放最后12 bit
 		// 最后拼接起来成一个64 bit的二进制数字，转换成10进制就是个long型
 		return ((timestamp - twepoch) << timestampLeftShift)
-				| (datacenterId << datacenterIdShift) | (workerId << workerIdShift)
-				| sequence;
+			| (datacenterId << datacenterIdShift) | (workerId << workerIdShift)
+			| sequence;
 	}
 
 	private long timeGen() {

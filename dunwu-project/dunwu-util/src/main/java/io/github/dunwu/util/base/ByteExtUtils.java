@@ -11,8 +11,12 @@ import java.sql.Blob;
  */
 public class ByteExtUtils {
 
+	private ByteExtUtils() {
+	}
+
 	/**
 	 * Byte[] -> byte[]
+	 *
 	 * @param origin Byte[]
 	 * @return byte[]
 	 */
@@ -31,6 +35,7 @@ public class ByteExtUtils {
 
 	/**
 	 * byte[] -> Byte[]
+	 *
 	 * @param origin byte[]
 	 * @return Byte[]
 	 */
@@ -59,9 +64,6 @@ public class ByteExtUtils {
 		inBuffered.close();
 		in.close();
 		return out.toByteArray();
-	}
-
-	private ByteExtUtils() {
 	}
 
 }

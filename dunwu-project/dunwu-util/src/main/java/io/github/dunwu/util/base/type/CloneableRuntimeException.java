@@ -44,7 +44,7 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	 * 简便函数，定义静态异常时使用
 	 */
 	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
-			String throwMethod) {
+		String throwMethod) {
 		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
 		return this;
 	}
@@ -62,8 +62,7 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	public CloneableRuntimeException clone() { // NOSONAR
 		try {
 			return (CloneableRuntimeException) super.clone();
-		}
-		catch (CloneNotSupportedException e) { // NOSONAR
+		} catch (CloneNotSupportedException e) { // NOSONAR
 			return null;
 		}
 	}

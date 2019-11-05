@@ -23,8 +23,7 @@ import org.apache.commons.lang3.Validate;
 import java.util.concurrent.*;
 
 /**
- * 从Apache HttpClient 移植(2017.4)，一个Future实现类的基本框架. https://github
- * .com/apache/httpcomponents-core/blob/master/httpcore5/src/main/java/org/apache/hc/core5/concurrent
+ * 从Apache HttpClient 移植(2017.4)，一个Future实现类的基本框架. https://github .com/apache/httpcomponents-core/blob/master/httpcore5/src/main/java/org/apache/hc/core5/concurrent
  * /BasicFuture.java 不过HC用的是callback，这里用的是继承
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -108,24 +107,21 @@ public abstract class BaseFuture<T> implements Future<T> {
 
 	@Override
 	public synchronized T get(final long timeout, final TimeUnit unit)
-			throws InterruptedException, ExecutionException, TimeoutException {
+		throws InterruptedException, ExecutionException, TimeoutException {
 		Validate.notNull(unit, "Time unit");
 		final long msecs = unit.toMillis(timeout);
 		final long startTime = (msecs <= 0) ? 0 : System.currentTimeMillis();
 		long waitTime = msecs;
 		if (this.completed) {
 			return getResult();
-		}
-		else if (waitTime <= 0) {
+		} else if (waitTime <= 0) {
 			throw new TimeoutException();
-		}
-		else {
-			for (;;) {
+		} else {
+			for (; ; ) {
 				wait(waitTime);
 				if (this.completed) {
 					return getResult();
-				}
-				else {
+				} else {
 					waitTime = msecs - (System.currentTimeMillis() - startTime);
 					if (waitTime <= 0) {
 						throw new TimeoutException();

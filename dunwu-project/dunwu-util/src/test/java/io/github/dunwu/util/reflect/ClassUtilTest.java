@@ -13,59 +13,59 @@ public class ClassUtilTest {
 	@Test
 	public void getMessage() {
 		assertThat(ClassUtil.getShortClassName(ClassUtilTest.class))
-				.isEqualTo("ClassUtilTest");
+			.isEqualTo("ClassUtilTest");
 		assertThat(ClassUtil.getShortClassName(BClass.class))
-				.isEqualTo("ClassUtilTest.BClass");
+			.isEqualTo("ClassUtilTest.BClass");
 
 		assertThat(ClassUtil.getShortClassName(ClassUtilTest.class.getName()))
-				.isEqualTo("ClassUtilTest");
+			.isEqualTo("ClassUtilTest");
 		assertThat(ClassUtil.getShortClassName(BClass.class.getName()))
-				.isEqualTo("ClassUtilTest.BClass");
+			.isEqualTo("ClassUtilTest.BClass");
 
 		assertThat(ClassUtil.getPackageName(ClassUtilTest.class))
-				.isEqualTo("io.github.dunwu.utils.reflect");
+			.isEqualTo("io.github.dunwu.utils.reflect");
 		assertThat(ClassUtil.getPackageName(BClass.class))
-				.isEqualTo("io.github.dunwu.utils.reflect");
+			.isEqualTo("io.github.dunwu.utils.reflect");
 		assertThat(ClassUtil.getPackageName(ClassUtilTest.class.getName()))
-				.isEqualTo("io.github.dunwu.utils.reflect");
+			.isEqualTo("io.github.dunwu.utils.reflect");
 		assertThat(ClassUtil.getPackageName(BClass.class.getName()))
-				.isEqualTo("io.github.dunwu.utils.reflect");
+			.isEqualTo("io.github.dunwu.utils.reflect");
 	}
 
 	@Test
 	public void getAllClass() {
 
 		assertThat(ClassUtil.getAllInterfaces(BClass.class)).hasSize(4).contains(
-				AInterface.class, BInterface.class, CInterface.class, DInterface.class);
+			AInterface.class, BInterface.class, CInterface.class, DInterface.class);
 
 		assertThat(ClassUtil.getAllSuperclasses(BClass.class)).hasSize(2)
-				.contains(AClass.class, Object.class);
+			.contains(AClass.class, Object.class);
 
 		assertThat(AnnotationUtil.getAllAnnotations(BClass.class)).hasSize(4);
 
 		assertThat(
-				AnnotationUtil.getAnnotatedPublicFields(BClass.class, AAnnotation.class))
-						.hasSize(2)
-						.contains(ReflectionUtil.getField(BClass.class, "sfield"),
-								ReflectionUtil.getField(BClass.class, "tfield"));
+			AnnotationUtil.getAnnotatedPublicFields(BClass.class, AAnnotation.class))
+			.hasSize(2)
+			.contains(ReflectionUtil.getField(BClass.class, "sfield"),
+				ReflectionUtil.getField(BClass.class, "tfield"));
 
 		assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, EAnnotation.class))
-				.hasSize(3).contains(ReflectionUtil.getField(BClass.class, "bfield"),
-						ReflectionUtil.getField(BClass.class, "efield"),
-						ReflectionUtil.getField(AClass.class, "afield"));
+			.hasSize(3).contains(ReflectionUtil.getField(BClass.class, "bfield"),
+			ReflectionUtil.getField(BClass.class, "efield"),
+			ReflectionUtil.getField(AClass.class, "afield"));
 
 		assertThat(AnnotationUtil.getAnnotatedFields(BClass.class, FAnnotation.class))
-				.hasSize(1).contains(ReflectionUtil.getField(AClass.class, "dfield"));
+			.hasSize(1).contains(ReflectionUtil.getField(AClass.class, "dfield"));
 
 		assertThat(
-				AnnotationUtil.getAnnotatedPublicMethods(BClass.class, FAnnotation.class))
-						.hasSize(3).contains(
-								ReflectionUtil.getAccessibleMethodByName(BClass.class,
-										"hello"),
-								ReflectionUtil.getAccessibleMethodByName(BClass.class,
-										"hello3"),
-								ReflectionUtil.getAccessibleMethodByName(AClass.class,
-										"hello4"));
+			AnnotationUtil.getAnnotatedPublicMethods(BClass.class, FAnnotation.class))
+			.hasSize(3).contains(
+			ReflectionUtil.getAccessibleMethodByName(BClass.class,
+				"hello"),
+			ReflectionUtil.getAccessibleMethodByName(BClass.class,
+				"hello3"),
+			ReflectionUtil.getAccessibleMethodByName(AClass.class,
+				"hello4"));
 	}
 
 	@Test
@@ -73,38 +73,37 @@ public class ClassUtilTest {
 		// 获取第1，2个泛型类型
 		assertThat(ClassUtil.getClassGenericType(TestBean.class)).isEqualTo(String.class);
 		assertThat(ClassUtil.getClassGenericType(TestBean.class, 1))
-				.isEqualTo(Long.class);
+			.isEqualTo(Long.class);
 
 		// 定义父类时无泛型定义
 		assertThat(ClassUtil.getClassGenericType(TestBean2.class))
-				.isEqualTo(Object.class);
+			.isEqualTo(Object.class);
 
 		// 无父类定义
 		assertThat(ClassUtil.getClassGenericType(TestBean3.class))
-				.isEqualTo(Object.class);
+			.isEqualTo(Object.class);
 	}
 
 	public void classPresent() {
 		assertThat(ClassLoaderUtil.isPresent("a.b.c",
-				ClassLoaderUtil.getDefaultClassLoader())).isFalse();
+			ClassLoaderUtil.getDefaultClassLoader())).isFalse();
 		assertThat(ClassLoaderUtil.isPresent("io.github.dunwu.utils.reflect.ClassUtil",
-				ClassLoaderUtil.getDefaultClassLoader())).isTrue();
+			ClassLoaderUtil.getDefaultClassLoader())).isTrue();
 	}
 
 	/**
-	 * Unit test case of
-	 * {@link io.github.dunwu.util.reflect.ClassUtil#isSubClassOrInterfaceOf(Class, Class)}
+	 * Unit test case of {@link io.github.dunwu.util.reflect.ClassUtil#isSubClassOrInterfaceOf(Class, Class)}
 	 */
 	@Test
 	public void testIsSubClassOrInterfaceOf() {
 		Assertions.assertTrue(
-				ClassUtil.isSubClassOrInterfaceOf(BClass.class, AClass.class));
+			ClassUtil.isSubClassOrInterfaceOf(BClass.class, AClass.class));
 		Assertions.assertTrue(
-				ClassUtil.isSubClassOrInterfaceOf(BInterface.class, AInterface.class));
+			ClassUtil.isSubClassOrInterfaceOf(BInterface.class, AInterface.class));
 		Assertions.assertTrue(
-				ClassUtil.isSubClassOrInterfaceOf(BClass.class, BInterface.class));
+			ClassUtil.isSubClassOrInterfaceOf(BClass.class, BInterface.class));
 		Assertions.assertTrue(
-				ClassUtil.isSubClassOrInterfaceOf(BClass.class, AInterface.class));
+			ClassUtil.isSubClassOrInterfaceOf(BClass.class, AInterface.class));
 	}
 
 	public interface AInterface {

@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * 在List中保存日志的Appender, 用于测试Logback的日志输出. 在测试开始前,
- * 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
+ * 在List中保存日志的Appender, 用于测试Logback的日志输出. 在测试开始前, 使用任意一种addToLogger()方法将此appender添加到需要侦听的logger中.
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
@@ -129,7 +128,7 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 */
 	public void addToRootLogger() {
 		Logger logger = (Logger) LoggerFactory
-				.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.addAppender(this);
 	}
 
@@ -154,7 +153,7 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 */
 	public void removeFromRootLogger() {
 		Logger logger = (Logger) LoggerFactory
-				.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 		logger.detachAppender(this);
 	}
 

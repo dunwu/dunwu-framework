@@ -18,14 +18,14 @@ import javax.imageio.ImageIO;
 public class ImageUtil {
 
 	public static void toFile(String input, String output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toFile(output);
 	}
 
 	private static void fillBuilderWithParams(Thumbnails.Builder builder,
-			ImageParam params) {
+		ImageParam params) {
 		builder.scale(1.0);
 
 		if (params == null) {
@@ -34,11 +34,9 @@ public class ImageUtil {
 		// 按照一定规则改变原图尺寸
 		if (null != params.getWidth() && null != params.getHeight()) {
 			builder.size(params.getWidth(), params.getHeight());
-		}
-		else if (null != params.getXscale() && null != params.getYscale()) {
+		} else if (null != params.getXscale() && null != params.getYscale()) {
 			builder.scale(params.getXscale(), params.getYscale());
-		}
-		else if (null != params.getScale()) {
+		} else if (null != params.getScale()) {
 			builder.scale(params.getScale(), params.getScale());
 		}
 
@@ -61,98 +59,99 @@ public class ImageUtil {
 		if (null != params.getWaterMark()) {
 			Positions pos = getPostionsByCode(params.getWaterMark().getPosition());
 			builder.watermark(pos, params.getWaterMark().getImage(),
-					params.getWaterMark().getOpacity());
+				params.getWaterMark().getOpacity());
 		}
 	}
 
 	/**
 	 * 将位置类型码转换为 thumbnailator 可以识别的位置类型
+	 *
 	 * @param positions PositionsEnum
 	 * @return Positions
 	 */
 	private static Positions getPostionsByCode(WaterMarkPositionsEnum positions) {
 		switch (positions) {
-		case TOP_LEFT:
-			return Positions.TOP_LEFT;
-		case TOP_CENTER:
-			return Positions.TOP_CENTER;
-		case TOP_RIGHT:
-			return Positions.TOP_RIGHT;
-		case CENTER_LEFT:
-			return Positions.CENTER_LEFT;
-		case CENTER:
-			return Positions.CENTER;
-		case CENTER_RIGHT:
-			return Positions.CENTER_RIGHT;
-		case BOTTOM_LEFT:
-			return Positions.BOTTOM_LEFT;
-		case BOTTOM_CENTER:
-			return Positions.BOTTOM_CENTER;
-		case BOTTOM_RIGHT:
-			return Positions.BOTTOM_RIGHT;
-		default:
-			return null;
+			case TOP_LEFT:
+				return Positions.TOP_LEFT;
+			case TOP_CENTER:
+				return Positions.TOP_CENTER;
+			case TOP_RIGHT:
+				return Positions.TOP_RIGHT;
+			case CENTER_LEFT:
+				return Positions.CENTER_LEFT;
+			case CENTER:
+				return Positions.CENTER;
+			case CENTER_RIGHT:
+				return Positions.CENTER_RIGHT;
+			case BOTTOM_LEFT:
+				return Positions.BOTTOM_LEFT;
+			case BOTTOM_CENTER:
+				return Positions.BOTTOM_CENTER;
+			case BOTTOM_RIGHT:
+				return Positions.BOTTOM_RIGHT;
+			default:
+				return null;
 		}
 	}
 
 	public static void toFile(File input, File output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toFile(output);
 	}
 
 	public static void toFile(InputStream input, File output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toFile(output);
 	}
 
 	public static void toFile(BufferedImage input, File output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toFile(output);
 	}
 
 	public static void toFiles(List<File> input, List<File> output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.fromFiles(input);
 		fillBuilderWithParams(builder, params);
 		builder.toFiles(output);
 	}
 
 	public static void toOutputStream(String input, OutputStream output,
-			ImageParam params) throws IOException {
+		ImageParam params) throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStream(output);
 	}
 
 	public static void toOutputStream(File input, OutputStream output, ImageParam params)
-			throws IOException {
+		throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStream(output);
 	}
 
 	public static void toOutputStream(InputStream input, OutputStream output,
-			ImageParam params) throws IOException {
+		ImageParam params) throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStream(output);
 	}
 
 	public static void toOutputStream(BufferedImage input, OutputStream output,
-			ImageParam params) throws IOException {
+		ImageParam params) throws IOException {
 		Thumbnails.Builder builder = Thumbnails.of(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStream(output);
 	}
 
 	public static void toOutputStreams(List<InputStream> input, List<OutputStream> output,
-			ImageParam params) throws IOException {
+		ImageParam params) throws IOException {
 		Thumbnails.Builder builder = Thumbnails.fromInputStreams(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStreams(output);
@@ -163,7 +162,7 @@ public class ImageUtil {
 	}
 
 	public static byte[] bufferedImageToBytes(BufferedImage image, String format)
-			throws IOException {
+		throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		ImageIO.write(image, format, os);
 		byte[] bytes = os.toByteArray();
@@ -180,7 +179,7 @@ public class ImageUtil {
 	}
 
 	public static void outputStreamToBytes(OutputStream os, byte[] bytes)
-			throws IOException {
+		throws IOException {
 		os.write(bytes);
 		os.flush();
 		os.close();
@@ -235,7 +234,6 @@ public class ImageUtil {
 		 * 底右
 		 */
 		BOTTOM_RIGHT
-
 	}
 
 	/**
@@ -267,7 +265,6 @@ public class ImageUtil {
 		 * gif
 		 */
 		gif
-
 	}
 
 	/**
@@ -326,7 +323,7 @@ public class ImageUtil {
 		}
 
 		public ImageParam(Integer width, Integer height, Double scale, Double rotate,
-				Double quality, ImageTypeEnum format, WaterMark waterMark) {
+			Double quality, ImageTypeEnum format, WaterMark waterMark) {
 			this.width = width;
 			this.height = height;
 			this.scale = scale;
@@ -337,8 +334,8 @@ public class ImageUtil {
 		}
 
 		public ImageParam(Integer width, Integer height, Double xscale, Double yscale,
-				Double rotate, Double quality, ImageTypeEnum format,
-				WaterMark waterMark) {
+			Double rotate, Double quality, ImageTypeEnum format,
+			WaterMark waterMark) {
 			this.width = width;
 			this.height = height;
 			this.xscale = xscale;
@@ -445,7 +442,7 @@ public class ImageUtil {
 			}
 
 			public WaterMark(WaterMarkPositionsEnum position, BufferedImage image,
-					Float opacity) {
+				Float opacity) {
 				this.position = position;
 				this.image = image;
 				this.opacity = opacity;

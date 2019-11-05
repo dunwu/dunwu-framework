@@ -1,6 +1,5 @@
 package io.github.dunwu.util.parser;
 
-import io.github.dunwu.util.parser.CsvUtil;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.EnumUtils;
 import org.junit.jupiter.api.Test;
@@ -33,8 +32,18 @@ public class CsvUtilTest {
 
 	public enum Headers {
 
-		ecifid, cnt_tran, cnt_lingchen_tran, cnt_is_10to5k_30min, cnt_trad_n_1h, cnt_recaccount, cnt_days, cnt_log_brand, ratio_log_lingchen, cnt_is_ip_diff, max_amt_diff, label
-
+		ecifid,
+		cnt_tran,
+		cnt_lingchen_tran,
+		cnt_is_10to5k_30min,
+		cnt_trad_n_1h,
+		cnt_recaccount,
+		cnt_days,
+		cnt_log_brand,
+		ratio_log_lingchen,
+		cnt_is_ip_diff,
+		max_amt_diff,
+		label
 	}
 
 }

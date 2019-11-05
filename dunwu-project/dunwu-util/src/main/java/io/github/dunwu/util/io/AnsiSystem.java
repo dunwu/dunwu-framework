@@ -15,16 +15,6 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class AnsiSystem {
 
-	private String code;
-
-	private static final String ENCODE_JOIN = ";";
-
-	private static final String ENCODE_START = "\033[";
-
-	private static final String ENCODE_END = "m";
-
-	private static final String RESET = "\033[0;m";
-
 	public static final AnsiSystem RED = new AnsiSystem("\033[;31m");
 
 	public static final AnsiSystem GREEN = new AnsiSystem("\033[;32m");
@@ -39,20 +29,22 @@ public class AnsiSystem {
 
 	public static final AnsiSystem WHITE = new AnsiSystem("\033[;37m");
 
+	private static final String ENCODE_JOIN = ";";
+
+	private static final String ENCODE_START = "\033[";
+
+	private static final String ENCODE_END = "m";
+
+	private static final String RESET = "\033[0;m";
+
+	private String code;
+
 	public AnsiSystem(String code) {
 		this.code = code;
 	}
 
 	public AnsiSystem(AnsiConfig config) {
 		this.code = encode(config);
-	}
-
-	public void print(String message) {
-		System.out.print(code + message + RESET);
-	}
-
-	public void println(String message) {
-		System.out.println(code + message + RESET);
 	}
 
 	private String encode(AnsiConfig config) {
@@ -69,8 +61,7 @@ public class AnsiSystem {
 		}
 		if (config.isSlowBlink()) {
 			sb.append(ENCODE_JOIN).append(AnsiSgr.SLOW_BLINK.getCode());
-		}
-		else {
+		} else {
 			if (config.isRapidBlink()) {
 				sb.append(ENCODE_JOIN).append(AnsiSgr.RAPID_BLINK.getCode());
 			}
@@ -95,6 +86,14 @@ public class AnsiSystem {
 		}
 		sb.append(ENCODE_END);
 		return sb.toString();
+	}
+
+	public void print(String message) {
+		System.out.print(code + message + RESET);
+	}
+
+	public void println(String message) {
+		System.out.println(code + message + RESET);
 	}
 
 	public String getCode() {
@@ -141,8 +140,8 @@ public class AnsiSystem {
 		}
 
 		public AnsiConfig(boolean bold, boolean italic, boolean underline,
-				boolean slowBlink, boolean rapidBlink, boolean reverseVideo,
-				boolean canceal, Color color, Color bgColor) {
+			boolean slowBlink, boolean rapidBlink, boolean reverseVideo,
+			boolean canceal, Color color, Color bgColor) {
 			this.bold = bold;
 			this.italic = italic;
 			this.underline = underline;
@@ -229,9 +228,9 @@ public class AnsiSystem {
 		@Override
 		public String toString() {
 			return "AnsiParam{" + "bold=" + bold + ", italic=" + italic + ", underline="
-					+ underline + ", slowBlink=" + slowBlink + ", rapidBlink="
-					+ rapidBlink + ", reverseVideo=" + reverseVideo + ", canceal="
-					+ canceal + ", color=" + color + ", bgColor=" + bgColor + '}';
+				+ underline + ", slowBlink=" + slowBlink + ", rapidBlink="
+				+ rapidBlink + ", reverseVideo=" + reverseVideo + ", canceal="
+				+ canceal + ", color=" + color + ", bgColor=" + bgColor + '}';
 		}
 
 	}

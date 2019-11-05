@@ -23,13 +23,15 @@ public class PropertiesUtils {
 	// read properties
 	// ---------------------------------------------------------------------------------
 
-	public static String getString(Properties properties, String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
-	}
-
-	public static Boolean getBoolean(Properties properties, String key, Boolean defaultValue) {
+	public static Boolean getBoolean(Properties properties, String key,
+		Boolean defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Boolean.valueOf(value);
+	}
+
+	public static String getString(Properties properties, String key,
+		String defaultValue) {
+		return properties.getProperty(key, defaultValue);
 	}
 
 	public static Short getShort(Properties properties, String key, Short defaultValue) {
@@ -37,7 +39,8 @@ public class PropertiesUtils {
 		return Short.valueOf(value);
 	}
 
-	public static Integer getInt(Properties properties, String key, Integer defaultValue) {
+	public static Integer getInt(Properties properties, String key,
+		Integer defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Integer.valueOf(value);
 	}
@@ -52,7 +55,8 @@ public class PropertiesUtils {
 		return Float.valueOf(value);
 	}
 
-	public static Double getDouble(Properties properties, String key, Double defaultValue) {
+	public static Double getDouble(Properties properties, String key,
+		Double defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Double.valueOf(value);
 	}

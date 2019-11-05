@@ -5,11 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JDK并没有提供ConcurrenHashSet，考虑到JDK的HashSet也是基于HashMap实现的，因此ConcurrenHashSet也由ConcurrenHashMap完成。
- * 虽然也可以通过Collections.newSetFromMap(new ConcurrentHashMap())，
- * 但声明一个单独的类型，阅读代码时能更清晰的知道set的并发友好性，代码来自JDK的SetFromMap，去除JDK8接口.
+ * 虽然也可以通过Collections.newSetFromMap(new ConcurrentHashMap())， 但声明一个单独的类型，阅读代码时能更清晰的知道set的并发友好性，代码来自JDK的SetFromMap，去除JDK8接口.
  */
 public class ConcurrentHashSet<E> extends AbstractSet<E>
-		implements Set<E>, java.io.Serializable {
+	implements Set<E>, java.io.Serializable {
 
 	private static final long serialVersionUID = -8672117787651310382L;
 

@@ -248,17 +248,21 @@ class FileExtUtilsTest {
 		String filePath = FileExtUtils.concat(File.separatorChar + "abc", "ef");
 		assertThat(filePath).isEqualTo(FileExtUtils.normalizePath("/abc/ef"));
 
-		String filePath2 = FileExtUtils.concat(File.separatorChar + "stuv" + File.separatorChar, "xy");
+		String filePath2 = FileExtUtils
+			.concat(File.separatorChar + "stuv" + File.separatorChar, "xy");
 		assertThat(filePath2).isEqualTo(FileExtUtils.normalizePath("/stuv/xy"));
 
-		assertThat(com.google.common.io.Files.simplifyPath("../dd/../abc")).isEqualTo("../abc");
-		assertThat(com.google.common.io.Files.simplifyPath("../../dd/../abc")).isEqualTo("../../abc");
+		assertThat(com.google.common.io.Files.simplifyPath("../dd/../abc"))
+			.isEqualTo("../abc");
+		assertThat(com.google.common.io.Files.simplifyPath("../../dd/../abc"))
+			.isEqualTo("../../abc");
 		assertThat(com.google.common.io.Files.simplifyPath("./abc")).isEqualTo("abc");
 
 		assertThat(FileExtUtils.getParentPath(FileExtUtils.normalizePath("/abc/dd/efg/")))
 			.isEqualTo(FileExtUtils.normalizePath("/abc/dd/"));
 
-		assertThat(FileExtUtils.getParentPath(FileExtUtils.normalizePath("/abc/dd/efg.txt")))
+		assertThat(
+			FileExtUtils.getParentPath(FileExtUtils.normalizePath("/abc/dd/efg.txt")))
 			.isEqualTo(FileExtUtils.normalizePath("/abc/dd/"));
 	}
 
@@ -266,7 +270,8 @@ class FileExtUtilsTest {
 	void getJarPath() {
 		System.out.println("the jar file contains Files.class"
 			+ FileExtUtils.getJarPath(com.google.common.io.Files.class));
-		assertThat(FileExtUtils.getJarPath(com.google.common.io.Files.class)).endsWith("guava-20.0.jar");
+		assertThat(FileExtUtils.getJarPath(com.google.common.io.Files.class))
+			.endsWith("guava-20.0.jar");
 	}
 
 	@Test

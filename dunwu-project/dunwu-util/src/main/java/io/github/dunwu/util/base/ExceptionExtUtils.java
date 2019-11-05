@@ -22,6 +22,9 @@ public class ExceptionExtUtils extends ExceptionUtils {
 
 	///// Checked/Uncheked及Wrap(如ExecutionException)的转换/////
 
+	private ExceptionExtUtils() {
+	}
+
 	/**
 	 * 组合unwrap与unchecked，用于处理反射/Callable的异常
 	 */
@@ -49,6 +52,8 @@ public class ExceptionExtUtils extends ExceptionUtils {
 		throw new UncheckedException(t);
 	}
 
+	////// 输出内容相关 //////
+
 	/**
 	 * 如果是著名的包裹类，从cause中获得真正异常. 其他异常则不变. Future中使用的ExecutionException 与 反射时定义的InvocationTargetException， 真正的异常都封装在Cause中
 	 * 前面 unchecked() 使用的UncheckedException同理.
@@ -63,8 +68,6 @@ public class ExceptionExtUtils extends ExceptionUtils {
 
 		return t;
 	}
-
-	////// 输出内容相关 //////
 
 	/**
 	 * 将StackTrace[]转换为String, 供Logger或e.printStackTrace()外的其他地方使用. 为了使用StringBuilderWriter，没有用Throwables#getStackTraceAsString(Throwable)
@@ -99,7 +102,8 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	/**
 	 * 获取某种类型的cause，如果没有则返回空 copy from Jodd ExceptionUtil
 	 */
-	public static <T extends Throwable> T findCause(final Throwable t, final Class<T> clazz) {
+	public static <T extends Throwable> T findCause(final Throwable t,
+		final Class<T> clazz) {
 		Throwable cause = t;
 		while (cause != null) {
 			if (cause.getClass().equals(clazz)) {
@@ -109,6 +113,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 		}
 		return null;
 	}
+	/////////// StackTrace 性能优化相关////////
 
 	/**
 	 * 判断异常是否由某些底层的异常引起.
@@ -128,7 +133,6 @@ public class ExceptionExtUtils extends ExceptionUtils {
 		}
 		return false;
 	}
-	/////////// StackTrace 性能优化相关////////
 
 	/**
 	 * copy from Netty, 为静态异常设置StackTrace. 对某些已知且经常抛出的异常, 不需要每次创建异常类并很消耗性能的并生成完整的StackTrace. 此时可使用静态声明的异常.
@@ -138,8 +142,8 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 * 		MyClass.class, "mymethod");
 	 * </pre>
 	 */
-	public static <T extends Throwable> T setStackTrace(final T t, final Class<?> throwClass,
-		String throwClazz) {
+	public static <T extends Throwable> T setStackTrace(final T t,
+		final Class<?> throwClass, String throwClazz) {
 		t.setStackTrace(new StackTraceElement[] {
 			new StackTraceElement(throwClass.getName(), throwClazz, null, -1) });
 		return t;
@@ -156,9 +160,6 @@ public class ExceptionExtUtils extends ExceptionUtils {
 			cause = cause.getCause();
 		}
 		return t;
-	}
-
-	private ExceptionExtUtils() {
 	}
 
 }

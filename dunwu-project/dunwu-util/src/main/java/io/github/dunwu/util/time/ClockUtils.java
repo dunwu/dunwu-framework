@@ -3,8 +3,7 @@ package io.github.dunwu.util.time;
 import java.util.Date;
 
 /**
- * 日期提供者, 使用它而不是直接取得系统时间, 方便测试.
- * 平时使用DEFAULT，测试时替换为DummyClock，可准确控制时间变化而不用Thread.sleep()等待时间流逝.
+ * 日期提供者, 使用它而不是直接取得系统时间, 方便测试. 平时使用DEFAULT，测试时替换为DummyClock，可准确控制时间变化而不用Thread.sleep()等待时间流逝.
  */
 public class ClockUtils {
 

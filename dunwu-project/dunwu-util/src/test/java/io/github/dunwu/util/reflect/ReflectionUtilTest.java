@@ -157,7 +157,7 @@ public class ReflectionUtilTest {
 		// InvocationTargetException,extract it's target exception.
 		Exception ex = new Exception();
 		e = ReflectionUtil
-				.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
+			.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
 		assertThat(e.getCause()).isEqualTo(ex);
 
 		// UncheckedException, ignore it.

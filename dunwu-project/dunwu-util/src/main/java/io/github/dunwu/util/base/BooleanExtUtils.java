@@ -14,10 +14,13 @@ import org.apache.commons.lang3.BooleanUtils;
  */
 public class BooleanExtUtils extends BooleanUtils {
 
-	public static Boolean toBooleanDefaultIfNull(final String str, final boolean defaultValue) {
-		return BooleanUtils.toBooleanDefaultIfNull(BooleanUtils.toBooleanObject(str), defaultValue);
+	private BooleanExtUtils() {
 	}
 
-	private BooleanExtUtils() {}
+	public static Boolean toBooleanDefaultIfNull(final String str,
+		final boolean defaultValue) {
+		return BooleanUtils.toBooleanDefaultIfNull(BooleanUtils.toBooleanObject(str),
+			defaultValue);
+	}
 
 }

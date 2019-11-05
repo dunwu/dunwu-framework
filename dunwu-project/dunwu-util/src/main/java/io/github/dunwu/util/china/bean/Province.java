@@ -70,8 +70,7 @@ public class Province implements Comparable<Province> {
 		Province province = (Province) obj;
 		if (province.getCode().equals(this.getCode())) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
