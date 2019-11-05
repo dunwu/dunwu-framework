@@ -26,19 +26,19 @@ public class DigestUtil {
 	public static final IDigest SHA512 = Digest.getInstance(DigestTypeEnum.SHA512);
 
 	public static final IDigest HMAC_MD5 = HmacDigest
-		.getInstance(DigestTypeEnum.HMAC_MD5);
+			.getInstance(DigestTypeEnum.HMAC_MD5);
 
 	public static final IDigest HMAC_SHA1 = HmacDigest
-		.getInstance(DigestTypeEnum.HMAC_SHA1);
+			.getInstance(DigestTypeEnum.HMAC_SHA1);
 
 	public static final IDigest HMAC_SHA256 = HmacDigest
-		.getInstance(DigestTypeEnum.HMAC_SHA256);
+			.getInstance(DigestTypeEnum.HMAC_SHA256);
 
 	public static final IDigest HMAC_SHA384 = HmacDigest
-		.getInstance(DigestTypeEnum.HMAC_SHA384);
+			.getInstance(DigestTypeEnum.HMAC_SHA384);
 
 	public static final IDigest HMAC_SHA512 = HmacDigest
-		.getInstance(DigestTypeEnum.HMAC_SHA512);
+			.getInstance(DigestTypeEnum.HMAC_SHA512);
 
 	private static final String HMAC = "HMAC";
 
@@ -51,7 +51,8 @@ public class DigestUtil {
 		IDigest instace = null;
 		if (type.toUpperCase().contains(HMAC)) {
 			instace = HmacDigest.getInstance(type);
-		} else {
+		}
+		else {
 			instace = Digest.getInstance(type);
 		}
 
@@ -62,31 +63,31 @@ public class DigestUtil {
 		IDigest instace = null;
 
 		switch (type) {
-			case MD2:
-			case MD5:
-			case SHA1:
-			case SHA256:
-			case SHA384:
-			case SHA512:
-				instace = Digest.getInstance(type);
-				break;
+		case MD2:
+		case MD5:
+		case SHA1:
+		case SHA256:
+		case SHA384:
+		case SHA512:
+			instace = Digest.getInstance(type);
+			break;
 
-			case HMAC_MD5:
-			case HMAC_SHA1:
-			case HMAC_SHA256:
-			case HMAC_SHA384:
-			case HMAC_SHA512:
-				instace = HmacDigest.getInstance(type);
-				break;
-			default:
-				break;
+		case HMAC_MD5:
+		case HMAC_SHA1:
+		case HMAC_SHA256:
+		case HMAC_SHA384:
+		case HMAC_SHA512:
+			instace = HmacDigest.getInstance(type);
+			break;
+		default:
+			break;
 		}
 
 		return instace;
 	}
 
 	public static KeyPair genKeyPair(String algorithm, int keySize)
-		throws NoSuchAlgorithmException {
+			throws NoSuchAlgorithmException {
 
 		// 初始化密钥对生成器
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);
@@ -105,13 +106,13 @@ public class DigestUtil {
 		 * 常规数字摘要算法
 		 */
 		MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA384(
-			"SHA-384"), SHA512("SHA-512"),
+				"SHA-384"), SHA512("SHA-512"),
 
 		/**
 		 * HMAC 数字摘要算法
 		 */
 		HMAC_MD5("HmacMD5"), HMAC_SHA1("HmacSHA1"), HMAC_SHA256(
-			"HmacSHA256"), HMAC_SHA384("HmacSHA384"), HMAC_SHA512("HmacSHA512");
+				"HmacSHA256"), HMAC_SHA384("HmacSHA384"), HMAC_SHA512("HmacSHA512");
 
 		private final String value;
 
@@ -122,6 +123,7 @@ public class DigestUtil {
 		public String getValue() {
 			return value;
 		}
+
 	}
 
 	public interface IDigest {
@@ -139,7 +141,8 @@ public class DigestUtil {
 		private Digest(String type) {
 			try {
 				md = MessageDigest.getInstance(type);
-			} catch (NoSuchAlgorithmException e) {
+			}
+			catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		}
@@ -173,7 +176,8 @@ public class DigestUtil {
 			try {
 				mac = Mac.getInstance(keySpec.getAlgorithm());
 				mac.init(keySpec);
-			} catch (NoSuchAlgorithmException | InvalidKeyException e) {
+			}
+			catch (NoSuchAlgorithmException | InvalidKeyException e) {
 				e.printStackTrace();
 			}
 		}

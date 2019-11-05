@@ -23,7 +23,7 @@ public class CsvUtil {
 			return null;
 		}
 		BufferedReader reader = new BufferedReader(
-			new InputStreamReader(new FileInputStream(file)));
+				new InputStreamReader(new FileInputStream(file)));
 		String line = reader.readLine();
 		line = line.replaceAll("\"", "");
 		return line.split(",");
@@ -42,12 +42,12 @@ public class CsvUtil {
 	}
 
 	public static Iterable<CSVRecord> getRecords(String filepath,
-		Class<? extends Enum<?>> headerEnum) throws IOException {
+			Class<? extends Enum<?>> headerEnum) throws IOException {
 		return getRecords(new File(filepath), headerEnum);
 	}
 
 	public static Iterable<CSVRecord> getRecords(File file,
-		Class<? extends Enum<?>> headerEnum) throws IOException {
+			Class<? extends Enum<?>> headerEnum) throws IOException {
 		if (file == null || !file.exists()) {
 			return null;
 		}

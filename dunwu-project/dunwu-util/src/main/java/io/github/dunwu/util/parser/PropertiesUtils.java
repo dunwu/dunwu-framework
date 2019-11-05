@@ -14,27 +14,30 @@ import java.util.*;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-22
  */
-public class PropertiesUtil {
+public class PropertiesUtils {
 
 	public static <K, V> Properties toProperties(Map<K, V> map) {
 		return MapUtils.toProperties(map);
 	}
 
-	public static Boolean getBoolean(Properties properties, String key,
-		Boolean defaultValue) {
+	// read properties
+	// ---------------------------------------------------------------------------------
+
+	public static String getString(Properties properties, String key, String defaultValue) {
+		return properties.getProperty(key, defaultValue);
+	}
+
+	public static Boolean getBoolean(Properties properties, String key, Boolean defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Boolean.valueOf(value);
 	}
 
-	//////////////////////////////////// 读取Properties ////////////////////////////////////
-
-	public static String getString(Properties properties, String key,
-		String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+	public static Short getShort(Properties properties, String key, Short defaultValue) {
+		String value = getString(properties, key, String.valueOf(defaultValue));
+		return Short.valueOf(value);
 	}
 
-	public static Integer getInt(Properties properties, String key,
-		Integer defaultValue) {
+	public static Integer getInt(Properties properties, String key, Integer defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Integer.valueOf(value);
 	}
@@ -44,13 +47,17 @@ public class PropertiesUtil {
 		return Long.valueOf(value);
 	}
 
-	public static Double getDouble(Properties properties, String key,
-		Double defaultValue) {
+	public static Float getFloat(Properties properties, String key, Float defaultValue) {
+		String value = getString(properties, key, String.valueOf(defaultValue));
+		return Float.valueOf(value);
+	}
+
+	public static Double getDouble(Properties properties, String key, Double defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Double.valueOf(value);
 	}
 
-	public static List<String> getList(Properties properties, String key) {
+	public static List<String> toList(Properties properties, String key) {
 		List<String> list = new ArrayList<>();
 		Map<String, String> map = toMap(properties);
 		for (Map.Entry<String, String> entity : map.entrySet()) {
@@ -71,14 +78,11 @@ public class PropertiesUtil {
 		return map;
 	}
 
-	//////////////////////////////////// 加载Properties ////////////////////////////////////
+	// load properties
+	// ---------------------------------------------------------------------------------
 
 	/**
 	 * 从多个文件路径加载 properties
-	 *
-	 * @param files
-	 * @return
-	 * @throws IOException
 	 */
 	public static Properties loadFromFile(String... files) throws IOException {
 		if (ArrayUtils.isEmpty(files)) {

@@ -9,8 +9,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Locale;
 
 /**
- * 数字的工具类. 1.原始类型数字与byte[]的双向转换(via Guava) 2.判断字符串是否数字, 是否16进制字符串(via Common Lang) 3.10机制/16进制字符串 与 原始类型数字/数字对象
- * 的双向转换(参考Common Lang自写)
+ * 数字的工具类. 1.原始类型数字与byte[]的双向转换(via Guava) 2.判断字符串是否数字, 是否16进制字符串(via Common Lang)
+ * 3.10机制/16进制字符串 与 原始类型数字/数字对象 的双向转换(参考Common Lang自写)
  */
 public class NumberExtUtils extends NumberUtils {
 
@@ -90,7 +90,7 @@ public class NumberExtUtils extends NumberUtils {
 
 		int index = value.startsWith("-") ? 1 : 0;
 		return value.startsWith("0x", index) || value.startsWith("0X", index)
-			|| value.startsWith("#", index);
+				|| value.startsWith("#", index);
 	}
 
 	/////////// 将字符串转化为原始类型数字/////////
@@ -113,7 +113,8 @@ public class NumberExtUtils extends NumberUtils {
 		}
 		try {
 			return Integer.valueOf(str);
-		} catch (final NumberFormatException nfe) {
+		}
+		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
@@ -134,7 +135,8 @@ public class NumberExtUtils extends NumberUtils {
 		}
 		try {
 			return Long.valueOf(str);
-		} catch (final NumberFormatException nfe) {
+		}
+		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
@@ -159,7 +161,8 @@ public class NumberExtUtils extends NumberUtils {
 		}
 		try {
 			return Double.valueOf(str);
-		} catch (final NumberFormatException nfe) {
+		}
+		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
@@ -186,7 +189,8 @@ public class NumberExtUtils extends NumberUtils {
 		}
 		try {
 			return Integer.decode(str);
-		} catch (final NumberFormatException nfe) {
+		}
+		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
@@ -211,7 +215,8 @@ public class NumberExtUtils extends NumberUtils {
 		}
 		try {
 			return Long.decode(str);
-		} catch (final NumberFormatException nfe) {
+		}
+		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
@@ -219,7 +224,7 @@ public class NumberExtUtils extends NumberUtils {
 	/////// toString ///////
 	// 定义了原子类型与对象类型的参数，保证不会用错函数会导致额外AutoBoxing转换//
 
-	public static String toString(int i) {
+	public static String toString(final int i) {
 		return Integer.toString(i);
 	}
 
@@ -227,7 +232,7 @@ public class NumberExtUtils extends NumberUtils {
 		return i.toString();
 	}
 
-	public static String toString(long l) {
+	public static String toString(final long l) {
 		return Long.toString(l);
 	}
 
@@ -235,7 +240,7 @@ public class NumberExtUtils extends NumberUtils {
 		return l.toString();
 	}
 
-	public static String toString(double d) {
+	public static String toString(final double d) {
 		return Double.toString(d);
 	}
 
@@ -246,7 +251,7 @@ public class NumberExtUtils extends NumberUtils {
 	/**
 	 * 输出格式化为小数后两位的double字符串
 	 */
-	public static String to2DigitString(double d) {
+	public static String to2DigitString(final double d) {
 		return String.format(Locale.ROOT, "%.2f", d);
 	}
 
@@ -255,7 +260,7 @@ public class NumberExtUtils extends NumberUtils {
 	/**
 	 * 安全的将小于Integer.MAX的long转为int，否则抛出IllegalArgumentException异常
 	 */
-	public static int toInt32(long x) {
+	public static int toInt32(final long x) {
 		if ((int) x == x) {
 			return (int) x;
 		}
@@ -264,11 +269,10 @@ public class NumberExtUtils extends NumberUtils {
 
 	/**
 	 * 整数转换英文
-	 *
 	 * @param num 整数
 	 * @return
 	 */
-	public static String intToEnWords(int num) {
+	public static String intToEnWords(final int num) {
 		if (num == 0) {
 			return "Zero";
 		}
@@ -315,9 +319,11 @@ public class NumberExtUtils extends NumberUtils {
 			String res = "";
 			if (hundred * rest != 0) {
 				res = one(hundred) + " Hundred " + two(rest);
-			} else if ((hundred == 0) && (rest != 0)) {
+			}
+			else if ((hundred == 0) && (rest != 0)) {
 				res = two(rest);
-			} else if ((hundred != 0) && (rest == 0)) {
+			}
+			else if ((hundred != 0) && (rest == 0)) {
 				res = one(hundred) + " Hundred";
 			}
 			return res;
@@ -325,42 +331,46 @@ public class NumberExtUtils extends NumberUtils {
 
 		static String one(int num) {
 			switch (num) {
-				case 1:
-					return "One";
-				case 2:
-					return "Two";
-				case 3:
-					return "Three";
-				case 4:
-					return "Four";
-				case 5:
-					return "Five";
-				case 6:
-					return "Six";
-				case 7:
-					return "Seven";
-				case 8:
-					return "Eight";
-				case 9:
-					return "Nine";
-				default:
-					return "";
+			case 1:
+				return "One";
+			case 2:
+				return "Two";
+			case 3:
+				return "Three";
+			case 4:
+				return "Four";
+			case 5:
+				return "Five";
+			case 6:
+				return "Six";
+			case 7:
+				return "Seven";
+			case 8:
+				return "Eight";
+			case 9:
+				return "Nine";
+			default:
+				return "";
 			}
 		}
 
 		static String two(int num) {
 			if (num == 0) {
 				return "";
-			} else if (num < NUM10) {
+			}
+			else if (num < NUM10) {
 				return one(num);
-			} else if (num < NUM20) {
+			}
+			else if (num < NUM20) {
 				return twoLessThan20(num);
-			} else {
+			}
+			else {
 				int tenner = num / 10;
 				int rest = num - tenner * 10;
 				if (rest != 0) {
 					return ten(tenner) + " " + one(rest);
-				} else {
+				}
+				else {
 					return ten(tenner);
 				}
 			}
@@ -368,56 +378,57 @@ public class NumberExtUtils extends NumberUtils {
 
 		static String twoLessThan20(int num) {
 			switch (num) {
-				case 10:
-					return "Ten";
-				case 11:
-					return "Eleven";
-				case 12:
-					return "Twelve";
-				case 13:
-					return "Thirteen";
-				case 14:
-					return "Fourteen";
-				case 15:
-					return "Fifteen";
-				case 16:
-					return "Sixteen";
-				case 17:
-					return "Seventeen";
-				case 18:
-					return "Eighteen";
-				case 19:
-					return "Nineteen";
-				default:
-					return "";
+			case 10:
+				return "Ten";
+			case 11:
+				return "Eleven";
+			case 12:
+				return "Twelve";
+			case 13:
+				return "Thirteen";
+			case 14:
+				return "Fourteen";
+			case 15:
+				return "Fifteen";
+			case 16:
+				return "Sixteen";
+			case 17:
+				return "Seventeen";
+			case 18:
+				return "Eighteen";
+			case 19:
+				return "Nineteen";
+			default:
+				return "";
 			}
 		}
 
 		static String ten(int num) {
 			switch (num) {
-				case 2:
-					return "Twenty";
-				case 3:
-					return "Thirty";
-				case 4:
-					return "Forty";
-				case 5:
-					return "Fifty";
-				case 6:
-					return "Sixty";
-				case 7:
-					return "Seventy";
-				case 8:
-					return "Eighty";
-				case 9:
-					return "Ninety";
-				default:
-					return "";
+			case 2:
+				return "Twenty";
+			case 3:
+				return "Thirty";
+			case 4:
+				return "Forty";
+			case 5:
+				return "Fifty";
+			case 6:
+				return "Sixty";
+			case 7:
+				return "Seventy";
+			case 8:
+				return "Eighty";
+			case 9:
+				return "Ninety";
+			default:
+				return "";
 			}
 		}
 
 	}
 
-	private NumberExtUtils() {}
+	private NumberExtUtils() {
+	}
 
 }

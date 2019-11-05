@@ -65,9 +65,9 @@ public class CollectionUtilTest {
 		assertThat(CollectionUtil.minAndMax(list).getRight()).isEqualTo(101);
 
 		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getLeft())
-			.isEqualTo(1);
+				.isEqualTo(1);
 		assertThat(CollectionUtil.minAndMax(list, Ordering.natural()).getRight())
-			.isEqualTo(101);
+				.isEqualTo(101);
 	}
 
 	@Test
@@ -93,10 +93,10 @@ public class CollectionUtilTest {
 
 		assertThat(CollectionUtil.top(list, 3)).containsExactly(9, 7, 6);
 		assertThat(CollectionUtil.top(list, 3, Ordering.natural().reverse()))
-			.containsExactly(2, 3, 4);
+				.containsExactly(2, 3, 4);
 		assertThat(CollectionUtil.bottom(list, 3)).containsExactly(2, 3, 4);
 		assertThat(CollectionUtil.bottom(list, 3, Ordering.natural().reverse()))
-			.containsExactly(9, 7, 6);
+				.containsExactly(9, 7, 6);
 	}
 
 }

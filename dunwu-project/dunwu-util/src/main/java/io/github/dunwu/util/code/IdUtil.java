@@ -14,7 +14,6 @@ public class IdUtil {
 
 	/**
 	 * 生成随机 UUID，含 - 字符
-	 *
 	 * @return String
 	 */
 	public static String randomUuid() {
@@ -23,7 +22,6 @@ public class IdUtil {
 
 	/**
 	 * 生成随机 UUID，不含 - 字符
-	 *
 	 * @return String
 	 */
 	public static String randomUuid2() {
@@ -32,7 +30,6 @@ public class IdUtil {
 
 	/**
 	 * 新建一个 SnowFlakeId 实例
-	 *
 	 * @return SnowFlakeId
 	 * @see SnowFlakeId
 	 */

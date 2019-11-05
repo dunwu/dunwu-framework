@@ -69,7 +69,8 @@ public class AnsiSystem {
 		}
 		if (config.isSlowBlink()) {
 			sb.append(ENCODE_JOIN).append(AnsiSgr.SLOW_BLINK.getCode());
-		} else {
+		}
+		else {
 			if (config.isRapidBlink()) {
 				sb.append(ENCODE_JOIN).append(AnsiSgr.RAPID_BLINK.getCode());
 			}
@@ -139,8 +140,9 @@ public class AnsiSystem {
 			this.bgColor = Color.DEFAULT;
 		}
 
-		public AnsiConfig(boolean bold, boolean italic, boolean underline, boolean slowBlink, boolean rapidBlink,
-			boolean reverseVideo, boolean canceal, Color color, Color bgColor) {
+		public AnsiConfig(boolean bold, boolean italic, boolean underline,
+				boolean slowBlink, boolean rapidBlink, boolean reverseVideo,
+				boolean canceal, Color color, Color bgColor) {
 			this.bold = bold;
 			this.italic = italic;
 			this.underline = underline;
@@ -226,17 +228,10 @@ public class AnsiSystem {
 
 		@Override
 		public String toString() {
-			return "AnsiParam{" +
-				"bold=" + bold +
-				", italic=" + italic +
-				", underline=" + underline +
-				", slowBlink=" + slowBlink +
-				", rapidBlink=" + rapidBlink +
-				", reverseVideo=" + reverseVideo +
-				", canceal=" + canceal +
-				", color=" + color +
-				", bgColor=" + bgColor +
-				'}';
+			return "AnsiParam{" + "bold=" + bold + ", italic=" + italic + ", underline="
+					+ underline + ", slowBlink=" + slowBlink + ", rapidBlink="
+					+ rapidBlink + ", reverseVideo=" + reverseVideo + ", canceal="
+					+ canceal + ", color=" + color + ", bgColor=" + bgColor + '}';
 		}
 
 	}

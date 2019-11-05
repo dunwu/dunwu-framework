@@ -1,6 +1,6 @@
 package io.github.dunwu.util.time;
 
-import io.github.dunwu.util.base.annotation.NotNull;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * @see FastDateFormat#format(Date)
  * @see FastDateFormat#format(long)
  */
-public class DateFormatUtil {
+public class DateFormatExtUtils extends DateFormatUtils {
 
 	// 以T分隔日期和时间，并带时区信息，符合ISO8601规范
 	public static final FastDateFormat ISO_FORMAT = FastDateFormat
@@ -35,63 +35,40 @@ public class DateFormatUtil {
 	public static final FastDateFormat DEFAULT_ON_SECOND_FORMAT = FastDateFormat
 		.getInstance(DatePattern.PATTERN_DEFAULT_ON_SECOND.pattern());
 
-	public static Date parseDate(@NotNull DatePattern datePattern,
-		@NotNull String dateString) throws ParseException {
-		return parseDate(datePattern.pattern(), dateString);
-	}
+	// parseDate
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 分析日期字符串, 仅用于pattern不固定的情况. 否则直接使用DateFormats中封装好的FastDateFormat. FastDateFormat.getInstance()
 	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
 	 */
-	public static Date parseDate(@NotNull String pattern, @NotNull String dateString)
-		throws ParseException {
+	public static Date parseDate(final String pattern, final String dateString) throws ParseException {
 		return FastDateFormat.getInstance(pattern).parse(dateString);
 	}
 
-	public static String formatDate(@NotNull DatePattern datePattern,
-		@NotNull Date date) {
-		return formatDate(datePattern.pattern(), date);
+	public static Date parseDate(final DatePattern datePattern, final String dateString) throws ParseException {
+		return parseDate(datePattern.pattern(), dateString);
 	}
 
-	/**
-	 * 格式化日期, 仅用于pattern不固定的情况. 否则直接使用本类中封装好的FastDateFormat. FastDateFormat.getInstance()
-	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
-	 */
-	public static String formatDate(@NotNull String pattern, @NotNull Date date) {
-		return FastDateFormat.getInstance(pattern).format(date);
-	}
-
-	public static String formatDate(@NotNull DatePattern datePattern, long date) {
-		return formatDate(datePattern.pattern(), date);
-	}
-
-	/**
-	 * 格式化日期, 仅用于不固定pattern不固定的情况. 否否则直接使用本类中封装好的FastDateFormat. FastDateFormat.getInstance()
-	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
-	 */
-	public static String formatDate(@NotNull String pattern, long date) {
-		return FastDateFormat.getInstance(pattern).format(date);
-	}
+	// formatDuration
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 按HH:mm:ss.SSS格式，格式化时间间隔. endDate必须大于startDate，间隔可大于1天，
 	 *
 	 * @see DurationFormatUtils
 	 */
-	public static String formatDuration(@NotNull Date startDate, @NotNull Date endDate) {
+	public static String formatDuration(final Date startDate, final Date endDate) {
 		return DurationFormatUtils
 			.formatDurationHMS(endDate.getTime() - startDate.getTime());
 	}
-
-	/////// 格式化间隔时间/////////
 
 	/**
 	 * 按HH:mm:ss.SSS格式，格式化时间间隔 单位为毫秒，必须大于0，可大于1天
 	 *
 	 * @see DurationFormatUtils
 	 */
-	public static String formatDuration(long durationMillis) {
+	public static String formatDuration(final long durationMillis) {
 		return DurationFormatUtils.formatDurationHMS(durationMillis);
 	}
 
@@ -100,8 +77,7 @@ public class DateFormatUtil {
 	 *
 	 * @see DurationFormatUtils
 	 */
-	public static String formatDurationOnSecond(@NotNull Date startDate,
-		@NotNull Date endDate) {
+	public static String formatDurationOnSecond(final Date startDate, final Date endDate) {
 		return DurationFormatUtils.formatDuration(endDate.getTime() - startDate.getTime(),
 			"HH:mm:ss");
 	}
@@ -111,43 +87,44 @@ public class DateFormatUtil {
 	 *
 	 * @see DurationFormatUtils
 	 */
-	public static String formatDurationOnSecond(long durationMillis) {
+	public static String formatDurationOnSecond(final long durationMillis) {
 		return DurationFormatUtils.formatDuration(durationMillis, "HH:mm:ss");
 	}
 
+	// formatFriendlyTimeSpanByNow
+	// -------------------------------------------------------------------------------------------------
+
 	/**
 	 * 打印用户友好的，与当前时间相比的时间差，如刚刚，5分钟前，今天XXX，昨天XXX copy from AndroidUtilCode
 	 */
-	public static String formatFriendlyTimeSpanByNow(@NotNull Date date) {
+	public static String formatFriendlyTimeSpanByNow(final Date date) {
 		return formatFriendlyTimeSpanByNow(date.getTime());
 	}
 
-	//////// 打印用于页面显示的用户友好，与当前时间比的时间差
-
 	/**
 	 * 打印用户友好的，与当前时间相比的时间差，如刚刚，5分钟前，今天XXX，昨天XXX copy from AndroidUtilCode
 	 */
-	public static String formatFriendlyTimeSpanByNow(long timeStampMillis) {
-		long now = ClockUtil.currentTimeMillis();
+	public static String formatFriendlyTimeSpanByNow(final long timeStampMillis) {
+		long now = ClockUtils.currentTimeMillis();
 		long span = now - timeStampMillis;
 		if (span < 0) {
 			// 'c' 日期和时间，被格式化为 "%ta %tb %td %tT %tZ %tY"，例如 "Sun Jul 20 16:17:00 EDT
 			// 1969"。
 			return String.format("%tc", timeStampMillis);
 		}
-		if (span < DateUtil.MILLIS_PER_SECOND) {
+		if (span < DateExtUtils.MILLIS_PER_SECOND) {
 			return "刚刚";
-		} else if (span < DateUtil.MILLIS_PER_MINUTE) {
-			return String.format("%d秒前", span / DateUtil.MILLIS_PER_SECOND);
-		} else if (span < DateUtil.MILLIS_PER_HOUR) {
-			return String.format("%d分钟前", span / DateUtil.MILLIS_PER_MINUTE);
+		} else if (span < DateExtUtils.MILLIS_PER_MINUTE) {
+			return String.format("%d秒前", span / DateExtUtils.MILLIS_PER_SECOND);
+		} else if (span < DateExtUtils.MILLIS_PER_HOUR) {
+			return String.format("%d分钟前", span / DateExtUtils.MILLIS_PER_MINUTE);
 		}
 		// 获取当天00:00
-		long wee = DateUtil.beginOfDate(new Date(now)).getTime();
+		long wee = DateExtUtils.beginOfDate(new Date(now)).getTime();
 		if (timeStampMillis >= wee) {
 			// 'R' 24 小时制的时间，被格式化为 "%tH:%tM"
 			return String.format("今天%tR", timeStampMillis);
-		} else if (timeStampMillis >= wee - DateUtil.MILLIS_PER_DAY) {
+		} else if (timeStampMillis >= wee - DateExtUtils.MILLIS_PER_DAY) {
 			return String.format("昨天%tR", timeStampMillis);
 		} else {
 			// 'F' ISO 8601 格式的完整日期，被格式化为 "%tY-%tm-%td"。
@@ -158,12 +135,13 @@ public class DateFormatUtil {
 	public enum DatePattern {
 
 		// 以T分隔日期和时间，并带时区信息，符合ISO8601规范
-		PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"), PATTERN_ISO_ON_SECOND(
-			"yyyy-MM-dd'T'HH:mm:ssZZ"), PATTERN_ISO_ON_DATE("yyyy-MM-dd"),
+		PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"),
+		PATTERN_ISO_ON_SECOND("yyyy-MM-dd'T'HH:mm:ssZZ"),
+		PATTERN_ISO_ON_DATE("yyyy-MM-dd"),
 
 		// 以空格分隔日期和时间，不带时区信息
-		PATTERN_DEFAULT("yyyy-MM-dd HH:mm:ss.SSS"), PATTERN_DEFAULT_ON_SECOND(
-			"yyyy-MM-dd HH:mm:ss");
+		PATTERN_DEFAULT("yyyy-MM-dd HH:mm:ss.SSS"),
+		PATTERN_DEFAULT_ON_SECOND("yyyy-MM-dd HH:mm:ss");
 
 		private String pattern;
 

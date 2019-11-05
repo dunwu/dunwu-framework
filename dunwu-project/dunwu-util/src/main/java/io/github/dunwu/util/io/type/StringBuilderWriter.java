@@ -16,13 +16,14 @@ import java.io.Serializable;
 import java.io.Writer;
 
 /**
- * JDK的java.io.StringWriter使用StringBuffer，移植Commons IO使用StringBuilder的版本. https://github.com/apache/commons-io/blob/master/src/main/java/org/apache/commons/io/output/StringBuilderWriter.java
+ * JDK的java.io.StringWriter使用StringBuffer，移植Commons IO使用StringBuilder的版本.
+ * https://github.com/apache/commons-io/blob/master/src/main/java/org/apache/commons/io/output/StringBuilderWriter.java
  * {@link Writer} implementation that outputs to a {@link StringBuilder}.
  * <p>
  * <strong>NOTE:</strong> This implementation, as an alternative to
  * <code>java.io.StringWriter</code>, provides an <i>un-synchronized</i> (i.e. for use in
- * a single thread) implementation for better performance. For safe usage with multiple {@link Thread}s then
- * <code>java.io.StringWriter</code> should be used.
+ * a single thread) implementation for better performance. For safe usage with multiple
+ * {@link Thread}s then <code>java.io.StringWriter</code> should be used.
  *
  * @since 2.0
  */
@@ -41,7 +42,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Constructs a new {@link StringBuilder} instance with the specified capacity.
-	 *
 	 * @param capacity The initial capacity of the underlying {@link StringBuilder}
 	 */
 	public StringBuilderWriter(final int capacity) {
@@ -53,7 +53,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 	 * <p>
 	 * If {@link builder} is null a new instance with default capacity will be created.
 	 * </p>
-	 *
 	 * @param builder The String builder. May be null.
 	 */
 	public StringBuilderWriter(final StringBuilder builder) {
@@ -62,8 +61,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Writes a portion of a character array to the {@link StringBuilder}.
-	 *
-	 * @param value  The value to write
+	 * @param value The value to write
 	 * @param offset The index of the first character
 	 * @param length The number of characters to write
 	 */
@@ -76,7 +74,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Writes a String to the {@link StringBuilder}.
-	 *
 	 * @param value The value to write
 	 */
 	@Override
@@ -88,7 +85,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Appends a character sequence to this Writer.
-	 *
 	 * @param value The character to append
 	 * @return This writer instance
 	 */
@@ -100,10 +96,9 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Appends a portion of a character sequence to the {@link StringBuilder}.
-	 *
 	 * @param value The character to append
 	 * @param start The index of the first character
-	 * @param end   The index of the last character + 1
+	 * @param end The index of the last character + 1
 	 * @return This writer instance
 	 */
 	@Override
@@ -114,7 +109,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Appends a single character to this Writer.
-	 *
 	 * @param value The character to append
 	 * @return This writer instance
 	 */
@@ -142,7 +136,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Returns the underlying builder.
-	 *
 	 * @return The underlying builder
 	 */
 	public StringBuilder getBuilder() {
@@ -151,7 +144,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
 	/**
 	 * Returns {@link StringBuilder#toString()}.
-	 *
 	 * @return The contents of the String builder.
 	 */
 	@Override

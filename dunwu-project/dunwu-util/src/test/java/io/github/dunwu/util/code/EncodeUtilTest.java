@@ -17,7 +17,7 @@ public class EncodeUtilTest {
 		String input = "haha,i am a very long message";
 		String result = EncodeUtil.encodeHex(input.getBytes());
 		assertThat(new String(EncodeUtil.decodeHex(result), StandardCharsets.UTF_8))
-			.isEqualTo(input);
+				.isEqualTo(input);
 
 		byte[] bytes = new byte[] { 1, 2, 15, 17 };
 		result = EncodeUtil.encodeHex(bytes);
@@ -25,13 +25,14 @@ public class EncodeUtilTest {
 
 		input = "01020F11";
 		assertThat(EncodeUtil.decodeHex(input)).hasSize(4).containsSequence((byte) 1,
-			(byte) 2, (byte) 15, (byte) 17);
+				(byte) 2, (byte) 15, (byte) 17);
 
 		try {
 			input = "01020G11";
 			EncodeUtil.decodeHex(input);
 			fail("should throw exception before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 	}
@@ -41,7 +42,7 @@ public class EncodeUtilTest {
 		String input = "haha,i am a very long message";
 		String result = EncodeUtil.encodeBase64(input.getBytes());
 		assertThat(new String(EncodeUtil.decodeBase64(result), StandardCharsets.UTF_8))
-			.isEqualTo(input);
+				.isEqualTo(input);
 
 		byte[] bytes = new byte[] { 5 };
 		result = EncodeUtil.encodeBase64(bytes);
@@ -57,12 +58,13 @@ public class EncodeUtilTest {
 		String input = "haha,i am a very long message";
 		String result = EncodeUtil.encodeBase64UrlSafe(input.getBytes());
 		assertThat(new String(EncodeUtil.decodeBase64UrlSafe(result),
-			StandardCharsets.UTF_8)).isEqualTo(input);
+				StandardCharsets.UTF_8)).isEqualTo(input);
 
 		try {
 			assertThat(result).isEqualTo(EncodeUtil.decodeBase64UrlSafe("AQIPE+8="));
 			fail("should throw exception before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 	}

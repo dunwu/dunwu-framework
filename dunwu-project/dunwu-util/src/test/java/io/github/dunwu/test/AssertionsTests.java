@@ -27,7 +27,7 @@ class AssertionsTests {
 		assertEquals(2, 2);
 		assertEquals(4, 4, "The optional assertion message is now the last parameter.");
 		assertTrue('a' < 'b', () -> "Assertion messages can be lazily evaluated -- "
-			+ "to avoid constructing complex messages unnecessarily.");
+				+ "to avoid constructing complex messages unnecessarily.");
 	}
 
 	@Test
@@ -35,7 +35,7 @@ class AssertionsTests {
 		// In a grouped assertion all assertions are executed, and any
 		// failures will be reported together.
 		assertAll("person", () -> assertEquals("John", person.getFirstName()),
-			() -> assertEquals("Doe", person.getLastName()));
+				() -> assertEquals("Doe", person.getLastName()));
 	}
 
 	@Test
@@ -48,7 +48,7 @@ class AssertionsTests {
 
 			// Executed only if the previous assertion is valid.
 			assertAll("first name", () -> assertTrue(firstName.startsWith("J")),
-				() -> assertTrue(firstName.endsWith("n")));
+					() -> assertTrue(firstName.endsWith("n")));
 		}, () -> {
 			// Grouped assertion, so processed independently
 			// of results of first name assertions.
@@ -57,7 +57,7 @@ class AssertionsTests {
 
 			// Executed only if the previous assertion is valid.
 			assertAll("last name", () -> assertTrue(lastName.startsWith("D")),
-				() -> assertTrue(lastName.endsWith("e")));
+					() -> assertTrue(lastName.endsWith("e")));
 		});
 	}
 

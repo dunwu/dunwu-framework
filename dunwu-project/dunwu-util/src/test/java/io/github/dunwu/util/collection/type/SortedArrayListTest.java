@@ -30,19 +30,21 @@ public class SortedArrayListTest {
 		try {
 			list.add(1, "2");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
 		try {
 			list.set(1, "2");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
 		SortedArrayList<String> list2 = MoreLists
-			.createSortedArrayList(Ordering.natural());
+				.createSortedArrayList(Ordering.natural());
 		list2.addAll(ListUtil.newArrayList("3", "1", "2"));
 		assertThat(list2).containsExactly("1", "2", "3");
 	}

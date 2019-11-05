@@ -46,7 +46,8 @@ public class ListUtilTest {
 		try {
 			list1.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
@@ -55,7 +56,8 @@ public class ListUtilTest {
 		try {
 			list4.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
@@ -65,7 +67,8 @@ public class ListUtilTest {
 		try {
 			list6.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
@@ -138,7 +141,7 @@ public class ListUtilTest {
 
 		List<String> result = ListUtil.union(list1, list2);
 		assertThat(result).containsExactly("1", "2", "3", "6", "6", "4", "5", "6", "7",
-			"6", "6");
+				"6", "6");
 
 		List<String> result2 = ListUtil.intersection(list1, list2);
 		assertThat(result2).containsExactly("6", "6");

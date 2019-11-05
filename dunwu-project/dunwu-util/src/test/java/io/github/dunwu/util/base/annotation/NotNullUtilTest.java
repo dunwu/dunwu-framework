@@ -13,7 +13,8 @@ public class NotNullUtilTest {
 		MyBean myBean = new MyBean(null, "jack");
 		try {
 			NotNullUtil.check(myBean);
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}

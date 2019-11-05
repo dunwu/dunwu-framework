@@ -1,16 +1,16 @@
 package io.github.dunwu.util.time;
 
-import io.github.dunwu.util.time.ClockUtil.DummyClock;
+import io.github.dunwu.util.time.ClockUtils.DummyClock;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClockUtilTest {
+class ClockUtilsTest {
 
 	@Test
-	public void testDummyClock() {
+	void testDummyClock() {
 		DummyClock clock = new DummyClock();
 		clock.updateNow(111);
 		assertThat(clock.currentTimeMillis()).isEqualTo(111);
@@ -28,13 +28,13 @@ public class ClockUtilTest {
 	}
 
 	@Test
-	public void elapsedTime() {
+	void elapsedTime() {
 		try {
-			DummyClock clock = ClockUtil.useDummyClock(2000);
+			DummyClock clock = ClockUtils.useDummyClock(2000);
 			clock.increaseTime(1000);
-			assertThat(ClockUtil.elapsedTime(2000)).isEqualTo(1000);
+			assertThat(ClockUtils.elapsedTime(2000)).isEqualTo(1000);
 		} finally {
-			ClockUtil.useDefaultClock();
+			ClockUtils.useDefaultClock();
 		}
 	}
 

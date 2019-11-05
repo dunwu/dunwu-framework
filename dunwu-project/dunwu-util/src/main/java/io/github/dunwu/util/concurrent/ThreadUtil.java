@@ -18,7 +18,8 @@ public class ThreadUtil {
 	public static void sleep(long durationMillis) {
 		try {
 			Thread.sleep(durationMillis);
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -29,7 +30,8 @@ public class ThreadUtil {
 	public static void sleep(long duration, TimeUnit unit) {
 		try {
 			Thread.sleep(unit.toMillis(duration));
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -49,7 +51,8 @@ public class ThreadUtil {
 	}
 
 	/**
-	 * 保证不会有Exception抛出到线程池的Runnable包裹类，防止用户没有捕捉异常导致中断了线程池中的线程, 使得SchedulerService无法执行. 在无法控制第三方包的Runnalbe实现时，使用本类进行包裹.
+	 * 保证不会有Exception抛出到线程池的Runnable包裹类，防止用户没有捕捉异常导致中断了线程池中的线程, 使得SchedulerService无法执行.
+	 * 在无法控制第三方包的Runnalbe实现时，使用本类进行包裹.
 	 */
 	private static class SafeRunnable implements Runnable {
 
@@ -66,7 +69,8 @@ public class ThreadUtil {
 		public void run() {
 			try {
 				runnable.run();
-			} catch (Throwable e) {
+			}
+			catch (Throwable e) {
 				logger.error("Unexpected error occurred in task", e);
 			}
 		}

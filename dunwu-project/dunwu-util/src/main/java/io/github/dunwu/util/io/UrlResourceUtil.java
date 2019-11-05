@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 
 /**
  * 兼容url为无前缀，file://与classpath:// 三种情况的工具集
@@ -73,10 +74,10 @@ public class UrlResourceUtil {
 
 		try {
 			// try URL
-			return FileUtil.asInputStream(getFileByUrl(new URL(generalPath)));
+			return Files.newInputStream(getFileByUrl(new URL(generalPath)).toPath());
 		} catch (MalformedURLException ex) {
 			// no URL -> treat as file path
-			return FileUtil.asInputStream(generalPath);
+			return Files.newInputStream(new File(generalPath).toPath());
 		}
 	}
 

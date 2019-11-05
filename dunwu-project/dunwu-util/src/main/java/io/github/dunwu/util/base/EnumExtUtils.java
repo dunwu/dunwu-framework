@@ -17,15 +17,15 @@ import java.util.EnumSet;
  */
 public class EnumExtUtils extends EnumUtils {
 
-	public static <E extends Enum<E>> EnumSet<E> getEnumSet(Class<E> enumClass) {
+	public static <E extends Enum<E>> EnumSet<E> getEnumSet(final Class<E> enumClass) {
 		return EnumSet.allOf(enumClass);
 	}
 
-	public static <E extends Enum<E>> EnumSet<E> copyOf(EnumSet<E> s) {
+	public static <E extends Enum<E>> EnumSet<E> copyOf(final EnumSet<E> s) {
 		return EnumSet.copyOf(s);
 	}
 
-	public static <E extends Enum<E>> EnumSet<E> copyOf(Collection<E> c) {
+	public static <E extends Enum<E>> EnumSet<E> copyOf(final Collection<E> c) {
 		return EnumSet.copyOf(c);
 	}
 

@@ -25,7 +25,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	/**
 	 * 组合unwrap与unchecked，用于处理反射/Callable的异常
 	 */
-	public static RuntimeException unwrapAndUnchecked(Throwable t) {
+	public static RuntimeException unwrapAndUnchecked(final Throwable t) {
 		throw unchecked(unwrap(t));
 	}
 
@@ -38,7 +38,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 *
 	 * @see ExceptionUtils#wrapAndThrow(Throwable)
 	 */
-	public static RuntimeException unchecked(Throwable t) {
+	public static RuntimeException unchecked(final Throwable t) {
 		if (t instanceof RuntimeException) {
 			throw (RuntimeException) t;
 		}
@@ -53,7 +53,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 * 如果是著名的包裹类，从cause中获得真正异常. 其他异常则不变. Future中使用的ExecutionException 与 反射时定义的InvocationTargetException， 真正的异常都封装在Cause中
 	 * 前面 unchecked() 使用的UncheckedException同理.
 	 */
-	public static Throwable unwrap(Throwable t) {
+	public static Throwable unwrap(final Throwable t) {
 		if (t instanceof UncheckedException
 			|| t instanceof java.util.concurrent.ExecutionException
 			|| t instanceof java.lang.reflect.InvocationTargetException
@@ -69,7 +69,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	/**
 	 * 将StackTrace[]转换为String, 供Logger或e.printStackTrace()外的其他地方使用. 为了使用StringBuilderWriter，没有用Throwables#getStackTraceAsString(Throwable)
 	 */
-	public static String stackTraceText(Throwable t) {
+	public static String stackTraceText(final Throwable t) {
 		StringBuilderWriter stringWriter = new StringBuilderWriter();
 		t.printStackTrace(new PrintWriter(stringWriter)); // NOSONAR
 		return stringWriter.toString();
@@ -78,7 +78,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	/**
 	 * 拼装 短异常类名: 异常信息 <-- RootCause的短异常类名: 异常信息
 	 */
-	public static String toStringWithRootCause(Throwable t) {
+	public static String toStringWithRootCause(final Throwable t) {
 		if (t == null) {
 			return StringUtils.EMPTY;
 		}
@@ -99,12 +99,13 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	/**
 	 * 获取某种类型的cause，如果没有则返回空 copy from Jodd ExceptionUtil
 	 */
-	public static <T extends Throwable> T findCause(Throwable t, Class<T> cause) {
-		while (t != null) {
-			if (t.getClass().equals(cause)) {
-				return (T) t;
+	public static <T extends Throwable> T findCause(final Throwable t, final Class<T> clazz) {
+		Throwable cause = t;
+		while (cause != null) {
+			if (cause.getClass().equals(clazz)) {
+				return (T) cause;
 			}
-			t = t.getCause();
+			cause = cause.getCause();
 		}
 		return null;
 	}
@@ -113,8 +114,8 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 * 判断异常是否由某些底层的异常引起.
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean isCausedBy(Throwable throwable,
-		Class<? extends Exception>... causeExceptionClasses) {
+	public static boolean isCausedBy(final Throwable throwable,
+		final Class<? extends Exception>... causeExceptionClasses) {
 		Throwable cause = throwable;
 
 		while (cause != null) {
@@ -137,7 +138,8 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 * 		MyClass.class, "mymethod");
 	 * </pre>
 	 */
-	public static <T extends Throwable> T setStackTrace(T t, Class<?> throwClass, String throwClazz) {
+	public static <T extends Throwable> T setStackTrace(final T t, final Class<?> throwClass,
+		String throwClazz) {
 		t.setStackTrace(new StackTraceElement[] {
 			new StackTraceElement(throwClass.getName(), throwClazz, null, -1) });
 		return t;
@@ -147,7 +149,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 	 * 清除StackTrace. 假设StackTrace已生成, 但把它打印出来也有不小的消耗. 如果不能控制StackTrace的生成，也不能控制它的打印端(如logger)，可用此方法暴力清除Trace.
 	 * 但Cause链依然不能清除, 只能清除每一个Cause的StackTrace.
 	 */
-	public static <T extends Throwable> T clearStackTrace(T t) {
+	public static <T extends Throwable> T clearStackTrace(final T t) {
 		Throwable cause = t;
 		while (cause != null) {
 			cause.setStackTrace(EMPTY_STACK_TRACE);
@@ -156,6 +158,7 @@ public class ExceptionExtUtils extends ExceptionUtils {
 		return t;
 	}
 
-	private ExceptionExtUtils() {}
+	private ExceptionExtUtils() {
+	}
 
 }

@@ -16,6 +16,10 @@ public class SystemExtUtils extends SystemUtils {
 
 	public static final int MAX_STACKTRACE_LENGTH = 4;
 
+	public static final String WINDOWS_FILE_PATH_SEPARATOR = "\\";
+
+	public static final String LINUX_FILE_PATH_SEPARATOR = "/";
+
 	private static AtomicInteger shutdownHookThreadIndex = new AtomicInteger(0);
 
 	// ManagementFactory 信息
@@ -50,7 +54,8 @@ public class SystemExtUtils extends SystemUtils {
 	 * 返回输入的 JVM 参数列表
 	 */
 	public static String getVmArguments() {
-		List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
+			.getInputArguments();
 		return StringUtils.join(vmArguments, " ");
 	}
 
@@ -129,7 +134,8 @@ public class SystemExtUtils extends SystemUtils {
 
 	// Java Version
 	// -------------------------------------------------------------------------------------------------
-	private static final float JAVA_VERSION = Float.parseFloat(JAVA_SPECIFICATION_VERSION);
+	private static final float JAVA_VERSION_VALUE = Float
+		.parseFloat(JAVA_SPECIFICATION_VERSION);
 
 	public static String getJavaVersion() {
 		return JAVA_SPECIFICATION_VERSION;
@@ -152,11 +158,12 @@ public class SystemExtUtils extends SystemUtils {
 	}
 
 	public static boolean isGreaterThanJava8() {
-		return JAVA_VERSION > 1.8f;
+		return JAVA_VERSION_VALUE > 1.8f;
 	}
 
 	// private constructor
 	// -------------------------------------------------------------------------------------------------
-	private SystemExtUtils() {}
+	private SystemExtUtils() {
+	}
 
 }

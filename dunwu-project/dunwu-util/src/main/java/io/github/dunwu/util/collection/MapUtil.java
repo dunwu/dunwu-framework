@@ -14,8 +14,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * 关于Map的工具集合， 1. 常用函数(如是否为空, 两个map的Diff对比，针对value值的排序) 2. 对于并发Map，增加putIfAbsent(返回最终值版), createIfAbsent这两个重要函数(from
- * Common Lang) 3. 便捷的构造函数(via guava,Java Collections，并增加了用数组，List等方式初始化Map的函数) 4. JDK Collections的empty,singleton
+ * 关于Map的工具集合， 1. 常用函数(如是否为空, 两个map的Diff对比，针对value值的排序) 2. 对于并发Map，增加putIfAbsent(返回最终值版),
+ * createIfAbsent这两个重要函数(from Common Lang) 3. 便捷的构造函数(via guava,Java
+ * Collections，并增加了用数组，List等方式初始化Map的函数) 4. JDK Collections的empty,singleton
  */
 @SuppressWarnings("unchecked")
 public class MapUtil {
@@ -37,14 +38,15 @@ public class MapUtil {
 	}
 
 	/**
-	 * 如果Key不存在则创建，返回最后存储在Map中的Value. 如果创建Value对象有一定成本, 直接使用PutIfAbsent可能重复浪费，则使用此类，传入一个被回调的ValueCreator，Lazy创建对象。
+	 * 如果Key不存在则创建，返回最后存储在Map中的Value. 如果创建Value对象有一定成本,
+	 * 直接使用PutIfAbsent可能重复浪费，则使用此类，传入一个被回调的ValueCreator，Lazy创建对象。
 	 *
-	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#createIfAbsent(ConcurrentMap, Object,
-	 * org.apache.commons.lang3.concurrent.ConcurrentInitializer)
+	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#createIfAbsent(ConcurrentMap,
+	 * Object, org.apache.commons.lang3.concurrent.ConcurrentInitializer)
 	 */
 	public static <K, V> V createIfAbsentReturnLast(
-		@NotNull final ConcurrentMap<K, V> map, final K key,
-		@NotNull final ValueCreator<? extends V> creator) {
+			@NotNull final ConcurrentMap<K, V> map, final K key,
+			@NotNull final ValueCreator<? extends V> creator) {
 		final V value = map.get(key);
 		if (value == null) {
 			return putIfAbsentReturnLast(map, key, creator.get());
@@ -55,10 +57,11 @@ public class MapUtil {
 	/**
 	 * ConcurrentMap的putIfAbsent()返回之前的Value，此函数封装返回最终存储在Map中的Value
 	 *
-	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#putIfAbsent(ConcurrentMap, Object, Object)
+	 * @see org.apache.commons.lang3.concurrent.ConcurrentUtils#putIfAbsent(ConcurrentMap,
+	 * Object, Object)
 	 */
 	public static <K, V> V putIfAbsentReturnLast(@NotNull final ConcurrentMap<K, V> map,
-		final K key, final V value) {
+			final K key, final V value) {
 		final V result = map.putIfAbsent(key, value);
 		return result != null ? result : value;
 	}
@@ -70,7 +73,7 @@ public class MapUtil {
 	 * @see com.google.common.collect.Maps#newHashMap(int)
 	 */
 	public static <K, V> HashMap<K, V> newHashMapWithCapacity(int expectedSize,
-		float loadFactor) {
+			float loadFactor) {
 		int finalSize = (int) ((double) expectedSize / loadFactor + 1.0F);
 		return new HashMap<K, V>(finalSize, loadFactor);
 	}
@@ -81,9 +84,9 @@ public class MapUtil {
 	 * 根据等号左边的类型, 构造类型正确的HashMap. 同时初始化元素.
 	 */
 	public static <K, V> HashMap<K, V> newHashMap(@NotNull final K[] keys,
-		@NotNull final V[] values) {
+			@NotNull final V[] values) {
 		Validate.isTrue(keys.length == values.length,
-			"keys.length is %s  but values.length is %s", keys.length, values.length);
+				"keys.length is %s  but values.length is %s", keys.length, values.length);
 
 		HashMap<K, V> map = new HashMap<K, V>(keys.length * 2);
 
@@ -98,9 +101,9 @@ public class MapUtil {
 	 * 根据等号左边的类型, 构造类型正确的HashMap. 同时初始化元素.
 	 */
 	public static <K, V> HashMap<K, V> newHashMap(@NotNull final List<K> keys,
-		@NotNull final List<V> values) {
+			@NotNull final List<V> values) {
 		Validate.isTrue(keys.size() == values.size(),
-			"keys.length is %s  but values.length is %s", keys.size(), values.size());
+				"keys.length is %s  but values.length is %s", keys.size(), values.size());
 
 		HashMap<K, V> map = new HashMap<K, V>(keys.size() * 2);
 		Iterator<K> keyIt = keys.iterator();
@@ -129,7 +132,7 @@ public class MapUtil {
 	 * @see com.google.common.collect.Maps#newTreeMap(Comparator)
 	 */
 	public static <C, K extends C, V> TreeMap<K, V> newSortedMap(
-		@Nullable Comparator<C> comparator) {
+			@Nullable Comparator<C> comparator) {
 		return Maps.newTreeMap(comparator);
 	}
 
@@ -137,7 +140,7 @@ public class MapUtil {
 	 * 相比HashMap，当key是枚举类时, 性能与空间占用俱佳.
 	 */
 	public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(
-		@NotNull Class<K> type) {
+			@NotNull Class<K> type) {
 		return new EnumMap<K, V>(Preconditions.checkNotNull(type));
 	}
 
@@ -183,7 +186,7 @@ public class MapUtil {
 	 * @see Collections#unmodifiableMap(Map)
 	 */
 	public static <K, V> Map<K, V> unmodifiableMap(
-		final Map<? extends K, ? extends V> m) {
+			final Map<? extends K, ? extends V> m) {
 		return Collections.unmodifiableMap(m);
 	}
 
@@ -193,7 +196,7 @@ public class MapUtil {
 	 * @see Collections#unmodifiableSortedMap(SortedMap)
 	 */
 	public static <K, V> SortedMap<K, V> unmodifiableSortedMap(
-		final SortedMap<K, ? extends V> m) {
+			final SortedMap<K, ? extends V> m) {
 		return Collections.unmodifiableSortedMap(m);
 	}
 
@@ -203,7 +206,7 @@ public class MapUtil {
 	 * @see com.google.common.collect.MapDifference
 	 */
 	public static <K, V> MapDifference<K, V> difference(
-		Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+			Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
 		return Maps.difference(left, right);
 	}
 
@@ -211,20 +214,19 @@ public class MapUtil {
 
 	/**
 	 * 对一个Map按Value进行排序，返回排序LinkedHashMap，多用于Value是Counter的情况.
-	 *
 	 * @param reverse 按Value的倒序 or 正序排列
 	 */
 	public static <K, V extends Comparable> Map<K, V> sortByValue(Map<K, V> map,
-		final boolean reverse) {
+			final boolean reverse) {
 		return sortByValueInternal(map, reverse
-			? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
-			: new ComparableEntryValueComparator<K, V>());
+				? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
+				: new ComparableEntryValueComparator<K, V>());
 	}
 
 	//////////// 按值排序及取TOP N的操作 /////////
 
 	private static <K, V> Map<K, V> sortByValueInternal(Map<K, V> map,
-		Comparator<Entry<K, V>> comparator) {
+			Comparator<Entry<K, V>> comparator) {
 		Set<Entry<K, V>> entrySet = map.entrySet();
 		Entry<K, V>[] entryArray = entrySet.toArray(new Entry[0]);
 
@@ -241,24 +243,23 @@ public class MapUtil {
 	 * 对一个Map按Value进行排序，返回排序LinkedHashMap.
 	 */
 	public static <K, V> Map<K, V> sortByValue(Map<K, V> map,
-		final Comparator<? super V> comparator) {
+			final Comparator<? super V> comparator) {
 		return sortByValueInternal(map, new EntryValueComparator<K, V>(comparator));
 	}
 
 	/**
 	 * 对一个Map按Value进行排序，返回排序LinkedHashMap，最多只返回n条，多用于Value是Counter的情况.
-	 *
 	 * @param reverse 按Value的倒序 or 正序排列
 	 */
 	public static <K, V extends Comparable> Map<K, V> topByValue(Map<K, V> map,
-		final boolean reverse, int n) {
+			final boolean reverse, int n) {
 		return topByValueInternal(map, n, reverse
-			? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
-			: new ComparableEntryValueComparator<K, V>());
+				? Ordering.from(new ComparableEntryValueComparator<K, V>()).reverse()
+				: new ComparableEntryValueComparator<K, V>());
 	}
 
 	private static <K, V> Map<K, V> topByValueInternal(Map<K, V> map, int n,
-		Comparator<Entry<K, V>> comparator) {
+			Comparator<Entry<K, V>> comparator) {
 		Set<Entry<K, V>> entrySet = map.entrySet();
 		Entry<K, V>[] entryArray = entrySet.toArray(new Entry[0]);
 		Arrays.sort(entryArray, comparator);
@@ -276,7 +277,7 @@ public class MapUtil {
 	 * 对一个Map按Value进行排序，返回排序LinkedHashMap, 最多只返回n条，多用于Value是Counter的情况.
 	 */
 	public static <K, V> Map<K, V> topByValue(Map<K, V> map,
-		final Comparator<? super V> comparator, int n) {
+			final Comparator<? super V> comparator, int n) {
 		return topByValueInternal(map, n, new EntryValueComparator<K, V>(comparator));
 	}
 
@@ -295,7 +296,7 @@ public class MapUtil {
 	}
 
 	private static final class ComparableEntryValueComparator<K, V extends Comparable>
-		implements Comparator<Entry<K, V>> {
+			implements Comparator<Entry<K, V>> {
 
 		@Override
 		public int compare(Entry<K, V> o1, Entry<K, V> o2) {
@@ -305,7 +306,7 @@ public class MapUtil {
 	}
 
 	private static final class EntryValueComparator<K, V>
-		implements Comparator<Entry<K, V>> {
+			implements Comparator<Entry<K, V>> {
 
 		private final Comparator<? super V> comparator;
 

@@ -28,7 +28,8 @@ public class CryptoUtil {
 		String str = type.toUpperCase();
 		if (str.contains(AES_NAME)) {
 			return AesCrypto.getInstace(type, key);
-		} else if (str.contains(DES_NAME)) {
+		}
+		else if (str.contains(DES_NAME)) {
 			return DesCrypto.getInstace(type, key);
 		}
 		return null;
@@ -113,6 +114,7 @@ public class CryptoUtil {
 		public String getValue() {
 			return value;
 		}
+
 	}
 
 	/**
@@ -136,10 +138,11 @@ public class CryptoUtil {
 			this.encryptCipher = Cipher.getInstance(type);
 			this.decryptCipher = Cipher.getInstance(type);
 			if (type.equals(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING.getValue())
-				|| type.equals(SymmetricCryptoEnum.AES_CBC_NOPADDING.getValue())) {
+					|| type.equals(SymmetricCryptoEnum.AES_CBC_NOPADDING.getValue())) {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-			} else {
+			}
+			else {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
 			}
@@ -163,13 +166,13 @@ public class CryptoUtil {
 
 		@Override
 		public byte[] encryptToBytes(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			return this.encryptCipher.doFinal(plaintext);
 		}
 
 		@Override
 		public String encryptToString(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			byte[] bytes = this.encryptCipher.doFinal(plaintext);
 			Base64.Encoder encoder = Base64.getUrlEncoder();
 			return encoder.encodeToString(bytes);
@@ -177,13 +180,13 @@ public class CryptoUtil {
 
 		@Override
 		public byte[] decryptToBytes(byte[] ciphertext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			return this.decryptCipher.doFinal(ciphertext);
 		}
 
 		@Override
 		public byte[] decryptToBytes(String ciphertext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);
@@ -212,10 +215,11 @@ public class CryptoUtil {
 			this.encryptCipher = Cipher.getInstance(type);
 			this.decryptCipher = Cipher.getInstance(type);
 			if (type.equals(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING.getValue())
-				|| type.equals(SymmetricCryptoEnum.DES_CBC_NOPADDING.getValue())) {
+					|| type.equals(SymmetricCryptoEnum.DES_CBC_NOPADDING.getValue())) {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key, iv);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key, iv);
-			} else {
+			}
+			else {
 				this.encryptCipher.init(Cipher.ENCRYPT_MODE, this.key);
 				this.decryptCipher.init(Cipher.DECRYPT_MODE, this.key);
 			}
@@ -239,13 +243,13 @@ public class CryptoUtil {
 
 		@Override
 		public byte[] encryptToBytes(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			return this.encryptCipher.doFinal(plaintext);
 		}
 
 		@Override
 		public String encryptToString(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			byte[] bytes = this.encryptCipher.doFinal(plaintext);
 			Base64.Encoder encoder = Base64.getUrlEncoder();
 			return encoder.encodeToString(bytes);
@@ -253,13 +257,13 @@ public class CryptoUtil {
 
 		@Override
 		public byte[] decryptToBytes(byte[] ciphertext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			return this.decryptCipher.doFinal(ciphertext);
 		}
 
 		@Override
 		public byte[] decryptToBytes(String ciphertext)
-			throws BadPaddingException, IllegalBlockSizeException {
+				throws BadPaddingException, IllegalBlockSizeException {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);

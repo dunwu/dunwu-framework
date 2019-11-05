@@ -1,7 +1,7 @@
 <template>
   <el-dropdown :hide-on-click="false" :show-timeout="100" trigger="click">
     <el-button plain>
-      Platfroms({{ platforms.length }})
+      Platfroms({{ SystemUtils.length }})
       <i class="el-icon-caret-bottom el-icon--right" />
     </el-button>
     <el-dropdown-menu slot="dropdown" class="no-border">

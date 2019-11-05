@@ -13,19 +13,21 @@ public class EnumExtUtilsTest {
 	@Test
 	void testBits() {
 		assertThat(EnumExtUtils.generateBitVector(Options.class, Options.A)).isEqualTo(1);
-		assertThat(EnumExtUtils.generateBitVector(Options.class, Options.A, Options.B)).isEqualTo(3);
+		assertThat(EnumExtUtils.generateBitVector(Options.class, Options.A, Options.B))
+				.isEqualTo(3);
 
-		assertThat(EnumExtUtils.generateBitVector(Options.class, ListUtil.newArrayList(Options.A))).isEqualTo(1);
-		assertThat(
-			EnumExtUtils.generateBitVector(Options.class, ListUtil.newArrayList(Options.A, Options.B))).isEqualTo(3);
+		assertThat(EnumExtUtils.generateBitVector(Options.class,
+				ListUtil.newArrayList(Options.A))).isEqualTo(1);
+		assertThat(EnumExtUtils.generateBitVector(Options.class,
+				ListUtil.newArrayList(Options.A, Options.B))).isEqualTo(3);
 
 		assertThat(EnumExtUtils.processBitVector(Options.class, 3)).hasSize(2)
-			.containsExactly(Options.A, Options.B);
+				.containsExactly(Options.A, Options.B);
 
 		long value = EnumExtUtils.generateBitVector(Options.class, Options.A, Options.C,
-			Options.D);
+				Options.D);
 		assertThat(EnumExtUtils.processBitVector(Options.class, value)).hasSize(3)
-			.containsExactly(Options.A, Options.C, Options.D);
+				.containsExactly(Options.A, Options.C, Options.D);
 	}
 
 	@Test
@@ -48,6 +50,7 @@ public class EnumExtUtilsTest {
 	public enum Options {
 
 		A, B, C, D;
+
 	}
 
 }

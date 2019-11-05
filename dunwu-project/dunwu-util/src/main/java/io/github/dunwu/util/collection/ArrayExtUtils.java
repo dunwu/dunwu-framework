@@ -36,8 +36,9 @@ public class ArrayExtUtils extends ArrayUtils {
 	}
 
 	/**
-	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组. 本函数等价于list.toArray(new String[0]);
-	 * 用户也可以直接用后者. https://shipilev.net/blog/2016/arrays-wisdom-ancients/
+	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组.
+	 * 本函数等价于list.toArray(new String[0]); 用户也可以直接用后者.
+	 * https://shipilev.net/blog/2016/arrays-wisdom-ancients/
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toArray(Collection<T> col, Class<T> type) {
@@ -92,7 +93,6 @@ public class ArrayExtUtils extends ArrayUtils {
 
 	/**
 	 * 获取展示数组内容的字符串
-	 *
 	 * @param list
 	 * @param begin
 	 * @param end
@@ -127,9 +127,8 @@ public class ArrayExtUtils extends ArrayUtils {
 	 * <p>
 	 * 然后从len-2里随机产生下一个随机数，如此类推
 	 * </p>
-	 *
-	 * @param min    指定范围最小值
-	 * @param max    指定范围最大值
+	 * @param min 指定范围最小值
+	 * @param max 指定范围最大值
 	 * @param length 随机数个数
 	 * @return int[] 随机数结果集
 	 */
@@ -162,9 +161,8 @@ public class ArrayExtUtils extends ArrayUtils {
 
 	/**
 	 * 随机指定范围内N个重复的Int数组。
-	 *
-	 * @param min    指定范围最小值
-	 * @param max    指定范围最大值
+	 * @param min 指定范围最小值
+	 * @param max 指定范围最大值
 	 * @param length 随机数个数
 	 * @return 随机数结果集
 	 */
@@ -193,9 +191,8 @@ public class ArrayExtUtils extends ArrayUtils {
 	 * <p>
 	 * 然后从len-2里随机产生下一个随机数，如此类推
 	 * </p>
-	 *
-	 * @param min    指定范围最小值
-	 * @param max    指定范围最大值
+	 * @param min 指定范围最小值
+	 * @param max 指定范围最大值
 	 * @param length 随机数个数
 	 * @return int[] 随机数结果集
 	 */
@@ -228,9 +225,8 @@ public class ArrayExtUtils extends ArrayUtils {
 
 	/**
 	 * 随机指定范围内N个重复的Integer数组。
-	 *
-	 * @param min    指定范围最小值
-	 * @param max    指定范围最大值
+	 * @param min 指定范围最小值
+	 * @param max 指定范围最大值
 	 * @param length 随机数个数
 	 * @return 随机数结果集
 	 */

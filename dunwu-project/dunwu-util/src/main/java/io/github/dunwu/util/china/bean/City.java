@@ -80,7 +80,8 @@ public class City implements Comparable<City> {
 		City city = (City) obj;
 		if (city.getCode().equals(this.getCode())) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}

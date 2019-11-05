@@ -1,13 +1,11 @@
 package io.github.dunwu.util;
 
 import io.github.dunwu.util.text.RegexUtil;
-import io.github.dunwu.util.time.DateUtil;
+import io.github.dunwu.util.time.DateExtUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -86,19 +84,22 @@ class RandomExtUtilsTest {
 	@RepeatedTest(10)
 	void randomString() {
 		System.out.println(RandomExtUtils.randomString(5, 10));
-		System.out.println(RandomExtUtils.randomString(RandomExtUtils.threadLocalRandom(), 5, 10));
+		System.out.println(
+				RandomExtUtils.randomString(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
 	void randomLetter() {
 		System.out.println(RandomExtUtils.randomLetter(5, 10));
-		System.out.println(RandomExtUtils.randomLetter(RandomExtUtils.threadLocalRandom(), 5, 10));
+		System.out.println(
+				RandomExtUtils.randomLetter(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
 	void randomAscii() {
 		System.out.println(RandomExtUtils.randomAscii(5, 10));
-		System.out.println(RandomExtUtils.randomAscii(RandomExtUtils.threadLocalRandom(), 5, 10));
+		System.out.println(
+				RandomExtUtils.randomAscii(RandomExtUtils.threadLocalRandom(), 5, 10));
 	}
 
 	@RepeatedTest(10)
@@ -106,7 +107,11 @@ class RandomExtUtilsTest {
 		System.out.println(RandomExtUtils.randomEnum(Color.class).name());
 	}
 
-	enum Color {RED, YELLOW, BLUE}
+	enum Color {
+
+		RED, YELLOW, BLUE
+
+	}
 
 	final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
 
@@ -116,9 +121,9 @@ class RandomExtUtilsTest {
 		LocalDateTime max = LocalDateTime.of(2018, 12, 6, 23, 59, 59);
 
 		String date = RandomExtUtils.randomDate(min, max, DATE_PATTERN);
-		System.out
-			.println("RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
-		Assertions.assertTrue(DateUtil.verify(date, DATE_PATTERN));
+		System.out.println(
+				"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+		Assertions.assertTrue(DateExtUtils.verify(date, DATE_PATTERN));
 
 		Date date2 = RandomExtUtils.randomDate(min, max);
 		System.out.println("RandomExtUtils.anyDate(min, max): " + date2);
@@ -134,7 +139,8 @@ class RandomExtUtilsTest {
 	@RepeatedTest(10)
 	void anyMac() {
 		System.out.println("RandomExtUtils.anyMac(): " + RandomExtUtils.randomMac());
-		System.out.println("RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
+		System.out.println(
+				"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
 	}
 
 	@RepeatedTest(10)
@@ -193,13 +199,15 @@ class RandomExtUtilsTest {
 	@RepeatedTest(10)
 	void anyLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
+		System.out
+				.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
 	void anyCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println("随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
+		System.out.println(
+				"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
@@ -210,8 +218,8 @@ class RandomExtUtilsTest {
 	@RepeatedTest(10)
 	void anySimpleCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println(
-			"随机简体中文字组成的字符串：" + RandomExtUtils.randomChineseSimpleLetterString(10, count));
+		System.out.println("随机简体中文字组成的字符串："
+				+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
 	}
 
 	@RepeatedTest(10)

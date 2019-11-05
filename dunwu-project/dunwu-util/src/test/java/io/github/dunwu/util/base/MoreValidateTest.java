@@ -60,7 +60,8 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative("x", -1);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).hasMessage("x (-1) must be >= 0");
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
@@ -68,7 +69,8 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative(null, -1);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).hasMessage("null (-1) must be >= 0");
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
@@ -76,14 +78,16 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.positive("x", -1);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", 0);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -91,20 +95,23 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative("x", -1l);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", -1l);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 		try {
 			MoreValidate.positive("x", 0l);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -112,20 +119,23 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative("x", Long.valueOf(-1));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 		try {
 			MoreValidate.positive("x", Long.valueOf(-1));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", Long.valueOf(0));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -133,21 +143,24 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative("x", Integer.valueOf(-1));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", Integer.valueOf(-1));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", Integer.valueOf(0));
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -155,20 +168,23 @@ public class MoreValidateTest {
 		try {
 			MoreValidate.nonNegative("x", -9999.2d);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 
 		try {
 			MoreValidate.positive("x", -1.2d);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 		try {
 			MoreValidate.positive("x", 0d);
 			fail("fail");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
 		}
 	}

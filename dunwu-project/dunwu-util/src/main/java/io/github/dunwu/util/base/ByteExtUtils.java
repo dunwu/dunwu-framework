@@ -13,7 +13,6 @@ public class ByteExtUtils {
 
 	/**
 	 * Byte[] -> byte[]
-	 *
 	 * @param origin Byte[]
 	 * @return byte[]
 	 */
@@ -32,7 +31,6 @@ public class ByteExtUtils {
 
 	/**
 	 * byte[] -> Byte[]
-	 *
 	 * @param origin byte[]
 	 * @return Byte[]
 	 */
@@ -63,6 +61,7 @@ public class ByteExtUtils {
 		return out.toByteArray();
 	}
 
-	private ByteExtUtils() {}
+	private ByteExtUtils() {
+	}
 
 }

@@ -23,14 +23,14 @@ public class MoreQueues {
 	}
 
 	/**
-	 * 支持后进先出的无阻塞的并发栈，用ConcurrentLinkedDeque实现，经过Collections#asLifoQueue()转换顺序 另对于BlockingQueue接口，
-	 * JDK暂无Lifo倒转实现，因此只能直接使用未调转顺序的LinkedBlockingDeque
+	 * 支持后进先出的无阻塞的并发栈，用ConcurrentLinkedDeque实现，经过Collections#asLifoQueue()转换顺序
+	 * 另对于BlockingQueue接口， JDK暂无Lifo倒转实现，因此只能直接使用未调转顺序的LinkedBlockingDeque
 	 *
 	 * @see Collections#asLifoQueue()
 	 */
 	public static <E> Queue<E> createConcurrentStack() {
 		return (Queue<E>) Collections
-			.asLifoQueue(QueueUtil.newConcurrentNonBlockingDeque());
+				.asLifoQueue(QueueUtil.newConcurrentNonBlockingDeque());
 	}
 
 	//////////////// 特殊类型Queue：LRUQueue ///////////

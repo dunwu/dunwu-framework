@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import io.github.dunwu.util.parser.PropertiesUtil;
+import io.github.dunwu.util.parser.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 		Properties properties = null;
 		for (String file : files) {
 			try {
-				properties = PropertiesUtil.loadFromFile(file);
+				properties = PropertiesUtils.loadFromFile(file);
 			} catch (Exception e) {
 				log.debug("未检索到 {} 文件", file);
 			}
@@ -61,29 +61,29 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 	@Override
 	public GlobalConfig getGlobalConfig(Properties properties) {
 		// 全局配置
-		String javaDir = PropertiesUtil.getString(properties,
+		String javaDir = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_JAVA_DIR.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_JAVA_DIR.value());
-		String authorName = PropertiesUtil.getString(properties,
+		String authorName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_AUTHOR_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_AUTHOR_NAME.value());
-		Boolean enableSwagger = PropertiesUtil.getBoolean(properties,
+		Boolean enableSwagger = PropertiesUtils.getBoolean(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_ENABLE_SWAGGER.key(),
 			Boolean.valueOf(
 				CodeGeneratorKey.MYBATIS_GENERATOR_GC_ENABLE_SWAGGER.value()));
-		String mapperName = PropertiesUtil.getString(properties,
+		String mapperName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_MAPPER_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_MAPPER_NAME.value());
-		String xmlName = PropertiesUtil.getString(properties,
+		String xmlName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_XML_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_XML_NAME.value());
-		String serviceName = PropertiesUtil.getString(properties,
+		String serviceName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_SERVICE_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_SERVICE_NAME.value());
-		String serviceImplName = PropertiesUtil.getString(properties,
+		String serviceImplName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_SERVICE_IMPL_NAME.value());
-		String controllerName = PropertiesUtil.getString(properties,
+		String controllerName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_CONTROLLER_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_CONTROLLER_NAME.value());
 		GlobalConfig gc = new GlobalConfig();
@@ -97,16 +97,16 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 
 	@Override
 	public DataSourceConfig getDataSourceConfig(Properties properties) {
-		String url = PropertiesUtil.getString(properties,
+		String url = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.SPRING_DATASOURCE_URL.key(),
 			CodeGeneratorKey.SPRING_DATASOURCE_URL.value());
-		String driverName = PropertiesUtil.getString(properties,
+		String driverName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.SPRING_DATASOURCE_DRIVER.key(),
 			CodeGeneratorKey.SPRING_DATASOURCE_DRIVER.value());
-		String username = PropertiesUtil.getString(properties,
+		String username = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.SPRING_DATASOURCE_USERNAME.key(),
 			CodeGeneratorKey.SPRING_DATASOURCE_USERNAME.value());
-		String password = PropertiesUtil.getString(properties,
+		String password = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.SPRING_DATASOURCE_PASSWORD.key(),
 			CodeGeneratorKey.SPRING_DATASOURCE_PASSWORD.value());
 		DataSourceConfig dsc = new DataSourceConfig();
@@ -117,22 +117,22 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 
 	@Override
 	public PackageConfig getPackageConfig(Properties properties) {
-		String packageName = PropertiesUtil.getString(properties,
+		String packageName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_PACKAGE_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_PACKAGE_NAME.value());
-		String moduleName = PropertiesUtil.getString(properties,
+		String moduleName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_MODULE_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_MODULE_NAME.value());
-		String mapperPackageName = PropertiesUtil.getString(properties,
+		String mapperPackageName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_MAPPER_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_MAPPER_NAME.value());
-		String servicePackageName = PropertiesUtil.getString(properties,
+		String servicePackageName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_SERVICE_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_SERVICE_NAME.value());
-		String serviceImplPackageName = PropertiesUtil.getString(properties,
+		String serviceImplPackageName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_SERVICE_IMPL_NAME.value());
-		String xmlPackageName = PropertiesUtil.getString(properties,
+		String xmlPackageName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_XML_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_PC_XML_NAME.value());
 		PackageConfig pc = new PackageConfig();
@@ -151,16 +151,16 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 
 	@Override
 	public StrategyConfig getStrategyConfig(Properties properties, PackageConfig pc) {
-		String tableName = PropertiesUtil.getString(properties,
+		String tableName = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_TABLE_NAME.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_TABLE_NAME.value());
-		String superEntity = PropertiesUtil.getString(properties,
+		String superEntity = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_ENTITY.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_ENTITY.value());
-		String superService = PropertiesUtil.getString(properties,
+		String superService = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_SERVICE.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_SERVICE.value());
-		String superServiceImpl = PropertiesUtil.getString(properties,
+		String superServiceImpl = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL.value());
 		StrategyConfig sc = new StrategyConfig();
@@ -181,7 +181,7 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
 
 	@Override
 	public InjectionConfig getInjectionConfig(Properties properties, PackageConfig pc) {
-		String resourcesDir = PropertiesUtil.getString(properties,
+		String resourcesDir = PropertiesUtils.getString(properties,
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_RESOURCE_DIR.key(),
 			CodeGeneratorKey.MYBATIS_GENERATOR_GC_RESOURCE_DIR.value());
 

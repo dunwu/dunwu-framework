@@ -64,7 +64,7 @@ public class SetUtil {
 	 * @see com.google.common.collect.Sets#newTreeSet(Comparator)
 	 */
 	public static <T> TreeSet<T> newSortedSet(
-		@Nullable Comparator<? super T> comparator) {
+			@Nullable Comparator<? super T> comparator) {
 		return Sets.newTreeSet(comparator);
 	}
 
@@ -125,32 +125,36 @@ public class SetUtil {
 	//////////////// from guava的集合运算函数/////////////
 
 	/**
-	 * set1, set2的并集（在set1或set2的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的并集（在set1或set2的对象）的只读view，不复制产生新的Set对象.
+	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> unionView(final Set<? extends E> set1,
-		final Set<? extends E> set2) {
+			final Set<? extends E> set2) {
 		return Sets.union(set1, set2);
 	}
 
 	/**
-	 * set1, set2的交集（同时在set1和set2的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的交集（同时在set1和set2的对象）的只读view，不复制产生新的Set对象.
+	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> intersectionView(final Set<E> set1, final Set<?> set2) {
 		return Sets.intersection(set1, set2);
 	}
 
 	/**
-	 * set1, set2的差集（在set1，不在set2中的对象）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的差集（在set1，不在set2中的对象）的只读view，不复制产生新的Set对象.
+	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> differenceView(final Set<E> set1, final Set<?> set2) {
 		return Sets.difference(set1, set2);
 	}
 
 	/**
-	 * set1, set2的补集（在set1或set2中，但不在交集中的对象，又叫反交集）的只读view，不复制产生新的Set对象. 如果尝试写入该View会抛出UnsupportedOperationException
+	 * set1, set2的补集（在set1或set2中，但不在交集中的对象，又叫反交集）的只读view，不复制产生新的Set对象.
+	 * 如果尝试写入该View会抛出UnsupportedOperationException
 	 */
 	public static <E> Set<E> disjointView(final Set<? extends E> set1,
-		final Set<? extends E> set2) {
+			final Set<? extends E> set2) {
 		return Sets.symmetricDifference(set1, set2);
 	}
 

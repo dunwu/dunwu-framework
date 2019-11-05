@@ -40,12 +40,15 @@ public class Toc {
 			}
 			if (hasGenerated) {
 				ret.add(text);
-			} else if (text.contains(TOC_TAG_AFTER)) {
+			}
+			else if (text.contains(TOC_TAG_AFTER)) {
 				isInOldCatalogue = true;
-			} else if (text.contains(TOC_TAG_BEFORE)) {
+			}
+			else if (text.contains(TOC_TAG_BEFORE)) {
 				ret.add(generateCatalogue(contents));
 				hasGenerated = true;
-			} else {
+			}
+			else {
 				ret.add(text);
 			}
 		}
@@ -79,8 +82,9 @@ public class Toc {
 		for (String line : contents) {
 			if (line.contains("```")) {
 				isCode = !isCode;
-			} else if (line.startsWith("#") && !isCode
-				&& getLevelOfTitle(line) <= Toc.level) {
+			}
+			else if (line.startsWith("#") && !isCode
+					&& getLevelOfTitle(line) <= Toc.level) {
 				titles.add(line);
 			}
 		}

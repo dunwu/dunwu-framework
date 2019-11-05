@@ -14,10 +14,10 @@ public class RsaUtil {
 	public static final RsaDigest RSA = RsaDigest.getInstance(RsaTypeEnum.RSA);
 
 	public static final RsaDigest MD5_WITH_RSA = RsaDigest
-		.getInstance(RsaTypeEnum.MD5_WITH_RSA);
+			.getInstance(RsaTypeEnum.MD5_WITH_RSA);
 
 	public static final RsaDigest SHA1_WITH_RSA = RsaDigest
-		.getInstance(RsaTypeEnum.SHA1_WITH_RSA);
+			.getInstance(RsaTypeEnum.SHA1_WITH_RSA);
 
 	/**
 	 * 数字摘要类型
@@ -38,6 +38,7 @@ public class RsaUtil {
 		public String getValue() {
 			return value;
 		}
+
 	}
 
 	public static class RsaDigest implements ISignature {
@@ -61,7 +62,8 @@ public class RsaUtil {
 		public static RsaDigest getInstance(String type) {
 			try {
 				return new RsaDigest(type);
-			} catch (NoSuchAlgorithmException e) {
+			}
+			catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -70,7 +72,8 @@ public class RsaUtil {
 		public static RsaDigest getInstance(RsaTypeEnum type) {
 			try {
 				return new RsaDigest(type.getValue());
-			} catch (NoSuchAlgorithmException e) {
+			}
+			catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -92,7 +95,7 @@ public class RsaUtil {
 
 		@Override
 		public boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
-			throws Exception {
+				throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -122,7 +125,7 @@ public class RsaUtil {
 		}
 
 		public byte[] encryptByPublicKey(byte[] plaintext, byte[] publicKey)
-			throws Exception {
+				throws Exception {
 			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -135,7 +138,7 @@ public class RsaUtil {
 		}
 
 		public byte[] decryptByPrivateKey(byte[] ciphertext, byte[] privateKey)
-			throws Exception {
+				throws Exception {
 			// 取得私钥
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -148,7 +151,7 @@ public class RsaUtil {
 		}
 
 		public byte[] encryptByPrivateKey(byte[] plaintext, byte[] privateKey)
-			throws Exception {
+				throws Exception {
 			// 取得私钥
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -161,7 +164,7 @@ public class RsaUtil {
 		}
 
 		public byte[] decryptByPublicKey(byte[] ciphertext, byte[] publicKey)
-			throws Exception {
+				throws Exception {
 			// 取得私钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);

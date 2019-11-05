@@ -9,7 +9,7 @@ import io.github.dunwu.quickstart.filesystem.dto.FileDTO;
 import io.github.dunwu.quickstart.filesystem.dto.FileQuery;
 import io.github.dunwu.quickstart.filesystem.dto.UploadFileDTO;
 import io.github.dunwu.util.code.IdUtil;
-import io.github.dunwu.util.io.FileUtil;
+import io.github.dunwu.util.io.FileExtUtils;
 import io.github.dunwu.util.mapper.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,11 +71,11 @@ public interface FileManager {
 
 	default void autoFillUploadFileDto(UploadFileDTO uploadFileDTO) {
 		MultipartFile file = uploadFileDTO.getFile();
-		String extension = FileUtil.getFileExtension(file.getOriginalFilename());
+		String extension = FileExtUtils.getFileExtension(file.getOriginalFilename());
 		uploadFileDTO.setExtension(extension);
 
 		if (StringUtils.isBlank(uploadFileDTO.getOriginName())) {
-			String originName = FileUtil.getFileName(uploadFileDTO.getOriginName())
+			String originName = FileExtUtils.getFileName(uploadFileDTO.getOriginName())
 				+ FileSystemConstant.FILE_SEPARATOR + extension;
 			uploadFileDTO.setOriginName(originName);
 		}

@@ -2,7 +2,7 @@ package io.github.dunwu.util.mock;
 
 import io.github.dunwu.util.RandomExtUtils;
 import io.github.dunwu.util.text.RegexUtil;
-import io.github.dunwu.util.time.DateUtil;
+import io.github.dunwu.util.time.DateExtUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
@@ -30,9 +30,9 @@ public class MockUtilTest {
 		LocalDateTime max = LocalDateTime.of(2018, 12, 6, 23, 59, 59);
 
 		String date = RandomExtUtils.randomDate(min, max, DATE_PATTERN);
-		System.out
-			.println("RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
-		Assertions.assertTrue(DateUtil.verify(date, DATE_PATTERN));
+		System.out.println(
+				"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+		Assertions.assertTrue(DateExtUtils.verify(date, DATE_PATTERN));
 
 		Date date2 = RandomExtUtils.randomDate(min, max);
 		System.out.println("RandomExtUtils.anyDate(min, max): " + date2);
@@ -48,7 +48,8 @@ public class MockUtilTest {
 	@RepeatedTest(10)
 	void anyMac() {
 		System.out.println("RandomExtUtils.anyMac(): " + RandomExtUtils.randomMac());
-		System.out.println("RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
+		System.out.println(
+				"RandomExtUtils.anyMac(\":\"): " + RandomExtUtils.randomMac(":"));
 	}
 
 	@RepeatedTest(10)
@@ -107,13 +108,15 @@ public class MockUtilTest {
 	@RepeatedTest(10)
 	void anyLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
+		System.out
+				.println("随机英文字母组成的字符串：" + RandomExtUtils.randomLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
 	void anyCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println("随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
+		System.out.println(
+				"随机中文字组成的字符串：" + RandomExtUtils.randomChineseLetterString(10, count));
 	}
 
 	@RepeatedTest(10)
@@ -124,8 +127,8 @@ public class MockUtilTest {
 	@RepeatedTest(10)
 	void anySimpleCLetterString() {
 		int count = RandomUtils.nextInt(10, 100);
-		System.out.println(
-			"随机简体中文字组成的字符串：" + RandomExtUtils.randomChineseSimpleLetterString(10, count));
+		System.out.println("随机简体中文字组成的字符串："
+				+ RandomExtUtils.randomChineseSimpleLetterString(10, count));
 	}
 
 	@RepeatedTest(10)

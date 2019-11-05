@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * 简单封装Jackson，实现JSON String<->Java Object转换的Mapper. 可以直接使用公共示例JsonMapper.INSTANCE, 也可以使用不同的builder函数创建实例，封装不同的输出风格,
- * 不要使用GSON, 在对象稍大时非常缓慢. 注意: 需要参考本模块的POM文件，显式引用jackson.
+ * 简单封装Jackson，实现JSON String<->Java Object转换的Mapper. 可以直接使用公共示例JsonMapper.INSTANCE,
+ * 也可以使用不同的builder函数创建实例，封装不同的输出风格, 不要使用GSON, 在对象稍大时非常缓慢. 注意: 需要参考本模块的POM文件，显式引用jackson.
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
@@ -66,8 +66,9 @@ public class JsonMapper {
 	}
 
 	/**
-	 * 反序列化POJO或简单Collection如List<String>. 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
-	 * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String, JavaType)
+	 * 反序列化POJO或简单Collection如List<String>. 如果JSON字符串为Null或"null"字符串, 返回Null.
+	 * 如果JSON字符串为"[]", 返回空集合. 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String,
+	 * JavaType)
 	 *
 	 * @see #fromJson(String, JavaType)
 	 */
@@ -78,14 +79,16 @@ public class JsonMapper {
 
 		try {
 			return mapper.readValue(jsonString, clazz);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.warn("parse json string error:" + jsonString, e);
 			return null;
 		}
 	}
 
 	/**
-	 * 反序列化复杂Collection如List<Bean>, contructCollectionType()或contructMapType()构造类型, 然后调用本函数.
+	 * 反序列化复杂Collection如List<Bean>, contructCollectionType()或contructMapType()构造类型,
+	 * 然后调用本函数.
 	 */
 	public <T> T fromJson(@Nullable String jsonString, JavaType javaType) {
 		if (StringUtils.isEmpty(jsonString)) {
@@ -94,7 +97,8 @@ public class JsonMapper {
 
 		try {
 			return (T) mapper.readValue(jsonString, javaType);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.warn("parse json string error:" + jsonString, e);
 			return null;
 		}
@@ -104,16 +108,16 @@ public class JsonMapper {
 	 * 构造Collection类型.
 	 */
 	public JavaType buildCollectionType(Class<? extends Collection> collectionClass,
-		Class<?> elementClass) {
+			Class<?> elementClass) {
 		return mapper.getTypeFactory().constructCollectionType(collectionClass,
-			elementClass);
+				elementClass);
 	}
 
 	/**
 	 * 构造Map类型.
 	 */
 	public JavaType buildMapType(Class<? extends Map> mapClass, Class<?> keyClass,
-		Class<?> valueClass) {
+			Class<?> valueClass) {
 		return mapper.getTypeFactory().constructMapType(mapClass, keyClass, valueClass);
 	}
 
@@ -123,12 +127,14 @@ public class JsonMapper {
 	public void update(String jsonString, Object object) {
 		try {
 			mapper.readerForUpdating(object).readValue(jsonString);
-		} catch (JsonProcessingException e) {
+		}
+		catch (JsonProcessingException e) {
 			logger.warn("update json string:" + jsonString + " to object:" + object
-				+ " error.", e);
-		} catch (IOException e) {
+					+ " error.", e);
+		}
+		catch (IOException e) {
 			logger.warn("update json string:" + jsonString + " to object:" + object
-				+ " error.", e);
+					+ " error.", e);
 		}
 	}
 
@@ -146,14 +152,16 @@ public class JsonMapper {
 
 		try {
 			return mapper.writeValueAsString(object);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.warn("write to json string error:" + object, e);
 			return null;
 		}
 	}
 
 	/**
-	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False. 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
+	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False.
+	 * 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
 	 */
 	public void enableEnumUseToString() {
 		mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);

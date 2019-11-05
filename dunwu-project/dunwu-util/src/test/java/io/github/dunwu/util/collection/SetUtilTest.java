@@ -46,7 +46,8 @@ public class SetUtilTest {
 		try {
 			set1.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
@@ -55,7 +56,8 @@ public class SetUtilTest {
 		try {
 			set4.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
@@ -65,12 +67,13 @@ public class SetUtilTest {
 		try {
 			set6.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 
 		Set<String> set7 = SetUtil
-			.newSetFromMap(MapUtil.<String, Boolean>newConcurrentSortedMap());
+				.newSetFromMap(MapUtil.<String, Boolean>newConcurrentSortedMap());
 	}
 
 	@Test
@@ -93,7 +96,8 @@ public class SetUtilTest {
 		try {
 			set6.add("a");
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
 		}
 	}

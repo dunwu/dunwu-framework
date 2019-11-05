@@ -16,7 +16,7 @@ public class ParameterizedTests {
 	void add(int first, int second, int expectedResult) {
 		Calculator calculator = new Calculator();
 		assertEquals(expectedResult, calculator.add(first, second),
-			() -> first + " + " + second + " should equal " + expectedResult);
+				() -> first + " + " + second + " should equal " + expectedResult);
 	}
 
 	public class Calculator {

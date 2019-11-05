@@ -26,7 +26,8 @@ public class BasicFutureTest {
 			MyFuture<String> future2 = new MyFuture<String>();
 			future2.get(10, TimeUnit.MILLISECONDS);
 			fail("should fail before");
-		} catch (TimeoutException e) {
+		}
+		catch (TimeoutException e) {
 			assertThat(e).isInstanceOf(TimeoutException.class);
 		}
 
@@ -36,7 +37,8 @@ public class BasicFutureTest {
 			Tasks.fail(future3);
 			future3.get();
 			fail("should fail before");
-		} catch (Throwable t) {
+		}
+		catch (Throwable t) {
 			assertThat(ExceptionExtUtils.unwrap(t)).hasMessage("wuwu");
 		}
 
@@ -47,7 +49,8 @@ public class BasicFutureTest {
 		try {
 			String result4 = future4.get();
 			fail("should fail here");
-		} catch (CancellationException cae) {
+		}
+		catch (CancellationException cae) {
 
 		}
 	}

@@ -21,11 +21,11 @@ public class RsaUtilTest {
 	}
 
 	private void doTestEncryptByPublicAndDecryptByPrivate(RsaUtil.RsaDigest rsaDigest)
-		throws Exception {
+			throws Exception {
 		byte[] ciphertext = rsaDigest.encryptByPublicKey(TEST_CONTENT,
-			rsaDigest.getPublicKey());
+				rsaDigest.getPublicKey());
 		byte[] plaintext = rsaDigest.decryptByPrivateKey(ciphertext,
-			rsaDigest.getPrivateKey());
+				rsaDigest.getPrivateKey());
 		Assertions.assertArrayEquals(TEST_CONTENT, plaintext);
 	}
 
@@ -38,11 +38,11 @@ public class RsaUtilTest {
 	}
 
 	private void doTestEncryptByPrivateAndDecryptByPublic(RsaUtil.RsaDigest rsaDigest)
-		throws Exception {
+			throws Exception {
 		byte[] ciphertext = rsaDigest.encryptByPrivateKey(TEST_CONTENT,
-			rsaDigest.getPrivateKey());
+				rsaDigest.getPrivateKey());
 		byte[] plaintext = rsaDigest.decryptByPublicKey(ciphertext,
-			rsaDigest.getPublicKey());
+				rsaDigest.getPublicKey());
 		Assertions.assertArrayEquals(TEST_CONTENT, plaintext);
 	}
 
@@ -56,7 +56,7 @@ public class RsaUtilTest {
 	private void doTestSignAndVerify(RsaUtil.RsaDigest rsaDigest) throws Exception {
 		byte[] ciphertext = rsaDigest.sign(TEST_CONTENT, rsaDigest.getPrivateKey());
 		boolean verify = rsaDigest.verify(TEST_CONTENT, rsaDigest.getPublicKey(),
-			ciphertext);
+				ciphertext);
 		Assertions.assertTrue(verify);
 	}
 

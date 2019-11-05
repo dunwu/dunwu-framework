@@ -27,7 +27,6 @@ public class EncodeUtil {
 
 	/**
 	 * 产生 Base64 编码。
-	 *
 	 * @param input 输入
 	 * @return String
 	 */
@@ -62,14 +61,13 @@ public class EncodeUtil {
 
 	/**
 	 * 字符串编码转换的实现方法
-	 *
-	 * @param text       待转换编码的字符串
+	 * @param text 待转换编码的字符串
 	 * @param newCharset 目标编码
 	 * @return String
 	 * @throws UnsupportedEncodingException
 	 */
 	public static String changeCharset(String text, String newCharset)
-		throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		if (StringUtils.isBlank(text)) {
 			return text;
 		}
@@ -82,15 +80,14 @@ public class EncodeUtil {
 
 	/**
 	 * 字符串编码转换的实现方法
-	 *
-	 * @param text       待转换编码的字符串
+	 * @param text 待转换编码的字符串
 	 * @param oldCharset 原编码
 	 * @param newCharset 目标编码
 	 * @return String
 	 * @throws UnsupportedEncodingException
 	 */
 	public static String changeCharset(String text, String oldCharset, String newCharset)
-		throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		if (StringUtils.isBlank(text)) {
 			return text;
 		}
