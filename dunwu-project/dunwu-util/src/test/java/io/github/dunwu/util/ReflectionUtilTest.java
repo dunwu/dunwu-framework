@@ -1,4 +1,4 @@
-package io.github.dunwu.util.reflect;
+package io.github.dunwu.util;
 
 import io.github.dunwu.util.base.type.UncheckedException;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,29 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReflectionUtilTest {
+
+	@Test
+	public void convertReflectionExceptionToUnchecked() {
+		IllegalArgumentException iae = new IllegalArgumentException();
+		// ReflectionException,normal
+		RuntimeException e = ReflectionUtil.convertReflectionExceptionToUnchecked(iae);
+		assertThat(e).isEqualTo(iae);
+
+		// InvocationTargetException,extract it's target exception.
+		Exception ex = new Exception();
+		e = ReflectionUtil
+			.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
+		assertThat(e.getCause()).isEqualTo(ex);
+
+		// UncheckedException, ignore it.
+		RuntimeException re = new RuntimeException("abc");
+		e = ReflectionUtil.convertReflectionExceptionToUnchecked(re);
+		assertThat(e).hasMessage("abc");
+
+		// Unexcepted Checked exception.
+		e = ReflectionUtil.convertReflectionExceptionToUnchecked(ex);
+		assertThat(e).isInstanceOf(UncheckedException.class);
+	}
 
 	@Test
 	public void getAndSetFieldValue() {
@@ -50,6 +73,15 @@ public class ReflectionUtilTest {
 		// failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
 		// } catch (IllegalArgumentException e) { // NOSONAR
 		// }
+	}
+
+	@Test
+	public void invokeConstructor() {
+		TestBean bean = ReflectionUtil.invokeConstructor(TestBean.class);
+		assertThat(bean.getPublicField()).isEqualTo(2);
+
+		TestBean3 bean3 = ReflectionUtil.invokeConstructor(TestBean3.class, 4);
+		assertThat(bean3.getId()).isEqualTo(4);
 	}
 
 	@Test
@@ -138,38 +170,6 @@ public class ReflectionUtilTest {
 		// }
 	}
 
-	@Test
-	public void invokeConstructor() {
-		TestBean bean = ReflectionUtil.invokeConstructor(TestBean.class);
-		assertThat(bean.getPublicField()).isEqualTo(2);
-
-		TestBean3 bean3 = ReflectionUtil.invokeConstructor(TestBean3.class, 4);
-		assertThat(bean3.getId()).isEqualTo(4);
-	}
-
-	@Test
-	public void convertReflectionExceptionToUnchecked() {
-		IllegalArgumentException iae = new IllegalArgumentException();
-		// ReflectionException,normal
-		RuntimeException e = ReflectionUtil.convertReflectionExceptionToUnchecked(iae);
-		assertThat(e).isEqualTo(iae);
-
-		// InvocationTargetException,extract it's target exception.
-		Exception ex = new Exception();
-		e = ReflectionUtil
-			.convertReflectionExceptionToUnchecked(new InvocationTargetException(ex));
-		assertThat(e.getCause()).isEqualTo(ex);
-
-		// UncheckedException, ignore it.
-		RuntimeException re = new RuntimeException("abc");
-		e = ReflectionUtil.convertReflectionExceptionToUnchecked(re);
-		assertThat(e).hasMessage("abc");
-
-		// Unexcepted Checked exception.
-		e = ReflectionUtil.convertReflectionExceptionToUnchecked(ex);
-		assertThat(e).isInstanceOf(UncheckedException.class);
-	}
-
 	public static class ParentBean<T, ID> {
 
 	}
@@ -186,16 +186,6 @@ public class ReflectionUtilTest {
 		 */
 		private int publicField = 1;
 
-		// 通過getter函數會比屬性值+1
-		public int getPublicField() {
-			return publicField + 1;
-		}
-
-		// 通過setter函數會被比輸入值加1
-		public void setPublicField(int publicField) {
-			this.publicField = publicField + 1;
-		}
-
 		public int inspectPrivateField() {
 			return privateField;
 		}
@@ -204,8 +194,9 @@ public class ReflectionUtilTest {
 			return publicField;
 		}
 
-		private String privateMethod(String text) {
-			return "hello " + text;
+		// 测试原子类型转换
+		public int intType(int i) {
+			return i;
 		}
 
 		// 测试原子类型转换
@@ -213,14 +204,23 @@ public class ReflectionUtilTest {
 			return i;
 		}
 
-		// 测试原子类型转换
-		public int intType(int i) {
-			return i;
-		}
-
 		// 测试类型为接口
 		public int listType(List<?> list) {
 			return list.size();
+		}
+
+		private String privateMethod(String text) {
+			return "hello " + text;
+		}
+
+		// 通過getter函數會比屬性值+1
+		public int getPublicField() {
+			return publicField + 1;
+		}
+
+		// 通過setter函數會被比輸入值加1
+		public void setPublicField(int publicField) {
+			this.publicField = publicField + 1;
 		}
 
 	}

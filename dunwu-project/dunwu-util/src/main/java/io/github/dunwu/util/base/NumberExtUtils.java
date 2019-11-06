@@ -17,7 +17,166 @@ public class NumberExtUtils extends NumberUtils {
 	// byte[] 与原始类型互相转换
 	// -------------------------------------------------------------------------------------------------
 
-	private NumberExtUtils() {
+	private NumberExtUtils() {}
+
+	// 十六进制字符串转换为包装类
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 将16进制的String转化为Integer. 当str为空或非数字字符串时抛NumberFormatException
+	 */
+	public static Integer hexToIntObject(final String str) {
+		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
+		if (str == null) {
+			throw new NumberFormatException("null");
+		}
+		return Integer.decode(str);
+	}
+
+	/**
+	 * 将16进制的String转化为Integer，出错时返回默认值.
+	 */
+	public static Integer hexToIntObject(final String str, Integer defaultValue) {
+		if (StringUtils.isEmpty(str)) {
+			return defaultValue;
+		}
+		try {
+			return Integer.decode(str);
+		} catch (final NumberFormatException nfe) {
+			return defaultValue;
+		}
+	}
+
+	/**
+	 * 将16进制的String转化为Long 当str为空或非数字字符串时抛NumberFormatException
+	 */
+	public static Long hexToLongObject(final String str) {
+		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
+		if (str == null) {
+			throw new NumberFormatException("null");
+		}
+		return Long.decode(str);
+	}
+
+	/**
+	 * 将16进制的String转化为Long，出错时返回默认值.
+	 */
+	public static Long hexToLongObject(final String str, Long defaultValue) {
+		if (StringUtils.isEmpty(str)) {
+			return defaultValue;
+		}
+		try {
+			return Long.decode(str);
+		} catch (final NumberFormatException nfe) {
+			return defaultValue;
+		}
+	}
+
+	/**
+	 * 整数转换英文
+	 *
+	 * @param num 整数
+	 * @return
+	 */
+	public static String intToEnWords(final int num) {
+		if (num == 0) {
+			return "Zero";
+		}
+
+		int billion = num / 1000000000;
+		int million = (num - billion * 1000000000) / 1000000;
+		int thousand = (num - billion * 1000000000 - million * 1000000) / 1000;
+		int rest = num - billion * 1000000000 - million * 1000000 - thousand * 1000;
+
+		String result = "";
+		if (billion != 0) {
+			result = NumberToEnglishFormat.three(billion) + " Billion";
+		}
+		if (million != 0) {
+			if (!result.isEmpty()) {
+				result += " ";
+			}
+			result += NumberToEnglishFormat.three(million) + " Million";
+		}
+		if (thousand != 0) {
+			if (!result.isEmpty()) {
+				result += " ";
+			}
+			result += NumberToEnglishFormat.three(thousand) + " Thousand";
+		}
+		if (rest != 0) {
+			if (!result.isEmpty()) {
+				result += " ";
+			}
+			result += NumberToEnglishFormat.three(rest);
+		}
+		return result;
+	}
+
+	/**
+	 * 判断字符串是否16进制
+	 */
+	public static boolean isHexNumber(final String value) {
+		if (StringUtils.isEmpty(value)) {
+			return false;
+		}
+
+		int index = value.startsWith("-") ? 1 : 0;
+		return value.startsWith("0x", index) || value.startsWith("0X", index)
+			|| value.startsWith("#", index);
+	}
+
+	// 字符串、byte 数组转换为原始数据类型
+	// -------------------------------------------------------------------------------------------------
+
+	public static double parseDouble(final byte[] bytes) {
+		return Double.longBitsToDouble(parseLong(bytes));
+	}
+
+	public static long parseLong(final byte[] bytes) {
+		return Longs.fromByteArray(bytes);
+	}
+
+	public static double parseDouble(final String str) {
+		return Double.parseDouble(str);
+	}
+
+	public static float parseFloat(final byte[] bytes) {
+		return Float.intBitsToFloat(parseInt(bytes));
+	}
+
+	public static int parseInt(final byte[] bytes) {
+		return Ints.fromByteArray(bytes);
+	}
+
+	public static float parseFloat(final String str) {
+		return Float.parseFloat(str);
+	}
+
+	public static int parseInt(final String str) {
+		return Integer.parseInt(str);
+	}
+
+	public static long parseLong(final String str) {
+		return Long.parseLong(str);
+	}
+
+	public static short parseShort(final byte[] bytes) {
+		return Shorts.fromByteArray(bytes);
+	}
+
+	public static short parseShort(final String str) {
+		return Short.parseShort(str);
+	}
+
+	// 数组原始数据类型转换为 byte 数组
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 输出格式化为小数后两位的double字符串
+	 */
+	public static String to2DigitString(final double d) {
+		return String.format(Locale.ROOT, "%.2f", d);
 	}
 
 	public static byte[] toBytes(final short value) {
@@ -36,68 +195,71 @@ public class NumberExtUtils extends NumberUtils {
 		return toBytes(Double.doubleToRawLongBits(value));
 	}
 
+	// 字符串转换为包装类
+	// -------------------------------------------------------------------------------------------------
+
 	public static byte[] toBytes(final long value) {
 		return Longs.toByteArray(value);
 	}
 
-	public static int parseShort(final byte[] bytes) {
-		return Shorts.fromByteArray(bytes);
+	/**
+	 * 将10进制的String安全的转化为Double. 当str为空或非数字字符串时抛NumberFormatException
+	 */
+	public static Double toDoubleObject(final String str) {
+		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
+		if (str == null) {
+			throw new NumberFormatException("null");
+		}
+		return Double.valueOf(str);
 	}
-
-	public static float parseFloat(final byte[] bytes) {
-		return Float.intBitsToFloat(parseInt(bytes));
-	}
-
-	public static int parseInt(final byte[] bytes) {
-		return Ints.fromByteArray(bytes);
-	}
-
-	public static double parseDouble(final byte[] bytes) {
-		return Double.longBitsToDouble(parseLong(bytes));
-	}
-
-	// 字符串与原始类型互相转换
-	// -------------------------------------------------------------------------------------------------
-
-	public static long parseLong(final byte[] bytes) {
-		return Longs.fromByteArray(bytes);
-	}
-
-	public static short parseShort(final String str) {
-		return Short.parseShort(str);
-	}
-
-	public static int parseInt(final String str) {
-		return Integer.parseInt(str);
-	}
-
-	public static long parseLong(final String str) {
-		return Long.parseLong(str);
-	}
-
-	public static double parseFloat(final String str) {
-		return Float.parseFloat(str);
-	}
-
-	public static double parseDouble(final String str) {
-		return Double.parseDouble(str);
-	}
-
-	/////////// 将字符串转化为原始类型数字/////////
-
-	////////////// 10进制字符串 转换对象类型数字/////////////
 
 	/**
-	 * 判断字符串是否16进制
+	 * 将10进制的String安全的转化为Long. 当str为空或非数字字符串时，返回default值
 	 */
-	public static boolean isHexNumber(final String value) {
-		if (StringUtils.isEmpty(value)) {
-			return false;
+	public static Double toDoubleObject(final String str, Double defaultValue) {
+		if (StringUtils.isEmpty(str)) {
+			return defaultValue;
 		}
+		try {
+			return Double.valueOf(str);
+		} catch (final NumberFormatException nfe) {
+			return defaultValue;
+		}
+	}
 
-		int index = value.startsWith("-") ? 1 : 0;
-		return value.startsWith("0x", index) || value.startsWith("0X", index)
-			|| value.startsWith("#", index);
+	/**
+	 * 将10进制的String安全的转化为Double. 当str为空或非数字字符串时抛NumberFormatException
+	 */
+	public static Float toFloatObject(final String str) {
+		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
+		if (str == null) {
+			throw new NumberFormatException("null");
+		}
+		return Float.valueOf(str);
+	}
+
+	/**
+	 * 将10进制的String安全的转化为Long. 当str为空或非数字字符串时，返回default值
+	 */
+	public static Float toFloatObject(final String str, Float defaultValue) {
+		if (StringUtils.isEmpty(str)) {
+			return defaultValue;
+		}
+		try {
+			return Float.valueOf(str);
+		} catch (final NumberFormatException nfe) {
+			return defaultValue;
+		}
+	}
+
+	/**
+	 * 安全的将小于Integer.MAX的long转为int，否则抛出IllegalArgumentException异常
+	 */
+	public static int toInt32(final long x) {
+		if ((int) x == x) {
+			return (int) x;
+		}
+		throw new IllegalArgumentException("Int " + x + " out of range");
 	}
 
 	/**
@@ -142,168 +304,51 @@ public class NumberExtUtils extends NumberUtils {
 		}
 	}
 
+	// 数组原始数据类型转换为字符串
+	// -------------------------------------------------------------------------------------------------
+
 	/**
-	 * 将10进制的String安全的转化为Double. 当str为空或非数字字符串时抛NumberFormatException
+	 * 将10进制的String安全的转化为Integer. 当str为空或非数字字符串时抛NumberFormatException
 	 */
-	public static Double toDoubleObject(final String str) {
-		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
-		if (str == null) {
-			throw new NumberFormatException("null");
-		}
-		return Double.valueOf(str);
+	public static Short toShortObject(final String str) {
+		return Short.valueOf(str);
 	}
 
-	//////////// 16进制 字符串转换为数字对象//////////
-
 	/**
-	 * 将10进制的String安全的转化为Long. 当str为空或非数字字符串时，返回default值
+	 * 将10进制的String安全的转化为Integer. 当str为空或非数字字符串时，返回default值
 	 */
-	public static Double toDoubleObject(final String str, Double defaultValue) {
+	public static Short toShortObject(final String str, Short defaultValue) {
 		if (StringUtils.isEmpty(str)) {
 			return defaultValue;
 		}
 		try {
-			return Double.valueOf(str);
+			return Short.valueOf(str);
 		} catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
 	}
 
-	/**
-	 * 将16进制的String转化为Integer. 当str为空或非数字字符串时抛NumberFormatException
-	 */
-	public static Integer hexToIntObject(final String str) {
-		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
-		if (str == null) {
-			throw new NumberFormatException("null");
-		}
-		return Integer.decode(str);
+	public static String toString(final short value) {
+		return Short.toString(value);
 	}
 
-	/**
-	 * 将16进制的String转化为Integer，出错时返回默认值.
-	 */
-	public static Integer hexToIntObject(final String str, Integer defaultValue) {
-		if (StringUtils.isEmpty(str)) {
-			return defaultValue;
-		}
-		try {
-			return Integer.decode(str);
-		} catch (final NumberFormatException nfe) {
-			return defaultValue;
-		}
+	public static String toString(final int value) {
+		return Integer.toString(value);
 	}
 
-	/**
-	 * 将16进制的String转化为Long 当str为空或非数字字符串时抛NumberFormatException
-	 */
-	public static Long hexToLongObject(final String str) {
-		// 统一行为，不要有时候抛NPE，有时候抛NumberFormatException
-		if (str == null) {
-			throw new NumberFormatException("null");
-		}
-		return Long.decode(str);
+	public static String toString(final long value) {
+		return Long.toString(value);
 	}
 
-	/////// toString ///////
-	// 定义了原子类型与对象类型的参数，保证不会用错函数会导致额外AutoBoxing转换//
+	// 杂项
+	// -------------------------------------------------------------------------------------------------
 
-	/**
-	 * 将16进制的String转化为Long，出错时返回默认值.
-	 */
-	public static Long hexToLongObject(final String str, Long defaultValue) {
-		if (StringUtils.isEmpty(str)) {
-			return defaultValue;
-		}
-		try {
-			return Long.decode(str);
-		} catch (final NumberFormatException nfe) {
-			return defaultValue;
-		}
+	public static String toString(final float value) {
+		return Float.toString(value);
 	}
 
-	public static String toString(final int i) {
-		return Integer.toString(i);
-	}
-
-	public static String toString(final Integer i) {
-		return i.toString();
-	}
-
-	public static String toString(final long l) {
-		return Long.toString(l);
-	}
-
-	public static String toString(final Long l) {
-		return l.toString();
-	}
-
-	public static String toString(final double d) {
-		return Double.toString(d);
-	}
-
-	public static String toString(final Double d) {
-		return d.toString();
-	}
-
-	/////////// 杂项 ///////
-
-	/**
-	 * 输出格式化为小数后两位的double字符串
-	 */
-	public static String to2DigitString(final double d) {
-		return String.format(Locale.ROOT, "%.2f", d);
-	}
-
-	/**
-	 * 安全的将小于Integer.MAX的long转为int，否则抛出IllegalArgumentException异常
-	 */
-	public static int toInt32(final long x) {
-		if ((int) x == x) {
-			return (int) x;
-		}
-		throw new IllegalArgumentException("Int " + x + " out of range");
-	}
-
-	/**
-	 * 整数转换英文
-	 *
-	 * @param num 整数
-	 * @return
-	 */
-	public static String intToEnWords(final int num) {
-		if (num == 0) {
-			return "Zero";
-		}
-
-		int billion = num / 1000000000;
-		int million = (num - billion * 1000000000) / 1000000;
-		int thousand = (num - billion * 1000000000 - million * 1000000) / 1000;
-		int rest = num - billion * 1000000000 - million * 1000000 - thousand * 1000;
-
-		String result = "";
-		if (billion != 0) {
-			result = NumberToEnglishFormat.three(billion) + " Billion";
-		}
-		if (million != 0) {
-			if (!result.isEmpty()) {
-				result += " ";
-			}
-			result += NumberToEnglishFormat.three(million) + " Million";
-		}
-		if (thousand != 0) {
-			if (!result.isEmpty()) {
-				result += " ";
-			}
-			result += NumberToEnglishFormat.three(thousand) + " Thousand";
-		}
-		if (rest != 0) {
-			if (!result.isEmpty()) {
-				result += " ";
-			}
-			result += NumberToEnglishFormat.three(rest);
-		}
-		return result;
+	public static String toString(final double value) {
+		return Double.toString(value);
 	}
 
 	static class NumberToEnglishFormat {

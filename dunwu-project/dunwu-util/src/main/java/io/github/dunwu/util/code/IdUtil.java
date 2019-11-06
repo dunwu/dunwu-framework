@@ -13,6 +13,16 @@ import java.util.UUID;
 public class IdUtil {
 
 	/**
+	 * 新建一个 SnowFlakeId 实例
+	 *
+	 * @return SnowFlakeId
+	 * @see SnowFlakeId
+	 */
+	public static SnowFlakeId newSnowFlakeId(long dataCenterId, long machineId) {
+		return new SnowFlakeId(dataCenterId, machineId);
+	}
+
+	/**
 	 * 生成随机 UUID，含 - 字符
 	 *
 	 * @return String
@@ -28,16 +38,6 @@ public class IdUtil {
 	 */
 	public static String randomUuid2() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-
-	/**
-	 * 新建一个 SnowFlakeId 实例
-	 *
-	 * @return SnowFlakeId
-	 * @see SnowFlakeId
-	 */
-	public static SnowFlakeId newSnowFlakeId(long dataCenterId, long machineId) {
-		return new SnowFlakeId(dataCenterId, machineId);
 	}
 
 }

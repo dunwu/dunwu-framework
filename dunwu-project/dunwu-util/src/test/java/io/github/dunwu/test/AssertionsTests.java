@@ -25,22 +25,6 @@ class AssertionsTests {
 	}
 
 	@Test
-	void standardAssertions() {
-		assertEquals(2, 2);
-		assertEquals(4, 4, "The optional assertion message is now the last parameter.");
-		assertTrue('a' < 'b', () -> "Assertion messages can be lazily evaluated -- "
-			+ "to avoid constructing complex messages unnecessarily.");
-	}
-
-	@Test
-	void groupedAssertions() {
-		// In a grouped assertion all assertions are executed, and any
-		// failures will be reported together.
-		assertAll("person", () -> assertEquals("John", person.getFirstName()),
-			() -> assertEquals("Doe", person.getLastName()));
-	}
-
-	@Test
 	void dependentAssertions() {
 		// Within a code block, if an assertion fails the
 		// subsequent code in the same block will be skipped.
@@ -72,31 +56,19 @@ class AssertionsTests {
 	}
 
 	@Test
-	void timeoutNotExceeded() {
-		// The following assertion succeeds.
-		assertTimeout(ofMinutes(2), () -> {
-			// Perform task that takes less than 2 minutes.
-		});
+	void groupedAssertions() {
+		// In a grouped assertion all assertions are executed, and any
+		// failures will be reported together.
+		assertAll("person", () -> assertEquals("John", person.getFirstName()),
+			() -> assertEquals("Doe", person.getLastName()));
 	}
 
 	@Test
-	void timeoutNotExceededWithResult() {
-		// The following assertion succeeds, and returns the supplied object.
-		String actualResult = assertTimeout(ofMinutes(2), () -> {
-			return "a result";
-		});
-		assertEquals("a result", actualResult);
-	}
-
-	@Test
-	void timeoutNotExceededWithMethod() {
-		// The following assertion invokes a method reference and returns an object.
-		String actualGreeting = assertTimeout(ofMinutes(2), AssertionsTests::greeting);
-		assertEquals("Hello, World!", actualGreeting);
-	}
-
-	private static String greeting() {
-		return "Hello, World!";
+	void standardAssertions() {
+		assertEquals(2, 2);
+		assertEquals(4, 4, "The optional assertion message is now the last parameter.");
+		assertTrue('a' < 'b', () -> "Assertion messages can be lazily evaluated -- "
+			+ "to avoid constructing complex messages unnecessarily.");
 	}
 
 	@Test
@@ -117,6 +89,34 @@ class AssertionsTests {
 			// Simulate task that takes more than 10 ms.
 			Thread.sleep(100);
 		});
+	}
+
+	@Test
+	void timeoutNotExceeded() {
+		// The following assertion succeeds.
+		assertTimeout(ofMinutes(2), () -> {
+			// Perform task that takes less than 2 minutes.
+		});
+	}
+
+	@Test
+	void timeoutNotExceededWithMethod() {
+		// The following assertion invokes a method reference and returns an object.
+		String actualGreeting = assertTimeout(ofMinutes(2), AssertionsTests::greeting);
+		assertEquals("Hello, World!", actualGreeting);
+	}
+
+	private static String greeting() {
+		return "Hello, World!";
+	}
+
+	@Test
+	void timeoutNotExceededWithResult() {
+		// The following assertion succeeds, and returns the supplied object.
+		String actualResult = assertTimeout(ofMinutes(2), () -> {
+			return "a result";
+		});
+		assertEquals("a result", actualResult);
 	}
 
 	static class Person {

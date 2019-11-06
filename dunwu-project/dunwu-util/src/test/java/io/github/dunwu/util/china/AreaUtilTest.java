@@ -41,15 +41,6 @@ public class AreaUtilTest {
 	}
 
 	@Test
-	void getProvinceByName() {
-		String[] provinceNames = StringUtils.splitByWholeSeparator(PROVINCE_STR, ",");
-		Arrays.stream(provinceNames).forEach(item -> {
-			Province province = ChinaAreaUtil.getProvinceByName(item);
-			Assertions.assertNotNull(province);
-		});
-	}
-
-	@Test
 	void getCityByName() {
 		String[] cityNames = StringUtils.splitByWholeSeparator(CITY_STR, ",");
 		Arrays.stream(cityNames).forEach(item -> {
@@ -64,6 +55,15 @@ public class AreaUtilTest {
 		Arrays.stream(countyNames).forEach(item -> {
 			Set<County> counties = ChinaAreaUtil.getCountyByName(item);
 			Assertions.assertTrue(CollectionUtils.isNotEmpty(counties));
+		});
+	}
+
+	@Test
+	void getProvinceByName() {
+		String[] provinceNames = StringUtils.splitByWholeSeparator(PROVINCE_STR, ",");
+		Arrays.stream(provinceNames).forEach(item -> {
+			Province province = ChinaAreaUtil.getProvinceByName(item);
+			Assertions.assertNotNull(province);
 		});
 	}
 

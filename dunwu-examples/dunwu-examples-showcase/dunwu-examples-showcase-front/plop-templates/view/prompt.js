@@ -19,10 +19,7 @@ module.exports = {
   }], actions: data => {
     const name = '{{name}}'
     const actions = [{
-      type: 'add',
-      path: `src/views/${name}/index.vue`,
-      templateFile: 'plop-templates/view/index.hbs',
-      data: {
+      type: 'add', path: `src/views/${name}/index.vue`, templateFile: 'plop-templates/view/index.hbs', data: {
         name: name,
         template: data.blocks.includes('template'),
         script: data.blocks.includes('script'),

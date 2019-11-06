@@ -31,24 +31,34 @@ public class NetUtil {
 	/////// LocalAddress //////
 
 	/**
-	 * 获得本地地址
+	 * 从某个端口开始，递增直到65535，找一个空闲端口.
+	 *
+	 * @throws IllegalStateException 范围内如无空闲端口，抛出此异常
 	 */
-	public static InetAddress getLocalAddress() {
-		return LocalAddressHoler.INSTANCE.localInetAddress;
+	public static int findAvailablePortFrom(int minPort) {
+		for (int port = minPort; port < PORT_RANGE_MAX; port++) {
+			if (isPortAvailable(port)) {
+				return port;
+			}
+		}
+
+		throw new IllegalStateException(String.format(
+			"Could not find an available tcp port in the range [%d, %d]", minPort,
+			PORT_RANGE_MAX));
 	}
 
 	/**
-	 * 获得本地Ip地址
+	 * 测试端口是否空闲可用, from Spring SocketUtils
 	 */
-	public static String getLocalHost() {
-		return LocalAddressHoler.INSTANCE.localHost;
-	}
-
-	/**
-	 * 获得本地HostName
-	 */
-	public static String getHostName() {
-		return LocalAddressHoler.INSTANCE.hostName;
+	public static boolean isPortAvailable(int port) {
+		try {
+			ServerSocket serverSocket = ServerSocketFactory.getDefault()
+				.createServerSocket(port, 1, InetAddress.getByName("localhost"));
+			serverSocket.close();
+			return true;
+		} catch (Exception ex) { // NOSONAR
+			return false;
+		}
 	}
 
 	/**
@@ -81,37 +91,27 @@ public class NetUtil {
 		return candidatePort;
 	}
 
+	/**
+	 * 获得本地HostName
+	 */
+	public static String getHostName() {
+		return LocalAddressHoler.INSTANCE.hostName;
+	}
+
 	/////////// 查找空闲端口 /////////
 
 	/**
-	 * 测试端口是否空闲可用, from Spring SocketUtils
+	 * 获得本地地址
 	 */
-	public static boolean isPortAvailable(int port) {
-		try {
-			ServerSocket serverSocket = ServerSocketFactory.getDefault()
-				.createServerSocket(port, 1, InetAddress.getByName("localhost"));
-			serverSocket.close();
-			return true;
-		} catch (Exception ex) { // NOSONAR
-			return false;
-		}
+	public static InetAddress getLocalAddress() {
+		return LocalAddressHoler.INSTANCE.localInetAddress;
 	}
 
 	/**
-	 * 从某个端口开始，递增直到65535，找一个空闲端口.
-	 *
-	 * @throws IllegalStateException 范围内如无空闲端口，抛出此异常
+	 * 获得本地Ip地址
 	 */
-	public static int findAvailablePortFrom(int minPort) {
-		for (int port = minPort; port < PORT_RANGE_MAX; port++) {
-			if (isPortAvailable(port)) {
-				return port;
-			}
-		}
-
-		throw new IllegalStateException(String.format(
-			"Could not find an available tcp port in the range [%d, %d]", minPort,
-			PORT_RANGE_MAX));
+	public static String getLocalHost() {
+		return LocalAddressHoler.INSTANCE.localHost;
 	}
 
 	/**

@@ -15,10 +15,6 @@ public class Toc {
 	// catalogue level
 	private static int level = 4;
 
-	public static void setCatalogueLevel(int level) {
-		Toc.level = level;
-	}
-
 	public static List<String> changeTocToGeneratedCatalogue(List<String> contents) {
 
 		List<String> ret = new ArrayList<String>();
@@ -136,6 +132,10 @@ public class Toc {
 		}
 
 		return cnt;
+	}
+
+	public static void setCatalogueLevel(int level) {
+		Toc.level = level;
 	}
 
 }

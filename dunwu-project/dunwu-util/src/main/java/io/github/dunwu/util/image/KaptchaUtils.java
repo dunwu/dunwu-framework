@@ -14,7 +14,7 @@ import java.util.Random;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-13
  */
-public class KaptchaUtil {
+public class KaptchaUtils {
 
 	/**
 	 * 验证码默认字符个数
@@ -36,14 +36,13 @@ public class KaptchaUtil {
 	 */
 	private static final int LINE_COUNT = 40;
 
-	private static final char[] CODE_SEQUENCE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-		.toCharArray();
+	private static final char[] CODE_SEQUENCE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 
 	public static Kaptcha create() {
 		return create(WIDTH, HEIGHT, CODE_COUNT, LINE_COUNT);
 	}
 
-	public static Kaptcha create(int width, int height, int codeCount, int lineCount) {
+	public static Kaptcha create(final int width, final int height, final int codeCount, final int lineCount) {
 		BufferedImage image = new BufferedImage(width, height,
 			BufferedImage.TYPE_INT_BGR);
 		Graphics2D graphics = image.createGraphics();
@@ -93,16 +92,17 @@ public class KaptchaUtil {
 		return new Kaptcha(randomCode.toString(), image);
 	}
 
-	public static void toFile(Kaptcha kaptcha, File output) throws IOException {
-		ImageUtil.toFile(kaptcha.getImage(), output, null);
+	public static void toFile(final Kaptcha kaptcha, final File output) throws IOException {
+		ImageUtils.toFile(kaptcha.getImage(), output, null);
 	}
 
-	public static void toOutputStream(Kaptcha kaptcha, OutputStream output)
-		throws IOException {
-		ImageUtil.toOutputStream(kaptcha.getImage(), output, null);
+	public static void toOutputStream(final Kaptcha kaptcha, final OutputStream output) throws IOException {
+		ImageUtils.toOutputStream(kaptcha.getImage(), output, null);
 	}
 
 	public static class Kaptcha implements Serializable {
+
+		private static final long serialVersionUID = 117611061075580022L;
 
 		private String code;
 
@@ -111,6 +111,11 @@ public class KaptchaUtil {
 		public Kaptcha(String code, BufferedImage image) {
 			this.code = code;
 			this.image = image;
+		}
+
+		@Override
+		public String toString() {
+			return "Result{" + "code='" + code + '\'' + ", image=" + image + '}';
 		}
 
 		public String getCode() {
@@ -127,11 +132,6 @@ public class KaptchaUtil {
 
 		public void setImage(BufferedImage image) {
 			this.image = image;
-		}
-
-		@Override
-		public String toString() {
-			return "Result{" + "code='" + code + '\'' + ", image=" + image + '}';
 		}
 
 	}

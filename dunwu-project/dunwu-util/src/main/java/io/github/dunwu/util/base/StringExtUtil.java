@@ -20,8 +20,7 @@ public class StringExtUtil extends StringUtils {
 	 * @param replace 替换的字符
 	 * @return 替换后的字符串
 	 */
-	public static String replaceFirst(final String text, final char search,
-		final char replace) {
+	public static String replaceFirst(final String text, final char search, final char replace) {
 		if (isBlank(text)) {
 			return null;
 		}
@@ -42,8 +41,7 @@ public class StringExtUtil extends StringUtils {
 	 * @param replace 替换的字符
 	 * @return 替换后的字符串
 	 */
-	public static String replaceLast(final String text, final char search,
-		final char replace) {
+	public static String replaceLast(final String text, final char search, final char replace) {
 		if (isBlank(text)) {
 			return null;
 		}

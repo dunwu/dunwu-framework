@@ -11,11 +11,39 @@ import javax.imageio.ImageIO;
 /**
  * 图片处理工具类
  *
- * @author zhangpeng
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see <a href="https://github.com/coobird/thumbnailator/">thumbnailator</a>
  * @since 2017/2/13.
  */
-public class ImageUtil {
+public class ImageUtils {
+
+	public static byte[] bufferedImageToBytes(BufferedImage image, String format)
+		throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		ImageIO.write(image, format, os);
+		byte[] bytes = os.toByteArray();
+		os.flush();
+		os.close();
+		return bytes;
+	}
+
+	public static final InputStream bytes2InputStream(byte[] bytes) {
+		return new ByteArrayInputStream(bytes);
+	}
+
+	public static BufferedImage bytesToBufferedImage(byte[] bytes) throws IOException {
+		InputStream in = new ByteArrayInputStream(bytes);
+		BufferedImage image = ImageIO.read(in);
+		in.close();
+		return image;
+	}
+
+	public static void outputStreamToBytes(OutputStream os, byte[] bytes)
+		throws IOException {
+		os.write(bytes);
+		os.flush();
+		os.close();
+	}
 
 	public static void toFile(String input, String output, ImageParam params)
 		throws IOException {
@@ -155,34 +183,6 @@ public class ImageUtil {
 		Thumbnails.Builder builder = Thumbnails.fromInputStreams(input);
 		fillBuilderWithParams(builder, params);
 		builder.toOutputStreams(output);
-	}
-
-	public static final InputStream bytes2InputStream(byte[] bytes) {
-		return new ByteArrayInputStream(bytes);
-	}
-
-	public static byte[] bufferedImageToBytes(BufferedImage image, String format)
-		throws IOException {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		ImageIO.write(image, format, os);
-		byte[] bytes = os.toByteArray();
-		os.flush();
-		os.close();
-		return bytes;
-	}
-
-	public static BufferedImage bytesToBufferedImage(byte[] bytes) throws IOException {
-		InputStream in = new ByteArrayInputStream(bytes);
-		BufferedImage image = ImageIO.read(in);
-		in.close();
-		return image;
-	}
-
-	public static void outputStreamToBytes(OutputStream os, byte[] bytes)
-		throws IOException {
-		os.write(bytes);
-		os.flush();
-		os.close();
 	}
 
 	/**
@@ -346,12 +346,12 @@ public class ImageUtil {
 			this.waterMark = waterMark;
 		}
 
-		public Integer getWidth() {
-			return width;
+		public ImageTypeEnum getFormat() {
+			return format;
 		}
 
-		public ImageParam setWidth(Integer width) {
-			this.width = width;
+		public ImageParam setFormat(ImageTypeEnum format) {
+			this.format = format;
 			return this;
 		}
 
@@ -361,6 +361,51 @@ public class ImageUtil {
 
 		public ImageParam setHeight(Integer height) {
 			this.height = height;
+			return this;
+		}
+
+		public Double getQuality() {
+			return quality;
+		}
+
+		public ImageParam setQuality(Double quality) {
+			this.quality = quality;
+			return this;
+		}
+
+		public Double getRotate() {
+			return rotate;
+		}
+
+		public ImageParam setRotate(Double rotate) {
+			this.rotate = rotate;
+			return this;
+		}
+
+		public Double getScale() {
+			return scale;
+		}
+
+		public ImageParam setScale(Double scale) {
+			this.scale = scale;
+			return this;
+		}
+
+		public WaterMark getWaterMark() {
+			return waterMark;
+		}
+
+		public ImageParam setWaterMark(WaterMark waterMark) {
+			this.waterMark = waterMark;
+			return this;
+		}
+
+		public Integer getWidth() {
+			return width;
+		}
+
+		public ImageParam setWidth(Integer width) {
+			this.width = width;
 			return this;
 		}
 
@@ -379,51 +424,6 @@ public class ImageUtil {
 
 		public ImageParam setYscale(Double yscale) {
 			this.yscale = yscale;
-			return this;
-		}
-
-		public Double getScale() {
-			return scale;
-		}
-
-		public ImageParam setScale(Double scale) {
-			this.scale = scale;
-			return this;
-		}
-
-		public Double getRotate() {
-			return rotate;
-		}
-
-		public ImageParam setRotate(Double rotate) {
-			this.rotate = rotate;
-			return this;
-		}
-
-		public Double getQuality() {
-			return quality;
-		}
-
-		public ImageParam setQuality(Double quality) {
-			this.quality = quality;
-			return this;
-		}
-
-		public ImageTypeEnum getFormat() {
-			return format;
-		}
-
-		public ImageParam setFormat(ImageTypeEnum format) {
-			this.format = format;
-			return this;
-		}
-
-		public WaterMark getWaterMark() {
-			return waterMark;
-		}
-
-		public ImageParam setWaterMark(WaterMark waterMark) {
-			this.waterMark = waterMark;
 			return this;
 		}
 
@@ -448,14 +448,6 @@ public class ImageUtil {
 				this.opacity = opacity;
 			}
 
-			public WaterMarkPositionsEnum getPosition() {
-				return position;
-			}
-
-			public void setPosition(WaterMarkPositionsEnum position) {
-				this.position = position;
-			}
-
 			public BufferedImage getImage() {
 				return image;
 			}
@@ -470,6 +462,14 @@ public class ImageUtil {
 
 			public void setOpacity(Float opacity) {
 				this.opacity = opacity;
+			}
+
+			public WaterMarkPositionsEnum getPosition() {
+				return position;
+			}
+
+			public void setPosition(WaterMarkPositionsEnum position) {
+				this.position = position;
 			}
 
 		}

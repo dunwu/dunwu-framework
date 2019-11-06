@@ -17,6 +17,17 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 class AssumptionsTests {
 
 	@Test
+	void testInAllEnvironments() {
+		assumingThat("CI".equals(System.getenv("ENV")), () -> {
+			// perform these assertions only on the CI server
+			assertEquals(2, 2);
+		});
+
+		// perform these assertions in all environments
+		assertEquals("a string", "a string");
+	}
+
+	@Test
 	void testOnlyOnCiServer() {
 		assumeTrue("CI".equals(System.getenv("ENV")));
 		// remainder of test
@@ -27,17 +38,6 @@ class AssumptionsTests {
 		assumeTrue("DEV".equals(System.getenv("ENV")),
 			() -> "Aborting test: not on developer workstation");
 		// remainder of test
-	}
-
-	@Test
-	void testInAllEnvironments() {
-		assumingThat("CI".equals(System.getenv("ENV")), () -> {
-			// perform these assertions only on the CI server
-			assertEquals(2, 2);
-		});
-
-		// perform these assertions in all environments
-		assertEquals("a string", "a string");
 	}
 
 }

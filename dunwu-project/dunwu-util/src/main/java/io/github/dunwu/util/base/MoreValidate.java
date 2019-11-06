@@ -7,56 +7,6 @@ package io.github.dunwu.util.base;
 public class MoreValidate {
 
 	/**
-	 * 校验为正数则返回该数字，否则抛出异常.
-	 */
-	public static int positive(String role, int x) {
-		if (x <= 0) {
-			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
-		}
-		return x;
-	}
-
-	/**
-	 * 校验为正数则返回该数字，否则抛出异常.
-	 */
-	public static Integer positive(String role, Integer x) {
-		if (x <= 0) {
-			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
-		}
-		return x;
-	}
-
-	/**
-	 * 校验为正数则返回该数字，否则抛出异常.
-	 */
-	public static long positive(String role, long x) {
-		if (x <= 0) {
-			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
-		}
-		return x;
-	}
-
-	/**
-	 * 校验为正数则返回该数字，否则抛出异常.
-	 */
-	public static Long positive(String role, Long x) {
-		if (x <= 0) {
-			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
-		}
-		return x;
-	}
-
-	/**
-	 * 校验为正数则返回该数字，否则抛出异常.
-	 */
-	public static double positive(String role, double x) {
-		if (x <= 0) { // not x < 0, to work with NaN.
-			throw new IllegalArgumentException(role + " (" + x + ") must be >= 0");
-		}
-		return x;
-	}
-
-	/**
 	 * 校验为非负数则返回该数字，否则抛出异常.
 	 */
 	public static int nonNegative(String role, int x) {
@@ -101,6 +51,56 @@ public class MoreValidate {
 	 */
 	public static double nonNegative(String role, double x) {
 		if (x < 0) { // not x < 0, to work with NaN.
+			throw new IllegalArgumentException(role + " (" + x + ") must be >= 0");
+		}
+		return x;
+	}
+
+	/**
+	 * 校验为正数则返回该数字，否则抛出异常.
+	 */
+	public static int positive(String role, int x) {
+		if (x <= 0) {
+			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
+		}
+		return x;
+	}
+
+	/**
+	 * 校验为正数则返回该数字，否则抛出异常.
+	 */
+	public static Integer positive(String role, Integer x) {
+		if (x <= 0) {
+			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
+		}
+		return x;
+	}
+
+	/**
+	 * 校验为正数则返回该数字，否则抛出异常.
+	 */
+	public static long positive(String role, long x) {
+		if (x <= 0) {
+			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
+		}
+		return x;
+	}
+
+	/**
+	 * 校验为正数则返回该数字，否则抛出异常.
+	 */
+	public static Long positive(String role, Long x) {
+		if (x <= 0) {
+			throw new IllegalArgumentException(role + " (" + x + ") must be > 0");
+		}
+		return x;
+	}
+
+	/**
+	 * 校验为正数则返回该数字，否则抛出异常.
+	 */
+	public static double positive(String role, double x) {
+		if (x <= 0) { // not x < 0, to work with NaN.
 			throw new IllegalArgumentException(role + " (" + x + ") must be >= 0");
 		}
 		return x;

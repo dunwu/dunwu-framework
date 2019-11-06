@@ -28,16 +28,6 @@ public class Pair<L, R> {
 		return new Pair<L, R>(left, right);
 	}
 
-	@Nullable
-	public L getLeft() {
-		return left;
-	}
-
-	@Nullable
-	public R getRight() {
-		return right;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -75,6 +65,16 @@ public class Pair<L, R> {
 	@Override
 	public String toString() {
 		return "Pair [left=" + left + ", right=" + right + ']';
+	}
+
+	@Nullable
+	public L getLeft() {
+		return left;
+	}
+
+	@Nullable
+	public R getRight() {
+		return right;
 	}
 
 }

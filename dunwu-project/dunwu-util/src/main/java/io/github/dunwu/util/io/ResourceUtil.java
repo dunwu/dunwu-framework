@@ -1,8 +1,8 @@
 package io.github.dunwu.util.io;
 
 import com.google.common.io.Resources;
+import io.github.dunwu.util.ClassExtUtils;
 import io.github.dunwu.util.collection.ListUtil;
-import io.github.dunwu.util.reflect.ClassLoaderUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,20 +37,6 @@ public class ResourceUtil {
 	/**
 	 * 读取规则见本类注释.
 	 */
-	public static URL asUrl(String resourceName) {
-		return Resources.getResource(resourceName);
-	}
-
-	/**
-	 * 读取规则见本类注释.
-	 */
-	public static URL asUrl(Class<?> contextClass, String resourceName) {
-		return Resources.getResource(contextClass, resourceName);
-	}
-
-	/**
-	 * 读取规则见本类注释.
-	 */
 	public static InputStream asStream(String resourceName) throws IOException {
 		return Resources.getResource(resourceName).openStream();
 	}
@@ -63,46 +49,24 @@ public class ResourceUtil {
 		return Resources.getResource(contextClass, resourceName).openStream();
 	}
 
+	/**
+	 * 读取规则见本类注释.
+	 */
+	public static URL asUrl(String resourceName) {
+		return Resources.getResource(resourceName);
+	}
+
+	/**
+	 * 读取规则见本类注释.
+	 */
+	public static URL asUrl(Class<?> contextClass, String resourceName) {
+		return Resources.getResource(contextClass, resourceName);
+	}
+
 	////// 读取单个文件内容／／／／／
 
-	/**
-	 * 读取文件的每一行，读取规则见本类注释.
-	 */
-	public static String toString(String resourceName) throws IOException {
-		return Resources.toString(Resources.getResource(resourceName),
-			StandardCharsets.UTF_8);
-	}
-
-	/**
-	 * 读取文件的每一行，读取规则见本类注释.
-	 */
-	public static String toString(Class<?> contextClass, String resourceName)
-		throws IOException {
-		return Resources.toString(Resources.getResource(contextClass, resourceName),
-			StandardCharsets.UTF_8);
-	}
-
-	/**
-	 * 读取文件的每一行，读取规则见本类注释.
-	 */
-	public static List<String> toLines(String resourceName) throws IOException {
-		return Resources.readLines(Resources.getResource(resourceName),
-			StandardCharsets.UTF_8);
-	}
-
-	/**
-	 * 读取文件的每一行，读取规则见本类注释.
-	 */
-	public static List<String> toLines(Class<?> contextClass, String resourceName)
-		throws IOException {
-		return Resources.readLines(Resources.getResource(contextClass, resourceName),
-			StandardCharsets.UTF_8);
-	}
-
-	///////////// 打开所有同名文件///////
-
 	public static List<URL> getResourcesQuietly(String resourceName) {
-		return getResourcesQuietly(resourceName, ClassLoaderUtil.getDefaultClassLoader());
+		return getResourcesQuietly(resourceName, ClassExtUtils.getDefaultClassLoader());
 	}
 
 	public static List<URL> getResourcesQuietly(String resourceName,
@@ -117,6 +81,42 @@ public class ResourceUtil {
 		} catch (IOException e) {// NOSONAR
 			return ListUtil.emptyList();
 		}
+	}
+
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static List<String> toLines(Class<?> contextClass, String resourceName)
+		throws IOException {
+		return Resources.readLines(Resources.getResource(contextClass, resourceName),
+			StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static List<String> toLines(String resourceName) throws IOException {
+		return Resources.readLines(Resources.getResource(resourceName),
+			StandardCharsets.UTF_8);
+	}
+
+	///////////// 打开所有同名文件///////
+
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static String toString(Class<?> contextClass, String resourceName)
+		throws IOException {
+		return Resources.toString(Resources.getResource(contextClass, resourceName),
+			StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * 读取文件的每一行，读取规则见本类注释.
+	 */
+	public static String toString(String resourceName) throws IOException {
+		return Resources.toString(Resources.getResource(resourceName),
+			StandardCharsets.UTF_8);
 	}
 
 }

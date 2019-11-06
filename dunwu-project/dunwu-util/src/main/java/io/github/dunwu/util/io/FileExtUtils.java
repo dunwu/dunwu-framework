@@ -45,234 +45,6 @@ public class FileExtUtils extends FileUtils {
 		}
 	}
 
-	/**
-	 * 获得上层目录的路径
-	 */
-	public static String getParentPath(String path) {
-		String parentPath = path;
-
-		if (File.separator.equals(parentPath)) {
-			return parentPath;
-		}
-
-		parentPath = StringUtils.removeEnd(parentPath, File.separator);
-		int idx = parentPath.lastIndexOf(File.separator);
-		if (idx >= 0) {
-			parentPath = parentPath.substring(0, idx + 1);
-		} else {
-			parentPath = File.separator;
-		}
-
-		return parentPath;
-	}
-
-	/**
-	 * 创建文件或更新时间戳.
-	 *
-	 * @see {@link com.google.common.io.Files#touch}
-	 */
-	public static void touch(String filePath) throws IOException {
-		touch(new File(filePath));
-	}
-
-	/**
-	 * 创建文件或更新时间戳.
-	 *
-	 * @see {@link com.google.common.io.Files#touch}
-	 */
-	public static void touch(File file) throws IOException {
-		com.google.common.io.Files.touch(file);
-	}
-
-	/**
-	 * 删除文件. 如果文件不存在或者是目录，则不做修改
-	 */
-	public static void deleteFile(File file) throws IOException {
-		Validate.isTrue(isFileExists(file), "%s is not exist or not a file", file);
-		deleteFile(file.toPath());
-	}
-
-	/**
-	 * 判断文件是否存在
-	 */
-	public static boolean isFileExists(File file) {
-		return isFileExists(file.toPath());
-	}
-
-	/**
-	 * 删除文件. 如果文件不存在或者是目录，则不做修改
-	 */
-	public static void deleteFile(Path path) throws IOException {
-		Validate.isTrue(isFileExists(path), "%s is not exist or not a file", path);
-
-		Files.delete(path);
-	}
-
-	// exists
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 判断文件是否存在
-	 */
-	public static boolean isFileExists(Path path) {
-		if (path == null) {
-			return false;
-		}
-		return Files.exists(path) && Files.isRegularFile(path);
-	}
-
-	/**
-	 * 判断文件是否存在
-	 */
-	public static boolean isFileExists(String fileName) {
-		return isFileExists(getPath(fileName));
-	}
-
-	public static Path getPath(String filePath) {
-		return Paths.get(filePath);
-	}
-
-	/**
-	 * 判断目录是否存在
-	 */
-	public static boolean isDirectoryExists(String dirPath) {
-		return isDirectoryExists(getPath(dirPath));
-	}
-
-	/**
-	 * 判断目录是否存在
-	 */
-	public static boolean isDirectoryExists(Path dirPath) {
-		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
-	}
-
-	/**
-	 * 判断目录是否存在
-	 */
-	public static boolean isDirectoryExists(File dir) {
-		return isDirectoryExists(dir.toPath());
-	}
-
-	/**
-	 * 确保目录存在, 如不存在则创建
-	 */
-	public static void makesureDirExists(String dirPath) throws IOException {
-		makesureDirExists(getPath(dirPath));
-	}
-
-	/**
-	 * 确保目录存在, 如不存在则创建.
-	 *
-	 * @see {@link Files#createDirectories}
-	 */
-	public static void makesureDirExists(Path dirPath) throws IOException {
-		Validate.notNull(dirPath);
-		Files.createDirectories(dirPath);
-	}
-
-	/**
-	 * 确保父目录及其父目录直到根目录都已经创建.
-	 */
-	public static void makesureParentDirExists(File file) throws IOException {
-		Validate.notNull(file);
-		makesureDirExists(file.getParentFile());
-	}
-
-	/**
-	 * 确保目录存在, 如不存在则创建
-	 */
-	public static void makesureDirExists(File file) throws IOException {
-		Validate.notNull(file);
-		makesureDirExists(file.toPath());
-	}
-
-	/**
-	 * 在临时目录创建临时目录，命名为${毫秒级时间戳}-${同一毫秒内的随机数}.
-	 *
-	 * @see {@link Files#createTempDirectory}
-	 */
-	public static Path createTempDir() throws IOException {
-		return Files.createTempDirectory(System.currentTimeMillis() + "-");
-	}
-
-	/**
-	 * 在临时目录创建临时文件，命名为tmp-${random.nextLong()}.tmp
-	 *
-	 * @see {@link Files#createTempFile}
-	 */
-	public static Path createTempFile() throws IOException {
-		return Files.createTempFile("tmp-", ".tmp");
-	}
-
-	/**
-	 * 在临时目录创建临时文件，命名为${prefix}${random.nextLong()}${suffix}
-	 *
-	 * @see {@link Files#createTempFile}
-	 */
-	public static Path createTempFile(String prefix, String suffix) throws IOException {
-		return Files.createTempFile(prefix, suffix);
-	}
-
-	// 获取文件信息
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 获取文件名(不包含路径)
-	 */
-	public static String getFileName(String fullName) {
-		Validate.notEmpty(fullName);
-		int last = fullName.lastIndexOf(File.separatorChar);
-		return fullName.substring(last + 1);
-	}
-
-	/**
-	 * 获取文件名的扩展名部分(不包含.)
-	 *
-	 * @see {@link com.google.common.io.Files#getFileExtension}
-	 */
-	public static String getFileExtension(File file) {
-		return com.google.common.io.Files.getFileExtension(file.getName());
-	}
-
-	/**
-	 * 获取文件名的扩展名部分(不包含.)
-	 *
-	 * @see {@link com.google.common.io.Files#getFileExtension}
-	 */
-	public static String getFileExtension(String fullName) {
-		return com.google.common.io.Files.getFileExtension(fullName);
-	}
-
-	public static String getFileCreateTimeString(String fullName, String pattern) {
-		if (StringUtils.isEmpty(pattern)) {
-			pattern = "yyyy-MM-dd";
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-		Long time = getFileCreateTime(fullName);
-		if (time == null) {
-			return null;
-		}
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(time);
-		return sdf.format(calendar.getTime());
-	}
-
-	public static Long getFileCreateTime(String fullName) {
-		Path path = Paths.get(fullName);
-		BasicFileAttributeView basicview = Files.getFileAttributeView(path,
-			BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
-		try {
-			BasicFileAttributes attr = basicview.readAttributes();
-			FileTime createTime = attr.creationTime();
-			System.out.println("createTime = [" + createTime.toString() + "]");
-			return createTime.toMillis();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	// changeFileNameToStandard
 	// 将文件名中的空白去除，并将文件名转为小写
 	// -------------------------------------------------------------------------------------------------
@@ -315,68 +87,6 @@ public class FileExtUtils extends FileUtils {
 		}
 	}
 
-	// listFile
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 前序递归列出所有文件, 包含文件与目录，及根目录本身. 前序即先列出父目录，在列出子目录. 如要后序遍历, 直接使用Files.fileTreeTraverser()
-	 */
-	public static List<File> listAll(File rootDir) {
-		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
-		ArrayList<File> list = Lists.newArrayList(iterable);
-		return list.stream().filter(com.google.common.io.Files.isFile()).collect(Collectors.toList());
-	}
-
-	/**
-	 * 前序递归列出所有文件, 只包含文件.
-	 */
-	public static List<File> listFile(File rootDir) {
-		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
-		ArrayList<File> list = Lists.newArrayList(iterable);
-		return list.stream().filter(com.google.common.io.Files.isFile()).collect(Collectors.toList());
-	}
-
-	/**
-	 * 前序递归列出所有文件, 列出后缀名匹配的文件. （后缀名不包含.）
-	 */
-	public static List<File> listFileWithExtension(final File rootDir, final String extension) {
-		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
-		ArrayList<File> list = Lists.newArrayList(iterable);
-		return list.stream().filter(new FileExtensionFilter(extension)).collect(Collectors.toList());
-	}
-
-	/**
-	 * 前序递归列出所有文件, 列出文件名匹配通配符的文件 如 ("/a/b/hello.txt", "he*") 将被返回
-	 */
-	public static List<File> listFileWithWildcardFileName(final File rootDir, final String fileNamePattern) {
-		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
-		ArrayList<File> list = Lists.newArrayList(iterable);
-		return list.stream().filter(new WildcardFileNameFilter(fileNamePattern)).collect(Collectors.toList());
-	}
-
-	/**
-	 * 前序递归列出所有文件, 列出文件名匹配正则表达式的文件 如 ("/a/b/hello.txt", "he.*\.txt") 将被返回
-	 */
-	public static List<File> listFileWithRegexFileName(final File rootDir, final String regexFileNamePattern) {
-		Iterable<File> iterable = com.google.common.io.Files.fileTraverser().depthFirstPreOrder(rootDir);
-		ArrayList<File> list = Lists.newArrayList(iterable);
-		return list.stream().filter(new RegexFileNameFilter(regexFileNamePattern)).collect(Collectors.toList());
-	}
-
-	/**
-	 * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
-	 */
-	public static String normalizePath(String path) {
-		if (File.separator.equals(SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR)
-			&& StringUtils.indexOf(path,
-			SystemExtUtils.LINUX_FILE_PATH_SEPARATOR) != -1) {
-			return StringUtils.replaceChars(path,
-				SystemExtUtils.LINUX_FILE_PATH_SEPARATOR,
-				SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR);
-		}
-		return path;
-	}
-
 	/**
 	 * 以拼接路径名
 	 */
@@ -402,10 +112,313 @@ public class FileExtUtils extends FileUtils {
 	}
 
 	/**
+	 * 在临时目录创建临时目录，命名为${毫秒级时间戳}-${同一毫秒内的随机数}.
+	 *
+	 * @see {@link Files#createTempDirectory}
+	 */
+	public static Path createTempDir() throws IOException {
+		return Files.createTempDirectory(System.currentTimeMillis() + "-");
+	}
+
+	/**
+	 * 在临时目录创建临时文件，命名为tmp-${random.nextLong()}.tmp
+	 *
+	 * @see {@link Files#createTempFile}
+	 */
+	public static Path createTempFile() throws IOException {
+		return Files.createTempFile("tmp-", ".tmp");
+	}
+
+	/**
+	 * 在临时目录创建临时文件，命名为${prefix}${random.nextLong()}${suffix}
+	 *
+	 * @see {@link Files#createTempFile}
+	 */
+	public static Path createTempFile(String prefix, String suffix) throws IOException {
+		return Files.createTempFile(prefix, suffix);
+	}
+
+	/**
+	 * 删除文件. 如果文件不存在或者是目录，则不做修改
+	 */
+	public static void deleteFile(File file) throws IOException {
+		Validate.isTrue(isFileExists(file), "%s is not exist or not a file", file);
+		deleteFile(file.toPath());
+	}
+
+	/**
+	 * 判断文件是否存在
+	 */
+	public static boolean isFileExists(File file) {
+		return isFileExists(file.toPath());
+	}
+
+	/**
+	 * 删除文件. 如果文件不存在或者是目录，则不做修改
+	 */
+	public static void deleteFile(Path path) throws IOException {
+		Validate.isTrue(isFileExists(path), "%s is not exist or not a file", path);
+
+		Files.delete(path);
+	}
+
+	/**
+	 * 判断文件是否存在
+	 */
+	public static boolean isFileExists(Path path) {
+		if (path == null) {
+			return false;
+		}
+		return Files.exists(path) && Files.isRegularFile(path);
+	}
+
+	public static String getFileCreateTimeString(String fullName, String pattern) {
+		if (StringUtils.isEmpty(pattern)) {
+			pattern = "yyyy-MM-dd";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+		Long time = getFileCreateTime(fullName);
+		if (time == null) {
+			return null;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(time);
+		return sdf.format(calendar.getTime());
+	}
+
+	public static Long getFileCreateTime(String fullName) {
+		Path path = Paths.get(fullName);
+		BasicFileAttributeView basicview = Files.getFileAttributeView(path,
+			BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+		try {
+			BasicFileAttributes attr = basicview.readAttributes();
+			FileTime createTime = attr.creationTime();
+			System.out.println("createTime = [" + createTime.toString() + "]");
+			return createTime.toMillis();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 获取文件名的扩展名部分(不包含.)
+	 *
+	 * @see {@link com.google.common.io.Files#getFileExtension}
+	 */
+	public static String getFileExtension(File file) {
+		return com.google.common.io.Files.getFileExtension(file.getName());
+	}
+
+	/**
+	 * 获取文件名的扩展名部分(不包含.)
+	 *
+	 * @see {@link com.google.common.io.Files#getFileExtension}
+	 */
+	public static String getFileExtension(String fullName) {
+		return com.google.common.io.Files.getFileExtension(fullName);
+	}
+
+	/**
+	 * 获取文件名(不包含路径)
+	 */
+	public static String getFileName(String fullName) {
+		Validate.notEmpty(fullName);
+		int last = fullName.lastIndexOf(File.separatorChar);
+		return fullName.substring(last + 1);
+	}
+
+	/**
 	 * 获得参数clazz所在的Jar文件的绝对路径
 	 */
 	public static String getJarPath(Class<?> clazz) {
 		return clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+	}
+
+	/**
+	 * 获得上层目录的路径
+	 */
+	public static String getParentPath(String path) {
+		String parentPath = path;
+
+		if (File.separator.equals(parentPath)) {
+			return parentPath;
+		}
+
+		parentPath = StringUtils.removeEnd(parentPath, File.separator);
+		int idx = parentPath.lastIndexOf(File.separator);
+		if (idx >= 0) {
+			parentPath = parentPath.substring(0, idx + 1);
+		} else {
+			parentPath = File.separator;
+		}
+
+		return parentPath;
+	}
+
+	/**
+	 * 判断目录是否存在
+	 */
+	public static boolean isDirectoryExists(String dirPath) {
+		return isDirectoryExists(getPath(dirPath));
+	}
+
+	// 获取文件信息
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 判断目录是否存在
+	 */
+	public static boolean isDirectoryExists(Path dirPath) {
+		return dirPath != null && Files.exists(dirPath) && Files.isDirectory(dirPath);
+	}
+
+	public static Path getPath(String filePath) {
+		return Paths.get(filePath);
+	}
+
+	// exists
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 判断目录是否存在
+	 */
+	public static boolean isDirectoryExists(File dir) {
+		return isDirectoryExists(dir.toPath());
+	}
+
+	/**
+	 * 判断文件是否存在
+	 */
+	public static boolean isFileExists(String fileName) {
+		return isFileExists(getPath(fileName));
+	}
+
+	// listFile
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 前序递归列出所有文件, 包含文件与目录，及根目录本身. 前序即先列出父目录，在列出子目录. 如要后序遍历, 直接使用Files.fileTreeTraverser()
+	 */
+	public static List<File> listAll(File rootDir) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser()
+			.depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(com.google.common.io.Files.isFile())
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 前序递归列出所有文件, 只包含文件.
+	 */
+	public static List<File> listFile(File rootDir) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser()
+			.depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(com.google.common.io.Files.isFile())
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 前序递归列出所有文件, 列出后缀名匹配的文件. （后缀名不包含.）
+	 */
+	public static List<File> listFileWithExtension(final File rootDir,
+		final String extension) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser()
+			.depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new FileExtensionFilter(extension))
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 前序递归列出所有文件, 列出文件名匹配正则表达式的文件 如 ("/a/b/hello.txt", "he.*\.txt") 将被返回
+	 */
+	public static List<File> listFileWithRegexFileName(final File rootDir,
+		final String regexFileNamePattern) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser()
+			.depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new RegexFileNameFilter(regexFileNamePattern))
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 前序递归列出所有文件, 列出文件名匹配通配符的文件 如 ("/a/b/hello.txt", "he*") 将被返回
+	 */
+	public static List<File> listFileWithWildcardFileName(final File rootDir,
+		final String fileNamePattern) {
+		Iterable<File> iterable = com.google.common.io.Files.fileTraverser()
+			.depthFirstPreOrder(rootDir);
+		ArrayList<File> list = Lists.newArrayList(iterable);
+		return list.stream().filter(new WildcardFileNameFilter(fileNamePattern))
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 确保目录存在, 如不存在则创建
+	 */
+	public static void makesureDirExists(String dirPath) throws IOException {
+		makesureDirExists(getPath(dirPath));
+	}
+
+	/**
+	 * 确保目录存在, 如不存在则创建.
+	 *
+	 * @see {@link Files#createDirectories}
+	 */
+	public static void makesureDirExists(Path dirPath) throws IOException {
+		Validate.notNull(dirPath);
+		Files.createDirectories(dirPath);
+	}
+
+	/**
+	 * 确保父目录及其父目录直到根目录都已经创建.
+	 */
+	public static void makesureParentDirExists(File file) throws IOException {
+		Validate.notNull(file);
+		makesureDirExists(file.getParentFile());
+	}
+
+	/**
+	 * 确保目录存在, 如不存在则创建
+	 */
+	public static void makesureDirExists(File file) throws IOException {
+		Validate.notNull(file);
+		makesureDirExists(file.toPath());
+	}
+
+	/**
+	 * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
+	 */
+	public static String normalizePath(String path) {
+		if (File.separator.equals(SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR)
+			&& StringUtils.indexOf(path,
+			SystemExtUtils.LINUX_FILE_PATH_SEPARATOR) != -1) {
+			return StringUtils.replaceChars(path,
+				SystemExtUtils.LINUX_FILE_PATH_SEPARATOR,
+				SystemExtUtils.WINDOWS_FILE_PATH_SEPARATOR);
+		}
+		return path;
+	}
+
+	/**
+	 * 创建文件或更新时间戳.
+	 *
+	 * @see {@link com.google.common.io.Files#touch}
+	 */
+	public static void touch(String filePath) throws IOException {
+		touch(new File(filePath));
+	}
+
+	/**
+	 * 创建文件或更新时间戳.
+	 *
+	 * @see {@link com.google.common.io.Files#touch}
+	 */
+	public static void touch(File file) throws IOException {
+		com.google.common.io.Files.touch(file);
 	}
 
 	/**

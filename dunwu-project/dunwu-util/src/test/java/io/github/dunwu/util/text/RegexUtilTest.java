@@ -43,32 +43,23 @@ public class RegexUtilTest {
 	class CheckCommon {
 
 		@Test
-		@DisplayName("正则校验15位身份证号")
-		public void isIdCard15() {
-			Assertions.assertTrue(RegexUtil.isIdCard15("110001700101031"));
-			Assertions.assertFalse(RegexUtil.isIdCard15("110001701501031"));
-		}
+		@DisplayName("正则校验日期")
+		public void isDate() {
+			Assertions.assertTrue(RegexUtil.isDate("2016/1/1"));
+			Assertions.assertTrue(RegexUtil.isDate("2016/01/01"));
+			Assertions.assertTrue(RegexUtil.isDate("20160101"));
+			Assertions.assertTrue(RegexUtil.isDate("2016-01-01"));
+			Assertions.assertTrue(RegexUtil.isDate("2016.01.01"));
+			Assertions.assertTrue(RegexUtil.isDate("2000-02-29"));
+			Assertions.assertTrue(RegexUtil.isDate("2011-03-11"));
+			Assertions.assertTrue(RegexUtil.isDate("2012-02-29"));
 
-		@Test
-		@DisplayName("正则校验18位身份证号")
-		public void isIdCard18() {
-			Assertions.assertTrue(RegexUtil.isIdCard18("11000019900101015X"));
-			Assertions.assertFalse(RegexUtil.isIdCard18("990000199001010310"));
-			Assertions.assertFalse(RegexUtil.isIdCard18("110001199013010310"));
-			Assertions.assertFalse(RegexUtil.isIdCard18("440101198909204518"));
-			// 含字母
-			Assertions.assertFalse(RegexUtil.isIdCard18("440101198987754ab"));
-			// 月份不对
-			Assertions.assertFalse(RegexUtil.isIdCard18("440101198987754122"));
-			// 日期不对
-			Assertions.assertFalse(RegexUtil.isIdCard18("440101891232451"));
-		}
-
-		@Test
-		@DisplayName("正则校验用户名有效")
-		public void isUsername() {
-			Assertions.assertTrue(RegexUtil.isUsername("gdasg_"));
-			Assertions.assertFalse(RegexUtil.isUsername("$dhsagk"));
+			Assertions.assertFalse(RegexUtil.isDate("2001-02-29"));
+			Assertions.assertFalse(RegexUtil.isDate("2016/12/32"));
+			Assertions.assertFalse(RegexUtil.isDate("2016.13.1"));
+			Assertions.assertFalse(RegexUtil.isDate("2011-02-29"));
+			Assertions.assertFalse(RegexUtil.isDate("201a-02-30"));
+			Assertions.assertFalse(RegexUtil.isDate("2011-0211"));
 		}
 
 		@Test
@@ -89,19 +80,25 @@ public class RegexUtilTest {
 		}
 
 		@Test
-		@DisplayName("正则校验URL")
-		public void isUrl() {
-			Assertions.assertTrue(RegexUtil.isUrl("http://google.com/help/me"));
-			Assertions.assertTrue(RegexUtil.isUrl("http://www.google.com/help/me/"));
-			Assertions.assertTrue(RegexUtil.isUrl("https://www.google.com/help.asp"));
-			Assertions.assertTrue(RegexUtil.isUrl("ftp://www.google.com"));
-			Assertions.assertTrue(RegexUtil.isUrl("ftps://google.org"));
-			Assertions.assertTrue(RegexUtil.isUrl("http://abc.com"));
+		@DisplayName("正则校验15位身份证号")
+		public void isIdCard15() {
+			Assertions.assertTrue(RegexUtil.isIdCard15("110001700101031"));
+			Assertions.assertFalse(RegexUtil.isIdCard15("110001701501031"));
+		}
 
-			Assertions.assertFalse(RegexUtil.isUrl("http://un/www.google.com/index.asp"));
-			Assertions.assertFalse(RegexUtil.isUrl("abc.com"));
-			Assertions.assertFalse(RegexUtil.isUrl("http://abc.c om"));
-			Assertions.assertFalse(RegexUtil.isUrl("http2://abc.com"));
+		@Test
+		@DisplayName("正则校验18位身份证号")
+		public void isIdCard18() {
+			Assertions.assertTrue(RegexUtil.isIdCard18("11000019900101015X"));
+			Assertions.assertFalse(RegexUtil.isIdCard18("990000199001010310"));
+			Assertions.assertFalse(RegexUtil.isIdCard18("110001199013010310"));
+			Assertions.assertFalse(RegexUtil.isIdCard18("440101198909204518"));
+			// 含字母
+			Assertions.assertFalse(RegexUtil.isIdCard18("440101198987754ab"));
+			// 月份不对
+			Assertions.assertFalse(RegexUtil.isIdCard18("440101198987754122"));
+			// 日期不对
+			Assertions.assertFalse(RegexUtil.isIdCard18("440101891232451"));
 		}
 
 		@Test
@@ -126,36 +123,6 @@ public class RegexUtilTest {
 		}
 
 		@Test
-		@DisplayName("正则校验时间")
-		public void isTime() {
-			Assertions.assertTrue(RegexUtil.isTime("00:00:00"));
-			Assertions.assertTrue(RegexUtil.isTime("23:59:59"));
-			Assertions.assertTrue(RegexUtil.isTime("17:06:30"));
-			Assertions.assertFalse(RegexUtil.isTime("17:6:30"));
-			Assertions.assertFalse(RegexUtil.isTime("24:16:30"));
-		}
-
-		@Test
-		@DisplayName("正则校验日期")
-		public void isDate() {
-			Assertions.assertTrue(RegexUtil.isDate("2016/1/1"));
-			Assertions.assertTrue(RegexUtil.isDate("2016/01/01"));
-			Assertions.assertTrue(RegexUtil.isDate("20160101"));
-			Assertions.assertTrue(RegexUtil.isDate("2016-01-01"));
-			Assertions.assertTrue(RegexUtil.isDate("2016.01.01"));
-			Assertions.assertTrue(RegexUtil.isDate("2000-02-29"));
-			Assertions.assertTrue(RegexUtil.isDate("2011-03-11"));
-			Assertions.assertTrue(RegexUtil.isDate("2012-02-29"));
-
-			Assertions.assertFalse(RegexUtil.isDate("2001-02-29"));
-			Assertions.assertFalse(RegexUtil.isDate("2016/12/32"));
-			Assertions.assertFalse(RegexUtil.isDate("2016.13.1"));
-			Assertions.assertFalse(RegexUtil.isDate("2011-02-29"));
-			Assertions.assertFalse(RegexUtil.isDate("201a-02-30"));
-			Assertions.assertFalse(RegexUtil.isDate("2011-0211"));
-		}
-
-		@Test
 		@DisplayName("正则校验手机号码")
 		public void isMobile() {
 			Assertions.assertFalse(RegexUtil.isMobile(null));
@@ -164,6 +131,19 @@ public class RegexUtilTest {
 			Assertions.assertFalse(RegexUtil.isMobile("1234561"));
 
 			Assertions.assertTrue(RegexUtil.isMobile("11170998762"));
+		}
+
+		@Test
+		@DisplayName("正则校验座机号码")
+		public void isPhone() {
+			Assertions.assertFalse(RegexUtil.isPhone(null));
+			Assertions.assertFalse(RegexUtil.isPhone("8802973a"));
+			Assertions.assertFalse(RegexUtil.isPhone("8908222222"));
+			Assertions.assertFalse(RegexUtil.isPhone("89081"));
+
+			Assertions.assertTrue(RegexUtil.isPhone("89019739"));
+			Assertions.assertTrue(RegexUtil.isPhone("020-89019739"));
+			Assertions.assertTrue(RegexUtil.isPhone("025-85951888"));
 		}
 
 		@Test
@@ -182,16 +162,36 @@ public class RegexUtilTest {
 		}
 
 		@Test
-		@DisplayName("正则校验座机号码")
-		public void isPhone() {
-			Assertions.assertFalse(RegexUtil.isPhone(null));
-			Assertions.assertFalse(RegexUtil.isPhone("8802973a"));
-			Assertions.assertFalse(RegexUtil.isPhone("8908222222"));
-			Assertions.assertFalse(RegexUtil.isPhone("89081"));
+		@DisplayName("正则校验时间")
+		public void isTime() {
+			Assertions.assertTrue(RegexUtil.isTime("00:00:00"));
+			Assertions.assertTrue(RegexUtil.isTime("23:59:59"));
+			Assertions.assertTrue(RegexUtil.isTime("17:06:30"));
+			Assertions.assertFalse(RegexUtil.isTime("17:6:30"));
+			Assertions.assertFalse(RegexUtil.isTime("24:16:30"));
+		}
 
-			Assertions.assertTrue(RegexUtil.isPhone("89019739"));
-			Assertions.assertTrue(RegexUtil.isPhone("020-89019739"));
-			Assertions.assertTrue(RegexUtil.isPhone("025-85951888"));
+		@Test
+		@DisplayName("正则校验URL")
+		public void isUrl() {
+			Assertions.assertTrue(RegexUtil.isUrl("http://google.com/help/me"));
+			Assertions.assertTrue(RegexUtil.isUrl("http://www.google.com/help/me/"));
+			Assertions.assertTrue(RegexUtil.isUrl("https://www.google.com/help.asp"));
+			Assertions.assertTrue(RegexUtil.isUrl("ftp://www.google.com"));
+			Assertions.assertTrue(RegexUtil.isUrl("ftps://google.org"));
+			Assertions.assertTrue(RegexUtil.isUrl("http://abc.com"));
+
+			Assertions.assertFalse(RegexUtil.isUrl("http://un/www.google.com/index.asp"));
+			Assertions.assertFalse(RegexUtil.isUrl("abc.com"));
+			Assertions.assertFalse(RegexUtil.isUrl("http://abc.c om"));
+			Assertions.assertFalse(RegexUtil.isUrl("http2://abc.com"));
+		}
+
+		@Test
+		@DisplayName("正则校验用户名有效")
+		public void isUsername() {
+			Assertions.assertTrue(RegexUtil.isUsername("gdasg_"));
+			Assertions.assertFalse(RegexUtil.isUsername("$dhsagk"));
 		}
 
 	}
@@ -220,21 +220,21 @@ public class RegexUtilTest {
 		}
 
 		@Test
-		@DisplayName("正则校验全是大写字母")
-		public void isAllUpperEnglishChar() {
-			Assertions.assertTrue(
-				RegexUtil.isAllUpperEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-			Assertions.assertFalse(
-				RegexUtil.isAllUpperEnglishChar("abcdefghijklmnopqrstuvwxyz"));
-		}
-
-		@Test
 		@DisplayName("正则校验全是小写字母")
 		public void isAllLowerEnglishChar() {
 			Assertions.assertTrue(
 				RegexUtil.isAllLowerEnglishChar("abcdefghijklmnopqrstuvwxyz"));
 			Assertions.assertFalse(
 				RegexUtil.isAllLowerEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+		}
+
+		@Test
+		@DisplayName("正则校验全是大写字母")
+		public void isAllUpperEnglishChar() {
+			Assertions.assertTrue(
+				RegexUtil.isAllUpperEnglishChar("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			Assertions.assertFalse(
+				RegexUtil.isAllUpperEnglishChar("abcdefghijklmnopqrstuvwxyz"));
 		}
 
 		@Test
@@ -274,20 +274,6 @@ public class RegexUtilTest {
 
 		@Test
 		@DisplayName("正则校验不含任何数字")
-		public void isNoneNumber() {
-			Assertions.assertTrue(RegexUtil.isNoneNumber("abcdefghijklmnopqrstuvwxyz"));
-			Assertions.assertFalse(RegexUtil.isNoneNumber("0123456789"));
-			Assertions.assertFalse(RegexUtil.isNoneNumber("test008"));
-		}
-
-		@Test
-		@DisplayName("正则校验不含任何数字")
-		public void isNDigitNumber() {
-			Assertions.assertTrue(RegexUtil.isDigitNumber("0123456789", 10));
-		}
-
-		@Test
-		@DisplayName("正则校验不含任何数字")
 		public void isLeastNDigitNumber() {
 			Assertions.assertTrue(RegexUtil.isLeastDigitNumber("0123456789", 5));
 			Assertions.assertTrue(RegexUtil.isLeastDigitNumber("0123456789", 10));
@@ -300,6 +286,20 @@ public class RegexUtilTest {
 			Assertions.assertTrue(RegexUtil.isRangeDigitNumber("0123456789", 1, 10));
 			Assertions.assertFalse(RegexUtil.isRangeDigitNumber("0123456789", 6, 9));
 			Assertions.assertFalse(RegexUtil.isRangeDigitNumber("0123456789", 11, 20));
+		}
+
+		@Test
+		@DisplayName("正则校验不含任何数字")
+		public void isNDigitNumber() {
+			Assertions.assertTrue(RegexUtil.isDigitNumber("0123456789", 10));
+		}
+
+		@Test
+		@DisplayName("正则校验不含任何数字")
+		public void isNoneNumber() {
+			Assertions.assertTrue(RegexUtil.isNoneNumber("abcdefghijklmnopqrstuvwxyz"));
+			Assertions.assertFalse(RegexUtil.isNoneNumber("0123456789"));
+			Assertions.assertFalse(RegexUtil.isNoneNumber("test008"));
 		}
 
 	}

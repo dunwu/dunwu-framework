@@ -25,6 +25,20 @@ public class IdController {
 
 	public static final int MAX = 100;
 
+	@GetMapping("generateSnowFlakeId")
+	@ApiOperation(value = "生成 SnowFlake ID")
+	public DataListResult<String> generateSnowFlakeId(@RequestParam("num") Integer num,
+		@RequestParam("dataCenterId") long dataCenterId,
+		@RequestParam("machineId") long machineId) {
+		SnowFlakeId snowFlakeId = IdUtil.newSnowFlakeId(dataCenterId, machineId);
+		int max = num < MAX ? num : MAX;
+		Set<String> ids = new HashSet<>();
+		for (int i = 0; i < max; i++) {
+			ids.add(String.valueOf(snowFlakeId.generate()));
+		}
+		return ResultUtil.successDataListResult(ids);
+	}
+
 	@GetMapping("generateUuid")
 	@ApiOperation(value = "生成随机 UUID")
 	public DataListResult<String> generateUuid(@RequestParam("num") Integer num,
@@ -37,20 +51,6 @@ public class IdController {
 			} else {
 				ids.add(IdUtil.randomUuid2());
 			}
-		}
-		return ResultUtil.successDataListResult(ids);
-	}
-
-	@GetMapping("generateSnowFlakeId")
-	@ApiOperation(value = "生成 SnowFlake ID")
-	public DataListResult<String> generateSnowFlakeId(@RequestParam("num") Integer num,
-		@RequestParam("dataCenterId") long dataCenterId,
-		@RequestParam("machineId") long machineId) {
-		SnowFlakeId snowFlakeId = IdUtil.newSnowFlakeId(dataCenterId, machineId);
-		int max = num < MAX ? num : MAX;
-		Set<String> ids = new HashSet<>();
-		for (int i = 0; i < max; i++) {
-			ids.add(String.valueOf(snowFlakeId.generate()));
 		}
 		return ResultUtil.successDataListResult(ids);
 	}

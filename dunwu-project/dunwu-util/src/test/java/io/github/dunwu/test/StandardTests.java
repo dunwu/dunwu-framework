@@ -11,24 +11,24 @@ import org.junit.jupiter.api.*;
 @Disabled
 class StandardTests {
 
-	@BeforeAll
-	static void beforeAll() {
-		System.out.println("call beforeAll()");
-	}
-
 	@AfterAll
 	static void afterAll() {
 		System.out.println("call afterAll()");
 	}
 
+	@BeforeAll
+	static void beforeAll() {
+		System.out.println("call beforeAll()");
+	}
+
+	@AfterEach
+	void afterEach() {
+		System.out.println("call afterEach()");
+	}
+
 	@BeforeEach
 	void beforeEach() {
 		System.out.println("call beforeEach()");
-	}
-
-	@Test
-	void succeedingTest() {
-		System.out.println("call succeedingTest()");
 	}
 
 	@Test
@@ -44,9 +44,9 @@ class StandardTests {
 		// not executed
 	}
 
-	@AfterEach
-	void afterEach() {
-		System.out.println("call afterEach()");
+	@Test
+	void succeedingTest() {
+		System.out.println("call succeedingTest()");
 	}
 
 }

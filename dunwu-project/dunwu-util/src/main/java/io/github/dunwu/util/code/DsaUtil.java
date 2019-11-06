@@ -23,8 +23,7 @@ public class DsaUtil {
 		/**
 		 * DSA 数字摘要算法
 		 */
-		DSA("DSA"),
-		SHA1_WITH_DSA("SHA1withDSA");
+		DSA("DSA"), SHA1_WITH_DSA("SHA1withDSA");
 
 		private final String value;
 

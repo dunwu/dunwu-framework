@@ -110,6 +110,39 @@ public class MapUtilTest {
 	}
 
 	@Test
+	public void sortAndTop() {
+		Map<String, Integer> map = MapUtil.newHashMap(new String[] { "A", "B", "C" },
+			new Integer[] { 3, 1, 2 });
+		// sort
+		Map<String, Integer> resultMap = MapUtil.sortByValue(map, false);
+		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
+		resultMap = MapUtil.sortByValue(map, true);
+		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
+
+		resultMap = MapUtil.sortByValue(map, Ordering.natural());
+		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
+		resultMap = MapUtil.sortByValue(map, Ordering.natural().reverse());
+		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
+
+		// Top n
+		resultMap = MapUtil.topByValue(map, false, 2);
+		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2}");
+		resultMap = MapUtil.topByValue(map, true, 2);
+		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2}");
+
+		resultMap = MapUtil.topByValue(map, Ordering.natural(), 2);
+		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2}");
+		resultMap = MapUtil.topByValue(map, Ordering.natural().reverse(), 2);
+		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2}");
+
+		// top Size > array Size
+		resultMap = MapUtil.topByValue(map, false, 4);
+		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
+		resultMap = MapUtil.topByValue(map, true, 4);
+		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
+	}
+
+	@Test
 	public void weakMap() {
 		ConcurrentMap<MyBean, MyBean> weakKeyMap = MoreMaps.createWeakKeyConcurrentMap(10,
 			1);
@@ -186,44 +219,9 @@ public class MapUtilTest {
 		assertThat(weakKeyMap.get(new MyBean("A"))).isEqualTo(value);
 	}
 
-	@Test
-	public void sortAndTop() {
-		Map<String, Integer> map = MapUtil.newHashMap(new String[] { "A", "B", "C" },
-			new Integer[] { 3, 1, 2 });
-		// sort
-		Map<String, Integer> resultMap = MapUtil.sortByValue(map, false);
-		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
-		resultMap = MapUtil.sortByValue(map, true);
-		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
-
-		resultMap = MapUtil.sortByValue(map, Ordering.natural());
-		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
-		resultMap = MapUtil.sortByValue(map, Ordering.natural().reverse());
-		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
-
-		// Top n
-		resultMap = MapUtil.topByValue(map, false, 2);
-		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2}");
-		resultMap = MapUtil.topByValue(map, true, 2);
-		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2}");
-
-		resultMap = MapUtil.topByValue(map, Ordering.natural(), 2);
-		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2}");
-		resultMap = MapUtil.topByValue(map, Ordering.natural().reverse(), 2);
-		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2}");
-
-		// top Size > array Size
-		resultMap = MapUtil.topByValue(map, false, 4);
-		assertThat(resultMap.toString()).isEqualTo("{B=1, C=2, A=3}");
-		resultMap = MapUtil.topByValue(map, true, 4);
-		assertThat(resultMap.toString()).isEqualTo("{A=3, C=2, B=1}");
-	}
-
 	public enum EnumA {
 
-		A,
-		B,
-		C
+		A, B, C
 	}
 
 	public static class MyBean {

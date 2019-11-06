@@ -4,7 +4,7 @@ import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.AppException;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
-import io.github.dunwu.util.mapper.JsonMapper;
+import io.github.dunwu.util.parser.JsonMapper;
 import io.github.dunwu.web.constant.WebConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -171,28 +171,8 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 
 		private boolean isHandlerMethod;
 
-		public void setClassMapping(String classMapping) {
-			this.classMapping = classMapping;
-		}
-
-		public void setMethodMapping(String methodMapping) {
-			this.methodMapping = methodMapping;
-		}
-
-		public boolean isHandlerMethod() {
-			return isHandlerMethod;
-		}
-
-		public void setHandlerMethod(boolean handlerMethod) {
-			isHandlerMethod = handlerMethod;
-		}
-
 		public String getErrorId() {
 			return errorId;
-		}
-
-		public String getRequestMapping() {
-			return classMapping + methodMapping;
 		}
 
 		public String getMethodName() {
@@ -217,6 +197,26 @@ public class JsonHandlerExceptionResolver implements HandlerExceptionResolver, O
 
 		public void setParameterMap(Map<String, String[]> parameterMap) {
 			this.parameterMap = parameterMap;
+		}
+
+		public String getRequestMapping() {
+			return classMapping + methodMapping;
+		}
+
+		public boolean isHandlerMethod() {
+			return isHandlerMethod;
+		}
+
+		public void setHandlerMethod(boolean handlerMethod) {
+			isHandlerMethod = handlerMethod;
+		}
+
+		public void setClassMapping(String classMapping) {
+			this.classMapping = classMapping;
+		}
+
+		public void setMethodMapping(String methodMapping) {
+			this.methodMapping = methodMapping;
 		}
 
 	}

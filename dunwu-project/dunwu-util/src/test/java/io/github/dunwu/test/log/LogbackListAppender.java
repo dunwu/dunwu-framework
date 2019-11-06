@@ -56,6 +56,54 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	}
 
 	/**
+	 * 将此appender添加到root logger中.
+	 */
+	public void addToRootLogger() {
+		Logger logger = (Logger) LoggerFactory
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		logger.addAppender(this);
+	}
+
+	/**
+	 * 清除之前append的所有log.
+	 */
+	public void clearLogs() {
+		logs.clear();
+	}
+
+	/**
+	 * 将此appender从logger中移除.
+	 */
+	public void removeFromLogger(String loggerName) {
+		Logger logger = (Logger) LoggerFactory.getLogger(loggerName);
+		logger.detachAppender(this);
+	}
+
+	/**
+	 * 将此appender从logger中移除.
+	 */
+	public void removeFromLogger(Class<?> loggerClass) {
+		Logger logger = (Logger) LoggerFactory.getLogger(loggerClass);
+		logger.detachAppender(this);
+	}
+
+	/**
+	 * 将此appender从root logger中移除.
+	 */
+	public void removeFromRootLogger() {
+		Logger logger = (Logger) LoggerFactory
+			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		logger.detachAppender(this);
+	}
+
+	/**
+	 * 返回之前append的所有log.
+	 */
+	public List<ILoggingEvent> getAllLogs() {
+		return logs;
+	}
+
+	/**
 	 * 返回之前append的第一个log的内容.
 	 */
 	public String getFirstMessage() {
@@ -96,13 +144,6 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	}
 
 	/**
-	 * 返回之前append的所有log.
-	 */
-	public List<ILoggingEvent> getAllLogs() {
-		return logs;
-	}
-
-	/**
 	 * 返回Log的数量。
 	 */
 	public int getLogsCount() {
@@ -114,47 +155,6 @@ public class LogbackListAppender extends UnsynchronizedAppenderBase<ILoggingEven
 	 */
 	public boolean isEmpty() {
 		return logs.isEmpty();
-	}
-
-	/**
-	 * 清除之前append的所有log.
-	 */
-	public void clearLogs() {
-		logs.clear();
-	}
-
-	/**
-	 * 将此appender添加到root logger中.
-	 */
-	public void addToRootLogger() {
-		Logger logger = (Logger) LoggerFactory
-			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-		logger.addAppender(this);
-	}
-
-	/**
-	 * 将此appender从logger中移除.
-	 */
-	public void removeFromLogger(String loggerName) {
-		Logger logger = (Logger) LoggerFactory.getLogger(loggerName);
-		logger.detachAppender(this);
-	}
-
-	/**
-	 * 将此appender从logger中移除.
-	 */
-	public void removeFromLogger(Class<?> loggerClass) {
-		Logger logger = (Logger) LoggerFactory.getLogger(loggerClass);
-		logger.detachAppender(this);
-	}
-
-	/**
-	 * 将此appender从root logger中移除.
-	 */
-	public void removeFromRootLogger() {
-		Logger logger = (Logger) LoggerFactory
-			.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-		logger.detachAppender(this);
 	}
 
 }

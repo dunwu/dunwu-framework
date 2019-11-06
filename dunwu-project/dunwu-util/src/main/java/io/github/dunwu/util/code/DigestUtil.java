@@ -46,16 +46,15 @@ public class DigestUtil {
 
 	public static String PUBLIC_KEY = "宝塔镇河妖";
 
-	public static IDigest getInstance(String type) {
+	public static KeyPair genKeyPair(String algorithm, int keySize)
+		throws NoSuchAlgorithmException {
 
-		IDigest instace = null;
-		if (type.toUpperCase().contains(HMAC)) {
-			instace = HmacDigest.getInstance(type);
-		} else {
-			instace = Digest.getInstance(type);
-		}
-
-		return instace;
+		// 初始化密钥对生成器
+		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);
+		// 实例化密钥对生成器
+		keyPairGen.initialize(keySize);
+		// 实例化密钥对
+		return keyPairGen.genKeyPair();
 	}
 
 	public static IDigest getInstance(DigestTypeEnum type) {
@@ -85,15 +84,16 @@ public class DigestUtil {
 		return instace;
 	}
 
-	public static KeyPair genKeyPair(String algorithm, int keySize)
-		throws NoSuchAlgorithmException {
+	public static IDigest getInstance(String type) {
 
-		// 初始化密钥对生成器
-		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm);
-		// 实例化密钥对生成器
-		keyPairGen.initialize(keySize);
-		// 实例化密钥对
-		return keyPairGen.genKeyPair();
+		IDigest instace = null;
+		if (type.toUpperCase().contains(HMAC)) {
+			instace = HmacDigest.getInstance(type);
+		} else {
+			instace = Digest.getInstance(type);
+		}
+
+		return instace;
 	}
 
 	/**
@@ -104,23 +104,14 @@ public class DigestUtil {
 		/**
 		 * 常规数字摘要算法
 		 */
-		MD2("MD2"),
-		MD5("MD5"),
-		SHA1("SHA1"),
-		SHA256("SHA-256"),
-		SHA384(
-			"SHA-384"),
-		SHA512("SHA-512"),
+		MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA256("SHA-256"), SHA384(
+			"SHA-384"), SHA512("SHA-512"),
 
 		/**
 		 * HMAC 数字摘要算法
 		 */
-		HMAC_MD5("HmacMD5"),
-		HMAC_SHA1("HmacSHA1"),
-		HMAC_SHA256(
-			"HmacSHA256"),
-		HMAC_SHA384("HmacSHA384"),
-		HMAC_SHA512("HmacSHA512");
+		HMAC_MD5("HmacMD5"), HMAC_SHA1("HmacSHA1"), HMAC_SHA256(
+			"HmacSHA256"), HMAC_SHA384("HmacSHA384"), HMAC_SHA512("HmacSHA512");
 
 		private final String value;
 

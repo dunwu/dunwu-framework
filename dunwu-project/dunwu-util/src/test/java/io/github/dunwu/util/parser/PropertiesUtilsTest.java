@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PropertiesUtilsTest {
+class PropertiesUtilsTest {
 
 	@Test
 	void testLoadFromFile() throws IOException {
@@ -54,7 +54,7 @@ public class PropertiesUtilsTest {
 	}
 
 	@Test
-	public void testToProperties() {
+	void testToProperties() {
 		Map<String, String> map = new HashMap<>(2);
 		map.put("key1", "value1");
 		map.put("key2", "value2");

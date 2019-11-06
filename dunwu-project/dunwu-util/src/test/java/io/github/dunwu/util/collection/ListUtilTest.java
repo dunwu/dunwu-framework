@@ -12,6 +12,50 @@ import static org.assertj.core.api.Assertions.fail;
 public class ListUtilTest {
 
 	@Test
+	public void collectionCalc() {
+		List<String> list1 = ListUtil.newArrayList("1", "2", "3", "6", "6");
+		List<String> list2 = ListUtil.newArrayList("4", "5", "6", "7", "6", "6");
+
+		List<String> result = ListUtil.union(list1, list2);
+		assertThat(result).containsExactly("1", "2", "3", "6", "6", "4", "5", "6", "7",
+			"6", "6");
+
+		List<String> result2 = ListUtil.intersection(list1, list2);
+		assertThat(result2).containsExactly("6", "6");
+
+		List<String> result3 = ListUtil.difference(list2, list1);
+		assertThat(result3).containsExactly("4", "5", "7", "6");
+
+		List<String> result4 = ListUtil.disjoint(list1, list2);
+		assertThat(result4).containsExactly("1", "2", "3", "4", "5", "7", "6");
+	}
+
+	@Test
+	public void general() {
+		List<String> list1 = ListUtil.newArrayList();
+
+		List<String> list2 = ListUtil.newArrayList("a", "b", "c");
+		List<String> list3 = ListUtil.newArrayList("a");
+
+		assertThat(ListUtil.isEmpty(list1)).isTrue();
+		assertThat(ListUtil.isEmpty(null)).isTrue();
+		assertThat(ListUtil.isEmpty(list2)).isFalse();
+
+		assertThat(ListUtil.isNotEmpty(list1)).isFalse();
+		assertThat(ListUtil.isNotEmpty(null)).isFalse();
+		assertThat(ListUtil.isNotEmpty(list2)).isTrue();
+
+		assertThat(ListUtil.getFirst(list2)).isEqualTo("a");
+		assertThat(ListUtil.getLast(list2)).isEqualTo("c");
+
+		assertThat(ListUtil.getFirst(list3)).isEqualTo("a");
+		assertThat(ListUtil.getLast(list3)).isEqualTo("a");
+
+		assertThat(ListUtil.getFirst(list1)).isNull();
+		// assertThat(ListUtil.getFirst(null)).isNull();
+	}
+
+	@Test
 	public void guavaBuildList() {
 		List<String> list1 = ListUtil.newArrayList();
 
@@ -73,31 +117,6 @@ public class ListUtilTest {
 	}
 
 	@Test
-	public void general() {
-		List<String> list1 = ListUtil.newArrayList();
-
-		List<String> list2 = ListUtil.newArrayList("a", "b", "c");
-		List<String> list3 = ListUtil.newArrayList("a");
-
-		assertThat(ListUtil.isEmpty(list1)).isTrue();
-		assertThat(ListUtil.isEmpty(null)).isTrue();
-		assertThat(ListUtil.isEmpty(list2)).isFalse();
-
-		assertThat(ListUtil.isNotEmpty(list1)).isFalse();
-		assertThat(ListUtil.isNotEmpty(null)).isFalse();
-		assertThat(ListUtil.isNotEmpty(list2)).isTrue();
-
-		assertThat(ListUtil.getFirst(list2)).isEqualTo("a");
-		assertThat(ListUtil.getLast(list2)).isEqualTo("c");
-
-		assertThat(ListUtil.getFirst(list3)).isEqualTo("a");
-		assertThat(ListUtil.getLast(list3)).isEqualTo("a");
-
-		assertThat(ListUtil.getFirst(list1)).isNull();
-		// assertThat(ListUtil.getFirst(null)).isNull();
-	}
-
-	@Test
 	public void sortAndSearch() {
 
 		List<String> list = ListUtil.newArrayList("d", "a", "c", "b", "e", "i", "g");
@@ -129,25 +148,6 @@ public class ListUtilTest {
 		ListUtil.shuffle(list8);
 		ListUtil.sortReverse(list8, Ordering.natural());
 		assertThat(list8).hasSize(7).containsExactly("i", "g", "e", "d", "c", "b", "a");
-	}
-
-	@Test
-	public void collectionCalc() {
-		List<String> list1 = ListUtil.newArrayList("1", "2", "3", "6", "6");
-		List<String> list2 = ListUtil.newArrayList("4", "5", "6", "7", "6", "6");
-
-		List<String> result = ListUtil.union(list1, list2);
-		assertThat(result).containsExactly("1", "2", "3", "6", "6", "4", "5", "6", "7",
-			"6", "6");
-
-		List<String> result2 = ListUtil.intersection(list1, list2);
-		assertThat(result2).containsExactly("6", "6");
-
-		List<String> result3 = ListUtil.difference(list2, list1);
-		assertThat(result3).containsExactly("4", "5", "7", "6");
-
-		List<String> result4 = ListUtil.disjoint(list1, list2);
-		assertThat(result4).containsExactly("1", "2", "3", "4", "5", "7", "6");
 	}
 
 }

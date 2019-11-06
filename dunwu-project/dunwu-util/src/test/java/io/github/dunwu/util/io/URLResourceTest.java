@@ -13,6 +13,28 @@ import static org.assertj.core.api.Assertions.fail;
 public class URLResourceTest {
 
 	@Test
+	public void file() throws IOException {
+		File file = FileExtUtils.createTempFile().toFile();
+		FileExtUtils.write(file, "haha", StandardCharsets.UTF_8);
+		try {
+			File file2 = UrlResourceUtil.asFile("file://" + file.getAbsolutePath());
+			assertThat(FileExtUtils.readFileToString(file2, StandardCharsets.UTF_8))
+				.isEqualTo("haha");
+
+			File file2NotExist = UrlResourceUtil
+				.asFile("file://" + file.getAbsolutePath() + ".noexist");
+
+			File file3 = UrlResourceUtil.asFile(file.getAbsolutePath());
+			assertThat(FileExtUtils.readFileToString(file3, StandardCharsets.UTF_8))
+				.isEqualTo("haha");
+			File file3NotExist = UrlResourceUtil
+				.asFile(file.getAbsolutePath() + ".noexist");
+		} finally {
+			FileExtUtils.deleteFile(file);
+		}
+	}
+
+	@Test
 	public void resource() throws IOException {
 		File file = UrlResourceUtil.asFile("classpath://application.properties");
 		assertThat(FileExtUtils.readFileToString(file, StandardCharsets.UTF_8))
@@ -35,28 +57,6 @@ public class URLResourceTest {
 			fail("should fail");
 		} catch (Throwable t) {
 			assertThat(t).isInstanceOf(IllegalArgumentException.class);
-		}
-	}
-
-	@Test
-	public void file() throws IOException {
-		File file = FileExtUtils.createTempFile().toFile();
-		FileExtUtils.write(file, "haha", StandardCharsets.UTF_8);
-		try {
-			File file2 = UrlResourceUtil.asFile("file://" + file.getAbsolutePath());
-			assertThat(FileExtUtils.readFileToString(file2, StandardCharsets.UTF_8))
-				.isEqualTo("haha");
-
-			File file2NotExist = UrlResourceUtil
-				.asFile("file://" + file.getAbsolutePath() + ".noexist");
-
-			File file3 = UrlResourceUtil.asFile(file.getAbsolutePath());
-			assertThat(FileExtUtils.readFileToString(file3, StandardCharsets.UTF_8))
-				.isEqualTo("haha");
-			File file3NotExist = UrlResourceUtil
-				.asFile(file.getAbsolutePath() + ".noexist");
-		} finally {
-			FileExtUtils.deleteFile(file);
 		}
 	}
 

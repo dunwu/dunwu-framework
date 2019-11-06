@@ -12,7 +12,7 @@ import java.io.*;
  * @see <a href="http://commons.apache.org/proper/commons-csv/user-guide.html">Apache
  * Common Csv</a>
  */
-public class CsvUtil {
+public class CsvUtils {
 
 	public static String[] getHeaders(String filepath) throws IOException {
 		return getHeaders(new File(filepath));

@@ -13,13 +13,13 @@ import java.util.*;
  *
  * @see com.google.common.collect.Ordering
  */
-public class CollectionUtil {
+public class CollectionUtils {
 
 	/**
-	 * 判断是否不为空.
+	 * 两个集合中的所有元素按顺序相等.
 	 */
-	public static boolean isNotEmpty(Collection<?> collection) {
-		return (collection != null) && !(collection.isEmpty());
+	public static boolean elementsEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
+		return Iterables.elementsEqual(iterable1, iterable2);
 	}
 
 	/**
@@ -60,27 +60,26 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 两个集合中的所有元素按顺序相等.
+	 * 判断是否不为空.
 	 */
-	public static boolean elementsEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return Iterables.elementsEqual(iterable1, iterable2);
+	public static boolean isNotEmpty(Collection<?> collection) {
+		return (collection != null) && !(collection.isEmpty());
 	}
 
 	///////////// 求最大最小值，及Top N, Bottom N//////////
 
 	/**
-	 * 返回无序集合中的最小值，使用元素默认排序
+	 * 返回Iterable中最小的N个对象, back by guava.
 	 */
-	public static <T extends Object & Comparable<? super T>> T min(
-		Collection<? extends T> coll) {
-		return Collections.min(coll);
+	public static <T extends Comparable<?>> List<T> leastOf(Iterable<T> iterable, int n) {
+		return Ordering.natural().leastOf(iterable, n);
 	}
 
 	/**
-	 * 返回无序集合中的最小值
+	 * 返回Iterable中最小的N个对象, back by guava.
 	 */
-	public static <T> T min(Collection<? extends T> coll, Comparator<? super T> comp) {
-		return Collections.min(coll, comp);
+	public static <T> List<T> leastOf(Iterable<T> iterable, int n, Comparator<? super T> comparator) {
+		return Ordering.from(comparator).leastOf(iterable, n);
 	}
 
 	/**
@@ -96,6 +95,21 @@ public class CollectionUtil {
 	 */
 	public static <T> T max(Collection<? extends T> coll, Comparator<? super T> comp) {
 		return Collections.max(coll, comp);
+	}
+
+	/**
+	 * 返回无序集合中的最小值，使用元素默认排序
+	 */
+	public static <T extends Object & Comparable<? super T>> T min(
+		Collection<? extends T> coll) {
+		return Collections.min(coll);
+	}
+
+	/**
+	 * 返回无序集合中的最小值
+	 */
+	public static <T> T min(Collection<? extends T> coll, Comparator<? super T> comp) {
+		return Collections.min(coll, comp);
 	}
 
 	/**
@@ -152,21 +166,6 @@ public class CollectionUtil {
 	 */
 	public static <T> List<T> top(Iterable<T> coll, int n, Comparator<? super T> comp) {
 		return Ordering.from(comp).greatestOf(coll, n);
-	}
-
-	/**
-	 * 返回Iterable中最小的N个对象, back by guava.
-	 */
-	public static <T extends Comparable<?>> List<T> bottom(Iterable<T> coll, int n) {
-		return Ordering.natural().leastOf(coll, n);
-	}
-
-	/**
-	 * 返回Iterable中最小的N个对象, back by guava.
-	 */
-	public static <T> List<T> bottom(Iterable<T> coll, int n,
-		Comparator<? super T> comp) {
-		return Ordering.from(comp).leastOf(coll, n);
 	}
 
 }

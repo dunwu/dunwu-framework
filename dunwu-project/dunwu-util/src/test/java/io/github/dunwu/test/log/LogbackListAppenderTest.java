@@ -9,6 +9,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LogbackListAppenderTest {
 
 	@Test
+	public void addAndRemoveAppender() {
+		String testString = "Hello";
+		Logger logger = LoggerFactory.getLogger(LogbackListAppenderTest.class);
+		LogbackListAppender appender = new LogbackListAppender();
+		// class
+		appender.addToLogger(LogbackListAppenderTest.class);
+		logger.warn(testString);
+		assertThat(appender.getFirstLog()).isNotNull();
+
+		appender.clearLogs();
+		appender.removeFromLogger(LogbackListAppenderTest.class);
+		logger.warn(testString);
+		assertThat(appender.getFirstLog()).isNull();
+
+		// name
+		appender.clearLogs();
+		appender.addToLogger("io.github.dunwu.test.log");
+		logger.warn(testString);
+		assertThat(appender.getFirstLog()).isNotNull();
+
+		appender.clearLogs();
+		appender.removeFromLogger("io.github.dunwu.test.log");
+		logger.warn(testString);
+		assertThat(appender.getFirstLog()).isNull();
+	}
+
+	@Test
 	public void normal() {
 		String testString1 = "Hello";
 		String testString2 = "World";
@@ -41,33 +68,6 @@ public class LogbackListAppenderTest {
 		appender.clearLogs();
 		assertThat(appender.getFirstLog()).isNull();
 		assertThat(appender.getLastLog()).isNull();
-	}
-
-	@Test
-	public void addAndRemoveAppender() {
-		String testString = "Hello";
-		Logger logger = LoggerFactory.getLogger(LogbackListAppenderTest.class);
-		LogbackListAppender appender = new LogbackListAppender();
-		// class
-		appender.addToLogger(LogbackListAppenderTest.class);
-		logger.warn(testString);
-		assertThat(appender.getFirstLog()).isNotNull();
-
-		appender.clearLogs();
-		appender.removeFromLogger(LogbackListAppenderTest.class);
-		logger.warn(testString);
-		assertThat(appender.getFirstLog()).isNull();
-
-		// name
-		appender.clearLogs();
-		appender.addToLogger("io.github.dunwu.test.log");
-		logger.warn(testString);
-		assertThat(appender.getFirstLog()).isNotNull();
-
-		appender.clearLogs();
-		appender.removeFromLogger("io.github.dunwu.test.log");
-		logger.warn(testString);
-		assertThat(appender.getFirstLog()).isNull();
 	}
 
 }

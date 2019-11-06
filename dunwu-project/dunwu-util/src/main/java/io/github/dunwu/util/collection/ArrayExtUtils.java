@@ -28,23 +28,6 @@ import java.util.Random;
 public class ArrayExtUtils extends ArrayUtils {
 
 	/**
-	 * 传入类型与大小创建数组. Array.newInstance()的性能并不差
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] newInstance(final Class<?> componentType, final int length) {
-		return (T[]) Array.newInstance(componentType, length);
-	}
-
-	/**
-	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组. 本函数等价于list.toArray(new String[0]);
-	 * 用户也可以直接用后者. https://shipilev.net/blog/2016/arrays-wisdom-ancients/
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(Collection<T> col, Class<T> type) {
-		return col.toArray((T[]) Array.newInstance(type, 0));
-	}
-
-	/**
 	 * 添加元素到数组末尾.
 	 */
 	public static <T> T[] addHead(T[] array, T element) {
@@ -56,28 +39,6 @@ public class ArrayExtUtils extends ArrayUtils {
 	 */
 	public static <T> T[] addTail(T[] array, T element) {
 		return ObjectArrays.concat(element, array);
-	}
-
-	////////////////// guava Array 转换为底层为原子类型的List ///////////
-
-	/**
-	 * Arrays.asList()的加强版, 返回一个底层为原始类型int的List 与保存Integer相比节约空间，同时只在读取数据时AutoBoxing.
-	 *
-	 * @see Arrays#asList(Object...)
-	 * @see com.google.common.primitives.Ints#asList(int...)
-	 */
-	public static List<Integer> intAsList(int... backingArray) {
-		return Ints.asList(backingArray);
-	}
-
-	/**
-	 * Arrays.asList()的加强版, 返回一个底层为原始类型long的List 与保存Long相比节约空间，同时只在读取数据时AutoBoxing.
-	 *
-	 * @see Arrays#asList(Object...)
-	 * @see com.google.common.primitives.Longs#asList(long...)
-	 */
-	public static List<Long> longAsList(long... backingArray) {
-		return Longs.asList(backingArray);
 	}
 
 	/**
@@ -114,6 +75,36 @@ public class ArrayExtUtils extends ArrayUtils {
 		}
 
 		return sb.toString();
+	}
+
+	////////////////// guava Array 转换为底层为原子类型的List ///////////
+
+	/**
+	 * Arrays.asList()的加强版, 返回一个底层为原始类型int的List 与保存Integer相比节约空间，同时只在读取数据时AutoBoxing.
+	 *
+	 * @see Arrays#asList(Object...)
+	 * @see com.google.common.primitives.Ints#asList(int...)
+	 */
+	public static List<Integer> intAsList(int... backingArray) {
+		return Ints.asList(backingArray);
+	}
+
+	/**
+	 * Arrays.asList()的加强版, 返回一个底层为原始类型long的List 与保存Long相比节约空间，同时只在读取数据时AutoBoxing.
+	 *
+	 * @see Arrays#asList(Object...)
+	 * @see com.google.common.primitives.Longs#asList(long...)
+	 */
+	public static List<Long> longAsList(long... backingArray) {
+		return Longs.asList(backingArray);
+	}
+
+	/**
+	 * 传入类型与大小创建数组. Array.newInstance()的性能并不差
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] newInstance(final Class<?> componentType, final int length) {
+		return (T[]) Array.newInstance(componentType, length);
 	}
 
 	/**
@@ -156,28 +147,6 @@ public class ArrayExtUtils extends ArrayUtils {
 			result[i] = source[index];
 			// 将待选数组中被随机到的数，用待选数组(len-1)下标对应的数替换
 			source[index] = source[len];
-		}
-		return result;
-	}
-
-	/**
-	 * 随机指定范围内N个重复的Int数组。
-	 *
-	 * @param min    指定范围最小值
-	 * @param max    指定范围最大值
-	 * @param length 随机数个数
-	 * @return 随机数结果集
-	 */
-	public static int[] randomRepeatIntArray(int min, int max, int length) {
-		int len = max - min + 1;
-
-		if (max < min || length > len) {
-			return null;
-		}
-
-		int[] result = new int[length];
-		for (int i = 0; i < result.length; i++) {
-			result[i] = (int) (Math.random() * max);
 		}
 		return result;
 	}
@@ -227,6 +196,28 @@ public class ArrayExtUtils extends ArrayUtils {
 	}
 
 	/**
+	 * 随机指定范围内N个重复的Int数组。
+	 *
+	 * @param min    指定范围最小值
+	 * @param max    指定范围最大值
+	 * @param length 随机数个数
+	 * @return 随机数结果集
+	 */
+	public static int[] randomRepeatIntArray(int min, int max, int length) {
+		int len = max - min + 1;
+
+		if (max < min || length > len) {
+			return null;
+		}
+
+		int[] result = new int[length];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = (int) (Math.random() * max);
+		}
+		return result;
+	}
+
+	/**
 	 * 随机指定范围内N个重复的Integer数组。
 	 *
 	 * @param min    指定范围最小值
@@ -246,6 +237,15 @@ public class ArrayExtUtils extends ArrayUtils {
 			result[i] = (int) (Math.random() * max);
 		}
 		return result;
+	}
+
+	/**
+	 * 从collection转为Array, 以 list.toArray(new String[0]); 最快 不需要创建list.size()的数组. 本函数等价于list.toArray(new String[0]);
+	 * 用户也可以直接用后者. https://shipilev.net/blog/2016/arrays-wisdom-ancients/
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(Collection<T> col, Class<T> type) {
+		return col.toArray((T[]) Array.newInstance(type, 0));
 	}
 
 }

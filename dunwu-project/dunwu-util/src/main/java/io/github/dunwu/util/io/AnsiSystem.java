@@ -153,6 +153,30 @@ public class AnsiSystem {
 			this.bgColor = bgColor;
 		}
 
+		@Override
+		public String toString() {
+			return "AnsiParam{" + "bold=" + bold + ", italic=" + italic + ", underline="
+				+ underline + ", slowBlink=" + slowBlink + ", rapidBlink="
+				+ rapidBlink + ", reverseVideo=" + reverseVideo + ", canceal="
+				+ canceal + ", color=" + color + ", bgColor=" + bgColor + '}';
+		}
+
+		public Color getBgColor() {
+			return bgColor;
+		}
+
+		public void setBgColor(Color bgColor) {
+			this.bgColor = bgColor;
+		}
+
+		public Color getColor() {
+			return color;
+		}
+
+		public void setColor(Color color) {
+			this.color = color;
+		}
+
 		public boolean isBold() {
 			return bold;
 		}
@@ -161,28 +185,20 @@ public class AnsiSystem {
 			this.bold = bold;
 		}
 
+		public boolean isCanceal() {
+			return canceal;
+		}
+
+		public void setCanceal(boolean canceal) {
+			this.canceal = canceal;
+		}
+
 		public boolean isItalic() {
 			return italic;
 		}
 
 		public void setItalic(boolean italic) {
 			this.italic = italic;
-		}
-
-		public boolean isUnderline() {
-			return underline;
-		}
-
-		public void setUnderline(boolean underline) {
-			this.underline = underline;
-		}
-
-		public boolean isSlowBlink() {
-			return slowBlink;
-		}
-
-		public void setSlowBlink(boolean slowBlink) {
-			this.slowBlink = slowBlink;
 		}
 
 		public boolean isRapidBlink() {
@@ -201,36 +217,20 @@ public class AnsiSystem {
 			this.reverseVideo = reverseVideo;
 		}
 
-		public boolean isCanceal() {
-			return canceal;
+		public boolean isSlowBlink() {
+			return slowBlink;
 		}
 
-		public void setCanceal(boolean canceal) {
-			this.canceal = canceal;
+		public void setSlowBlink(boolean slowBlink) {
+			this.slowBlink = slowBlink;
 		}
 
-		public Color getColor() {
-			return color;
+		public boolean isUnderline() {
+			return underline;
 		}
 
-		public void setColor(Color color) {
-			this.color = color;
-		}
-
-		public Color getBgColor() {
-			return bgColor;
-		}
-
-		public void setBgColor(Color bgColor) {
-			this.bgColor = bgColor;
-		}
-
-		@Override
-		public String toString() {
-			return "AnsiParam{" + "bold=" + bold + ", italic=" + italic + ", underline="
-				+ underline + ", slowBlink=" + slowBlink + ", rapidBlink="
-				+ rapidBlink + ", reverseVideo=" + reverseVideo + ", canceal="
-				+ canceal + ", color=" + color + ", bgColor=" + bgColor + '}';
+		public void setUnderline(boolean underline) {
+			this.underline = underline;
 		}
 
 	}

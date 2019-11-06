@@ -44,12 +44,10 @@ public class Pagination<T> implements Serializable {
 		this.list = list;
 	}
 
-	public Collection<T> getList() {
-		return list;
-	}
-
-	public void setList(Collection<T> list) {
-		this.list = list;
+	@Override
+	public String toString() {
+		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size
+			+ ", total=" + total + '}';
 	}
 
 	public long getCurrent() {
@@ -59,6 +57,14 @@ public class Pagination<T> implements Serializable {
 	public Pagination setCurrent(long current) {
 		this.current = current;
 		return this;
+	}
+
+	public Collection<T> getList() {
+		return list;
+	}
+
+	public void setList(Collection<T> list) {
+		this.list = list;
 	}
 
 	public long getPages() {
@@ -92,12 +98,6 @@ public class Pagination<T> implements Serializable {
 
 	public Pagination setPages(long pages) {
 		return this;
-	}
-
-	@Override
-	public String toString() {
-		return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size
-			+ ", total=" + total + '}';
 	}
 
 }

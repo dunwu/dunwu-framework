@@ -13,22 +13,6 @@ import static org.assertj.core.api.Assertions.fail;
 class ArrayExtUtilsTest {
 
 	@Test
-	void shuffle() {
-		String[] arrays = new String[] { "d", "a", "c", "b", "e", "i", "g" };
-		String[] arraysClone = Arrays.copyOf(arrays, arrays.length);
-		Arrays.sort(arrays);
-		assertThat(arrays).containsExactly("a", "b", "c", "d", "e", "g", "i");
-		ArrayExtUtils.shuffle(arrays);
-		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-			"should not be equal to origin array");
-		// System.out.println(Arrays.toString(arrays));
-		Arrays.sort(arrays);
-		ArrayExtUtils.shuffle(arrays, RandomExtUtils.secureRandom());
-		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
-			"should not be equal to origin array");
-	}
-
-	@Test
 	void asList() {
 		List<String> list = Arrays.asList("d", "a", "c", "b", "e", "i", "g");
 		assertThat(list).hasSize(7).containsExactly("d", "a", "c", "b", "e", "i", "g");
@@ -55,6 +39,22 @@ class ArrayExtUtilsTest {
 		String[] array = new String[] { "d", "a", "c" };
 		assertThat(ArrayExtUtils.addTail(array, "z")).containsExactly("z", "d", "a", "c");
 		assertThat(ArrayExtUtils.addHead(array, "z")).containsExactly("d", "a", "c", "z");
+	}
+
+	@Test
+	void shuffle() {
+		String[] arrays = new String[] { "d", "a", "c", "b", "e", "i", "g" };
+		String[] arraysClone = Arrays.copyOf(arrays, arrays.length);
+		Arrays.sort(arrays);
+		assertThat(arrays).containsExactly("a", "b", "c", "d", "e", "g", "i");
+		ArrayExtUtils.shuffle(arrays);
+		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
+			"should not be equal to origin array");
+		// System.out.println(Arrays.toString(arrays));
+		Arrays.sort(arrays);
+		ArrayExtUtils.shuffle(arrays, RandomExtUtils.secureRandom());
+		Assertions.assertFalse(Arrays.equals(arrays, arraysClone),
+			"should not be equal to origin array");
 	}
 
 }

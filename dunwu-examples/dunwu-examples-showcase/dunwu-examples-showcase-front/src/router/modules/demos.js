@@ -3,26 +3,17 @@ import componentsRouter from './components'
 import nestedRouter from './nested'
 
 const articleRouter = {
-  path: '/demos/article',
-  component: () => import('@/views/demos/article/index'),
-  name: 'Article',
-  meta: {
+  path: '/demos/article', component: () => import('@/views/demos/article/index'), name: 'Article', meta: {
     title: 'Article', icon: 'example'
-  },
-  redirect: '/demos/article/list',
-  children: [{
+  }, redirect: '/demos/article/list', children: [{
     path: 'create',
     component: () => import('@/views/demos/article/create'),
     name: 'CreateArticle',
     meta: { title: 'Create Article', icon: 'edit' }
   }, {
-    path: 'edit/:id(\\d+)',
-    component: () => import('@/views/demos/article/edit'),
-    name: 'EditArticle',
-    meta: {
+    path: 'edit/:id(\\d+)', component: () => import('@/views/demos/article/edit'), name: 'EditArticle', meta: {
       title: 'Edit Article', noCache: true, activeMenu: '/demos/article/list'
-    },
-    hidden: true
+    }, hidden: true
   }, {
     path: 'list',
     component: () => import('@/views/demos/article/list'),
@@ -32,14 +23,9 @@ const articleRouter = {
 }
 
 const chartsRouter = {
-  path: '/demos/charts',
-  component: () => import('@/views/demos/charts/index'),
-  name: 'Charts',
-  meta: {
+  path: '/demos/charts', component: () => import('@/views/demos/charts/index'), name: 'Charts', meta: {
     title: 'Charts', icon: 'chart'
-  },
-  redirect: '/demos/charts/keyboard',
-  children: [{
+  }, redirect: '/demos/charts/keyboard', children: [{
     path: 'keyboard',
     component: () => import('@/views/demos/charts/keyboard'),
     name: 'KeyboardChart',
@@ -118,10 +104,7 @@ const iconRouter = {
 
 const pdfRouter = {
   path: '/demos/pdf', component: () => import('@/views/demos/pdf/index'), children: [{
-    path: 'test',
-    component: () => import('@/views/demos/pdf/test'),
-    name: 'PDF',
-    meta: { title: 'PDF', icon: 'pdf' }
+    path: 'test', component: () => import('@/views/demos/pdf/test'), name: 'PDF', meta: { title: 'PDF', icon: 'pdf' }
   }, {
     path: '/download', component: () => import('@/views/demos/pdf/download'), hidden: true
   }]
@@ -137,10 +120,7 @@ const permissionRouter = {
     title: 'Permission', icon: 'lock', roles: ['admin', 'editor'] // you can set roles in root nav
   },
   children: [{
-    path: 'page',
-    component: () => import('@/views/demos/permission/page'),
-    name: 'PagePermission',
-    meta: {
+    path: 'page', component: () => import('@/views/demos/permission/page'), name: 'PagePermission', meta: {
       title: 'Page Permission', roles: ['admin'] // or you can only set roles in sub nav
     }
   }, {
@@ -152,10 +132,7 @@ const permissionRouter = {
       // if do not set roles, means: this page does not require permission
     }
   }, {
-    path: 'role',
-    component: () => import('@/views/demos/permission/role'),
-    name: 'RolePermission',
-    meta: {
+    path: 'role', component: () => import('@/views/demos/permission/role'), name: 'RolePermission', meta: {
       title: 'Role Permission', roles: ['admin']
     }
   }]
@@ -188,10 +165,7 @@ const tableRouter = {
 }
 
 const tabRouter = {
-  path: '/demos/tab',
-  component: () => import('@/views/demos/tab/index'),
-  name: 'Tab',
-  meta: { title: 'Tab', icon: 'tab' }
+  path: '/demos/tab', component: () => import('@/views/demos/tab/index'), name: 'Tab', meta: { title: 'Tab', icon: 'tab' }
 }
 
 const themeRouter = {
@@ -202,10 +176,7 @@ const themeRouter = {
 }
 
 const zipRouter = {
-  path: '/demos/zip',
-  component: () => import('@/views/demos/zip/index'),
-  name: 'ExportZip',
-  meta: { title: 'Export Zip' }
+  path: '/demos/zip', component: () => import('@/views/demos/zip/index'), name: 'ExportZip', meta: { title: 'Export Zip' }
 }
 
 const externalRouter = {

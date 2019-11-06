@@ -105,16 +105,6 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 	}
 
 	/**
-	 * Returns comparator assigned to this collection, if such exist.
-	 */
-	public Comparator getComparator() {
-		return comparator;
-	}
-
-	// ---------------------------------------------------------------- unsupported
-	// methods
-
-	/**
 	 * @throws UnsupportedOperationException This method not supported.
 	 */
 	@Override
@@ -122,6 +112,9 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 	public E set(int index, E element) {
 		throw new UnsupportedOperationException();
 	}
+
+	// ---------------------------------------------------------------- unsupported
+	// methods
 
 	/**
 	 * Adds an Object to sorted list. Object is inserted at correct place, found using binary search. If the same item
@@ -148,8 +141,6 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 		throw new UnsupportedOperationException();
 	}
 
-	// ---------------------------------------------------------------- sorting
-
 	/**
 	 * Add all of the elements in the given collection to this list.
 	 */
@@ -166,6 +157,8 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 		return changed;
 	}
 
+	// ---------------------------------------------------------------- sorting
+
 	/**
 	 * @throws UnsupportedOperationException This method not supported.
 	 */
@@ -173,6 +166,13 @@ public final class SortedArrayList<E> extends ArrayList<E> {
 	@Deprecated
 	public boolean addAll(int index, Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Returns comparator assigned to this collection, if such exist.
+	 */
+	public Comparator getComparator() {
+		return comparator;
 	}
 
 }

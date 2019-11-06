@@ -6,15 +6,6 @@ import java.security.NoSuchAlgorithmException;
 
 public interface ISignature {
 
-	byte[] sign(byte[] plaintext, byte[] privateKey) throws Exception;
-
-	boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
-		throws Exception;
-
-	byte[] getPrivateKey();
-
-	byte[] getPublicKey();
-
 	default KeyPair genKeyPair(String algorithm, int keySize)
 		throws NoSuchAlgorithmException {
 
@@ -25,5 +16,14 @@ public interface ISignature {
 		// 实例化密钥对
 		return keyPairGen.genKeyPair();
 	}
+
+	byte[] sign(byte[] plaintext, byte[] privateKey) throws Exception;
+
+	boolean verify(byte[] plaintext, byte[] publicKey, byte[] ciphertext)
+		throws Exception;
+
+	byte[] getPrivateKey();
+
+	byte[] getPublicKey();
 
 }

@@ -1,4 +1,4 @@
-package io.github.dunwu.util.mapper;
+package io.github.dunwu.util.parser;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,10 +45,10 @@ public class JsonMapper {
 	}
 
 	/**
-	 * 创建只输出非Null的属性到Json字符串的Mapper.
+	 * 默认的全部输出的Mapper, 区别于INSTANCE，可以做进一步的配置
 	 */
-	public static JsonMapper nonNullMapper() {
-		return new JsonMapper(JsonInclude.Include.NON_NULL);
+	public static JsonMapper defaultMapper() {
+		return new JsonMapper();
 	}
 
 	/**
@@ -59,45 +59,10 @@ public class JsonMapper {
 	}
 
 	/**
-	 * 默认的全部输出的Mapper, 区别于INSTANCE，可以做进一步的配置
+	 * 创建只输出非Null的属性到Json字符串的Mapper.
 	 */
-	public static JsonMapper defaultMapper() {
-		return new JsonMapper();
-	}
-
-	/**
-	 * 反序列化POJO或简单Collection如List<String>. 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
-	 * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String, JavaType)
-	 *
-	 * @see #fromJson(String, JavaType)
-	 */
-	public <T> T fromJson(@Nullable String jsonString, Class<T> clazz) {
-		if (StringUtils.isEmpty(jsonString)) {
-			return null;
-		}
-
-		try {
-			return mapper.readValue(jsonString, clazz);
-		} catch (IOException e) {
-			logger.warn("parse json string error:" + jsonString, e);
-			return null;
-		}
-	}
-
-	/**
-	 * 反序列化复杂Collection如List<Bean>, contructCollectionType()或contructMapType()构造类型, 然后调用本函数.
-	 */
-	public <T> T fromJson(@Nullable String jsonString, JavaType javaType) {
-		if (StringUtils.isEmpty(jsonString)) {
-			return null;
-		}
-
-		try {
-			return (T) mapper.readValue(jsonString, javaType);
-		} catch (IOException e) {
-			logger.warn("parse json string error:" + jsonString, e);
-			return null;
-		}
+	public static JsonMapper nonNullMapper() {
+		return new JsonMapper(JsonInclude.Include.NON_NULL);
 	}
 
 	/**
@@ -118,17 +83,45 @@ public class JsonMapper {
 	}
 
 	/**
-	 * 当JSON里只含有Bean的部分属性時，更新一個已存在Bean，只覆盖該部分的属性.
+	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False. 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
 	 */
-	public void update(String jsonString, Object object) {
+	public void enableEnumUseToString() {
+		mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+		mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+	}
+
+	/**
+	 * 反序列化复杂Collection如List<Bean>, contructCollectionType()或contructMapType()构造类型, 然后调用本函数.
+	 */
+	public <T> T fromJson(@Nullable String jsonString, JavaType javaType) {
+		if (StringUtils.isEmpty(jsonString)) {
+			return null;
+		}
+
 		try {
-			mapper.readerForUpdating(object).readValue(jsonString);
-		} catch (JsonProcessingException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object
-				+ " error.", e);
+			return (T) mapper.readValue(jsonString, javaType);
 		} catch (IOException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object
-				+ " error.", e);
+			logger.warn("parse json string error:" + jsonString, e);
+			return null;
+		}
+	}
+
+	/**
+	 * 反序列化POJO或简单Collection如List<String>. 如果JSON字符串为Null或"null"字符串, 返回Null. 如果JSON字符串为"[]", 返回空集合.
+	 * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String, JavaType)
+	 *
+	 * @see #fromJson(String, JavaType)
+	 */
+	public <T> T fromJson(@Nullable String jsonString, Class<T> clazz) {
+		if (StringUtils.isEmpty(jsonString)) {
+			return null;
+		}
+
+		try {
+			return mapper.readValue(jsonString, clazz);
+		} catch (IOException e) {
+			logger.warn("parse json string error:" + jsonString, e);
+			return null;
 		}
 	}
 
@@ -153,11 +146,18 @@ public class JsonMapper {
 	}
 
 	/**
-	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False. 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
+	 * 当JSON里只含有Bean的部分属性時，更新一個已存在Bean，只覆盖該部分的属性.
 	 */
-	public void enableEnumUseToString() {
-		mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-		mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+	public void update(String jsonString, Object object) {
+		try {
+			mapper.readerForUpdating(object).readValue(jsonString);
+		} catch (JsonProcessingException e) {
+			logger.warn("update json string:" + jsonString + " to object:" + object
+				+ " error.", e);
+		} catch (IOException e) {
+			logger.warn("update json string:" + jsonString + " to object:" + object
+				+ " error.", e);
+		}
 	}
 
 	/**

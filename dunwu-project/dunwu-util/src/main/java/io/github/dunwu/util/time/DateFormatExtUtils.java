@@ -38,23 +38,6 @@ public class DateFormatExtUtils extends DateFormatUtils {
 	// parseDate
 	// -------------------------------------------------------------------------------------------------
 
-	public static Date parseDate(final DatePattern datePattern, final String dateString)
-		throws ParseException {
-		return parseDate(datePattern.pattern(), dateString);
-	}
-
-	/**
-	 * 分析日期字符串, 仅用于pattern不固定的情况. 否则直接使用DateFormats中封装好的FastDateFormat. FastDateFormat.getInstance()
-	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
-	 */
-	public static Date parseDate(final String pattern, final String dateString)
-		throws ParseException {
-		return FastDateFormat.getInstance(pattern).parse(dateString);
-	}
-
-	// formatDuration
-	// -------------------------------------------------------------------------------------------------
-
 	/**
 	 * 按HH:mm:ss.SSS格式，格式化时间间隔. endDate必须大于startDate，间隔可大于1天，
 	 *
@@ -73,6 +56,9 @@ public class DateFormatExtUtils extends DateFormatUtils {
 	public static String formatDuration(final long durationMillis) {
 		return DurationFormatUtils.formatDurationHMS(durationMillis);
 	}
+
+	// formatDuration
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 按HH:mm:ss格式，格式化时间间隔 endDate必须大于startDate，间隔可大于1天
@@ -93,9 +79,6 @@ public class DateFormatExtUtils extends DateFormatUtils {
 	public static String formatDurationOnSecond(final long durationMillis) {
 		return DurationFormatUtils.formatDuration(durationMillis, "HH:mm:ss");
 	}
-
-	// formatFriendlyTimeSpanByNow
-	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 打印用户友好的，与当前时间相比的时间差，如刚刚，5分钟前，今天XXX，昨天XXX copy from AndroidUtilCode
@@ -135,17 +118,31 @@ public class DateFormatExtUtils extends DateFormatUtils {
 		}
 	}
 
+	// formatFriendlyTimeSpanByNow
+	// -------------------------------------------------------------------------------------------------
+
+	public static Date parseDate(final DatePattern datePattern, final String dateString)
+		throws ParseException {
+		return parseDate(datePattern.pattern(), dateString);
+	}
+
+	/**
+	 * 分析日期字符串, 仅用于pattern不固定的情况. 否则直接使用DateFormats中封装好的FastDateFormat. FastDateFormat.getInstance()
+	 * 已经做了缓存，不会每次创建对象，但直接使用对象仍然能减少在缓存中的查找.
+	 */
+	public static Date parseDate(final String pattern, final String dateString)
+		throws ParseException {
+		return FastDateFormat.getInstance(pattern).parse(dateString);
+	}
+
 	public enum DatePattern {
 
 		// 以T分隔日期和时间，并带时区信息，符合ISO8601规范
-		PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"),
-		PATTERN_ISO_ON_SECOND(
-			"yyyy-MM-dd'T'HH:mm:ssZZ"),
-		PATTERN_ISO_ON_DATE("yyyy-MM-dd"),
+		PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"), PATTERN_ISO_ON_SECOND(
+			"yyyy-MM-dd'T'HH:mm:ssZZ"), PATTERN_ISO_ON_DATE("yyyy-MM-dd"),
 
 		// 以空格分隔日期和时间，不带时区信息
-		PATTERN_DEFAULT("yyyy-MM-dd HH:mm:ss.SSS"),
-		PATTERN_DEFAULT_ON_SECOND(
+		PATTERN_DEFAULT("yyyy-MM-dd HH:mm:ss.SSS"), PATTERN_DEFAULT_ON_SECOND(
 			"yyyy-MM-dd HH:mm:ss");
 
 		private String pattern;

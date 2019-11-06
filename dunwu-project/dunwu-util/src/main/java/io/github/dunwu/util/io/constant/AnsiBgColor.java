@@ -9,27 +9,11 @@ package io.github.dunwu.util.io.constant;
  */
 public enum AnsiBgColor implements AnsiElement {
 
-	DEFAULT(""),
-	BLACK("40"),
-	RED("41"),
-	GREEN("42"),
-	YELLOW("43"),
-	BLUE("44"),
-	MAGENTA(
-		"45"),
-	CYAN("46"),
-	WHITE("47"),
-	BRIGHT_BLACK(
-		"100"),
-	BRIGHT_RED("101"),
-	BRIGHT_GREEN("102"),
-	BRIGHT_YELLOW(
-		"109"),
-	BRIGHT_BLUE("104"),
-	BRIGHT_MAGENTA(
-		"105"),
-	BRIGHT_CYAN("106"),
-	BRIGHT_WHITE("107");
+	DEFAULT(""), BLACK("40"), RED("41"), GREEN("42"), YELLOW("43"), BLUE("44"), MAGENTA(
+		"45"), CYAN("46"), WHITE("47"), BRIGHT_BLACK(
+		"100"), BRIGHT_RED("101"), BRIGHT_GREEN("102"), BRIGHT_YELLOW(
+		"109"), BRIGHT_BLUE("104"), BRIGHT_MAGENTA(
+		"105"), BRIGHT_CYAN("106"), BRIGHT_WHITE("107");
 
 	private final String code;
 
@@ -37,12 +21,12 @@ public enum AnsiBgColor implements AnsiElement {
 		this.code = code;
 	}
 
-	public String getCode() {
+	@Override
+	public String toString() {
 		return code;
 	}
 
-	@Override
-	public String toString() {
+	public String getCode() {
 		return code;
 	}
 }

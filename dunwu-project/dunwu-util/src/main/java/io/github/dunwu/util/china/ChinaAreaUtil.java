@@ -45,15 +45,6 @@ public class ChinaAreaUtil {
 	}
 
 	/**
-	 * 获取所有（省级行政单位）集合
-	 *
-	 * @return Set<Province>
-	 */
-	public static Set<Province> getAllProvinces() {
-		return provinces;
-	}
-
-	/**
 	 * 获取所有（地级行政单位）集合
 	 *
 	 * @return Set<Province>
@@ -72,33 +63,12 @@ public class ChinaAreaUtil {
 	}
 
 	/**
-	 * 根据编码查询（省级行政单位）
+	 * 获取所有（省级行政单位）集合
 	 *
-	 * @param code 编码
-	 * @return Province
+	 * @return Set<Province>
 	 */
-	public static Province getProvinceByCode(String code) {
-		if (CollectionUtils.isEmpty(provinces)) {
-			return null;
-		}
-
-		return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
-			.orElse(null);
-	}
-
-	/**
-	 * 根据名称查询（省级行政单位）
-	 *
-	 * @param name 名称
-	 * @return Province
-	 */
-	public static Province getProvinceByName(String name) {
-		if (CollectionUtils.isEmpty(provinces)) {
-			return null;
-		}
-
-		return provinces.stream().filter(item -> item.getName().equals(name)).findAny()
-			.orElse(null);
+	public static Set<Province> getAllProvinces() {
+		return provinces;
 	}
 
 	/**
@@ -161,6 +131,36 @@ public class ChinaAreaUtil {
 
 		return counties.stream().filter(item -> item.getName().equals(name))
 			.collect(Collectors.toSet());
+	}
+
+	/**
+	 * 根据编码查询（省级行政单位）
+	 *
+	 * @param code 编码
+	 * @return Province
+	 */
+	public static Province getProvinceByCode(String code) {
+		if (CollectionUtils.isEmpty(provinces)) {
+			return null;
+		}
+
+		return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
+			.orElse(null);
+	}
+
+	/**
+	 * 根据名称查询（省级行政单位）
+	 *
+	 * @param name 名称
+	 * @return Province
+	 */
+	public static Province getProvinceByName(String name) {
+		if (CollectionUtils.isEmpty(provinces)) {
+			return null;
+		}
+
+		return provinces.stream().filter(item -> item.getName().equals(name)).findAny()
+			.orElse(null);
 	}
 
 	private static void parseJsonData(String json) {

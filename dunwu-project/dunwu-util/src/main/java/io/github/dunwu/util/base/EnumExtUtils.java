@@ -17,12 +17,7 @@ import java.util.EnumSet;
  */
 public class EnumExtUtils extends EnumUtils {
 
-	private EnumExtUtils() {
-	}
-
-	public static <E extends Enum<E>> EnumSet<E> getEnumSet(final Class<E> enumClass) {
-		return EnumSet.allOf(enumClass);
-	}
+	private EnumExtUtils() {}
 
 	public static <E extends Enum<E>> EnumSet<E> copyOf(final EnumSet<E> s) {
 		return EnumSet.copyOf(s);
@@ -30,6 +25,10 @@ public class EnumExtUtils extends EnumUtils {
 
 	public static <E extends Enum<E>> EnumSet<E> copyOf(final Collection<E> c) {
 		return EnumSet.copyOf(c);
+	}
+
+	public static <E extends Enum<E>> EnumSet<E> getEnumSet(final Class<E> enumClass) {
+		return EnumSet.allOf(enumClass);
 	}
 
 }

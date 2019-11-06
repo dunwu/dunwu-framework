@@ -41,15 +41,6 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 	}
 
 	/**
-	 * 简便函数，定义静态异常时使用
-	 */
-	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
-		String throwMethod) {
-		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
-		return this;
-	}
-
-	/**
 	 * 简便函数, clone并重新设定Message
 	 */
 	public CloneableRuntimeException clone(String message) {
@@ -65,6 +56,15 @@ public class CloneableRuntimeException extends RuntimeException implements Clone
 		} catch (CloneNotSupportedException e) { // NOSONAR
 			return null;
 		}
+	}
+
+	/**
+	 * 简便函数，定义静态异常时使用
+	 */
+	public CloneableRuntimeException setStackTrace(Class<?> throwClazz,
+		String throwMethod) {
+		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
+		return this;
 	}
 
 }

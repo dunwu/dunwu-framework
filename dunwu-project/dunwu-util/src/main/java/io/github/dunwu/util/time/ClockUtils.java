@@ -10,6 +10,13 @@ public class ClockUtils {
 	private static Clock instance = new DefaultClock();
 
 	/**
+	 * 系统当前时间
+	 */
+	public static Date currentDate() {
+		return instance.currentDate();
+	}
+
+	/**
 	 * 计算流逝的时间
 	 */
 	public static long elapsedTime(long beginTime) {
@@ -21,6 +28,20 @@ public class ClockUtils {
 	 */
 	public static long currentTimeMillis() {
 		return instance.currentTimeMillis();
+	}
+
+	/**
+	 * 操作系统启动到现在的纳秒数，与系统时间是完全独立的两个时间体系
+	 */
+	public static long nanoTime() {
+		return instance.nanoTime();
+	}
+
+	/**
+	 * 重置为默认Clock
+	 */
+	public static synchronized void useDefaultClock() {
+		instance = new DefaultClock();
 	}
 
 	/**
@@ -45,27 +66,6 @@ public class ClockUtils {
 	public static synchronized DummyClock useDummyClock(Date date) {
 		instance = new DummyClock(date);
 		return (DummyClock) instance;
-	}
-
-	/**
-	 * 重置为默认Clock
-	 */
-	public static synchronized void useDefaultClock() {
-		instance = new DefaultClock();
-	}
-
-	/**
-	 * 系统当前时间
-	 */
-	public static Date currentDate() {
-		return instance.currentDate();
-	}
-
-	/**
-	 * 操作系统启动到现在的纳秒数，与系统时间是完全独立的两个时间体系
-	 */
-	public static long nanoTime() {
-		return instance.nanoTime();
 	}
 
 	public interface Clock {
@@ -150,17 +150,10 @@ public class ClockUtils {
 		}
 
 		/**
-		 * 重新设置日期.
+		 * 滚动时间.
 		 */
-		public void updateNow(Date newDate) {
-			time = newDate.getTime();
-		}
-
-		/**
-		 * 重新设置时间.
-		 */
-		public void updateNow(long newTime) {
-			this.time = newTime;
+		public void decreaseTime(int millis) {
+			time -= millis;
 		}
 
 		/**
@@ -171,10 +164,17 @@ public class ClockUtils {
 		}
 
 		/**
-		 * 滚动时间.
+		 * 重新设置时间.
 		 */
-		public void decreaseTime(int millis) {
-			time -= millis;
+		public void updateNow(long newTime) {
+			this.time = newTime;
+		}
+
+		/**
+		 * 重新设置日期.
+		 */
+		public void updateNow(Date newDate) {
+			time = newDate.getTime();
 		}
 
 		/**

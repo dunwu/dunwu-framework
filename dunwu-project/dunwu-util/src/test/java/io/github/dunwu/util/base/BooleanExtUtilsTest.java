@@ -7,6 +7,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BooleanExtUtilsTest {
 
 	@Test
+	void negate() {
+		assertThat(BooleanExtUtils.negate(Boolean.TRUE)).isFalse();
+		assertThat(BooleanExtUtils.negate(Boolean.FALSE)).isTrue();
+		assertThat(BooleanExtUtils.negate(true)).isFalse();
+		assertThat(BooleanExtUtils.negate(false)).isTrue();
+	}
+
+	@Test
+	void toBooleanDefaultIfNull() {
+		assertThat(BooleanExtUtils.toBooleanDefaultIfNull("1", false)).isFalse();
+		assertThat(BooleanExtUtils.toBooleanDefaultIfNull("y", false)).isTrue();
+	}
+
+	@Test
 	void toBooleanObject() {
 		assertThat(BooleanExtUtils.toBooleanObject(0)).isFalse();
 		assertThat(BooleanExtUtils.toBooleanObject(1)).isTrue();
@@ -18,20 +32,6 @@ class BooleanExtUtilsTest {
 
 		assertThat(BooleanExtUtils.toBooleanObject("y")).isTrue();
 		assertThat(BooleanExtUtils.toBooleanObject("x")).isNull();
-	}
-
-	@Test
-	void toBooleanDefaultIfNull() {
-		assertThat(BooleanExtUtils.toBooleanDefaultIfNull("1", false)).isFalse();
-		assertThat(BooleanExtUtils.toBooleanDefaultIfNull("y", false)).isTrue();
-	}
-
-	@Test
-	void negate() {
-		assertThat(BooleanExtUtils.negate(Boolean.TRUE)).isFalse();
-		assertThat(BooleanExtUtils.negate(Boolean.FALSE)).isTrue();
-		assertThat(BooleanExtUtils.negate(true)).isFalse();
-		assertThat(BooleanExtUtils.negate(false)).isTrue();
 	}
 
 }

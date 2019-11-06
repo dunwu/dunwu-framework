@@ -1,25 +1,13 @@
-/*
- * Copyright (C) 2012 Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- */
 package io.github.dunwu.util.number;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 1.将带单位的时间，大小字符串转换为数字. copy from Facebook https://github .com/facebook/jcommon/blob/master/config/src/main/java/com/facebook/config/ConfigUtil.java
+ * 1.将带单位的时间，大小字符串转换为数字. copy from Facebook https://github.com/facebook/jcommon/blob/master/config/src/main/java/com/facebook/config/ConfigUtil.java
  * 2.将数字转为带单位的字符串
  */
-public class UnitConverter {
+public class UnitConvertUtils {
 
 	public static final String TIME_UNIT_DAY = "d";
 
@@ -49,10 +37,27 @@ public class UnitConverter {
 
 	private static final Pattern NUMBER_AND_UNIT = Pattern.compile("(\\d+)([a-zA-Z]+)?");
 
+	private UnitConvertUtils() {}
+
 	/**
-	 * 将带单位的时间字符串转化为毫秒数. 单位包括不分大小写的ms(毫秒),s(秒),m(分钟),h(小时),d(日),y(年) 不带任何单位的话，默认单位是毫秒
+	 * 将带单位的时间字符串转化为毫秒数。
+	 * <p/>
+	 * 单位包括不分大小写的ms(毫秒),s(秒),m(分钟),h(小时),d(日),y(年)，不带任何单位的话，默认单位是毫秒
+	 * <p>
+	 * 示例：
+	 * <pre>
+	 * 	10 = 10,000
+	 * 	10ms = 10
+	 * 	11s = 11,000
+	 * 	3m = 180,000
+	 * 	1h = 3,600,000
+	 * 	1d = 86,400,000
+	 * </pre>
+	 *
+	 * @param duration string to translate
+	 * @return returns duration in millis
 	 */
-	public static long toDurationMillis(String duration) {
+	public static long getDurationMillis(final String duration) {
 		Matcher matcher = NUMBER_AND_UNIT.matcher(duration);
 
 		if (!matcher.matches()) {
@@ -77,15 +82,16 @@ public class UnitConverter {
 			case TIME_UNIT_DAY:
 				return number * MILLIS_PER_DAY;
 			default:
-				throw new IllegalArgumentException(
-					"unknown time unit :" + unitStr.toLowerCase());
+				throw new IllegalArgumentException("unknown time unit :" + unitStr.toLowerCase());
 		}
 	}
 
 	/**
-	 * 将带单位的大小字符串转化为字节数. 单位包括不分大小写的b(b),k(kb),m(mb),g(gb),t(tb) 不带任何单位的话，默认单位是b
+	 * 将带单位的大小字符串转化为字节数。
+	 * <p>
+	 * 单位包括不分大小写的b(b),k(kb),m(mb),g(gb),t(tb)，不带任何单位的话，默认单位是 b
 	 */
-	public static long toBytes(String size) {
+	public static long getSizeBytes(final String size) {
 		Matcher matcher = NUMBER_AND_UNIT.matcher(size);
 
 		if (matcher.matches()) {
@@ -119,89 +125,85 @@ public class UnitConverter {
 
 	/**
 	 * 从bytes转换为带单位的字符串, 单位最大只支持到G级别，四舍五入
+	 * <p>
+	 * 示例：
+	 * <pre>
+	 * 966L, 0 = 966
+	 * 1522L, 0 = 1k
+	 * 1522L, 1 = 1.5k
+	 * 1024L * 1024 * 2 + 1024 * 200, 0 = 2m
+	 * 1024L * 1024 * 2 + 1024 * 600, 0 = 3m
+	 * 1024L * 1024 * 2 + 1024 * 140, 1 = 2.1m
+	 * 1024L * 1024 * 2 + 1024 * 160, 1 = 2.2m
+	 * 1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 0 = 2g
+	 * 1024L * 1024 * 1024 * 2 + 1024 * 1024 * 200, 1 = 2.2g
+	 * 1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 0 = 2t
+	 * 1024L * 1024 * 1024 * 1024 * 2 + 1024L * 1024 * 1024 * 200, 1 = 2.2t
+	 * </pre>
 	 *
 	 * @param scale 小数后的精度
 	 */
-	public static String toSizeUnit(Long bytes, int scale) {
+	public static String getSizeUnit(final Long bytes, final int scale) {
 		if (bytes == null) {
 			return "n/a";
 		}
 		if (bytes < K) {
-			return String.format("%4d", bytes);
+			return String.format("%4d", bytes).trim();
 		}
 
 		if (bytes < M) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk",
-				bytes * 1d / K);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fk", bytes * 1d / K).trim();
 		}
 
 		if (bytes < G) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm",
-				bytes * 1d / M);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fm", bytes * 1d / M).trim();
 		}
 
 		if (bytes < T) {
-			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg",
-				bytes * 1d / G);
+			return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "fg", bytes * 1d / G).trim();
 		}
 
-		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft",
-			bytes * 1d / T);
+		return String.format("%" + (scale == 0 ? 4 : 5 + scale) + '.' + scale + "ft", bytes * 1d / T).trim();
 	}
 
 	/**
 	 * 转换毫秒为带时间单位的字符串，单位最大到day级别，四舍五入
+	 * <p>
+	 * 示例：
+	 * <pre>
+	 * 1322L, 0 = 1s
+	 * 1322L, 1 = 1.3s
+	 * 1000L * 62, 0 = 1m
+	 * 1000L * 90, 0 = 2m
+	 * 1000L * 90, 1 = 1.5m
+	 * 1000L * 60 * 70, 1 = 1.2h
+	 * 1000L * 60 * 60 * 28, 1 = 1.2d
+	 * </pre>
 	 *
 	 * @param scale 小数后的精度
 	 */
-	public static String toTimeUnit(long millis, int scale) {
+	public static String getTimeWithUnit(final long millis, final int scale) {
 		if (millis < MILLIS_PER_SECOND) {
-			return String.format("%4dms", millis);
+			return String.format("%4dms", millis).trim();
 		}
 
 		if (millis < MILLIS_PER_MINUTE) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fs",
-				millis * 1d / MILLIS_PER_SECOND);
+				millis * 1d / MILLIS_PER_SECOND).trim();
 		}
 
 		if (millis < MILLIS_PER_HOUR) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fm",
-				millis * 1d / MILLIS_PER_MINUTE);
+				millis * 1d / MILLIS_PER_MINUTE).trim();
 		}
 
 		if (millis < MILLIS_PER_DAY) {
 			return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fh",
-				millis * 1d / MILLIS_PER_HOUR);
+				millis * 1d / MILLIS_PER_HOUR).trim();
 		}
 
 		return String.format("%" + (scale == 0 ? 2 : 3 + scale) + '.' + scale + "fd",
-			millis * 1d / MILLIS_PER_DAY);
-	}
-
-	/**
-	 * 转换毫秒为带时间单位的字符串，会同时带下一级的单位，四舍五入
-	 */
-	public static String toTimeWithMinorUnit(long millis) {
-		if (millis < MILLIS_PER_SECOND) {
-			return String.format("%4dms", millis);
-		}
-
-		if (millis < MILLIS_PER_MINUTE) {
-			return String.format("%02ds", millis / MILLIS_PER_SECOND);
-		}
-
-		if (millis < MILLIS_PER_HOUR) {
-			return String.format("%02dm%02ds", millis / MILLIS_PER_MINUTE,
-				(millis / MILLIS_PER_SECOND) % 60);
-		}
-
-		if (millis < MILLIS_PER_DAY) {
-			return String.format("%02dh%02dm", millis / MILLIS_PER_HOUR,
-				(millis / MILLIS_PER_MINUTE) % 60);
-		}
-
-		return String.format("%dd%02dh", millis / MILLIS_PER_DAY,
-			(millis / MILLIS_PER_HOUR) % 24);
+			millis * 1d / MILLIS_PER_DAY).trim();
 	}
 
 }

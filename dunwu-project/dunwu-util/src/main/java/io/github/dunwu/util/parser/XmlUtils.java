@@ -3,10 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  *******************************************************************************/
-package io.github.dunwu.util.mapper;
+package io.github.dunwu.util.parser;
 
+import io.github.dunwu.util.ClassExtUtils;
 import io.github.dunwu.util.base.ExceptionExtUtils;
-import io.github.dunwu.util.reflect.ClassUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -24,16 +24,57 @@ import javax.xml.namespace.QName;
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  */
-public class XmlMapper {
+public class XmlUtils {
 
 	private static ConcurrentMap<Class, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class, JAXBContext>();
 
+	private XmlUtils() {}
+
 	/**
-	 * Java Object->Xml without encoding.
+	 * Xml->Java Object.
 	 */
-	public static String toXml(Object root) {
-		Class clazz = ClassUtil.unwrapCglib(root);
-		return toXml(root, clazz, null);
+	public static <T> T fromXml(String xml, Class<T> clazz) {
+		try {
+			StringReader reader = new StringReader(xml);
+			return (T) createUnmarshaller(clazz).unmarshal(reader);
+		} catch (JAXBException e) {
+			throw ExceptionExtUtils.unchecked(e);
+		}
+	}
+
+	/**
+	 * 创建UnMarshaller. 线程不安全，需要每次创建或pooling。
+	 */
+	public static Unmarshaller createUnmarshaller(Class clazz) {
+		try {
+			JAXBContext jaxbContext = getJaxbContext(clazz);
+			return jaxbContext.createUnmarshaller();
+		} catch (JAXBException e) {
+			throw ExceptionExtUtils.unchecked(e);
+		}
+	}
+
+	protected static JAXBContext getJaxbContext(Class clazz) {
+		Validate.notNull(clazz, "'clazz' must not be null");
+		JAXBContext jaxbContext = jaxbContexts.get(clazz);
+		if (jaxbContext == null) {
+			try {
+				jaxbContext = JAXBContext.newInstance(clazz, CollectionWrapper.class);
+				jaxbContexts.putIfAbsent(clazz, jaxbContext);
+			} catch (JAXBException ex) {
+				throw new RuntimeException("Could not instantiate JAXBContext for class ["
+					+ clazz + "]: " + ex.getMessage(), ex);
+			}
+		}
+		return jaxbContext;
+	}
+
+	/**
+	 * Java Object->Xml with encoding.
+	 */
+	public static String toXml(Object root, String encoding) {
+		Class clazz = ClassExtUtils.unwrapCglib(root);
+		return toXml(root, clazz, encoding);
 	}
 
 	/**
@@ -70,29 +111,6 @@ public class XmlMapper {
 		}
 	}
 
-	protected static JAXBContext getJaxbContext(Class clazz) {
-		Validate.notNull(clazz, "'clazz' must not be null");
-		JAXBContext jaxbContext = jaxbContexts.get(clazz);
-		if (jaxbContext == null) {
-			try {
-				jaxbContext = JAXBContext.newInstance(clazz, CollectionWrapper.class);
-				jaxbContexts.putIfAbsent(clazz, jaxbContext);
-			} catch (JAXBException ex) {
-				throw new RuntimeException("Could not instantiate JAXBContext for class ["
-					+ clazz + "]: " + ex.getMessage(), ex);
-			}
-		}
-		return jaxbContext;
-	}
-
-	/**
-	 * Java Object->Xml with encoding.
-	 */
-	public static String toXml(Object root, String encoding) {
-		Class clazz = ClassUtil.unwrapCglib(root);
-		return toXml(root, clazz, encoding);
-	}
-
 	/**
 	 * Java Collection->Xml without encoding, 特别支持Root Element是Collection的情形.
 	 */
@@ -122,27 +140,11 @@ public class XmlMapper {
 	}
 
 	/**
-	 * Xml->Java Object.
+	 * Java Object->Xml without encoding.
 	 */
-	public static <T> T fromXml(String xml, Class<T> clazz) {
-		try {
-			StringReader reader = new StringReader(xml);
-			return (T) createUnmarshaller(clazz).unmarshal(reader);
-		} catch (JAXBException e) {
-			throw ExceptionExtUtils.unchecked(e);
-		}
-	}
-
-	/**
-	 * 创建UnMarshaller. 线程不安全，需要每次创建或pooling。
-	 */
-	public static Unmarshaller createUnmarshaller(Class clazz) {
-		try {
-			JAXBContext jaxbContext = getJaxbContext(clazz);
-			return jaxbContext.createUnmarshaller();
-		} catch (JAXBException e) {
-			throw ExceptionExtUtils.unchecked(e);
-		}
+	public static String toXml(Object root) {
+		Class clazz = ClassExtUtils.unwrapCglib(root);
+		return toXml(root, clazz, null);
 	}
 
 	/**

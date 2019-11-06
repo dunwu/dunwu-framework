@@ -141,15 +141,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
 	}
 
 	/**
-	 * Returns the underlying builder.
-	 *
-	 * @return The underlying builder
-	 */
-	public StringBuilder getBuilder() {
-		return builder;
-	}
-
-	/**
 	 * Returns {@link StringBuilder#toString()}.
 	 *
 	 * @return The contents of the String builder.
@@ -157,6 +148,15 @@ public class StringBuilderWriter extends Writer implements Serializable {
 	@Override
 	public String toString() {
 		return builder.toString();
+	}
+
+	/**
+	 * Returns the underlying builder.
+	 *
+	 * @return The underlying builder
+	 */
+	public StringBuilder getBuilder() {
+		return builder;
 	}
 
 }

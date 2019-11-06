@@ -7,6 +7,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SystemExtUtilsTest {
 
+	// Java Version
+	// -------------------------------------------------------------------------------------------------
+	@Test
+	void testJavaVersion() {
+		String javaVersion = SystemExtUtils.getJavaVersion();
+		assertThat(javaVersion).isEqualTo("1.8");
+		assertThat(SystemExtUtils.isJava8()).isTrue();
+	}
+
 	@Test
 	void testRuntime() {
 		System.out.println("PID：" + SystemExtUtils.getPid());
@@ -17,15 +26,6 @@ class SystemExtUtilsTest {
 		assertThat(SystemExtUtils.getCores()).isGreaterThan(1);
 
 		System.out.println("Uptime：" + SystemExtUtils.getUpTime());
-	}
-
-	// Java Version
-	// -------------------------------------------------------------------------------------------------
-	@Test
-	void testJavaVersion() {
-		String javaVersion = SystemExtUtils.getJavaVersion();
-		assertThat(javaVersion).isEqualTo("1.8");
-		assertThat(SystemExtUtils.isJava8()).isTrue();
 	}
 
 }

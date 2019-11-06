@@ -33,21 +33,6 @@ public class Triple<L, M, R> {
 		return new Triple<L, M, R>(left, middle, right);
 	}
 
-	@Nullable
-	public L getLeft() {
-		return left;
-	}
-
-	@Nullable
-	public M getMiddle() {
-		return middle;
-	}
-
-	@Nullable
-	public R getRight() {
-		return right;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,6 +78,21 @@ public class Triple<L, M, R> {
 	@Override
 	public String toString() {
 		return "Triple [left=" + left + ", middle=" + middle + ", right=" + right + ']';
+	}
+
+	@Nullable
+	public L getLeft() {
+		return left;
+	}
+
+	@Nullable
+	public M getMiddle() {
+		return middle;
+	}
+
+	@Nullable
+	public R getRight() {
+		return right;
 	}
 
 }

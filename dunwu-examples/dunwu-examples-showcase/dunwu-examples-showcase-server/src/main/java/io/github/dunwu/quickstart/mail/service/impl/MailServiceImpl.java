@@ -3,7 +3,7 @@ package io.github.dunwu.quickstart.mail.service.impl;
 import io.github.dunwu.autoconfigure.mail.DunwuMailProperties;
 import io.github.dunwu.quickstart.mail.dto.MailDTO;
 import io.github.dunwu.quickstart.mail.service.MailService;
-import io.github.dunwu.util.mapper.BeanMapper;
+import io.github.dunwu.util.parser.BeanUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -90,7 +90,7 @@ public class MailServiceImpl implements MailService {
 			return;
 		}
 
-		List<SimpleMailMessage> simpleMailMessages = BeanMapper.mapList(mailDTOS,
+		List<SimpleMailMessage> simpleMailMessages = BeanUtils.mapList(mailDTOS,
 			SimpleMailMessage.class);
 		for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
 			if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
@@ -121,7 +121,7 @@ public class MailServiceImpl implements MailService {
 	}
 
 	private void sendSimpleMessage(MailDTO mailDTO) {
-		SimpleMailMessage simpleMailMessage = BeanMapper.map(mailDTO,
+		SimpleMailMessage simpleMailMessage = BeanUtils.map(mailDTO,
 			SimpleMailMessage.class);
 		if (StringUtils.isBlank(mailDTO.getFrom())) {
 			simpleMailMessage.setFrom(mailProperties.getFrom());

@@ -55,6 +55,11 @@ public class BasicFutureTest {
 	public static class MyFuture<T> extends BaseFuture<T> {
 
 		@Override
+		protected void onCancelled() {
+			System.out.println("onCancelled");
+		}
+
+		@Override
 		protected void onCompleted(T result) {
 			System.out.println("onCompleted:" + result);
 		}
@@ -64,25 +69,20 @@ public class BasicFutureTest {
 			System.out.println("onFailed:" + ex.getMessage());
 		}
 
-		@Override
-		protected void onCancelled() {
-			System.out.println("onCancelled");
-		}
-
 	}
 
 	private static class Tasks {
 
-		public static void success(MyFuture<String> future) {
-			future.completed("haha");
+		public static void cancel(MyFuture<String> future) {
+			future.cancel(true);
 		}
 
 		public static void fail(MyFuture<String> future) {
 			future.failed(new RuntimeException("wuwu"));
 		}
 
-		public static void cancel(MyFuture<String> future) {
-			future.cancel(true);
+		public static void success(MyFuture<String> future) {
+			future.completed("haha");
 		}
 
 	}

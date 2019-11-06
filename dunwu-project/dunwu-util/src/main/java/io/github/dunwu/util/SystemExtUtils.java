@@ -36,59 +36,15 @@ public class SystemExtUtils extends SystemUtils {
 	}
 
 	/**
-	 * 获得当前进程的 PID，若失败时返回-1
-	 */
-	public static int getPid() {
-		// format: "pid@hostname"
-		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-		String[] split = jvmName.split("@");
-		if (split.length != SEPARATE_ARRAY_LENGTH) {
-			return -1;
-		}
-
-		try {
-			return Integer.parseInt(split[0]);
-		} catch (Exception e) {
-			return -1;
-		}
-	}
-
-	// Runtime 信息
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 返回应用启动到现在的毫秒数
-	 */
-	public static long getUpTime() {
-		return ManagementFactory.getRuntimeMXBean().getUptime();
-	}
-
-	/**
-	 * 返回输入的 JVM 参数列表
-	 */
-	public static String getVmArguments() {
-		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
-			.getInputArguments();
-		return StringUtils.join(vmArguments, " ");
-	}
-
-	// StackTrace 信息
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 获取 CPU 核数
-	 */
-	public static int getCores() {
-		return Runtime.getRuntime().availableProcessors();
-	}
-
-	/**
 	 * 注册JVM关闭时的钩子程序
 	 */
 	public static void addShutdownHook(Runnable runnable) {
 		Runtime.getRuntime().addShutdownHook(new Thread(runnable,
 			"Thread-ShutDownHook-" + shutdownHookThreadIndex.incrementAndGet()));
 	}
+
+	// Runtime 信息
+	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 通过StackTrace，获得调用者的类名. 获取StackTrace有消耗，不要滥用
@@ -114,6 +70,16 @@ public class SystemExtUtils extends SystemUtils {
 		} else {
 			return StringUtils.EMPTY;
 		}
+	}
+
+	// StackTrace 信息
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 获取 CPU 核数
+	 */
+	public static int getCores() {
+		return Runtime.getRuntime().availableProcessors();
 	}
 
 	/**
@@ -146,6 +112,44 @@ public class SystemExtUtils extends SystemUtils {
 		return JAVA_SPECIFICATION_VERSION;
 	}
 
+	/**
+	 * 获得当前进程的 PID，若失败时返回-1
+	 */
+	public static int getPid() {
+		// format: "pid@hostname"
+		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+		String[] split = jvmName.split("@");
+		if (split.length != SEPARATE_ARRAY_LENGTH) {
+			return -1;
+		}
+
+		try {
+			return Integer.parseInt(split[0]);
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	/**
+	 * 返回应用启动到现在的毫秒数
+	 */
+	public static long getUpTime() {
+		return ManagementFactory.getRuntimeMXBean().getUptime();
+	}
+
+	/**
+	 * 返回输入的 JVM 参数列表
+	 */
+	public static String getVmArguments() {
+		List<String> vmArguments = ManagementFactory.getRuntimeMXBean()
+			.getInputArguments();
+		return StringUtils.join(vmArguments, " ");
+	}
+
+	public static boolean isGreaterThanJava8() {
+		return JAVA_VERSION_VALUE > 1.8f;
+	}
+
 	public static boolean isJava6() {
 		return "1.6".equals(JAVA_SPECIFICATION_VERSION);
 	}
@@ -160,10 +164,6 @@ public class SystemExtUtils extends SystemUtils {
 
 	public static boolean isJava9() {
 		return "9".equals(JAVA_SPECIFICATION_VERSION);
-	}
-
-	public static boolean isGreaterThanJava8() {
-		return JAVA_VERSION_VALUE > 1.8f;
 	}
 
 }

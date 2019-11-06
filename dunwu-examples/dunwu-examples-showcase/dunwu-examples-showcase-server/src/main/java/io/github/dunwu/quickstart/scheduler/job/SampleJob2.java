@@ -4,7 +4,7 @@ import io.github.dunwu.annotation.JobHandler;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;
-import io.github.dunwu.util.mapper.JsonMapper;
+import io.github.dunwu.util.parser.JsonMapper;
 import lombok.Data;
 import lombok.ToString;
 import org.slf4j.Logger;

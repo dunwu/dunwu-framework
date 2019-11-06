@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class GlobalController {
 
-	@RequestMapping("/")
-	public String index() {
-		return "index";
-	}
-
 	@GetMapping("/403")
 	public String error403() {
 		return "error/403";
@@ -29,6 +24,11 @@ public class GlobalController {
 	@GetMapping("/500")
 	public String error500() {
 		return "error/500";
+	}
+
+	@RequestMapping("/")
+	public String index() {
+		return "index";
 	}
 
 }

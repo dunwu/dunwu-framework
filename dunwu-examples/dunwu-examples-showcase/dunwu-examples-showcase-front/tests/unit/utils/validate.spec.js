@@ -1,6 +1,4 @@
-import {
-  validAlphabets, validLowerCase, validUpperCase, validURL, validUsername
-} from '@/utils/validate.js'
+import {validAlphabets, validLowerCase, validUpperCase, validURL, validUsername} from '@/utils/validate.js'
 
 describe('Utils:validate', () => {
   it('validUsername', () => {

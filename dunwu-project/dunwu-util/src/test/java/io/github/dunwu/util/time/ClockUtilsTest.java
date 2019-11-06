@@ -10,6 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ClockUtilsTest {
 
 	@Test
+	void elapsedTime() {
+		try {
+			DummyClock clock = ClockUtils.useDummyClock(2000);
+			clock.increaseTime(1000);
+			assertThat(ClockUtils.elapsedTime(2000)).isEqualTo(1000);
+		} finally {
+			ClockUtils.useDefaultClock();
+		}
+	}
+
+	@Test
 	void testDummyClock() {
 		DummyClock clock = new DummyClock();
 		clock.updateNow(111);
@@ -25,17 +36,6 @@ class ClockUtilsTest {
 
 		clock.setNanoTime(150);
 		assertThat(clock.nanoTime()).isEqualTo(150);
-	}
-
-	@Test
-	void elapsedTime() {
-		try {
-			DummyClock clock = ClockUtils.useDummyClock(2000);
-			clock.increaseTime(1000);
-			assertThat(ClockUtils.elapsedTime(2000)).isEqualTo(1000);
-		} finally {
-			ClockUtils.useDefaultClock();
-		}
 	}
 
 }

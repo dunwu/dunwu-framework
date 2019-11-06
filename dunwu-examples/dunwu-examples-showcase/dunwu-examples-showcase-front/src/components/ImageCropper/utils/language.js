@@ -53,9 +53,7 @@ export default {
     },
 
     error: {
-      onlyImg: 'Doar imagini',
-      outOfSize: 'Imaginea depășește limita de: ',
-      loewstPx: 'Imaginea este prea mică; Minim: '
+      onlyImg: 'Doar imagini', outOfSize: 'Imaginea depășește limita de: ', loewstPx: 'Imaginea este prea mică; Minim: '
     }
   }, ru: {
     hint: 'Нажмите, или перетащите файл в это окно',
@@ -158,9 +156,7 @@ export default {
       off: 'Abbrechen', close: 'Schließen', back: 'Zurück', save: 'Speichern'
     },
     error: {
-      onlyImg: 'Nur Bilder',
-      outOfSize: 'Das Bild ist zu groß: ',
-      lowestPx: 'Das Bild ist zu klein. Mindestens: '
+      onlyImg: 'Nur Bilder', outOfSize: 'Das Bild ist zu groß: ', lowestPx: 'Das Bild ist zu klein. Mindestens: '
     }
   }, ja: {
     hint: 'クリック・ドラッグしてファイルをアップロード',

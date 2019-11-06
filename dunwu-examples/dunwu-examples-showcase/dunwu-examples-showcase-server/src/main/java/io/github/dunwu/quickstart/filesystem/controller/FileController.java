@@ -37,50 +37,10 @@ public class FileController {
 		this.fileManager = fileManager;
 	}
 
-	@PostMapping("upload")
-	@ApiOperation(value = "批量上传文件")
-	public DataResult<FileDTO> upload(MultipartHttpServletRequest request,
-		UploadFileDTO uploadFileDTO) throws IOException {
-
-		String ip = ServletUtil.getRealRemoteAddr(request);
-		DataResult<Boolean> dataResult = fileManager.allowAccess(ip);
-		if (dataResult.getData()) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(),
-				"上传请求过于频繁，请稍后再尝试");
-		}
-
-		if (uploadFileDTO == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
-		}
-
-		return fileManager.create(uploadFileDTO);
-	}
-
 	@PostMapping("delete")
 	@ApiOperation(value = "删除文件")
 	public BaseResult delete(@RequestBody FileQuery fileQuery) throws IOException {
 		return fileManager.delete(fileQuery);
-	}
-
-	@GetMapping("image/{namespace}/{tag}/{originName:.+}")
-	@ApiOperation(value = "查看图片文件")
-	public void imageByName(HttpServletResponse response,
-		@PathVariable("namespace") String namespace, @PathVariable("tag") String tag,
-		@PathVariable("originName") String originName) throws IOException {
-
-		FileQuery fileQuery = new FileQuery();
-		fileQuery.setNamespace(namespace);
-		fileQuery.setTag(tag);
-		fileQuery.setOriginName(originName);
-		DataResult<FileDTO> dataResult = fileManager.getOne(fileQuery);
-		if (dataResult == null || !dataResult.getSuccess()) {
-			response.setStatus(404);
-			return;
-		}
-
-		FileDTO fileDTO = dataResult.getData();
-		ServletUtil.setFileShowHeader(response);
-		IOUtils.write(fileDTO.getContent(), response.getOutputStream());
 	}
 
 	@GetMapping("/download/{namespace}/{tag}/{originName:.+}")
@@ -104,10 +64,50 @@ public class FileController {
 		IOUtils.write(fileDTO.getContent(), response.getOutputStream());
 	}
 
+	@GetMapping("image/{namespace}/{tag}/{originName:.+}")
+	@ApiOperation(value = "查看图片文件")
+	public void imageByName(HttpServletResponse response,
+		@PathVariable("namespace") String namespace, @PathVariable("tag") String tag,
+		@PathVariable("originName") String originName) throws IOException {
+
+		FileQuery fileQuery = new FileQuery();
+		fileQuery.setNamespace(namespace);
+		fileQuery.setTag(tag);
+		fileQuery.setOriginName(originName);
+		DataResult<FileDTO> dataResult = fileManager.getOne(fileQuery);
+		if (dataResult == null || !dataResult.getSuccess()) {
+			response.setStatus(404);
+			return;
+		}
+
+		FileDTO fileDTO = dataResult.getData();
+		ServletUtil.setFileShowHeader(response);
+		IOUtils.write(fileDTO.getContent(), response.getOutputStream());
+	}
+
 	@GetMapping("/page")
 	@ApiOperation(value = "分页查询")
 	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> pagination) {
 		return fileManager.page(fileQuery, pagination);
+	}
+
+	@PostMapping("upload")
+	@ApiOperation(value = "批量上传文件")
+	public DataResult<FileDTO> upload(MultipartHttpServletRequest request,
+		UploadFileDTO uploadFileDTO) throws IOException {
+
+		String ip = ServletUtil.getRealRemoteAddr(request);
+		DataResult<Boolean> dataResult = fileManager.allowAccess(ip);
+		if (dataResult.getData()) {
+			return ResultUtil.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(),
+				"上传请求过于频繁，请稍后再尝试");
+		}
+
+		if (uploadFileDTO == null) {
+			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
+		}
+
+		return fileManager.create(uploadFileDTO);
 	}
 
 }
