@@ -11,10 +11,14 @@ import io.github.dunwu.constant.IStringStringEnum;
  */
 public enum FileStoreTypeEnum implements IStringStringEnum {
 
-	DB("DB", FileSystemConstant.DB_FILE_CONTENT_SERVICE), FDFS("FDFS",
-		FileSystemConstant.FDFS_FILE_CONTENT_SERVICE), HDFS("HDFS",
-		FileSystemConstant.HDFS_FILE_CONTENT_SERVICE), OSS("OSS",
-		FileSystemConstant.OSS_FILE_CONTENT_SERVICE), TEMP("TEMP",
+	DB("DB", FileSystemConstant.DB_FILE_CONTENT_SERVICE),
+	FDFS("FDFS",
+		FileSystemConstant.FDFS_FILE_CONTENT_SERVICE),
+	HDFS("HDFS",
+		FileSystemConstant.HDFS_FILE_CONTENT_SERVICE),
+	OSS("OSS",
+		FileSystemConstant.OSS_FILE_CONTENT_SERVICE),
+	TEMP("TEMP",
 		FileSystemConstant.TEMP_FILE_CONTENT_SERVICE);
 
 	@EnumValue

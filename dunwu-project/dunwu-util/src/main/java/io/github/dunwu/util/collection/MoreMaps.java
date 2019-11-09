@@ -15,21 +15,22 @@ import java.util.concurrent.ConcurrentMap;
 public class MoreMaps {
 
 	/**
-	 * 创建Key为弱引用的ConcurrentMap，Key对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
+	 * 以Guava的AtomicLongMap，实现线程安全的HashMap<E,AtomicLong>结构的Counter
 	 */
-	public static <K, V> ConcurrentMap<K, V> createWeakKeyConcurrentMap(
-		int initialCapacity, int concurrencyLevel) {
-		return new MapMaker().weakKeys().initialCapacity(initialCapacity)
-			.concurrencyLevel(concurrencyLevel).makeMap();
+	public static <E> AtomicLongMap<E> createConcurrentCounterMap() {
+		return AtomicLongMap.create();
 	}
 
 	/**
-	 * 创建Value为弱引用的ConcurrentMap，Value对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
+	 * 以Guava的MultiMap，实现的HashMap<E,List<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiMap无线程安全的实现.
+	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
+	 *
+	 * @param expectedKeys         默认为16
+	 * @param expectedValuesPerKey 默认为3
 	 */
-	public static <K, V> ConcurrentMap<K, V> createWeakValueConcurrentMap(
-		int initialCapacity, int concurrencyLevel) {
-		return new MapMaker().weakValues().initialCapacity(initialCapacity)
-			.concurrencyLevel(concurrencyLevel).makeMap();
+	public static <K, V> ArrayListMultimap<K, V> createListMultiValueMap(int expectedKeys,
+		int expectedValuesPerKey) {
+		return ArrayListMultimap.create(expectedKeys, expectedValuesPerKey);
 	}
 
 	/**
@@ -55,30 +56,11 @@ public class MoreMaps {
 	}
 
 	/**
-	 * 以Guava的AtomicLongMap，实现线程安全的HashMap<E,AtomicLong>结构的Counter
+	 * 以Guava TreeRangeMap实现的, 一段范围的Key指向同一个Value的Map
 	 */
-	public static <E> AtomicLongMap<E> createConcurrentCounterMap() {
-		return AtomicLongMap.create();
-	}
-
-	/**
-	 * 以Guava的MultiMap，实现的HashMap<E,List<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiMap无线程安全的实现.
-	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
-	 *
-	 * @param expectedKeys         默认为16
-	 * @param expectedValuesPerKey 默认为3
-	 */
-	public static <K, V> ArrayListMultimap<K, V> createListMultiValueMap(int expectedKeys,
-		int expectedValuesPerKey) {
-		return ArrayListMultimap.create(expectedKeys, expectedValuesPerKey);
-	}
-
-	/**
-	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiValueMap无线程安全的实现.
-	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
-	 */
-	public static <K, V extends Comparable> SortedSetMultimap<K, V> createSortedSetMultiValueMap() {
-		return MultimapBuilder.hashKeys().treeSetValues().build();
+	@SuppressWarnings("rawtypes")
+	public static <K extends Comparable, V> TreeRangeMap<K, V> createRangeMap() {
+		return TreeRangeMap.create();
 	}
 
 	/**
@@ -92,11 +74,29 @@ public class MoreMaps {
 	}
 
 	/**
-	 * 以Guava TreeRangeMap实现的, 一段范围的Key指向同一个Value的Map
+	 * 以Guava的MultiMap，实现的HashMap<E,TreeSet<V>>结构的一个Key对应多个值的map. 注意非线程安全, MultiValueMap无线程安全的实现.
+	 * 另有其他结构存储values的MultiMap，请自行参考MultimapBuilder使用.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static <K extends Comparable, V> TreeRangeMap<K, V> createRangeMap() {
-		return TreeRangeMap.create();
+	public static <K, V extends Comparable> SortedSetMultimap<K, V> createSortedSetMultiValueMap() {
+		return MultimapBuilder.hashKeys().treeSetValues().build();
+	}
+
+	/**
+	 * 创建Key为弱引用的ConcurrentMap，Key对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
+	 */
+	public static <K, V> ConcurrentMap<K, V> createWeakKeyConcurrentMap(
+		int initialCapacity, int concurrencyLevel) {
+		return new MapMaker().weakKeys().initialCapacity(initialCapacity)
+			.concurrencyLevel(concurrencyLevel).makeMap();
+	}
+
+	/**
+	 * 创建Value为弱引用的ConcurrentMap，Value对象可被回收. JDK没有WeakHashMap的并发实现, 由Guava提供
+	 */
+	public static <K, V> ConcurrentMap<K, V> createWeakValueConcurrentMap(
+		int initialCapacity, int concurrencyLevel) {
+		return new MapMaker().weakValues().initialCapacity(initialCapacity)
+			.concurrencyLevel(concurrencyLevel).makeMap();
 	}
 
 }

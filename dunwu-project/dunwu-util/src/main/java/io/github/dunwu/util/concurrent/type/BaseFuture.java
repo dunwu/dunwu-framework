@@ -38,39 +38,6 @@ public abstract class BaseFuture<T> implements Future<T> {
 
 	private volatile Exception ex;
 
-	public boolean completed(final T result) {
-		synchronized (this) {
-			if (this.completed) {
-				return false;
-			}
-			this.completed = true;
-			this.result = result;
-			notifyAll();
-		}
-		onCompleted(result);
-
-		return true;
-	}
-
-	protected abstract void onCompleted(T result);
-
-	public boolean failed(final Exception exception) {
-		synchronized (this) {
-			if (this.completed) {
-				return false;
-			}
-			this.completed = true;
-			this.ex = exception;
-			notifyAll();
-		}
-
-		onFailed(exception);
-
-		return true;
-	}
-
-	protected abstract void onFailed(Exception ex);
-
 	@Override
 	public boolean cancel(final boolean mayInterruptIfRunning) {
 		synchronized (this) {
@@ -143,5 +110,38 @@ public abstract class BaseFuture<T> implements Future<T> {
 	}
 
 	protected abstract void onCancelled();
+
+	public boolean completed(final T result) {
+		synchronized (this) {
+			if (this.completed) {
+				return false;
+			}
+			this.completed = true;
+			this.result = result;
+			notifyAll();
+		}
+		onCompleted(result);
+
+		return true;
+	}
+
+	protected abstract void onCompleted(T result);
+
+	public boolean failed(final Exception exception) {
+		synchronized (this) {
+			if (this.completed) {
+				return false;
+			}
+			this.completed = true;
+			this.ex = exception;
+			notifyAll();
+		}
+
+		onFailed(exception);
+
+		return true;
+	}
+
+	protected abstract void onFailed(Exception ex);
 
 }

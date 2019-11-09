@@ -6,13 +6,14 @@
 	<parent>
 		<groupId>io.github.dunwu</groupId>
 		<artifactId>dunwu</artifactId>
-		<version>0.4.8-SNAPSHOT</version>
+		<version>0.4.8</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>dunwu-project</artifactId>
-	<version>0.4.8-SNAPSHOT</version>
+	<version>0.4.8</version>
 	<packaging>pom</packaging>
+	<name>dunwu-project</name>
 	<description>Dunwu Root Project</description>
 
 	<modules>
@@ -35,6 +36,23 @@
 					<name>release</name>
 				</property>
 			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 			<distributionManagement>
 				<snapshotRepository>
 					<id>oss</id>

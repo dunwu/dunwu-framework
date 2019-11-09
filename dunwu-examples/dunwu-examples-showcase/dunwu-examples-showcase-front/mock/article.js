@@ -44,8 +44,7 @@ export default [{
       mockList = mockList.reverse()
     }
 
-    const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page
-      - 1))
+    const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
     return {
       success: true, code: '0', message: 'success', data: {
@@ -73,8 +72,7 @@ export default [{
       return {
         success: true, code: '0', message: 'success', data: {
           pvData: [{key: 'PC', pv: 1024}, {key: 'mobile', pv: 1024}, {
-            key: 'ios',
-            pv: 1024
+            key: 'ios', pv: 1024
           }, {key: 'android', pv: 1024}]
         }
       }

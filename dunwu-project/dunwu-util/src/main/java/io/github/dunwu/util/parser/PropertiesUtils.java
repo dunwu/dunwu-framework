@@ -1,7 +1,6 @@
 package io.github.dunwu.util.parser;
 
 import io.github.dunwu.util.io.UrlResourceUtil;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
@@ -16,27 +15,29 @@ import java.util.*;
  */
 public class PropertiesUtils {
 
-	public static <K, V> Properties toProperties(Map<K, V> map) {
-		return MapUtils.toProperties(map);
-	}
-
-	// read properties
-	// ---------------------------------------------------------------------------------
-
 	public static Boolean getBoolean(Properties properties, String key,
 		Boolean defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
 		return Boolean.valueOf(value);
 	}
 
+	// read properties
+	// ---------------------------------------------------------------------------------
+
 	public static String getString(Properties properties, String key,
 		String defaultValue) {
 		return properties.getProperty(key, defaultValue);
 	}
 
-	public static Short getShort(Properties properties, String key, Short defaultValue) {
+	public static Double getDouble(Properties properties, String key,
+		Double defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
-		return Short.valueOf(value);
+		return Double.valueOf(value);
+	}
+
+	public static Float getFloat(Properties properties, String key, Float defaultValue) {
+		String value = getString(properties, key, String.valueOf(defaultValue));
+		return Float.valueOf(value);
 	}
 
 	public static Integer getInt(Properties properties, String key,
@@ -50,40 +51,10 @@ public class PropertiesUtils {
 		return Long.valueOf(value);
 	}
 
-	public static Float getFloat(Properties properties, String key, Float defaultValue) {
+	public static Short getShort(Properties properties, String key, Short defaultValue) {
 		String value = getString(properties, key, String.valueOf(defaultValue));
-		return Float.valueOf(value);
+		return Short.valueOf(value);
 	}
-
-	public static Double getDouble(Properties properties, String key,
-		Double defaultValue) {
-		String value = getString(properties, key, String.valueOf(defaultValue));
-		return Double.valueOf(value);
-	}
-
-	public static List<String> toList(Properties properties, String key) {
-		List<String> list = new ArrayList<>();
-		Map<String, String> map = toMap(properties);
-		for (Map.Entry<String, String> entity : map.entrySet()) {
-			if (entity.getKey().contains(key)) {
-				list.add(entity.getValue());
-			}
-		}
-		return list;
-	}
-
-	public static Map<String, String> toMap(Properties properties) {
-		Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
-		Map<String, String> map = new HashMap<>(entrySet.size());
-		for (Object o : entrySet) {
-			Map.Entry entry = (Map.Entry) o;
-			map.put((String) entry.getKey(), (String) entry.getValue());
-		}
-		return map;
-	}
-
-	// load properties
-	// ---------------------------------------------------------------------------------
 
 	/**
 	 * 从多个文件路径加载 properties
@@ -123,6 +94,43 @@ public class PropertiesUtils {
 		Reader reader = new StringReader(content);
 		properties.load(reader);
 		return properties;
+	}
+
+	// load properties
+	// ---------------------------------------------------------------------------------
+
+	public static List<String> toList(Properties properties, String key) {
+		List<String> list = new ArrayList<>();
+		Map<String, String> map = toMap(properties);
+		for (Map.Entry<String, String> entity : map.entrySet()) {
+			if (entity.getKey().contains(key)) {
+				list.add(entity.getValue());
+			}
+		}
+		return list;
+	}
+
+	public static Map<String, String> toMap(Properties properties) {
+		Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
+		Map<String, String> map = new HashMap<>(entrySet.size());
+		for (Object o : entrySet) {
+			Map.Entry entry = (Map.Entry) o;
+			map.put((String) entry.getKey(), (String) entry.getValue());
+		}
+		return map;
+	}
+
+	public static Properties toProperties(final Map map) {
+		Properties answer = new Properties();
+		if (map != null) {
+			for (Iterator iter = map.entrySet().iterator(); iter.hasNext(); ) {
+				Map.Entry entry = (Map.Entry) iter.next();
+				Object key = entry.getKey();
+				Object value = entry.getValue();
+				answer.put(key, value);
+			}
+		}
+		return answer;
 	}
 
 }

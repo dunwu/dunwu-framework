@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>io.github.dunwu</groupId>
 		<artifactId>dunwu-dependencies</artifactId>
-		<version>0.4.8-SNAPSHOT</version>
+		<version>0.4.8</version>
 		<relativePath>../dunwu-dependencies</relativePath>
 	</parent>
 
@@ -26,10 +26,33 @@
 	</properties>
 
 	<dependencies>
+		<!-- TEST BEGIN -->
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- TEST END -->
 	</dependencies>
 
 	<build>
@@ -327,10 +350,10 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>full</id>
+			<id>release</id>
 			<activation>
 				<property>
-					<name>full</name>
+					<name>release</name>
 				</property>
 			</activation>
 			<build>
@@ -350,7 +373,7 @@
 								<ruleset>rulesets/java/ali-constant.xml</ruleset>
 								<ruleset>rulesets/java/ali-exception.xml</ruleset>
 								<ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
-								<ruleset>rulesets/java/ali-naming.xml</ruleset>
+								<!--<ruleset>rulesets/java/ali-naming.xml</ruleset>-->
 								<ruleset>rulesets/java/ali-oop.xml</ruleset>
 								<ruleset>rulesets/java/ali-orm.xml</ruleset>
 								<ruleset>rulesets/java/ali-other.xml</ruleset>
@@ -379,6 +402,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<charset>UTF-8</charset>
+							<docencoding>UTF-8</docencoding>
+							<additionalJOption>-Xdoclint:none</additionalJOption>
+						</configuration>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>

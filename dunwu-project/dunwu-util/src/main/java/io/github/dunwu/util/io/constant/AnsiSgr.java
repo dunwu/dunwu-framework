@@ -20,8 +20,7 @@ public enum AnsiSgr implements AnsiElement {
 	FAINT("2"),
 	ITALIC("3"),
 	UNDERLINE("4"),
-	SLOW_BLINK(
-		"5"),
+	SLOW_BLINK("5"),
 	RAPID_BLINK("6"),
 	REVERSE_VIDEO("7"),
 	CONCEAL("8");
@@ -32,12 +31,12 @@ public enum AnsiSgr implements AnsiElement {
 		this.code = code;
 	}
 
-	public String getCode() {
+	@Override
+	public String toString() {
 		return code;
 	}
 
-	@Override
-	public String toString() {
+	public String getCode() {
 		return code;
 	}
 }

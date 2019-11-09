@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum TriggerTypeEnum {
 
-	SIMPLE(0), CRON(1);
+	SIMPLE(0),
+	CRON(1);
 
 	@EnumValue
 	@JsonValue

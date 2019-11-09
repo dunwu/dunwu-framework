@@ -5,34 +5,13 @@
 
 	<groupId>io.github.dunwu</groupId>
 	<artifactId>dunwu</artifactId>
-	<version>0.4.8-SNAPSHOT</version>
+	<version>0.4.8</version>
 	<packaging>pom</packaging>
-	<description>Dunwu 项目 —— 一个用于支持 Spring、Spring Boot 的全方面脚手架</description>
+	<description>用于支持 Spring、Spring Boot 的全方面脚手架</description>
 
 	<modules>
 		<module>dunwu-project</module>
 		<module>dunwu-examples</module>
 	</modules>
 
-	<properties>
-		<spring-javaformat.version>0.0.6</spring-javaformat.version>
-	</properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>io.spring.javaformat</groupId>
-				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>${spring-javaformat.version}</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>apply</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

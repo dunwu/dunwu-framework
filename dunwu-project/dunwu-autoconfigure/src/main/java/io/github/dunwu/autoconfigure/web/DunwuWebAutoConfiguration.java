@@ -40,22 +40,6 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 		this.dunwuSecurityProperties = dunwuSecurityProperties;
 	}
 
-	/**
-	 * 设置跨域过滤器
-	 */
-	@Bean
-	@ConditionalOnProperty(name = "dunwu.web.corsEnable", havingValue = "true")
-	public CorsFilter corsFilter() {
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowCredentials(true);
-		corsConfiguration.addAllowedOrigin("*");
-		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedMethod("*");
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", corsConfiguration);
-		return new CorsFilter(source);
-	}
-
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
 		if (dunwuWebProperties.getFormatEnable()) {
@@ -82,6 +66,22 @@ public class DunwuWebAutoConfiguration implements WebMvcConfigurer {
 			.addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**")
 			.addResourceLocations("classpath:/META-INF/resources/webjars/");
+	}
+
+	/**
+	 * 设置跨域过滤器
+	 */
+	@Bean
+	@ConditionalOnProperty(name = "dunwu.web.corsEnable", havingValue = "true")
+	public CorsFilter corsFilter() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return new CorsFilter(source);
 	}
 
 }

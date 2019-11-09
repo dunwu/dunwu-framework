@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public interface UserManager {
 
-	DataResult<Map<String, String>> register(UserDTO userDTO);
-
 	UserDTO getByUsername(String username);
+
+	DataResult<Map<String, String>> register(UserDTO userDTO);
 
 }

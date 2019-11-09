@@ -33,70 +33,31 @@ public class DateExtUtils extends DateUtils {
 		30, 31 };
 
 	/**
-	 * 判断日期是否在范围内，包含相等的日期
-	 */
-	public static boolean isBetween(final Date date, final Date start, final Date end) {
-		if (date == null || start == null || end == null || start.after(end)) {
-			throw new IllegalArgumentException(
-				"some date parameters is null or dateBein after dateEnd");
-		}
-		return !date.before(start) && !date.after(end);
-	}
-
-	// 获取指定日期
-	// -------------------------------------------------------------------------------------------------
-
-	/**
-	 * 获得日期是一年的第几天，返回值从1开始
-	 */
-	public static int getDayOfYear(final Date date) {
-		return get(date, Calendar.DAY_OF_YEAR);
-	}
-
-	private static int get(final Date date, final int field) {
-		Validate.notNull(date, "The date must not be null");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		return calendar.get(field);
-	}
-
-	/**
-	 * 获得日期是一月的第几周，返回值从1开始. 开始的一周，只要有一天在那个月里都算. 已改为中国习惯，1 是Monday，而不是Sunday
-	 */
-	public static int getWeekOfMonth(final Date date) {
-		return getFirstMonday(date, Calendar.WEEK_OF_MONTH);
-	}
-
-	private static int getFirstMonday(final Date date, final int field) {
-		Validate.notNull(date, "The date must not be null");
-		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setTime(date);
-		return cal.get(field);
-	}
-
-	/**
-	 * 获得日期是一年的第几周，返回值从1开始. 开始的一周，只要有一天在那一年里都算.已改为中国习惯，1 是Monday，而不是Sunday
-	 */
-	public static int getWeekOfYear(final Date date) {
-		return getFirstMonday(date, Calendar.WEEK_OF_YEAR);
-	}
-
-	/**
 	 * 2016-11-10 07:33:23, 则返回2016-11-10 00:00:00
 	 */
 	public static Date beginOfDate(final Date date) {
 		return DateUtils.truncate(date, Calendar.DATE);
 	}
 
-	// beginOf
+	// 获取指定日期
 	// -------------------------------------------------------------------------------------------------
 
+	public static Date beginOfDay(final Date date) {
+		return DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
+	}
+
 	/**
-	 * 2016-11-10 07:33:23, 则返回2016-1-1 00:00:00
+	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:00:00
 	 */
-	public static Date beginOfYear(final Date date) {
-		return DateUtils.truncate(date, Calendar.YEAR);
+	public static Date beginOfHour(final Date date) {
+		return DateUtils.truncate(date, Calendar.HOUR_OF_DAY);
+	}
+
+	/**
+	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:33:00
+	 */
+	public static Date beginOfMinute(final Date date) {
+		return DateUtils.truncate(date, Calendar.MINUTE);
 	}
 
 	/**
@@ -123,26 +84,31 @@ public class DateExtUtils extends DateUtils {
 		return result == 1 ? 7 : result - 1;
 	}
 
-	public static Date beginOfDay(final Date date) {
-		return DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
-	}
-
-	/**
-	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:00:00
-	 */
-	public static Date beginOfHour(final Date date) {
-		return DateUtils.truncate(date, Calendar.HOUR_OF_DAY);
-	}
-
-	/**
-	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:33:00
-	 */
-	public static Date beginOfMinute(final Date date) {
-		return DateUtils.truncate(date, Calendar.MINUTE);
-	}
-
-	// endOf
+	// beginOf
 	// -------------------------------------------------------------------------------------------------
+
+	private static int getFirstMonday(final Date date, final int field) {
+		Validate.notNull(date, "The date must not be null");
+		Calendar cal = Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.setTime(date);
+		return cal.get(field);
+	}
+
+	/**
+	 * 2016-11-10 07:33:23, 则返回2016-1-1 00:00:00
+	 */
+	public static Date beginOfYear(final Date date) {
+		return DateUtils.truncate(date, Calendar.YEAR);
+	}
+
+	public static LocalDateTime date2LocalDateTime(final Date date) {
+		// A time-zone ID, such as {@link Europe/Paris}.(时区)
+		Instant instant = date.toInstant();
+		// A time-zone ID, such as {@link Europe/Paris}.(时区)
+		ZoneId zoneId = ZoneId.systemDefault();
+		return instant.atZone(zoneId).toLocalDateTime();
+	}
 
 	/**
 	 * 2017-1-23 07:33:23, 则返回2017-1-23 23:59:59.999
@@ -159,17 +125,34 @@ public class DateExtUtils extends DateUtils {
 	}
 
 	/**
-	 * 2016-11-10 07:33:23, 则返回2016-12-31 23:59:59.999
+	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:59:59.999
 	 */
-	public static Date endOfYear(final Date date) {
-		return new Date(nextYear(date).getTime() - 1);
+	public static Date endOfHour(final Date date) {
+		return new Date(nextHour(date).getTime() - 1);
 	}
 
 	/**
-	 * 2016-11-10 07:33:23, 则返回2017-1-1 00:00:00
+	 * 2016-12-10 07:33:23, 则返回2016-12-10 08:00:00
 	 */
-	public static Date nextYear(final Date date) {
-		return DateUtils.ceiling(date, Calendar.YEAR);
+	public static Date nextHour(final Date date) {
+		return DateUtils.ceiling(date, Calendar.HOUR_OF_DAY);
+	}
+
+	// endOf
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:33:59.999
+	 */
+	public static Date endOfMinute(final Date date) {
+		return new Date(nextMinute(date).getTime() - 1);
+	}
+
+	/**
+	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:34:00
+	 */
+	public static Date nextMinute(final Date date) {
+		return DateUtils.ceiling(date, Calendar.MINUTE);
 	}
 
 	/**
@@ -185,9 +168,6 @@ public class DateExtUtils extends DateUtils {
 	public static Date nextMonth(final Date date) {
 		return DateUtils.ceiling(date, Calendar.MONTH);
 	}
-
-	// next
-	// -------------------------------------------------------------------------------------------------
 
 	/**
 	 * 2017-1-20 07:33:23, 则返回2017-1-22 23:59:59.999
@@ -205,59 +185,36 @@ public class DateExtUtils extends DateUtils {
 			Calendar.DATE);
 	}
 
-	/**
-	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:59:59.999
-	 */
-	public static Date endOfHour(final Date date) {
-		return new Date(nextHour(date).getTime() - 1);
-	}
-
-	/**
-	 * 2016-12-10 07:33:23, 则返回2016-12-10 08:00:00
-	 */
-	public static Date nextHour(final Date date) {
-		return DateUtils.ceiling(date, Calendar.HOUR_OF_DAY);
-	}
-
-	/**
-	 * 2017-1-23 07:33:23, 则返回2017-1-23 07:33:59.999
-	 */
-	public static Date endOfMinute(final Date date) {
-		return new Date(nextMinute(date).getTime() - 1);
-	}
-
-	/**
-	 * 2016-12-10 07:33:23, 则返回2016-12-10 07:34:00
-	 */
-	public static Date nextMinute(final Date date) {
-		return DateUtils.ceiling(date, Calendar.MINUTE);
-	}
-
-	// isLeapYear
+	// next
 	// -------------------------------------------------------------------------------------------------
 
 	/**
-	 * 是否闰年.
+	 * 2016-11-10 07:33:23, 则返回2016-12-31 23:59:59.999
 	 */
-	public static boolean isLeapYear(final Date date) {
-		return isLeapYear(get(date, Calendar.YEAR));
+	public static Date endOfYear(final Date date) {
+		return new Date(nextYear(date).getTime() - 1);
 	}
 
 	/**
-	 * 是否闰年，copy from Jodd Core的TimeUtil 参数是公元计数, 如2016
+	 * 2016-11-10 07:33:23, 则返回2017-1-1 00:00:00
 	 */
-	public static boolean isLeapYear(final int y) {
-		if (((y % NUM4) == 0)) {
-			if ((y % NUM100) != 0) {
-				return true;
-			}
-			return (y % NUM400) == 0;
-		}
-		return false;
+	public static Date nextYear(final Date date) {
+		return DateUtils.ceiling(date, Calendar.YEAR);
 	}
 
-	// getMonthLength
-	// -------------------------------------------------------------------------------------------------
+	/**
+	 * 获得日期是一年的第几天，返回值从1开始
+	 */
+	public static int getDayOfYear(final Date date) {
+		return get(date, Calendar.DAY_OF_YEAR);
+	}
+
+	private static int get(final Date date, final int field) {
+		Validate.notNull(date, "The date must not be null");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar.get(field);
+	}
 
 	/**
 	 * 获取某个月有多少天, 考虑闰年等因数, 移植Jodd Core的TimeUtil
@@ -283,6 +240,63 @@ public class DateExtUtils extends DateUtils {
 		return MONTH_LENGTH[month];
 	}
 
+	// isLeapYear
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 是否闰年，copy from Jodd Core的TimeUtil 参数是公元计数, 如2016
+	 */
+	public static boolean isLeapYear(final int y) {
+		if (((y % NUM4) == 0)) {
+			if ((y % NUM100) != 0) {
+				return true;
+			}
+			return (y % NUM400) == 0;
+		}
+		return false;
+	}
+
+	/**
+	 * 获得日期是一月的第几周，返回值从1开始. 开始的一周，只要有一天在那个月里都算. 已改为中国习惯，1 是Monday，而不是Sunday
+	 */
+	public static int getWeekOfMonth(final Date date) {
+		return getFirstMonday(date, Calendar.WEEK_OF_MONTH);
+	}
+
+	// getMonthLength
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * 获得日期是一年的第几周，返回值从1开始. 开始的一周，只要有一天在那一年里都算.已改为中国习惯，1 是Monday，而不是Sunday
+	 */
+	public static int getWeekOfYear(final Date date) {
+		return getFirstMonday(date, Calendar.WEEK_OF_YEAR);
+	}
+
+	/**
+	 * 判断日期是否在范围内，包含相等的日期
+	 */
+	public static boolean isBetween(final Date date, final Date start, final Date end) {
+		if (date == null || start == null || end == null || start.after(end)) {
+			throw new IllegalArgumentException(
+				"some date parameters is null or dateBein after dateEnd");
+		}
+		return !date.before(start) && !date.after(end);
+	}
+
+	/**
+	 * 是否闰年.
+	 */
+	public static boolean isLeapYear(final Date date) {
+		return isLeapYear(get(date, Calendar.YEAR));
+	}
+
+	public static Date localDateTime2Date(final LocalDateTime localDateTime) {
+		ZoneId zoneId = ZoneId.systemDefault();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		return Date.from(zdt.toInstant());
+	}
+
 	public static boolean verify(final String date, final String pattern) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -293,20 +307,6 @@ public class DateExtUtils extends DateUtils {
 		}
 
 		return true;
-	}
-
-	public static LocalDateTime date2LocalDateTime(final Date date) {
-		// A time-zone ID, such as {@link Europe/Paris}.(时区)
-		Instant instant = date.toInstant();
-		// A time-zone ID, such as {@link Europe/Paris}.(时区)
-		ZoneId zoneId = ZoneId.systemDefault();
-		return instant.atZone(zoneId).toLocalDateTime();
-	}
-
-	public static Date localDateTime2Date(final LocalDateTime localDateTime) {
-		ZoneId zoneId = ZoneId.systemDefault();
-		ZonedDateTime zdt = localDateTime.atZone(zoneId);
-		return Date.from(zdt.toInstant());
 	}
 
 }

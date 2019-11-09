@@ -14,6 +14,31 @@ import static org.assertj.core.api.Assertions.fail;
 public class SetUtilTest {
 
 	@Test
+	public void collectionCaculate() {
+		HashSet<String> set1 = SetUtil.newHashSet("1", "2", "3", "6");
+		HashSet<String> set2 = SetUtil.newHashSet("4", "5", "6", "7");
+
+		Set<String> set3 = SetUtil.unionView(set1, set2);
+		assertThat(set3).hasSize(7).contains("1", "2", "3", "4", "5", "6", "7");
+
+		Set<String> set4 = SetUtil.intersectionView(set1, set2);
+		assertThat(set4).hasSize(1).contains("6");
+
+		Set<String> set5 = SetUtil.differenceView(set1, set2);
+		assertThat(set5).hasSize(3).contains("1", "2", "3");
+
+		Set<String> set6 = SetUtil.disjointView(set1, set2);
+		assertThat(set6).hasSize(6).contains("1", "2", "3", "4", "5", "7");
+
+		try {
+			set6.add("a");
+			fail("should fail before");
+		} catch (Throwable t) {
+			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
+		}
+	}
+
+	@Test
 	public void guavaBuildSet() {
 
 		HashSet<String> set2 = SetUtil.newHashSetWithCapacity(10);
@@ -70,32 +95,7 @@ public class SetUtilTest {
 		}
 
 		Set<String> set7 = SetUtil
-			.newSetFromMap(MapUtil.<String, Boolean>newConcurrentSortedMap());
-	}
-
-	@Test
-	public void collectionCaculate() {
-		HashSet<String> set1 = SetUtil.newHashSet("1", "2", "3", "6");
-		HashSet<String> set2 = SetUtil.newHashSet("4", "5", "6", "7");
-
-		Set<String> set3 = SetUtil.unionView(set1, set2);
-		assertThat(set3).hasSize(7).contains("1", "2", "3", "4", "5", "6", "7");
-
-		Set<String> set4 = SetUtil.intersectionView(set1, set2);
-		assertThat(set4).hasSize(1).contains("6");
-
-		Set<String> set5 = SetUtil.differenceView(set1, set2);
-		assertThat(set5).hasSize(3).contains("1", "2", "3");
-
-		Set<String> set6 = SetUtil.disjointView(set1, set2);
-		assertThat(set6).hasSize(6).contains("1", "2", "3", "4", "5", "7");
-
-		try {
-			set6.add("a");
-			fail("should fail before");
-		} catch (Throwable t) {
-			assertThat(t).isInstanceOf(UnsupportedOperationException.class);
-		}
+			.newSetFromMap(MapUtils.<String, Boolean>newConcurrentSortedMap());
 	}
 
 }

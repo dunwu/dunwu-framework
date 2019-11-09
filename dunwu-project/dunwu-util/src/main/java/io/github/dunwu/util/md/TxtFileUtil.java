@@ -6,6 +6,41 @@ import java.util.List;
 
 public class TxtFileUtil {
 
+	public static void copyFile(String srcPath, String detPath) {
+
+		try {
+			FileInputStream fis = new FileInputStream(srcPath);
+			FileOutputStream fos = new FileOutputStream(detPath);
+
+			byte[] buffer = new byte[1024];
+			while (fis.read(buffer) != -1) {
+				fos.write(buffer);
+			}
+
+			fis.close();
+			fos.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	public static void deleteDirectory(String dirPath) {
+
+		File dir = new File(dirPath);
+
+		for (File file : dir.listFiles()) {
+			if (file.isFile()) {
+				file.delete();
+			} else {
+				deleteDirectory(file.toString());
+			}
+		}
+
+		dir.delete();
+	}
+
 	// Read the file content line by line
 	public static List<String> readLineByLine(String filePath) {
 
@@ -54,41 +89,6 @@ public class TxtFileUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void copyFile(String srcPath, String detPath) {
-
-		try {
-			FileInputStream fis = new FileInputStream(srcPath);
-			FileOutputStream fos = new FileOutputStream(detPath);
-
-			byte[] buffer = new byte[1024];
-			while (fis.read(buffer) != -1) {
-				fos.write(buffer);
-			}
-
-			fis.close();
-			fos.close();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	public static void deleteDirectory(String dirPath) {
-
-		File dir = new File(dirPath);
-
-		for (File file : dir.listFiles()) {
-			if (file.isFile()) {
-				file.delete();
-			} else {
-				deleteDirectory(file.toString());
-			}
-		}
-
-		dir.delete();
 	}
 
 }

@@ -28,6 +28,18 @@ class AnsiSystemTest {
 	}
 
 	@Test
+	@DisplayName("预置控制输出形式")
+	void test() {
+		AnsiSystem.RED.println("HELLO WORLD");
+		AnsiSystem.GREEN.println("HELLO WORLD");
+		AnsiSystem.YELLOW.println("HELLO WORLD");
+		AnsiSystem.BLUE.println("HELLO WORLD");
+		AnsiSystem.MAGENTA.println("HELLO WORLD");
+		AnsiSystem.CYAN.println("HELLO WORLD");
+		AnsiSystem.WHITE.println("HELLO WORLD");
+	}
+
+	@Test
 	@DisplayName("特殊显示字体")
 	void testSgr() {
 		AnsiSystem.AnsiConfig config = new AnsiSystem.AnsiConfig();
@@ -38,18 +50,6 @@ class AnsiSystemTest {
 		config.setBgColor(Color.BLUE);
 		AnsiSystem system = new AnsiSystem(config);
 		system.println("特殊显示字体");
-	}
-
-	@Test
-	@DisplayName("预置控制输出形式")
-	void test() {
-		AnsiSystem.RED.println("HELLO WORLD");
-		AnsiSystem.GREEN.println("HELLO WORLD");
-		AnsiSystem.YELLOW.println("HELLO WORLD");
-		AnsiSystem.BLUE.println("HELLO WORLD");
-		AnsiSystem.MAGENTA.println("HELLO WORLD");
-		AnsiSystem.CYAN.println("HELLO WORLD");
-		AnsiSystem.WHITE.println("HELLO WORLD");
 	}
 
 }

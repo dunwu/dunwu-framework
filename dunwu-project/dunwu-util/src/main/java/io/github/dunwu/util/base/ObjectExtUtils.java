@@ -49,6 +49,36 @@ public class ObjectExtUtils extends ObjectUtils {
 		return value.toString();
 	}
 
+	private static String collectionToString(final Iterable iterable) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('{');
+		int i = 0;
+		for (Object o : iterable) {
+			if (i > 0) {
+				sb.append(',');
+			}
+			sb.append(toPrettyString(o));
+			i++;
+		}
+		sb.append('}');
+		return sb.toString();
+	}
+
+	private static String objectArrayToString(final Object value) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+
+		Object[] array = (Object[]) value;
+		for (int i = 0; i < array.length; i++) {
+			if (i > 0) {
+				sb.append(", ");
+			}
+			sb.append(toPrettyString(array[i]));
+		}
+		sb.append(']');
+		return sb.toString();
+	}
+
 	private static String primitiveArrayToString(final Object value,
 		final Class componentType) {
 		StringBuilder sb = new StringBuilder();
@@ -73,36 +103,6 @@ public class ObjectExtUtils extends ObjectUtils {
 			throw new IllegalArgumentException("invalid array type");
 		}
 
-		return sb.toString();
-	}
-
-	private static String objectArrayToString(final Object value) {
-		StringBuilder sb = new StringBuilder();
-		sb.append('[');
-
-		Object[] array = (Object[]) value;
-		for (int i = 0; i < array.length; i++) {
-			if (i > 0) {
-				sb.append(", ");
-			}
-			sb.append(toPrettyString(array[i]));
-		}
-		sb.append(']');
-		return sb.toString();
-	}
-
-	private static String collectionToString(final Iterable iterable) {
-		StringBuilder sb = new StringBuilder();
-		sb.append('{');
-		int i = 0;
-		for (Object o : iterable) {
-			if (i > 0) {
-				sb.append(',');
-			}
-			sb.append(toPrettyString(o));
-			i++;
-		}
-		sb.append('}');
 		return sb.toString();
 	}
 

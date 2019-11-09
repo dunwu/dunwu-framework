@@ -24,6 +24,38 @@ public class CryptoUtil {
 
 	public static final String DES_NAME = "DES";
 
+	public static ICrypto getAes(String key) throws Exception {
+		return AesCrypto.getInstace(SymmetricCryptoEnum.AES, key);
+	}
+
+	public static ICrypto getAesCbcNoPadding(String key) throws Exception {
+		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_NOPADDING, key);
+	}
+
+	public static ICrypto getAesCbcPkcs5padding(String key) throws Exception {
+		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING, key);
+	}
+
+	public static ICrypto getAesEcbPkcs5Padding(String key) throws Exception {
+		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_ECB_PKCS5PADDING, key);
+	}
+
+	public static ICrypto getDes(String key) throws Exception {
+		return DesCrypto.getInstace(SymmetricCryptoEnum.DES, key);
+	}
+
+	public static ICrypto getDesCbcNoPadding(String key) throws Exception {
+		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_NOPADDING, key);
+	}
+
+	public static ICrypto getDesCbcPkcs5Padding(String key) throws Exception {
+		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING, key);
+	}
+
+	public static ICrypto getDesEcbPkcs5Padding(String key) throws Exception {
+		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_ECB_PKCS5PADDING, key);
+	}
+
 	public static ICrypto getInstace(String type, String key) throws Exception {
 		String str = type.toUpperCase();
 		if (str.contains(AES_NAME)) {
@@ -32,38 +64,6 @@ public class CryptoUtil {
 			return DesCrypto.getInstace(type, key);
 		}
 		return null;
-	}
-
-	public static ICrypto getAes(String key) throws Exception {
-		return AesCrypto.getInstace(SymmetricCryptoEnum.AES, key);
-	}
-
-	public static ICrypto getAesEcbPkcs5Padding(String key) throws Exception {
-		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_ECB_PKCS5PADDING, key);
-	}
-
-	public static ICrypto getAesCbcPkcs5padding(String key) throws Exception {
-		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_PKCS5PADDING, key);
-	}
-
-	public static ICrypto getAesCbcNoPadding(String key) throws Exception {
-		return AesCrypto.getInstace(SymmetricCryptoEnum.AES_CBC_NOPADDING, key);
-	}
-
-	public static ICrypto getDes(String key) throws Exception {
-		return DesCrypto.getInstace(SymmetricCryptoEnum.DES, key);
-	}
-
-	public static ICrypto getDesEcbPkcs5Padding(String key) throws Exception {
-		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_ECB_PKCS5PADDING, key);
-	}
-
-	public static ICrypto getDesCbcPkcs5Padding(String key) throws Exception {
-		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_PKCS5PADDING, key);
-	}
-
-	public static ICrypto getDesCbcNoPadding(String key) throws Exception {
-		return DesCrypto.getInstace(SymmetricCryptoEnum.DES_CBC_NOPADDING, key);
 	}
 
 	/**
@@ -162,20 +162,6 @@ public class CryptoUtil {
 		}
 
 		@Override
-		public byte[] encryptToBytes(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
-			return this.encryptCipher.doFinal(plaintext);
-		}
-
-		@Override
-		public String encryptToString(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
-			byte[] bytes = this.encryptCipher.doFinal(plaintext);
-			Base64.Encoder encoder = Base64.getUrlEncoder();
-			return encoder.encodeToString(bytes);
-		}
-
-		@Override
 		public byte[] decryptToBytes(byte[] ciphertext)
 			throws BadPaddingException, IllegalBlockSizeException {
 			return this.decryptCipher.doFinal(ciphertext);
@@ -187,6 +173,20 @@ public class CryptoUtil {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);
+		}
+
+		@Override
+		public byte[] encryptToBytes(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			return this.encryptCipher.doFinal(plaintext);
+		}
+
+		@Override
+		public String encryptToString(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			byte[] bytes = this.encryptCipher.doFinal(plaintext);
+			Base64.Encoder encoder = Base64.getUrlEncoder();
+			return encoder.encodeToString(bytes);
 		}
 
 	}
@@ -238,20 +238,6 @@ public class CryptoUtil {
 		}
 
 		@Override
-		public byte[] encryptToBytes(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
-			return this.encryptCipher.doFinal(plaintext);
-		}
-
-		@Override
-		public String encryptToString(byte[] plaintext)
-			throws BadPaddingException, IllegalBlockSizeException {
-			byte[] bytes = this.encryptCipher.doFinal(plaintext);
-			Base64.Encoder encoder = Base64.getUrlEncoder();
-			return encoder.encodeToString(bytes);
-		}
-
-		@Override
 		public byte[] decryptToBytes(byte[] ciphertext)
 			throws BadPaddingException, IllegalBlockSizeException {
 			return this.decryptCipher.doFinal(ciphertext);
@@ -263,6 +249,20 @@ public class CryptoUtil {
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 			byte[] bytes = decoder.decode(ciphertext);
 			return this.decryptCipher.doFinal(bytes);
+		}
+
+		@Override
+		public byte[] encryptToBytes(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			return this.encryptCipher.doFinal(plaintext);
+		}
+
+		@Override
+		public String encryptToString(byte[] plaintext)
+			throws BadPaddingException, IllegalBlockSizeException {
+			byte[] bytes = this.encryptCipher.doFinal(plaintext);
+			Base64.Encoder encoder = Base64.getUrlEncoder();
+			return encoder.encodeToString(bytes);
 		}
 
 	}

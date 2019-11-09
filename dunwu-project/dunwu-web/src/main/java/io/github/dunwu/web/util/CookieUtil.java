@@ -33,9 +33,9 @@ public class CookieUtil {
 	/**
 	 * 获取 Cookie
 	 *
-	 * @param request
-	 * @param key
-	 * @return
+	 * @param request HttpServletRequest
+	 * @param key     Cookie 中存储的关键字
+	 * @return Cookie 中存储的关键字对应的值
 	 */
 	public static String getCookie(HttpServletRequest request, String key) {
 		Cookie[] cookies = request.getCookies();

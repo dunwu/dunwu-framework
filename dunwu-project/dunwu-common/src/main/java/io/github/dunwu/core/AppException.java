@@ -21,14 +21,6 @@ public class AppException extends RuntimeException {
 		this.result = ResultUtil.failBaseResult(appCode);
 	}
 
-	public BaseResult getResult() {
-		return result;
-	}
-
-	public void setResult(BaseResult result) {
-		this.result = result;
-	}
-
 	@Override
 	public String toString() {
 		return "AppException{" + "result=" + result + '}';
@@ -40,6 +32,14 @@ public class AppException extends RuntimeException {
 	@Override
 	public Throwable fillInStackTrace() {
 		return this;
+	}
+
+	public BaseResult getResult() {
+		return result;
+	}
+
+	public void setResult(BaseResult result) {
+		this.result = result;
 	}
 
 }

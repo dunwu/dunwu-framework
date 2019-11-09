@@ -18,16 +18,24 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 @Disabled
 class DynamicTests {
 
-	// This will result in a JUnitException!
 	@TestFactory
-	List<String> dynamicTestsWithInvalidReturnType() {
-		return Arrays.asList("Hello");
+	DynamicTest[] dynamicTestsFromArray() {
+		return new DynamicTest[] {
+			dynamicTest("7th dynamic test", () -> assertTrue(true)),
+			dynamicTest("8th dynamic test", () -> assertEquals(4, 2 * 2)) };
 	}
 
 	@TestFactory
 	Collection<DynamicTest> dynamicTestsFromCollection() {
 		return Arrays.asList(dynamicTest("1st dynamic test", () -> assertTrue(true)),
 			dynamicTest("2nd dynamic test", () -> assertEquals(4, 2 * 2)));
+	}
+
+	@TestFactory
+	Stream<DynamicTest> dynamicTestsFromIntStream() {
+		// Generates tests for the first 10 even integers.
+		return IntStream.iterate(0, n -> n + 2).limit(10)
+			.mapToObj(n -> dynamicTest("test" + n, () -> assertTrue(n % 2 == 0)));
 	}
 
 	@TestFactory
@@ -45,13 +53,6 @@ class DynamicTests {
 	}
 
 	@TestFactory
-	DynamicTest[] dynamicTestsFromArray() {
-		return new DynamicTest[] {
-			dynamicTest("7th dynamic test", () -> assertTrue(true)),
-			dynamicTest("8th dynamic test", () -> assertEquals(4, 2 * 2)) };
-	}
-
-	@TestFactory
 	Stream<DynamicTest> dynamicTestsFromStream() {
 		return Stream.of("A", "B", "C").map(str -> dynamicTest("test" + str, () -> {
 			/* ... */
@@ -59,10 +60,25 @@ class DynamicTests {
 	}
 
 	@TestFactory
-	Stream<DynamicTest> dynamicTestsFromIntStream() {
-		// Generates tests for the first 10 even integers.
-		return IntStream.iterate(0, n -> n + 2).limit(10)
-			.mapToObj(n -> dynamicTest("test" + n, () -> assertTrue(n % 2 == 0)));
+	Stream<DynamicNode> dynamicTestsWithContainers() {
+		return Stream
+			.of("A", "B", "C").map(
+				input -> dynamicContainer("Container " + input, Stream
+					.of(dynamicTest("not null", () -> assertNotNull(input)),
+						dynamicContainer("properties",
+							Stream.of(
+								dynamicTest("length > 0",
+									() -> assertTrue(input
+										.length() > 0)),
+								dynamicTest("not empty",
+									() -> assertFalse(input
+										.isEmpty())))))));
+	}
+
+	// This will result in a JUnitException!
+	@TestFactory
+	List<String> dynamicTestsWithInvalidReturnType() {
+		return Arrays.asList("Hello");
 	}
 
 	@TestFactory
@@ -96,22 +112,6 @@ class DynamicTests {
 
 		// Returns a stream of dynamic tests.
 		return DynamicTest.stream(inputGenerator, displayNameGenerator, testExecutor);
-	}
-
-	@TestFactory
-	Stream<DynamicNode> dynamicTestsWithContainers() {
-		return Stream
-			.of("A", "B", "C").map(
-				input -> dynamicContainer("Container " + input, Stream
-					.of(dynamicTest("not null", () -> assertNotNull(input)),
-						dynamicContainer("properties",
-							Stream.of(
-								dynamicTest("length > 0",
-									() -> assertTrue(input
-										.length() > 0)),
-								dynamicTest("not empty",
-									() -> assertFalse(input
-										.isEmpty())))))));
 	}
 
 }

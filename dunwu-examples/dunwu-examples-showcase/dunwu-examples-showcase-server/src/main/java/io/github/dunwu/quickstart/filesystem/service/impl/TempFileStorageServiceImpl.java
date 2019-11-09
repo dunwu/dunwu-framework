@@ -36,16 +36,6 @@ public class TempFileStorageServiceImpl implements FileStorageService {
 
 	private final FileSystemProperties fileSystemProperties;
 
-	@PostConstruct
-	public void init() {
-		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
-		try {
-			Files.createDirectories(path);
-		} catch (IOException e) {
-			log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp().getLocation());
-		}
-	}
-
 	@Override
 	public String create(UploadFileDTO uploadFileDTO) throws IOException {
 		String storeUrl = fileSystemProperties.getTemp().getLocation() + "/"
@@ -73,6 +63,16 @@ public class TempFileStorageServiceImpl implements FileStorageService {
 			return fileDTO;
 		} else {
 			throw new IOException("Could not read file: " + fileDTO.getStoreUrl());
+		}
+	}
+
+	@PostConstruct
+	public void init() {
+		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
+		try {
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp().getLocation());
 		}
 	}
 

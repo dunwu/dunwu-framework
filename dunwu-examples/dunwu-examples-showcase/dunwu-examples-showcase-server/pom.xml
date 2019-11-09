@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.github.dunwu</groupId>
 		<artifactId>dunwu-starter-parent</artifactId>
-		<version>0.4.8-SNAPSHOT</version>
+		<version>0.4.8</version>
 	</parent>
 
 	<artifactId>dunwu-examples-showcase-server</artifactId>
@@ -87,6 +87,10 @@
 		<dependency>
 			<groupId>com.github.dozermapper</groupId>
 			<artifactId>dozer-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
 		</dependency>
 	</dependencies>
 

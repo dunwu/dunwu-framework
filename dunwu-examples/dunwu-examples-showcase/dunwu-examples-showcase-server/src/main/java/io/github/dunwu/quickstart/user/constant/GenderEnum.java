@@ -9,7 +9,8 @@ import io.github.dunwu.constant.IIntegerStringEnum;
  */
 public enum GenderEnum implements IIntegerStringEnum {
 
-	MALE(0, "男"), FEMALE(1, "女");
+	MALE(0, "男"),
+	FEMALE(1, "女");
 
 	/**
 	 * 标记数据库存的值是code

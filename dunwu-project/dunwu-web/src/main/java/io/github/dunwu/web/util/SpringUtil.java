@@ -26,12 +26,6 @@ public class SpringUtil implements ApplicationContextAware {
 		}
 	}
 
-	public static Object getObject(String id) {
-		Object object = null;
-		object = applicationContext.getBean(id);
-		return object;
-	}
-
 	public static Object getBean(String name) {
 		return applicationContext.getBean(name);
 	}
@@ -50,6 +44,12 @@ public class SpringUtil implements ApplicationContextAware {
 
 	public static <T> T getBean(String name, Class<T> requiredType) {
 		return applicationContext.getBean(name, requiredType);
+	}
+
+	public static Object getObject(String id) {
+		Object object = null;
+		object = applicationContext.getBean(id);
+		return object;
 	}
 
 }

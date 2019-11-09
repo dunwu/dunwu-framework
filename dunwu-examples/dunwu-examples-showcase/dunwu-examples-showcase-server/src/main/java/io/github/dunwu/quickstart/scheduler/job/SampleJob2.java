@@ -1,10 +1,10 @@
 package io.github.dunwu.quickstart.scheduler.job;
 
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.annotation.JobHandler;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;
-import io.github.dunwu.util.mapper.JsonMapper;
 import lombok.Data;
 import lombok.ToString;
 import org.slf4j.Logger;
@@ -21,15 +21,14 @@ public class SampleJob2 implements IJobHandler {
 
 	@Override
 	public BaseResult execute(String params) {
-		JsonMapper jsonMapper = JsonMapper.nonNullMapper();
-		Person person = jsonMapper.fromJson(params, Person.class);
-		log.info("person = {}", person.toString());
+		Person person = JSON.parseObject(params, Person.class);
+		log.info("person = {}", person);
 		return ResultUtil.successBaseResult();
 	}
 
 	@Data
 	@ToString
-	static class Person {
+	private static class Person {
 
 		private String name;
 

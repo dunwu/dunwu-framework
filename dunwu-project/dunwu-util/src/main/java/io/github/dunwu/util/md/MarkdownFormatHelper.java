@@ -1,8 +1,8 @@
 package io.github.dunwu.util.md;
 
+import io.github.dunwu.util.collection.CollectionUtils;
 import io.github.dunwu.util.io.FileExtUtils;
 import io.github.dunwu.util.text.RegexUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -19,121 +19,6 @@ public class MarkdownFormatHelper {
 	public static final String FRONT_MATTER_TAG = "---";
 
 	public static final char CHAR_$ = '$';
-
-	public static void convertToGfm(String srcFilePath, String detFilePath) {
-
-		List<String> contents = TxtFileUtil.readLineByLine(srcFilePath);
-
-		List<String> newContents = new ArrayList<String>();
-
-		boolean isCode = false;
-
-		for (String text : contents) {
-			text = replaceSpecialChars(text, isCode);
-
-			if (RegexUtil.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
-				text = text.replaceAll("/", "-");
-			}
-
-			if (text.contains("```")) {
-				isCode = !isCode;
-			} else if (!isCode) {
-				// text = changeMathJaxToCodeCogs(text);
-				text = convertImgTag(text);
-				// text = addSpaceInHtmlTag(text);
-			}
-
-			newContents.add(text);
-		}
-
-		newContents = Toc.changeTocToGeneratedCatalogue(newContents);
-		// newContents = addFrontMatter(srcFilePath, newContents);
-
-		TxtFileUtil.writeLineByLine(newContents, detFilePath);
-	}
-
-	public static String replaceSpecialChars(String text, boolean isCode) {
-
-		if (!isCode) {
-			text = text.replaceAll("([^\\\\])~", "$1\\\\~");
-		}
-
-		// System.out.println(" ".equals(" ")); // false, one is 160，one is 32
-		text = text.replaceAll(" ", " ");
-
-		return text;
-	}
-
-	public static String convertImgTag(final String text) {
-		String newstr = RegexUtil.replaceAllMatchContent(text,
-			RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
-
-		boolean hasPic = newstr.contains("![]");
-		if (!hasPic) {
-			return newstr;
-		}
-
-		int startIdx = newstr.indexOf("![]");
-		int endIdx = newstr.indexOf(")", startIdx);
-		String picPath = newstr.substring(startIdx + 4, endIdx);
-		newstr = "<img src=\"" + picPath + "\"/>";
-		newstr = "<div align=\"center\">" + newstr + "</div>";
-
-		return newstr;
-	}
-
-	private static String addSpaceInHtmlTag(final String text) {
-		int index = 0;
-		String temp = front(text, index);
-		temp = back(temp, index);
-		return temp;
-	}
-
-	private static String front(final String text, int index) {
-		int startIdx = text.indexOf(" **");
-		if (startIdx != -1) {
-			return text;
-		}
-
-		startIdx = text.indexOf("**", startIdx + 3);
-		if (startIdx == -1) {
-			return text;
-		}
-
-		StringBuilder sb = new StringBuilder();
-		if (startIdx != 0) {
-			sb.append(text, 0, startIdx);
-			sb.append(" ");
-		}
-
-		index = startIdx;
-		return sb.toString();
-	}
-
-	private static String back(final String text, int index) {
-		int startIdx = text.indexOf("** ", index);
-		if (startIdx != -1) {
-			return text;
-		}
-
-		startIdx = text.indexOf("**", index);
-		if (startIdx == -1) {
-			return text;
-		}
-
-		int endIdx = text.indexOf("**", startIdx + 3);
-		if (endIdx == -1) {
-			return text;
-		}
-
-		StringBuilder sb = new StringBuilder();
-		if (endIdx != text.length() - 1) {
-			sb.append(" ");
-			sb.append(text.substring(endIdx + 2));
-		}
-
-		return sb.toString();
-	}
 
 	public static String changeMathJaxToCodeCogs(String text) {
 
@@ -201,6 +86,68 @@ public class MarkdownFormatHelper {
 		return idx != -1;
 	}
 
+	public static void convertToGfm(String srcFilePath, String detFilePath) {
+
+		List<String> contents = TxtFileUtil.readLineByLine(srcFilePath);
+
+		List<String> newContents = new ArrayList<String>();
+
+		boolean isCode = false;
+
+		for (String text : contents) {
+			text = replaceSpecialChars(text, isCode);
+
+			if (RegexUtil.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
+				text = text.replaceAll("/", "-");
+			}
+
+			if (text.contains("```")) {
+				isCode = !isCode;
+			} else if (!isCode) {
+				// text = changeMathJaxToCodeCogs(text);
+				text = convertImgTag(text);
+				// text = addSpaceInHtmlTag(text);
+			}
+
+			newContents.add(text);
+		}
+
+		newContents = Toc.changeTocToGeneratedCatalogue(newContents);
+		// newContents = addFrontMatter(srcFilePath, newContents);
+
+		TxtFileUtil.writeLineByLine(newContents, detFilePath);
+	}
+
+	public static String replaceSpecialChars(String text, boolean isCode) {
+
+		if (!isCode) {
+			text = text.replaceAll("([^\\\\])~", "$1\\\\~");
+		}
+
+		// System.out.println(" ".equals(" ")); // false, one is 160，one is 32
+		text = text.replaceAll(" ", " ");
+
+		return text;
+	}
+
+	public static String convertImgTag(final String text) {
+		String newstr = RegexUtil.replaceAllMatchContent(text,
+			RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
+
+		boolean hasPic = newstr.contains("![]");
+		if (!hasPic) {
+			return newstr;
+		}
+
+		int startIdx = newstr.indexOf("![]");
+		int endIdx = newstr.indexOf(")", startIdx);
+		String picPath = newstr.substring(startIdx + 4, endIdx);
+		newstr = "<img src=\"" + picPath + "\"/>";
+		newstr = "<div align=\"center\">" + newstr + "</div>";
+
+		return newstr;
+	}
+
 	private static List<String> addFrontMatter(String srcFilePath,
 		List<String> contents) {
 		if (CollectionUtils.isEmpty(contents)) {
@@ -228,6 +175,59 @@ public class MarkdownFormatHelper {
 		newContents.add("---\n");
 		newContents.addAll(contents);
 		return newContents;
+	}
+
+	private static String addSpaceInHtmlTag(final String text) {
+		int index = 0;
+		String temp = front(text, index);
+		temp = back(temp, index);
+		return temp;
+	}
+
+	private static String front(final String text, int index) {
+		int startIdx = text.indexOf(" **");
+		if (startIdx != -1) {
+			return text;
+		}
+
+		startIdx = text.indexOf("**", startIdx + 3);
+		if (startIdx == -1) {
+			return text;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		if (startIdx != 0) {
+			sb.append(text, 0, startIdx);
+			sb.append(" ");
+		}
+
+		index = startIdx;
+		return sb.toString();
+	}
+
+	private static String back(final String text, int index) {
+		int startIdx = text.indexOf("** ", index);
+		if (startIdx != -1) {
+			return text;
+		}
+
+		startIdx = text.indexOf("**", index);
+		if (startIdx == -1) {
+			return text;
+		}
+
+		int endIdx = text.indexOf("**", startIdx + 3);
+		if (endIdx == -1) {
+			return text;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		if (endIdx != text.length() - 1) {
+			sb.append(" ");
+			sb.append(text.substring(endIdx + 2));
+		}
+
+		return sb.toString();
 	}
 
 }

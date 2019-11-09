@@ -123,25 +123,25 @@ public class RsaUtil {
 			return null;
 		}
 
-		public byte[] encryptByPublicKey(byte[] plaintext, byte[] publicKey)
-			throws Exception {
-			// 取得公钥
-			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
-			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
-			Key key = keyFactory.generatePublic(keySpec);
-
-			// 对数据加密
-			Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-			return cipher.doFinal(plaintext);
-		}
-
 		public byte[] decryptByPrivateKey(byte[] ciphertext, byte[] privateKey)
 			throws Exception {
 			// 取得私钥
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
 			Key key = keyFactory.generatePrivate(keySpec);
+
+			// 对数据解密
+			Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			return cipher.doFinal(ciphertext);
+		}
+
+		public byte[] decryptByPublicKey(byte[] ciphertext, byte[] publicKey)
+			throws Exception {
+			// 取得私钥
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
+			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
+			Key key = keyFactory.generatePublic(keySpec);
 
 			// 对数据解密
 			Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
@@ -162,17 +162,17 @@ public class RsaUtil {
 			return cipher.doFinal(plaintext);
 		}
 
-		public byte[] decryptByPublicKey(byte[] ciphertext, byte[] publicKey)
+		public byte[] encryptByPublicKey(byte[] plaintext, byte[] publicKey)
 			throws Exception {
-			// 取得私钥
+			// 取得公钥
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
 			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
 			Key key = keyFactory.generatePublic(keySpec);
 
-			// 对数据解密
+			// 对数据加密
 			Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-			cipher.init(Cipher.DECRYPT_MODE, key);
-			return cipher.doFinal(ciphertext);
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			return cipher.doFinal(plaintext);
 		}
 
 	}

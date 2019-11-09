@@ -118,16 +118,16 @@ public class IdWorker {
 		return timestamp;
 	}
 
-	public long getWorkerId() {
-		return workerId;
-	}
-
 	public long getDatacenterId() {
 		return datacenterId;
 	}
 
 	public long getTimestamp() {
 		return System.currentTimeMillis();
+	}
+
+	public long getWorkerId() {
+		return workerId;
 	}
 
 }

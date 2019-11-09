@@ -26,17 +26,17 @@ public class Concurrents {
 	}
 
 	/**
-	 * 返回默认的非公平信号量，先请求的线程不一定先拿到信号量
-	 */
-	public static Semaphore nonFairSemaphore(int permits) {
-		return new Semaphore(permits);
-	}
-
-	/**
 	 * 返回公平的信号量，先请求的线程先拿到信号量
 	 */
 	public static Semaphore fairSemaphore(int permits) {
 		return new Semaphore(permits, true);
+	}
+
+	/**
+	 * 返回默认的非公平信号量，先请求的线程不一定先拿到信号量
+	 */
+	public static Semaphore nonFairSemaphore(int permits) {
+		return new Semaphore(permits);
 	}
 
 	/////////// 限流采样 //////
@@ -44,7 +44,7 @@ public class Concurrents {
 	/**
 	 * 返回漏桶算法的RateLimiter
 	 *
-	 * @permitsPerSecond 期望的QPS, RateLimiter将QPS平滑到毫秒级别上，但有蓄水的能力.
+	 * @param permitsPerSecond 期望的QPS, RateLimiter将QPS平滑到毫秒级别上，但有蓄水的能力.
 	 */
 	public static RateLimiter rateLimiter(int permitsPerSecond) {
 		return RateLimiter.create(permitsPerSecond);

@@ -1,13 +1,10 @@
 package io.github.dunwu.util.concurrent;
 
-import io.github.dunwu.test.log.LogbackListAppender;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThreadDumpperTest {
 
@@ -23,19 +20,14 @@ public class ThreadDumpperTest {
 		ThreadDumpper dumpper = new ThreadDumpper();
 		dumpper.threadDumpIfNeed();
 
-		LogbackListAppender appender = new LogbackListAppender();
-		appender.addToLogger(ThreadDumpper.class);
-
 		// disable,不输出
 		dumpper.setEnable(false);
 		dumpper.threadDumpIfNeed();
-		assertThat(appender.getAllLogs()).hasSize(0);
 
 		// 设置最少间隔,不输出
 		dumpper.setEnable(true);
 		dumpper.setLeastInterval(1800);
 		dumpper.threadDumpIfNeed();
-		assertThat(appender.getAllLogs()).hasSize(0);
 
 		executor.shutdownNow();
 	}

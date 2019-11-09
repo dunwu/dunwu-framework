@@ -12,22 +12,6 @@ public class County implements Comparable<County> {
 
 	private City city;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public City getCity() {
-		return city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
 	@Override
 	public int compareTo(County o) {
 		return this.getCode().compareToIgnoreCase(o.getCode());
@@ -66,6 +50,22 @@ public class County implements Comparable<County> {
 		} else {
 			return false;
 		}
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

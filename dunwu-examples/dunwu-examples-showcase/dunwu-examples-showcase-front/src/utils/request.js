@@ -15,8 +15,9 @@ axios.defaults.headers['Content-Type'] = 'application/json'
 // axios.defaults.headers.post['Content-Type'] =
 //   'application/x-www-form-urlencoded'
 const service = axios.create({
-  baseURL: process.env.NODE_ENV ===
-  'development' ? process.env.VUE_APP_BASE_API : 'http://localhost:9527', // url = base url +
+  baseURL: process.env.NODE_ENV === 'development' ? process.env.VUE_APP_BASE_API : 'http://localhost:9527', // url =
+  // base url
+  // +
   // request
   // urlContent-Type
   withCredentials: true, // send cookies when cross-domain requests

@@ -15,6 +15,33 @@ public class TextUtil {
 	public static final char CHAR_ANYONE_WILDCARD = '?';
 
 	/**
+	 * 如果文本内容是敏感信息，则隐去部分内容
+	 *
+	 * @param text 待过滤的文本
+	 * @return 过滤后的文本
+	 */
+	public static String maskText(String text) {
+		if (RegexUtil.isEmail(text)) {
+			int atIndex = text.indexOf('@');
+			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1))
+				.toLowerCase();
+		} else if (RegexUtil.isMobile(text)) {
+			String digits = text.replaceAll("\\D+", "");
+			String local = "***-***-" + digits.substring(digits.length() - 4);
+			if (digits.length() == MOBILE_NUM_SIZE - 1) {
+				return local;
+			}
+			String ans = "+";
+			for (int i = 0; i < digits.length() - (MOBILE_NUM_SIZE - 1); ++i) {
+				ans += "*";
+			}
+			return ans + "-" + local;
+		} else {
+			return text;
+		}
+	}
+
+	/**
 	 * 判定源字符串是否匹配任意通配符表达式
 	 *
 	 * @param text      文本内容
@@ -58,33 +85,6 @@ public class TextUtil {
 			}
 		}
 		return f[m][n];
-	}
-
-	/**
-	 * 如果文本内容是敏感信息，则隐去部分内容
-	 *
-	 * @param text
-	 * @return
-	 */
-	public static String maskText(String text) {
-		if (RegexUtil.isEmail(text)) {
-			int atIndex = text.indexOf('@');
-			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1))
-				.toLowerCase();
-		} else if (RegexUtil.isMobile(text)) {
-			String digits = text.replaceAll("\\D+", "");
-			String local = "***-***-" + digits.substring(digits.length() - 4);
-			if (digits.length() == MOBILE_NUM_SIZE - 1) {
-				return local;
-			}
-			String ans = "+";
-			for (int i = 0; i < digits.length() - (MOBILE_NUM_SIZE - 1); ++i) {
-				ans += "*";
-			}
-			return ans + "-" + local;
-		} else {
-			return text;
-		}
 	}
 
 }

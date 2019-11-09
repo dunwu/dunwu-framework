@@ -10,26 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DateFormatExtUtilsTest {
 
 	@Test
-	void isoDateFormat() {
-		Date date = new Date(116, 10, 1, 12, 23, 44);
-		assertThat(DateFormatExtUtils.ISO_FORMAT.format(date))
-			.contains("2016-11-01T12:23:44.000");
-		assertThat(DateFormatExtUtils.ISO_ON_SECOND_FORMAT.format(date))
-			.contains("2016-11-01T12:23:44");
-		assertThat(DateFormatExtUtils.ISO_ON_DATE_FORMAT.format(date))
-			.isEqualTo("2016-11-01");
-	}
-
-	@Test
-	void parseDate() throws ParseException {
-		Date date = new Date(116, 10, 1, 12, 23, 44);
-		Date resultDate = DateFormatExtUtils.parseDate(
-			DateFormatExtUtils.DatePattern.PATTERN_DEFAULT,
-			"2016-11-01 12:23:44.000");
-		assertThat(resultDate.getTime() == date.getTime()).isTrue();
-	}
-
-	@Test
 	void format() {
 		Date date = new Date(116, 10, 1, 12, 23, 44);
 
@@ -108,6 +88,26 @@ class DateFormatExtUtilsTest {
 		} finally {
 			ClockUtils.useDefaultClock();
 		}
+	}
+
+	@Test
+	void isoDateFormat() {
+		Date date = new Date(116, 10, 1, 12, 23, 44);
+		assertThat(DateFormatExtUtils.ISO_FORMAT.format(date))
+			.contains("2016-11-01T12:23:44.000");
+		assertThat(DateFormatExtUtils.ISO_ON_SECOND_FORMAT.format(date))
+			.contains("2016-11-01T12:23:44");
+		assertThat(DateFormatExtUtils.ISO_ON_DATE_FORMAT.format(date))
+			.isEqualTo("2016-11-01");
+	}
+
+	@Test
+	void parseDate() throws ParseException {
+		Date date = new Date(116, 10, 1, 12, 23, 44);
+		Date resultDate = DateFormatExtUtils.parseDate(
+			DateFormatExtUtils.DatePattern.PATTERN_DEFAULT,
+			"2016-11-01 12:23:44.000");
+		assertThat(resultDate.getTime() == date.getTime()).isTrue();
 	}
 
 }

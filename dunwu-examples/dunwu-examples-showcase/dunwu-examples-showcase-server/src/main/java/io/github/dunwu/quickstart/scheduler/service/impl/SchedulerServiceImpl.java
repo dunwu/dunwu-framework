@@ -11,7 +11,7 @@ import io.github.dunwu.quickstart.scheduler.entity.Scheduler;
 import io.github.dunwu.quickstart.scheduler.handler.ExecuteMethodJobHandler;
 import io.github.dunwu.quickstart.scheduler.mapper.SchedulerMapper;
 import io.github.dunwu.quickstart.scheduler.service.SchedulerService;
-import org.apache.commons.collections4.CollectionUtils;
+import io.github.dunwu.util.collection.CollectionUtils;
 import org.quartz.*;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -50,73 +50,6 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 		this.scheduler = schedulerFactoryBean.getScheduler();
 	}
 
-	@PostConstruct
-	public void init() {
-		DataListResult<Scheduler> dataListResult = list();
-		try {
-			for (Scheduler item : dataListResult.getData()) {
-				createQuartzJob(item);
-			}
-		} catch (SchedulerException e) {
-			log.error("系统启动加载调度器失败", e);
-		}
-	}
-
-	private void createQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
-		JobDataMap jobDataMap = new JobDataMap();
-		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
-		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
-		jobDataMap.put(SchedulerConstant.METHOD_NAME, "execute");
-		jobDataMap.put(SchedulerConstant.METHOD_PARAMS, schedulerInfo.getMethodParams());
-
-		// 构建 Quartz 调度任务
-		JobDetail jobDetail = JobBuilder.newJob(ExecuteMethodJobHandler.class)
-			.withIdentity(schedulerInfo.getJobName(), schedulerInfo.getJobGroup())
-			.setJobData(jobDataMap).build();
-
-		// 构建 Quartz 触发器
-		TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger().withIdentity(
-			schedulerInfo.getTriggerName(), schedulerInfo.getTriggerGroup());
-		if (schedulerInfo.getTriggerType() == TriggerTypeEnum.SIMPLE) {
-			newSimpleTriggerBuilder(schedulerInfo, triggerBuilder);
-		} else if (schedulerInfo.getTriggerType() == TriggerTypeEnum.CRON) {
-			newCronTriggerBuilder(schedulerInfo, triggerBuilder);
-		}
-		Trigger trigger = triggerBuilder.build();
-
-		// 将调度任务和触发器添加到 scheduler 并启动
-		scheduler.scheduleJob(jobDetail, trigger);
-		if (schedulerInfo.getStatus() != TriggerStatusEnum.EXECUTING) {
-			JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
-				schedulerInfo.getJobGroup());
-			TriggerKey triggerKey = new TriggerKey(schedulerInfo.getTriggerName(),
-				schedulerInfo.getTriggerGroup());
-			scheduler.pauseJob(jobKey);
-			scheduler.pauseTrigger(triggerKey);
-		}
-	}
-
-	private void newSimpleTriggerBuilder(Scheduler schedulerInfo,
-		TriggerBuilder<Trigger> triggerBuilder) {
-		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
-		scheduleBuilder.withIntervalInSeconds(schedulerInfo.getRepeatInterval());
-		if (schedulerInfo.getRepeatCount() != null
-			&& schedulerInfo.getRepeatCount() != -1) {
-			scheduleBuilder.withRepeatCount(schedulerInfo.getRepeatCount());
-		} else {
-			scheduleBuilder.repeatForever();
-		}
-		triggerBuilder.withSchedule(scheduleBuilder);
-	}
-
-	private void newCronTriggerBuilder(Scheduler schedulerInfo,
-		TriggerBuilder<Trigger> triggerBuilder) {
-		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-			.cronSchedule(schedulerInfo.getCronExpression());
-		scheduleBuilder.inTimeZone(TimeZone.getTimeZone("GMT+8"));
-		triggerBuilder.withSchedule(scheduleBuilder);
-	}
-
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResult createJob(Scheduler schedulerInfo) {
@@ -142,39 +75,6 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 		try {
 			createQuartzJob(schedulerInfo);
 		} catch (SchedulerException e) {
-			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
-				"创建调度作业失败");
-		}
-		return ResultUtil.successBaseResult();
-	}
-
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public BaseResult updateJob(Scheduler schedulerInfo) {
-		if (schedulerInfo == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
-		}
-
-		DataResult<Scheduler> dataResult = super.getById(schedulerInfo.getId());
-		if (ResultUtil.isNotValidResult(dataResult)) {
-			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到记录");
-		}
-
-		BaseResult baseResult = super.updateById(schedulerInfo);
-		if (ResultUtil.isNotValidResult(baseResult)) {
-			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "更新调度作业数据库记录失败");
-		}
-
-		try {
-			// 由于作业组、作业名都可能发生变更，所以必须重新创建作业
-			if (!deleteQuartzJob(schedulerInfo)) {
-				return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
-					"删除调度作业失败");
-			}
-			createQuartzJob(schedulerInfo);
-		} catch (SchedulerException e) {
-			log.error("更新调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
-				schedulerInfo.getJobName(), e);
 			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
 				"创建调度作业失败");
 		}
@@ -217,6 +117,23 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 			}
 		}
 
+		return ResultUtil.successBaseResult();
+	}
+
+	@Override
+	public BaseResult executeJob(Scheduler schedulerInfo) {
+		if (schedulerInfo == null) {
+			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
+		}
+
+		try {
+			executeQuartzJob(schedulerInfo);
+		} catch (SchedulerException e) {
+			log.error("执行调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
+				schedulerInfo.getJobName(), e);
+			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+				"执行调度作业失败");
+		}
 		return ResultUtil.successBaseResult();
 	}
 
@@ -285,54 +202,36 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 	}
 
 	@Override
-	public BaseResult executeJob(Scheduler schedulerInfo) {
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResult updateJob(Scheduler schedulerInfo) {
 		if (schedulerInfo == null) {
 			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
+		DataResult<Scheduler> dataResult = super.getById(schedulerInfo.getId());
+		if (ResultUtil.isNotValidResult(dataResult)) {
+			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到记录");
+		}
+
+		BaseResult baseResult = super.updateById(schedulerInfo);
+		if (ResultUtil.isNotValidResult(baseResult)) {
+			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "更新调度作业数据库记录失败");
+		}
+
 		try {
-			executeQuartzJob(schedulerInfo);
+			// 由于作业组、作业名都可能发生变更，所以必须重新创建作业
+			if (!deleteQuartzJob(schedulerInfo)) {
+				return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+					"删除调度作业失败");
+			}
+			createQuartzJob(schedulerInfo);
 		} catch (SchedulerException e) {
-			log.error("执行调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
+			log.error("更新调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
 				schedulerInfo.getJobName(), e);
 			return ResultUtil.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
-				"执行调度作业失败");
+				"创建调度作业失败");
 		}
 		return ResultUtil.successBaseResult();
-	}
-
-	private void executeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
-		JobDataMap jobDataMap = new JobDataMap();
-		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
-		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
-		jobDataMap.put(SchedulerConstant.METHOD_NAME, "execute");
-		jobDataMap.put(SchedulerConstant.METHOD_PARAMS, schedulerInfo.getMethodParams());
-
-		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
-			schedulerInfo.getJobGroup());
-		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-		if (jobDetail == null) {
-			// 构建 Quartz 调度任务
-			jobDetail = JobBuilder.newJob(ExecuteMethodJobHandler.class)
-				.withIdentity(schedulerInfo.getJobName(), schedulerInfo.getJobGroup())
-				.setJobData(jobDataMap).build();
-
-			// 构建 Quartz 触发器
-			TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger()
-				.withIdentity(schedulerInfo.getTriggerName(),
-					schedulerInfo.getTriggerGroup());
-			SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder
-				.simpleSchedule();
-			scheduleBuilder.withRepeatCount(0);
-			triggerBuilder.withSchedule(scheduleBuilder);
-			Trigger trigger = triggerBuilder.build();
-
-			// 将调度任务和触发器添加到 scheduler 并启动
-			scheduler.scheduleJob(jobDetail, trigger);
-		} else {
-			scheduler.triggerJob(jobKey, jobDataMap);
-		}
-		scheduler.start();
 	}
 
 	@Override
@@ -370,6 +269,40 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 		scheduler.pauseTrigger(triggerKey);
 	}
 
+	private void executeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
+		JobDataMap jobDataMap = new JobDataMap();
+		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
+		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
+		jobDataMap.put(SchedulerConstant.METHOD_NAME, "execute");
+		jobDataMap.put(SchedulerConstant.METHOD_PARAMS, schedulerInfo.getMethodParams());
+
+		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
+			schedulerInfo.getJobGroup());
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+		if (jobDetail == null) {
+			// 构建 Quartz 调度任务
+			jobDetail = JobBuilder.newJob(ExecuteMethodJobHandler.class)
+				.withIdentity(schedulerInfo.getJobName(), schedulerInfo.getJobGroup())
+				.setJobData(jobDataMap).build();
+
+			// 构建 Quartz 触发器
+			TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger()
+				.withIdentity(schedulerInfo.getTriggerName(),
+					schedulerInfo.getTriggerGroup());
+			SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder
+				.simpleSchedule();
+			scheduleBuilder.withRepeatCount(0);
+			triggerBuilder.withSchedule(scheduleBuilder);
+			Trigger trigger = triggerBuilder.build();
+
+			// 将调度任务和触发器添加到 scheduler 并启动
+			scheduler.scheduleJob(jobDetail, trigger);
+		} else {
+			scheduler.triggerJob(jobKey, jobDataMap);
+		}
+		scheduler.start();
+	}
+
 	private boolean deleteQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
 		JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
 			schedulerInfo.getJobGroup());
@@ -393,6 +326,73 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
 		// schedulerInfo.setBeginTime(timeRange.get(0));
 		// schedulerInfo.setEndTime(timeRange.get(1));
 		// }
+	}
+
+	private void createQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
+		JobDataMap jobDataMap = new JobDataMap();
+		jobDataMap.put(SchedulerConstant.BEAN_NAME, schedulerInfo.getBeanName());
+		jobDataMap.put(SchedulerConstant.BEAN_TYPE, schedulerInfo.getBeanType());
+		jobDataMap.put(SchedulerConstant.METHOD_NAME, "execute");
+		jobDataMap.put(SchedulerConstant.METHOD_PARAMS, schedulerInfo.getMethodParams());
+
+		// 构建 Quartz 调度任务
+		JobDetail jobDetail = JobBuilder.newJob(ExecuteMethodJobHandler.class)
+			.withIdentity(schedulerInfo.getJobName(), schedulerInfo.getJobGroup())
+			.setJobData(jobDataMap).build();
+
+		// 构建 Quartz 触发器
+		TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger().withIdentity(
+			schedulerInfo.getTriggerName(), schedulerInfo.getTriggerGroup());
+		if (schedulerInfo.getTriggerType() == TriggerTypeEnum.SIMPLE) {
+			newSimpleTriggerBuilder(schedulerInfo, triggerBuilder);
+		} else if (schedulerInfo.getTriggerType() == TriggerTypeEnum.CRON) {
+			newCronTriggerBuilder(schedulerInfo, triggerBuilder);
+		}
+		Trigger trigger = triggerBuilder.build();
+
+		// 将调度任务和触发器添加到 scheduler 并启动
+		scheduler.scheduleJob(jobDetail, trigger);
+		if (schedulerInfo.getStatus() != TriggerStatusEnum.EXECUTING) {
+			JobKey jobKey = new JobKey(schedulerInfo.getJobName(),
+				schedulerInfo.getJobGroup());
+			TriggerKey triggerKey = new TriggerKey(schedulerInfo.getTriggerName(),
+				schedulerInfo.getTriggerGroup());
+			scheduler.pauseJob(jobKey);
+			scheduler.pauseTrigger(triggerKey);
+		}
+	}
+
+	private void newSimpleTriggerBuilder(Scheduler schedulerInfo,
+		TriggerBuilder<Trigger> triggerBuilder) {
+		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+		scheduleBuilder.withIntervalInSeconds(schedulerInfo.getRepeatInterval());
+		if (schedulerInfo.getRepeatCount() != null
+			&& schedulerInfo.getRepeatCount() != -1) {
+			scheduleBuilder.withRepeatCount(schedulerInfo.getRepeatCount());
+		} else {
+			scheduleBuilder.repeatForever();
+		}
+		triggerBuilder.withSchedule(scheduleBuilder);
+	}
+
+	private void newCronTriggerBuilder(Scheduler schedulerInfo,
+		TriggerBuilder<Trigger> triggerBuilder) {
+		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
+			.cronSchedule(schedulerInfo.getCronExpression());
+		scheduleBuilder.inTimeZone(TimeZone.getTimeZone("GMT+8"));
+		triggerBuilder.withSchedule(scheduleBuilder);
+	}
+
+	@PostConstruct
+	public void init() {
+		DataListResult<Scheduler> dataListResult = list();
+		try {
+			for (Scheduler item : dataListResult.getData()) {
+				createQuartzJob(item);
+			}
+		} catch (SchedulerException e) {
+			log.error("系统启动加载调度器失败", e);
+		}
 	}
 
 }

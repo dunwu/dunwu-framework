@@ -11,6 +11,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EnumExtUtilsTest {
 
 	@Test
+	void getEnum() {
+		assertThat(EnumExtUtils.getEnum(Options.class, "B")).isEqualTo(Options.B);
+	}
+
+	@Test
+	void getEnumSet() {
+		EnumSet<Options> set = EnumExtUtils.getEnumSet(Options.class);
+		assertThat(set).hasSize(4);
+	}
+
+	@Test
 	void testBits() {
 		assertThat(EnumExtUtils.generateBitVector(Options.class, Options.A)).isEqualTo(1);
 		assertThat(EnumExtUtils.generateBitVector(Options.class, Options.A, Options.B))
@@ -31,20 +42,9 @@ public class EnumExtUtilsTest {
 	}
 
 	@Test
-	void getEnum() {
-		assertThat(EnumExtUtils.getEnum(Options.class, "B")).isEqualTo(Options.B);
-	}
-
-	@Test
 	void testGetMap() {
 		Map<String, Options> enumMap = EnumExtUtils.getEnumMap(Options.class);
 		assertThat(enumMap).hasSize(4);
-	}
-
-	@Test
-	void getEnumSet() {
-		EnumSet<Options> set = EnumExtUtils.getEnumSet(Options.class);
-		assertThat(set).hasSize(4);
 	}
 
 	public enum Options {

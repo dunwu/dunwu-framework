@@ -35,15 +35,15 @@ class NestedTests {
 		}
 
 		@Test
-		@DisplayName("throws EmptyStackException when popped")
-		void throwsExceptionWhenPopped() {
-			assertThrows(EmptyStackException.class, () -> stack.pop());
-		}
-
-		@Test
 		@DisplayName("throws EmptyStackException when peeked")
 		void throwsExceptionWhenPeeked() {
 			assertThrows(EmptyStackException.class, () -> stack.peek());
+		}
+
+		@Test
+		@DisplayName("throws EmptyStackException when popped")
+		void throwsExceptionWhenPopped() {
+			assertThrows(EmptyStackException.class, () -> stack.pop());
 		}
 
 		@Nested
@@ -52,14 +52,21 @@ class NestedTests {
 
 			String anElement = "an element";
 
+			@Test
+			@DisplayName("it is no longer empty")
+			void isNotEmpty() {
+				assertFalse(stack.isEmpty());
+			}
+
 			@BeforeEach
 			void pushAnElement() {
 				stack.push(anElement);
 			}
 
 			@Test
-			@DisplayName("it is no longer empty")
-			void isNotEmpty() {
+			@DisplayName("returns the element when peeked but remains not empty")
+			void returnElementWhenPeeked() {
+				assertEquals(anElement, stack.peek());
 				assertFalse(stack.isEmpty());
 			}
 
@@ -68,13 +75,6 @@ class NestedTests {
 			void returnElementWhenPopped() {
 				assertEquals(anElement, stack.pop());
 				assertTrue(stack.isEmpty());
-			}
-
-			@Test
-			@DisplayName("returns the element when peeked but remains not empty")
-			void returnElementWhenPeeked() {
-				assertEquals(anElement, stack.peek());
-				assertFalse(stack.isEmpty());
 			}
 
 		}

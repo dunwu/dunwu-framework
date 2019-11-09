@@ -9,6 +9,31 @@ import static org.assertj.core.api.Assertions.fail;
 class NumberExtUtilsTest {
 
 	@Test
+	void isNumber() {
+		assertThat(NumberExtUtils.isCreatable("123")).isTrue();
+		assertThat(NumberExtUtils.isCreatable("-123.1")).isTrue();
+		assertThat(NumberExtUtils.isCreatable("-1a3.1")).isFalse();
+
+		assertThat(NumberExtUtils.isHexNumber("0x12F")).isTrue();
+		assertThat(NumberExtUtils.isHexNumber("-0x12A3")).isTrue();
+		assertThat(NumberExtUtils.isHexNumber("12A3")).isFalse();
+	}
+
+	@Test
+	void numberToEnWords() {
+		Assertions.assertEquals("One Hundred Twenty Three",
+			NumberExtUtils.intToEnWords(123));
+		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five",
+			NumberExtUtils.intToEnWords(12345));
+		Assertions.assertEquals(
+			"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+			NumberExtUtils.intToEnWords(1234567));
+		Assertions.assertEquals(
+			"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
+			NumberExtUtils.intToEnWords(1234567891));
+	}
+
+	@Test
 	void toBytes() {
 		byte[] bytes = NumberExtUtils.toBytes(1);
 		assertThat(bytes).hasSize(4).containsSequence((byte) 0, (byte) 0, (byte) 0,
@@ -35,17 +60,6 @@ class NumberExtUtilsTest {
 		} catch (Exception e) {
 			assertThat(e).isInstanceOf(IllegalArgumentException.class);
 		}
-	}
-
-	@Test
-	void isNumber() {
-		assertThat(NumberExtUtils.isCreatable("123")).isTrue();
-		assertThat(NumberExtUtils.isCreatable("-123.1")).isTrue();
-		assertThat(NumberExtUtils.isCreatable("-1a3.1")).isFalse();
-
-		assertThat(NumberExtUtils.isHexNumber("0x12F")).isTrue();
-		assertThat(NumberExtUtils.isHexNumber("-0x12A3")).isTrue();
-		assertThat(NumberExtUtils.isHexNumber("12A3")).isFalse();
 	}
 
 	@Test
@@ -178,20 +192,6 @@ class NumberExtUtilsTest {
 		assertThat(NumberExtUtils.toString(23.112d)).isEqualTo("23.112");
 		assertThat(NumberExtUtils.to2DigitString(23.112d)).isEqualTo("23.11");
 		assertThat(NumberExtUtils.to2DigitString(23.116d)).isEqualTo("23.12");
-	}
-
-	@Test
-	void numberToEnWords() {
-		Assertions.assertEquals("One Hundred Twenty Three",
-			NumberExtUtils.intToEnWords(123));
-		Assertions.assertEquals("Twelve Thousand Three Hundred Forty Five",
-			NumberExtUtils.intToEnWords(12345));
-		Assertions.assertEquals(
-			"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
-			NumberExtUtils.intToEnWords(1234567));
-		Assertions.assertEquals(
-			"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One",
-			NumberExtUtils.intToEnWords(1234567891));
 	}
 
 }

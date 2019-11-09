@@ -21,30 +21,6 @@ public class City implements Comparable<City> {
 		counties = new TreeSet<>();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Province getProvince() {
-		return province;
-	}
-
-	public void setProvince(Province province) {
-		this.province = province;
-	}
-
-	public Set<County> getCounties() {
-		return counties;
-	}
-
-	public void setCounties(Set<County> counties) {
-		this.counties = counties;
-	}
-
 	@Override
 	public int compareTo(City o) {
 		return this.getCode().compareToIgnoreCase(o.getCode());
@@ -83,6 +59,30 @@ public class City implements Comparable<City> {
 		} else {
 			return false;
 		}
+	}
+
+	public Set<County> getCounties() {
+		return counties;
+	}
+
+	public void setCounties(Set<County> counties) {
+		this.counties = counties;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Province getProvince() {
+		return province;
+	}
+
+	public void setProvince(Province province) {
+		this.province = province;
 	}
 
 }

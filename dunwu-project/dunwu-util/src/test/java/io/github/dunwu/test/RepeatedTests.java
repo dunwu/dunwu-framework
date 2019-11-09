@@ -16,16 +16,6 @@ class RepeatedTests {
 			currentRepetition, totalRepetitions, methodName));
 	}
 
-	@RepeatedTest(10)
-	void repeatedTest() {
-		// ...
-	}
-
-	@RepeatedTest(5)
-	void repeatedTestWithRepetitionInfo(RepetitionInfo repetitionInfo) {
-		assertEquals(5, repetitionInfo.getTotalRepetitions());
-	}
-
 	@RepeatedTest(value = 1, name = "{displayName} {currentRepetition}/{totalRepetitions}")
 	@DisplayName("Repeat!")
 	void customDisplayName(TestInfo testInfo) {
@@ -38,9 +28,19 @@ class RepeatedTests {
 		assertEquals(testInfo.getDisplayName(), "Details... :: repetition 1 of 1");
 	}
 
+	@RepeatedTest(10)
+	void repeatedTest() {
+		// ...
+	}
+
 	@RepeatedTest(value = 5, name = "Wiederholung {currentRepetition} von {totalRepetitions}")
 	void repeatedTestInGerman() {
 		// ...
+	}
+
+	@RepeatedTest(5)
+	void repeatedTestWithRepetitionInfo(RepetitionInfo repetitionInfo) {
+		assertEquals(5, repetitionInfo.getTotalRepetitions());
 	}
 
 }

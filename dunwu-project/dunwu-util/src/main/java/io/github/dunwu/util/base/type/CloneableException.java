@@ -41,14 +41,6 @@ public class CloneableException extends Exception implements Cloneable {
 	}
 
 	/**
-	 * 简便函数，定义静态异常时使用
-	 */
-	public CloneableException setStackTrace(Class<?> throwClazz, String throwMethod) {
-		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
-		return this;
-	}
-
-	/**
 	 * 简便函数, clone并重新设定Message
 	 */
 	public CloneableException clone(String message) {
@@ -64,6 +56,14 @@ public class CloneableException extends Exception implements Cloneable {
 		} catch (CloneNotSupportedException e) {// NOSONAR
 			return null;
 		}
+	}
+
+	/**
+	 * 简便函数，定义静态异常时使用
+	 */
+	public CloneableException setStackTrace(Class<?> throwClazz, String throwMethod) {
+		ExceptionExtUtils.setStackTrace(this, throwClazz, throwMethod);
+		return this;
 	}
 
 }

@@ -9,22 +9,6 @@ import javax.crypto.IllegalBlockSizeException;
  */
 public interface ICrypto {
 
-	default byte[] encryptToBytes(String plaintext)
-		throws BadPaddingException, IllegalBlockSizeException {
-		return encryptToBytes(plaintext.getBytes());
-	}
-
-	byte[] encryptToBytes(byte[] plaintext)
-		throws BadPaddingException, IllegalBlockSizeException;
-
-	default String encryptToString(String plaintext)
-		throws BadPaddingException, IllegalBlockSizeException {
-		return encryptToString(plaintext.getBytes());
-	}
-
-	String encryptToString(byte[] plaintext)
-		throws BadPaddingException, IllegalBlockSizeException;
-
 	default String decryptToString(byte[] ciphertext)
 		throws BadPaddingException, IllegalBlockSizeException {
 		byte[] bytes = decryptToBytes(ciphertext);
@@ -42,6 +26,22 @@ public interface ICrypto {
 	}
 
 	byte[] decryptToBytes(String ciphertext)
+		throws BadPaddingException, IllegalBlockSizeException;
+
+	default byte[] encryptToBytes(String plaintext)
+		throws BadPaddingException, IllegalBlockSizeException {
+		return encryptToBytes(plaintext.getBytes());
+	}
+
+	byte[] encryptToBytes(byte[] plaintext)
+		throws BadPaddingException, IllegalBlockSizeException;
+
+	default String encryptToString(String plaintext)
+		throws BadPaddingException, IllegalBlockSizeException {
+		return encryptToString(plaintext.getBytes());
+	}
+
+	String encryptToString(byte[] plaintext)
 		throws BadPaddingException, IllegalBlockSizeException;
 
 }

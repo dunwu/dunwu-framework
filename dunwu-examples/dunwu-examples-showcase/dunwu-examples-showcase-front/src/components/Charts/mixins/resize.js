@@ -14,13 +14,11 @@ export default {
     window.addEventListener('resize', this.__resizeHandler)
 
     this.$_sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    this.$_sidebarElm &&
-    this.$_sidebarElm.addEventListener('transitionend', this.$_sidebarResizeHandler)
+    this.$_sidebarElm && this.$_sidebarElm.addEventListener('transitionend', this.$_sidebarResizeHandler)
   }, beforeDestroy() {
     window.removeEventListener('resize', this.__resizeHandler)
 
-    this.$_sidebarElm &&
-    this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
+    this.$_sidebarElm && this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
   }, methods: {
     // use $_ for mixins properties
     // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential

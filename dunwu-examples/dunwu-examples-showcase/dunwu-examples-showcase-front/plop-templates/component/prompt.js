@@ -19,10 +19,7 @@ module.exports = {
   }], actions: data => {
     const name = '{{properCase name}}'
     const actions = [{
-      type: 'add',
-      path: `src/components/${name}/index.vue`,
-      templateFile: 'plop-templates/component/index.hbs',
-      data: {
+      type: 'add', path: `src/components/${name}/index.vue`, templateFile: 'plop-templates/component/index.hbs', data: {
         name: name,
         template: data.blocks.includes('template'),
         script: data.blocks.includes('script'),
