@@ -1,6 +1,6 @@
 package io.github.dunwu.util;
 
-import io.github.dunwu.util.text.RegexUtil;
+import io.github.dunwu.util.text.RegexUtils;
 import io.github.dunwu.util.time.DateExtUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
@@ -90,7 +90,7 @@ class RandomExtUtilsTest {
 	void anyIPv4() {
 		String ip = RandomExtUtils.randomIpv4();
 		System.out.println("RandomExtUtils.anyIpv4(): " + ip);
-		Assertions.assertTrue(RegexUtil.isIpv4(ip));
+		Assertions.assertTrue(RegexUtils.isIpv4(ip));
 	}
 
 	@RepeatedTest(10)

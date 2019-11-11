@@ -20,4 +20,11 @@ class ByteExtUtilsTest {
 		assertThat(bytes2).isNotNull();
 	}
 
+	@Test
+	void bytesToLong() {
+		byte[] bytes = { 0x1, 0x1, 0x1, 0x1 };
+		Long value = ByteExtUtils.bytesToLong(bytes);
+		System.out.println(value);
+	}
+
 }

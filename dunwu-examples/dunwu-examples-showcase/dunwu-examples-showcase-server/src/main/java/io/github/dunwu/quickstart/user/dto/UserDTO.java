@@ -2,7 +2,7 @@ package io.github.dunwu.quickstart.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.dunwu.quickstart.user.constant.GenderEnum;
-import io.github.dunwu.util.text.RegexUtil;
+import io.github.dunwu.util.text.RegexUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -64,7 +64,7 @@ public class UserDTO implements Serializable {
 	@ApiModelProperty(value = "邮箱")
 	private String email;
 
-	@Pattern(regexp = RegexUtil.REGEX_MOBILE, message = "不是合法手机号")
+	@Pattern(regexp = RegexUtils.REGEX_MOBILE, message = "不是合法手机号")
 	@ApiModelProperty(value = "手机号")
 	private String mobile;
 

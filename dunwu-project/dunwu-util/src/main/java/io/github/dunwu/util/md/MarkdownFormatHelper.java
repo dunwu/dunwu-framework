@@ -2,7 +2,7 @@ package io.github.dunwu.util.md;
 
 import io.github.dunwu.util.collection.CollectionUtils;
 import io.github.dunwu.util.io.FileExtUtils;
-import io.github.dunwu.util.text.RegexUtil;
+import io.github.dunwu.util.text.RegexUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class MarkdownFormatHelper {
 		for (String text : contents) {
 			text = replaceSpecialChars(text, isCode);
 
-			if (RegexUtil.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
+			if (RegexUtils.checkMatches(text, "date: \\d{4}/\\d{2}/\\d{2}")) {
 				text = text.replaceAll("/", "-");
 			}
 
@@ -131,8 +131,8 @@ public class MarkdownFormatHelper {
 	}
 
 	public static String convertImgTag(final String text) {
-		String newstr = RegexUtil.replaceAllMatchContent(text,
-			RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![]");
+		String newstr = RegexUtils.replaceAllMatchContent(text,
+			RegexUtils.REGEX_MARKDOWN_IMAGE_TAG, "![]");
 
 		boolean hasPic = newstr.contains("![]");
 		if (!hasPic) {

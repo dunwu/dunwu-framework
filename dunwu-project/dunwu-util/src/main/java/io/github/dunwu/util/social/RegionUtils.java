@@ -1,16 +1,16 @@
-package io.github.dunwu.util.china;
+package io.github.dunwu.util.social;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import io.github.dunwu.util.china.bean.City;
-import io.github.dunwu.util.china.bean.County;
-import io.github.dunwu.util.china.bean.Province;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.util.collection.CollectionUtils;
 import io.github.dunwu.util.io.ResourceUtil;
+import io.github.dunwu.util.social.bean.City;
+import io.github.dunwu.util.social.bean.County;
+import io.github.dunwu.util.social.bean.Province;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -22,26 +22,21 @@ import java.util.stream.Collectors;
  * @see <a href= "https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
  * @since 2018-12-11
  */
-public class ChinaAreaUtils {
+public class RegionUtils {
 
-	private static final String JSON_DATA_FILE = "cn-area-info.json";
+	private static final String JSON_DATA_FILE = "db/cn-area-info.json";
 
-	private static Set<Province> provinces = new TreeSet<>();
+	private static List<Province> provinces = new LinkedList<>();
 
-	private static Set<City> cities = new TreeSet<>();
+	private static List<City> cities = new LinkedList<>();
 
-	private static Set<County> counties = new TreeSet<>();
+	private static List<County> counties = new LinkedList<>();
 
 	static {
-		try {
-			String json = ResourceUtil.toString(ChinaAreaUtils.class, JSON_DATA_FILE);
-			parseJsonData(json);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		loadRegionDbData();
 	}
 
-	private ChinaAreaUtils() {
+	private RegionUtils() {
 	}
 
 	/**
@@ -49,7 +44,7 @@ public class ChinaAreaUtils {
 	 *
 	 * @return Set<Province>
 	 */
-	public static Set<City> getAllCities() {
+	public static List<City> getAllCities() {
 		return cities;
 	}
 
@@ -58,7 +53,7 @@ public class ChinaAreaUtils {
 	 *
 	 * @return Set<Province>
 	 */
-	public static Set<County> getAllCounties() {
+	public static List<County> getAllCounties() {
 		return counties;
 	}
 
@@ -67,7 +62,7 @@ public class ChinaAreaUtils {
 	 *
 	 * @return Set<Province>
 	 */
-	public static Set<Province> getAllProvinces() {
+	public static List<Province> getAllProvinces() {
 		return provinces;
 	}
 
@@ -83,21 +78,6 @@ public class ChinaAreaUtils {
 		}
 
 		return cities.stream().filter(item -> item.getCode().equals(code)).findAny()
-			.orElse(null);
-	}
-
-	/**
-	 * 根据名称查询（地级行政单位）
-	 *
-	 * @param name 名称
-	 * @return City
-	 */
-	public static City getCityByName(String name) {
-		if (CollectionUtils.isEmpty(cities)) {
-			return null;
-		}
-
-		return cities.stream().filter(item -> item.getName().equals(name)).findAny()
 			.orElse(null);
 	}
 
@@ -129,8 +109,38 @@ public class ChinaAreaUtils {
 			return null;
 		}
 
-		return counties.stream().filter(item -> item.getName().equals(name))
+		return counties.stream().filter(item -> item.getName().contains(name))
 			.collect(Collectors.toSet());
+	}
+
+	public static Set<County> getCountyByName(String cityName, String countyName) {
+		City city = getCityByName(cityName);
+		if (city == null) {
+			return null;
+		}
+
+		Set<County> counties = city.getCounties();
+		if (CollectionUtils.isEmpty(counties)) {
+			return null;
+		}
+
+		return counties.stream().filter(item -> item.getName().contains(countyName))
+			.collect(Collectors.toSet());
+	}
+
+	/**
+	 * 根据名称查询（地级行政单位）
+	 *
+	 * @param name 名称
+	 * @return City
+	 */
+	public static City getCityByName(String name) {
+		if (CollectionUtils.isEmpty(cities)) {
+			return null;
+		}
+
+		return cities.stream().filter(item -> item.getName().contains(name)).findAny()
+			.orElse(null);
 	}
 
 	/**
@@ -159,39 +169,40 @@ public class ChinaAreaUtils {
 			return null;
 		}
 
-		return provinces.stream().filter(item -> item.getName().equals(name)).findAny()
+		return provinces.stream().filter(item -> item.getName().contains(name)).findAny()
 			.orElse(null);
 	}
 
-	private static void parseJsonData(String json) {
-		JSONArray provinceArray = JSONArray.parseArray(json);
-		for (int i = 0; i < provinceArray.size(); i++) {
-			JSONObject jsonObject = provinceArray.getJSONObject(i);
-			Province province = new Province();
-			province.setCode(jsonObject.get("code").toString());
-			province.setName(jsonObject.get("name").toString());
-			JSONArray cityArray = JSONArray
-				.parseArray(jsonObject.get("children").toString());
-			for (int j = 0; j < cityArray.size(); j++) {
-				JSONObject cityObject = cityArray.getJSONObject(j);
-				City city = new City();
-				city.setCode(cityObject.get("code").toString());
-				city.setName(cityObject.get("name").toString());
+	private static void loadRegionDbData() {
+		String json = null;
+		try {
+			json = ResourceUtil.toString(RegionUtils.class, JSON_DATA_FILE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		parseRegionsFromJson(json);
+	}
+
+	private static void parseRegionsFromJson(final String json) {
+		provinces.clear();
+		cities.clear();
+		counties.clear();
+
+		provinces = JSON.parseArray(json, Province.class);
+		if (CollectionUtils.isEmpty(provinces)) {
+			return;
+		}
+		for (Province province : provinces) {
+			for (City city : province.getCities()) {
 				city.setProvince(province);
-				JSONArray countyArray = (JSONArray) cityObject.get("children");
-				for (int k = 0; k < countyArray.size(); k++) {
-					JSONObject countyObject = countyArray.getJSONObject(k);
-					County county = new County();
-					county.setCode(countyObject.get("code").toString());
-					county.setName(countyObject.get("name").toString());
+				for (County county : city.getCounties()) {
+					county.setProvince(province);
 					county.setCity(city);
 					counties.add(county);
-					city.getCounties().add(county);
 				}
 				cities.add(city);
-				province.getCities().add(city);
 			}
-			provinces.add(province);
 		}
 	}
 

@@ -351,6 +351,10 @@ public class NumberExtUtils extends NumberUtils {
 		return Double.toString(value);
 	}
 
+	public long intToLong(final int value) {
+		return (long) value;
+	}
+
 	static class NumberToEnglishFormat {
 
 		private static final int NUM10 = 10;

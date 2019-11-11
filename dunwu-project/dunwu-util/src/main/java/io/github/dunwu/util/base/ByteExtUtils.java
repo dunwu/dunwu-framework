@@ -28,7 +28,7 @@ public class ByteExtUtils {
 	}
 
 	/**
-	 * byte[] -> Byte[]
+	 * byte[] 转换为 Byte[]
 	 *
 	 * @param origin byte[]
 	 * @return Byte[]
@@ -47,7 +47,7 @@ public class ByteExtUtils {
 	}
 
 	/**
-	 * Byte[] -> byte[]
+	 * Byte[] 转换为 byte[]
 	 *
 	 * @param origin Byte[]
 	 * @return byte[]
@@ -63,6 +63,29 @@ public class ByteExtUtils {
 		}
 
 		return target;
+	}
+
+	/**
+	 * byte[] 转换为 Long
+	 *
+	 * @param bytes 长度可变的 byte 数组
+	 * @return Long 型数值
+	 */
+	public static Long bytesToLong(final byte... bytes) {
+		if (bytes == null) {
+			return null;
+		}
+
+		if (bytes.length < 1) {
+			return null;
+		}
+
+		int value = 0;
+		for (int i = 0; i < bytes.length; i++) {
+			int temp = (bytes[i] & 0xFF) << (8 * (bytes.length - i - 1));
+			value |= temp;
+		}
+		return Integer.valueOf(value).longValue();
 	}
 
 }

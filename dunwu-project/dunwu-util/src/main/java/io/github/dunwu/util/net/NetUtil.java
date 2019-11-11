@@ -2,6 +2,7 @@ package io.github.dunwu.util.net;
 
 import com.google.common.annotations.Beta;
 import io.github.dunwu.util.SystemExtUtils;
+import io.github.dunwu.util.social.IpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,7 +164,7 @@ public class NetUtil {
 				}
 			}
 
-			localHost = IpUtil.toIpString(localInetAddress);
+			localHost = IpUtils.getStrFromInetAddress(localInetAddress);
 
 			logger.info("localhost is {}", localHost);
 		}

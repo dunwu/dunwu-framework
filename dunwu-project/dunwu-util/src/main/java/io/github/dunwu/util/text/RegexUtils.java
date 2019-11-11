@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2016/10/27.
  */
-public class RegexUtil {
+public class RegexUtils {
 
 	/**
 	 * 最实用的正则

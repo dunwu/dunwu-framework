@@ -171,6 +171,42 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/java</directory>
+									<includes>
+										<include>**/*.xml</include>
+										<include>**/*.json</include>
+										<include>**/*.dat</include>
+										<include>**/*.db</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${basedir}/src/main/resources</directory>
+									<includes>
+										<include>**/*.xml</include>
+										<include>**/*.json</include>
+										<include>**/*.dat</include>
+										<include>**/*.db</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
@@ -370,7 +406,7 @@
 							<rulesets>
 								<!--<ruleset>rulesets/java/ali-comment.xml</ruleset>-->
 								<ruleset>rulesets/java/ali-concurrent.xml</ruleset>
-								<ruleset>rulesets/java/ali-constant.xml</ruleset>
+								<!--<ruleset>rulesets/java/ali-constant.xml</ruleset>-->
 								<ruleset>rulesets/java/ali-exception.xml</ruleset>
 								<ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
 								<!--<ruleset>rulesets/java/ali-naming.xml</ruleset>-->

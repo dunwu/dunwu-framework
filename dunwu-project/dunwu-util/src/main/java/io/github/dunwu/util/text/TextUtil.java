@@ -21,11 +21,11 @@ public class TextUtil {
 	 * @return 过滤后的文本
 	 */
 	public static String maskText(String text) {
-		if (RegexUtil.isEmail(text)) {
+		if (RegexUtils.isEmail(text)) {
 			int atIndex = text.indexOf('@');
 			return (text.substring(0, 1) + "*****" + text.substring(atIndex - 1))
 				.toLowerCase();
-		} else if (RegexUtil.isMobile(text)) {
+		} else if (RegexUtils.isMobile(text)) {
 			String digits = text.replaceAll("\\D+", "");
 			String local = "***-***-" + digits.substring(digits.length() - 4);
 			if (digits.length() == MOBILE_NUM_SIZE - 1) {
