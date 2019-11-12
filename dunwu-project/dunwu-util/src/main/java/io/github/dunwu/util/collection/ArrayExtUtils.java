@@ -5,12 +5,10 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 数组工具类.
@@ -237,6 +235,37 @@ public class ArrayExtUtils extends ArrayUtils {
 			result[i] = (int) (Math.random() * max);
 		}
 		return result;
+	}
+
+	/**
+	 * 返回一个将原字符串数组中所有的空字符串元素删除的新数组
+	 *
+	 * @param origin 原字符串数组
+	 * @return String[]
+	 */
+	public static String[] trim(final String[] origin) {
+		List<String> list = new ArrayList<>();
+		for (String item : origin) {
+			if (StringUtils.isNoneBlank(origin)) {
+				list.add(item);
+			}
+		}
+		return list.toArray(new String[0]);
+	}
+
+	/**
+	 * 安全的返回数组中的第 i 个元素，避免数组越界
+	 *
+	 * @param array 数组
+	 * @param index 数组索引
+	 * @param <T>   泛型
+	 * @return 第 index 个元素，找不到，返回 null
+	 */
+	public static <T> T indexOf(final T[] array, final int index) {
+		if (index >= array.length) {
+			return null;
+		}
+		return array[index];
 	}
 
 	/**

@@ -99,7 +99,7 @@ public class RegionUtils {
 	/**
 	 * 根据名称查询（县级行政单位）
 	 * <p>
-	 * 注：县级行政单位可能存在重名情况
+	 * 注：全国范围内的区/县级行政单位可能存在重名情况
 	 *
 	 * @param name 名称
 	 * @return Set<County>
@@ -113,8 +113,12 @@ public class RegionUtils {
 			.collect(Collectors.toSet());
 	}
 
-	public static Set<County> getCountyByName(String cityName, String countyName) {
+	public static County getCountyByName(String cityName, String countyName) {
 		City city = getCityByName(cityName);
+		return getCountyByName(city, countyName);
+	}
+
+	public static County getCountyByName(City city, String countyName) {
 		if (city == null) {
 			return null;
 		}
@@ -124,8 +128,12 @@ public class RegionUtils {
 			return null;
 		}
 
-		return counties.stream().filter(item -> item.getName().contains(countyName))
-			.collect(Collectors.toSet());
+		for (County item : counties) {
+			if (item.getName().equals(countyName)) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 	/**

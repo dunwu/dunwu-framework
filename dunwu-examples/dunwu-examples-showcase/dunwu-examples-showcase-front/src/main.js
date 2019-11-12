@@ -27,7 +27,7 @@ import { mockXHR } from '../mock'
 
 console.info('current env is ' + process.env.NODE_ENV)
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.ENV === 'development') {
   mockXHR()
 }
 

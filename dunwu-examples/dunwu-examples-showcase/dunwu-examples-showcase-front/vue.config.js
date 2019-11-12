@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'dunwu-examples-showcase-front' // page title
+const name = defaultSettings.title || 'dunwu-examples-showcase' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -36,7 +36,7 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       '/dev-api': {
-        target: `http://127.0.0.1:${port}/mock`, changeOrigin: true, pathRewrite: {
+        target: `http://localhost:${port}/mock`, changeOrigin: true, pathRewrite: {
           ['^' + '/dev-api']: ''
         }
       }, '/stage-api': {
@@ -88,7 +88,7 @@ module.exports = {
       .end()
 
     // https://webpack.js.org/configuration/devtool/#development
-    config.when(process.env.NODE_ENV !== 'production', config => config.devtool('eval-source-map'))
+    config.when(process.env.NODE_ENV !== 'production', config => config.devtool('cheap-source-map'))
 
     config.when(process.env.NODE_ENV === 'production', config => {
       config.devtool('eval-source-map')
@@ -103,14 +103,9 @@ module.exports = {
       config.optimization.splitChunks({
         chunks: 'all', cacheGroups: {
           libs: {
-            name: 'chunk-libs', test: /[\\/]node_modules[\\/]/, priority: 10, chunks: 'initial' // only
-                                                                                                // package
-                                                                                                // third
-                                                                                                // parties
-                                                                                                // that
-                                                                                                // are
-                                                                                                // initially
-                                                                                                // dependent
+
+            // only package third parties that are initially dependent
+            name: 'chunk-libs', test: /[\\/]node_modules[\\/]/, priority: 10, chunks: 'initial'
           }, elementUI: {
             name: 'chunk-elementUI', // split elementUI into a single package
             priority: 20, // the weight needs to be larger than libs and app or it will be packaged

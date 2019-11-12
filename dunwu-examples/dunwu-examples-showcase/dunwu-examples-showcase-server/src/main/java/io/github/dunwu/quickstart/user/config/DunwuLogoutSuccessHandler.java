@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
 import org.springframework.http.MediaType;
@@ -23,20 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuLogoutSuccessHandler implements LogoutSuccessHandler {
 
-	private final ObjectMapper objectMapper;
-
-	public DunwuLogoutSuccessHandler(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
-		BaseResult baseResult = ResultUtil.successBaseResult();
+		BaseResult result = ResultUtil.successBaseResult();
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(objectMapper.writeValueAsString(baseResult));
+		response.getWriter().write(JSON.toJSONString(result));
 	}
 
 }

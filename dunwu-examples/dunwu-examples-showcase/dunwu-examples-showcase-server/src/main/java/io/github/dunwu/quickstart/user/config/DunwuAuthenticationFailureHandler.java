@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
@@ -24,23 +24,16 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-	private final ObjectMapper objectMapper;
-
-	public DunwuAuthenticationFailureHandler(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse, AuthenticationException exception)
+	public void onAuthenticationFailure(HttpServletRequest request,
+		HttpServletResponse response, AuthenticationException exception)
 		throws IOException, ServletException {
-		BaseResult baseResult = ResultUtil.failBaseResult(
+		BaseResult result = ResultUtil.failBaseResult(
 			AppCode.ERROR_AUTHENTICATION.getCode(), exception.getMessage());
-		httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		httpServletResponse.getWriter()
-			.write(objectMapper.writeValueAsString(baseResult));
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+		response.getWriter().write(JSON.toJSONString(result));
 	}
 
 }

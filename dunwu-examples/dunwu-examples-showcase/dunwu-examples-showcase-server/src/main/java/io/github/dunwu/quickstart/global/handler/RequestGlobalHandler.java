@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class RequestGlobalHandler {
 
-	public static final String APP_VERSION = "0.4.8";
+	public static final String APP_VERSION = "0.4.9-SNAPSHOT";
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -68,7 +68,7 @@ public class RequestGlobalHandler {
 		} else if (e instanceof AppException) {
 			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_SYSTEM);
 		} else {
-			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_UNKNOWN);
+			baseResult = ResultUtil.failBaseResult(AppCode.ERROR_SYSTEM.getCode(), e.getMessage());
 		}
 
 		WebConstant.ResponseType responseType = getResponseMode(request);

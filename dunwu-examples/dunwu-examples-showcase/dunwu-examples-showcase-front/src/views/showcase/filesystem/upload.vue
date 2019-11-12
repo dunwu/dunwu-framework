@@ -40,6 +40,7 @@
           :file-list="fileList"
           :data="uploadForm"
           :auto-upload="false"
+          :with-credentials="true"
           :on-change="handleChange"
           :on-remove="handleRemove"
           :on-error="handleUploadFileError"

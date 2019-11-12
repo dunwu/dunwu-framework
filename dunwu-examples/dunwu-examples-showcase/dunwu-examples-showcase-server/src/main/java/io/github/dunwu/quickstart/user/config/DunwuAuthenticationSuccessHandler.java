@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.core.DataListResult;
 import io.github.dunwu.core.ResultUtil;
 import org.springframework.http.MediaType;
@@ -26,23 +26,17 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-	private final ObjectMapper objectMapper;
-
-	public DunwuAuthenticationSuccessHandler(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse, Authentication authentication)
+	public void onAuthenticationSuccess(HttpServletRequest request,
+		HttpServletResponse response, Authentication authentication)
 		throws IOException, ServletException {
 		List<String> roles = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		DataListResult result = ResultUtil.successDataListResult(roles);
-		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		httpServletResponse.getWriter().write(objectMapper.writeValueAsString(result));
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+		response.getWriter().write(JSON.toJSONString(result));
 	}
 
 }

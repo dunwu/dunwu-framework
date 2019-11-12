@@ -1,31 +1,38 @@
-package io.github.dunwu.quickstart.id.controller;
+package io.github.dunwu.quickstart.tool.controller;
 
+import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.DataListResult;
+import io.github.dunwu.core.DataResult;
 import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.util.code.IdUtil;
 import io.github.dunwu.util.code.support.SnowFlakeId;
+import io.github.dunwu.util.collection.ArrayExtUtils;
+import io.github.dunwu.util.social.IpUtils;
+import io.github.dunwu.web.util.ServletUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-23
  */
 @RestController
-@RequestMapping("id")
-@Api(tags = "id")
-public class IdController {
+@Api(tags = "tool")
+public class ToolController {
 
-	public static final int MAX = 100;
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@GetMapping("generateSnowFlakeId")
+	private static final int MAX = 100;
+
+	@GetMapping("/id/generateSnowFlakeId")
 	@ApiOperation(value = "生成 SnowFlake ID")
 	public DataListResult<String> generateSnowFlakeId(@RequestParam("num") Integer num,
 		@RequestParam("dataCenterId") long dataCenterId,
@@ -39,7 +46,7 @@ public class IdController {
 		return ResultUtil.successDataListResult(ids);
 	}
 
-	@GetMapping("generateUuid")
+	@GetMapping("/id/generateUuid")
 	@ApiOperation(value = "生成随机 UUID")
 	public DataListResult<String> generateUuid(@RequestParam("num") Integer num,
 		@RequestParam("withSeparator") Boolean withSeparator) {
@@ -53,6 +60,27 @@ public class IdController {
 			}
 		}
 		return ResultUtil.successDataListResult(ids);
+	}
+
+	@GetMapping("/ip/getRegion")
+	@ApiOperation(value = "获取 IP 所在位置")
+	public DataListResult<String> getRegion(@RequestParam("ip") String ip) {
+		String[] regions = IpUtils.getFullRegionName(ip);
+		if (ArrayExtUtils.isEmpty(regions)) {
+			String message = String.format(AppCode.ERROR_NOT_FOUND.getTemplate(), ip);
+			return ResultUtil.failDataListResult(AppCode.ERROR_NOT_FOUND.getCode(), message);
+		}
+		return ResultUtil.successDataListResult(Arrays.asList(regions));
+	}
+
+	@GetMapping("/ip/getLocalRegion")
+	public DataResult<Map<String, Object>> getRegion(HttpServletRequest request) {
+		String address = ServletUtil.getRealRemoteAddr(request);
+		String[] regions = IpUtils.getFullRegionName(address);
+		Map<String, Object> map = new HashMap<>();
+		map.put("address", address);
+		map.put("regions", regions);
+		return ResultUtil.successDataResult(map);
 	}
 
 }

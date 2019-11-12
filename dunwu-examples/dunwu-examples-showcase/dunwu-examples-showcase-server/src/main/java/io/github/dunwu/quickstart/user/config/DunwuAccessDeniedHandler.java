@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
@@ -24,12 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAccessDeniedHandler implements AccessDeniedHandler {
 
-	private final ObjectMapper objectMapper;
-
-	public DunwuAccessDeniedHandler(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 		AccessDeniedException e) throws IOException, ServletException {
@@ -37,7 +31,7 @@ public class DunwuAccessDeniedHandler implements AccessDeniedHandler {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(objectMapper.writeValueAsString(result));
+		response.getWriter().write(JSON.toJSONString(result));
 	}
 
 }

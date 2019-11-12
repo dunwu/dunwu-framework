@@ -4,6 +4,8 @@ import io.github.dunwu.util.base.StringExtUtils;
 import io.github.dunwu.util.io.AnsiSystem;
 import org.junit.jupiter.api.Test;
 
+import java.net.UnknownHostException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class IpUtilsTest {
@@ -79,6 +81,17 @@ class IpUtilsTest {
 		}
 
 		System.out.println("平均耗时：" + (time / ips.length));
+	}
+
+	@Test
+	void test() throws UnknownHostException {
+		String ipv6Str = IpUtils.ipv4ToIpv6("127.0.0.1");
+		assertThat(ipv6Str).isEqualTo("0:0:0:0:0:0:7f00:1");
+		System.out.printf("127.0.0.1 对应的 IPv6 地址为：%s\n", ipv6Str);
+
+		String ipv6Str2 = IpUtils.ipv4ToIpv6("36.101.185.17");
+		assertThat(ipv6Str2).isEqualTo("0:0:0:0:0:0:2465:b911");
+		System.out.printf("36.101.185.17 对应的 IPv6 地址为：%s\n", ipv6Str2);
 	}
 
 }

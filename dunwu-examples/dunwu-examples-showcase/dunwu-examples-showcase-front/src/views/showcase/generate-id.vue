@@ -29,7 +29,8 @@
             />
             <el-checkbox
               v-model="uuidQuery.withSeparator"
-            >是否带 "-" 符号</el-checkbox>
+            >是否带 "-" 符号
+            </el-checkbox>
             <el-button type="primary" @click="generateUuidList()">
               生成
             </el-button>
@@ -45,6 +46,21 @@
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="SnowFlake ID" name="snowflakeId">
+        <el-alert
+          type="info"
+          :closable="false"
+          show-icon
+          style="margin-bottom: 10px"
+        >
+          根据雪花算法生成分布式 ID，参考文章：
+          <el-link
+            type="primary"
+            href="https://github.com/dunwu/javaweb/blob/master/docs/theory/distributed-id-theory.md"
+            target="_blank"
+          >
+            《分布式 ID 基本原理》
+          </el-link>
+        </el-alert>
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <span>单个 ID</span>
@@ -106,7 +122,7 @@ import clip from '@/utils/clipboard'
 import { generateUuid, generateSnowFlakeId } from '@/api/tool'
 
 export default {
-  name: 'ClipboardDemo',
+  name: 'GenerateId',
   data() {
     return {
       uuid: '',

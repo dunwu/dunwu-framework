@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtil;
@@ -24,20 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-	private final ObjectMapper objectMapper;
-
-	public DunwuAuthenticationEntryPoint(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
-		BaseResult baseResult = ResultUtil.failBaseResult(AppCode.ERROR_AUTHENTICATION);
+		BaseResult result = ResultUtil.failBaseResult(AppCode.ERROR_AUTHENTICATION);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(objectMapper.writeValueAsString(baseResult));
+		response.getWriter().write(JSON.toJSONString(result));
 	}
 
 }
