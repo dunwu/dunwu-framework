@@ -152,8 +152,7 @@ public class FileManagerImpl implements FileManager {
 	public PageResult<FileDTO> page(FileQuery fileQuery, Pagination<FileDTO> pagination) {
 		File fileInfoQuery = BeanUtils.map(fileQuery, File.class);
 		IPage<File> page = PageUtil.transToMybatisPlusPage(pagination);
-		IPage<File> result = fileInfoMapper.selectPage(page,
-			new QueryWrapper<>(fileInfoQuery));
+		IPage<File> result = fileInfoMapper.selectPage(page, new QueryWrapper<>(fileInfoQuery));
 		List<FileDTO> list = BeanUtils.mapList(result.getRecords(), FileDTO.class);
 		pagination.setTotal(result.getTotal());
 		pagination.setPages(result.getPages());

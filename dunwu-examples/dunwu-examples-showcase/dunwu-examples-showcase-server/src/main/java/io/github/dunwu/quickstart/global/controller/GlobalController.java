@@ -1,14 +1,16 @@
 package io.github.dunwu.quickstart.global.controller;
 
-import org.springframework.stereotype.Controller;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-09-11
  */
-@Controller
+@RestController
+@Api(tags = "global")
 public class GlobalController {
 
 	@GetMapping("/403")

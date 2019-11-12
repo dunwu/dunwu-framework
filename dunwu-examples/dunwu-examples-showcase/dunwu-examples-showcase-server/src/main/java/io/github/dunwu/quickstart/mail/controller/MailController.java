@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("mail")
-@Api(tags = "mail", description = "MailController")
+@Api(tags = "mail")
 public class MailController {
 
 	private final MailService mailService;

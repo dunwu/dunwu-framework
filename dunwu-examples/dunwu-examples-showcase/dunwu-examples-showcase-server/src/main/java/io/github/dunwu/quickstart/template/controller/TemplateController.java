@@ -17,8 +17,8 @@ import java.util.Map;
  * @since 2019-09-12
  */
 @RestController
-@RequestMapping("/template")
-@Api(tags = "TemplateController", description = "模板配置表")
+@RequestMapping("template")
+@Api(tags = "template")
 public class TemplateController {
 
 	private final TemplateService service;

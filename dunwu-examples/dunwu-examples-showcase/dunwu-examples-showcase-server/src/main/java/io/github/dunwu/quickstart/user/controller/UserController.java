@@ -21,8 +21,8 @@ import java.util.Map;
  * @since 2019-09-17
  */
 @RestController
-@RequestMapping("/user")
-@Api(tags = "UserController", description = "用户表")
+@RequestMapping("user")
+@Api(tags = "user")
 public class UserController {
 
 	private final UserManager userManager;

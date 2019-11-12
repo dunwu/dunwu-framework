@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("file")
-@Api(tags = "file", description = "FileController")
+@Api(tags = "file")
 public class FileController {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());

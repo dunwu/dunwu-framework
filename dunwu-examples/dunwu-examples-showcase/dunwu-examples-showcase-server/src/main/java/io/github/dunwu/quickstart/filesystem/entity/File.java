@@ -1,5 +1,6 @@
 package io.github.dunwu.quickstart.filesystem.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.dunwu.data.entity.BaseEntity;
 import io.github.dunwu.quickstart.filesystem.constant.FileStoreTypeEnum;
@@ -36,6 +37,7 @@ public class File extends BaseEntity {
 	@ApiModelProperty(value = "标签。供业务系统使用")
 	private String tag;
 
+	@TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
 	@ApiModelProperty(value = "源文件名")
 	private String originName;
 

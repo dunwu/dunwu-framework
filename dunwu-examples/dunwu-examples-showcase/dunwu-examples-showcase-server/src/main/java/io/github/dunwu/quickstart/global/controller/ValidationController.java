@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("valid")
-@Api(tags = "valid", description = "ValidationController")
+@Api(tags = "valid")
 public class ValidationController {
 
 	@PostMapping("test")
