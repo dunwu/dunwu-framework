@@ -41,18 +41,18 @@ export const constantRoutes = [{
     path: '/redirect/:path*', component: () => import('@/views/redirect/index')
   }]
 }, {
-  path: '/login', component: () => import('@/views/login/index'), hidden: true
+  path: '/login', component: () => import('@/views/user/login'), hidden: true
 }, {
-  path: '/auth-redirect', component: () => import('@/views/login/auth-redirect'), hidden: true
+  path: '/register', component: () => import('@/views/user/register'), hidden: true
+}, {
+  path: '/auth-redirect', component: () => import('@/views/user/auth-redirect'), hidden: true
 }, {
   path: '/404', component: () => import('@/views/error/404'), hidden: true
 }, {
   path: '/401', component: () => import('@/views/error/401'), hidden: true
 }, {
   path: '/', component: Layout, redirect: '/profile/index'
-},
-
-{
+}, {
   path: '/profile', component: Layout, redirect: '/profile/index', hidden: true, children: [{
     path: 'index',
     component: () => import('@/views/profile/index'),

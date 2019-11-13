@@ -1,9 +1,9 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.dunwu.annotation.Manager;
 import io.github.dunwu.core.AppCode;
+import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.DataResult;
 import io.github.dunwu.core.ResultUtil;
 import io.github.dunwu.quickstart.user.dto.RoleDTO;
@@ -19,12 +19,13 @@ import io.github.dunwu.util.collection.CollectionUtils;
 import io.github.dunwu.util.parser.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -35,7 +36,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class UserManagerImpl implements UserManager {
 
-	private final ObjectMapper objectMapper;
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private final UserMapper userMapper;
 
@@ -75,20 +76,54 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public DataResult<Map<String, String>> register(UserDTO userDTO) {
-		if (userDTO == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER.getCode(),
-				AppCode.ERROR_PARAMETER.getTemplate(), "userDTO", "null");
+	public BaseResult register(UserDTO userDTO) {
+		DataResult<Boolean> dataResult = isUserExists(userDTO);
+		if (dataResult.getData()) {
+			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "用户已存在");
 		}
 
 		User user = BeanUtils.map(userDTO, User.class);
 		if (userMapper.insert(user) > 0) {
-			return ResultUtil.failDataResult(AppCode.ERROR_DB);
+			UserRole userRole = new UserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleId(2); // 默认注册用户的角色为 2（user）
+			userRoleMapper.insert(userRole);
+			return ResultUtil.successBaseResult();
+		} else {
+			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
+		}
+	}
+
+	@Override
+	public DataResult<Boolean> isUserExists(UserDTO userDTO) {
+		try {
+			if (StringUtils.isNotBlank(userDTO.getUsername())) {
+				checkUserExists("username", userDTO.getUsername());
+			}
+
+			if (StringUtils.isNotBlank(userDTO.getEmail())) {
+				checkUserExists("email", userDTO.getEmail());
+			}
+			return ResultUtil.successDataResult(false);
+		} catch (IllegalArgumentException e) {
+			log.warn(e.getMessage());
+			return ResultUtil.successDataResult(true);
+		}
+	}
+
+	public void checkUserExists(String key, String value) throws IllegalArgumentException {
+		if (StringUtils.isBlank(key) || StringUtils.isBlank(value)) {
+			throw new IllegalArgumentException("信息为空");
 		}
 
-		Map<String, String> map = new HashMap<>(1);
-		map.put("currentAuthority", "user");
-		return ResultUtil.successDataResult(map);
+		if ("username".equalsIgnoreCase(key) || "email".equalsIgnoreCase(key)) {
+			QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+			queryWrapper.eq(key, value);
+			Integer count = userMapper.selectCount(queryWrapper);
+			if (count > 0) {
+				throw new IllegalArgumentException(value + " 已存在");
+			}
+		}
 	}
 
 }

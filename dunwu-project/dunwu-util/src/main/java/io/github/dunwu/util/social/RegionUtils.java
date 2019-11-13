@@ -1,13 +1,17 @@
 package io.github.dunwu.util.social;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.io.Files;
 import io.github.dunwu.util.collection.CollectionUtils;
 import io.github.dunwu.util.io.ResourceUtil;
 import io.github.dunwu.util.social.bean.City;
 import io.github.dunwu.util.social.bean.County;
 import io.github.dunwu.util.social.bean.Province;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -184,6 +188,8 @@ public class RegionUtils {
 	private static void loadRegionDbData() {
 		String json = null;
 		try {
+			URL url = RegionUtils.class.getClassLoader().getResource(JSON_DATA_FILE);
+			json = Files.asCharSource(new File(url.getPath()), StandardCharsets.UTF_8).read();
 			json = ResourceUtil.toString(RegionUtils.class, JSON_DATA_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();

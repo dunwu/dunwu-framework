@@ -5,9 +5,9 @@ export const constantRoutes = [{
     path: '/redirect/:path*', component: 'views/redirect/index'
   }]
 }, {
-  path: '/login', component: 'views/login/index', hidden: true
+  path: '/login', component: 'views/user/login', hidden: true
 }, {
-  path: '/auth-redirect', component: 'views/login/auth-redirect', hidden: true
+  path: '/auth-redirect', component: 'views/user/auth-redirect', hidden: true
 }, {
   path: '/404', component: 'views/error-page/404', hidden: true
 }, {

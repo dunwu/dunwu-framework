@@ -54,6 +54,7 @@ export default {
   computed: {
     ...mapGetters([
       'name',
+      'email',
       'avatar',
       'roles'
     ])

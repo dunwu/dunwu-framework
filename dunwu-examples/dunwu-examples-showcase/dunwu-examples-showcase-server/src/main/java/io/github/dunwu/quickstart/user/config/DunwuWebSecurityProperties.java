@@ -21,4 +21,6 @@ public class DunwuWebSecurityProperties {
 
 	private String logoutUrl = "/user/logout";
 
+	private String validUrl = "/user/isValidUser";
+
 }

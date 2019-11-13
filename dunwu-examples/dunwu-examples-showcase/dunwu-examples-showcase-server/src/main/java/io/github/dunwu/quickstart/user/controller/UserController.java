@@ -94,9 +94,15 @@ public class UserController {
 		return userService.page(pagination);
 	}
 
+	@GetMapping("isUserExists")
+	@ApiOperation(value = "新注册用户信息是否有效")
+	public DataResult<Boolean> isUserExists(UserDTO userDTO) {
+		return userManager.isUserExists(userDTO);
+	}
+
 	@PostMapping("register")
 	@ApiOperation(value = "用户注册")
-	public DataResult<Map<String, String>> register(@RequestBody UserDTO userDTO) {
+	public BaseResult register(@RequestBody UserDTO userDTO) {
 		return userManager.register(userDTO);
 	}
 
@@ -168,7 +174,7 @@ public class UserController {
 
 	@GetMapping("getInfo")
 	@ApiOperation(value = "获取用户信息")
-	public DataResult<UserDTO> user(@AuthenticationPrincipal Principal principal) {
+	public DataResult<UserDTO> getInfo(@AuthenticationPrincipal Principal principal) {
 		UserDTO userDTO = userManager.getByUsername(principal.getName());
 		return ResultUtil.successDataResult(userDTO);
 	}

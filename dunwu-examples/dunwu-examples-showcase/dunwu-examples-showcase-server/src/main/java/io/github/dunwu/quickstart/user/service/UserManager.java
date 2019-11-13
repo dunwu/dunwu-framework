@@ -1,9 +1,8 @@
 package io.github.dunwu.quickstart.user.service;
 
+import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.DataResult;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
-
-import java.util.Map;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -13,6 +12,8 @@ public interface UserManager {
 
 	UserDTO getByUsername(String username);
 
-	DataResult<Map<String, String>> register(UserDTO userDTO);
+	BaseResult register(UserDTO userDTO);
+
+	DataResult<Boolean> isUserExists(UserDTO userDTO);
 
 }

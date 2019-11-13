@@ -13,8 +13,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -395,13 +395,16 @@ public class IpUtils {
 	}
 
 	private static void init() {
-		URL url = ResourceUtil.asUrl(IpUtils.class, IP_DB_FILE);
-		File file = new File(url.getFile());
-		FileInputStream fis = null;
+
+		InputStream fis = null;
 		lock.lock();
 		try {
-			fis = new FileInputStream(file);
-			dataBuffer = ByteBuffer.allocate((int) file.length());
+			fis = IpUtils.class.getClassLoader().getResourceAsStream(IP_DB_FILE);
+			if (fis == null) {
+				System.out.printf("加载 IP 数据库文件 %s 失败\n", IP_DB_FILE);
+				return;
+			}
+			dataBuffer = ByteBuffer.allocate(fis.available());
 			byte[] chunk = new byte[4096];
 			while (fis.available() > 0) {
 				int len = fis.read(chunk);

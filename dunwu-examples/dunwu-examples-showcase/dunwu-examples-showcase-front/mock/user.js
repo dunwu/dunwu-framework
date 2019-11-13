@@ -10,11 +10,13 @@ const users = {
   'admin-token': {
     roles: ['admin'],
     introduction: 'I am a super administrator',
+    email: 'ooo@xxx.com',
     avatar: 'http://dunwu.test.upcdn.net/common/logo/zp.png',
     name: 'Super Admin'
   }, 'user-token': {
     roles: ['user'],
     introduction: 'I am an user',
+    email: 'ooo@xxx.com',
     avatar: 'http://dunwu.test.upcdn.net/common/logo/zp.png',
     name: 'Normal User'
   }

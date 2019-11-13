@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "tool")
 public class ToolController {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
 	private static final int MAX = 100;
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@GetMapping("/id/generateSnowFlakeId")
 	@ApiOperation(value = "生成 SnowFlake ID")
