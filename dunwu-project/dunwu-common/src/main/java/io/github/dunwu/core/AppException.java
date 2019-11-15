@@ -18,7 +18,7 @@ public class AppException extends RuntimeException {
 	}
 
 	public AppException(ErrorCode appCode) {
-		this.result = ResultUtil.failBaseResult(appCode);
+		this.result = ResultUtils.failBaseResult(appCode);
 	}
 
 	@Override

@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>io.github.dunwu</groupId>
 		<artifactId>dunwu</artifactId>
-		<version>0.4.9-SNAPSHOT</version>
+		<version>0.4.9</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>dunwu-project</artifactId>
-	<version>0.4.9-SNAPSHOT</version>
+	<version>0.4.9</version>
 	<packaging>pom</packaging>
 	<name>dunwu-project</name>
 	<description>Dunwu Root Project</description>

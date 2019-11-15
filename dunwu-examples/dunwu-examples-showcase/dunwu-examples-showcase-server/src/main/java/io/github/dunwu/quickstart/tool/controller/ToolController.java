@@ -3,7 +3,7 @@ package io.github.dunwu.quickstart.tool.controller;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.DataListResult;
 import io.github.dunwu.core.DataResult;
-import io.github.dunwu.core.ResultUtil;
+import io.github.dunwu.core.ResultUtils;
 import io.github.dunwu.util.code.IdUtil;
 import io.github.dunwu.util.code.support.SnowFlakeId;
 import io.github.dunwu.util.collection.ArrayExtUtils;
@@ -43,7 +43,7 @@ public class ToolController {
 		for (int i = 0; i < max; i++) {
 			ids.add(String.valueOf(snowFlakeId.generate()));
 		}
-		return ResultUtil.successDataListResult(ids);
+		return ResultUtils.successDataListResult(ids);
 	}
 
 	@GetMapping("/id/generateUuid")
@@ -59,7 +59,7 @@ public class ToolController {
 				ids.add(IdUtil.randomUuid2());
 			}
 		}
-		return ResultUtil.successDataListResult(ids);
+		return ResultUtils.successDataListResult(ids);
 	}
 
 	@GetMapping("/ip/getRegion")
@@ -68,9 +68,9 @@ public class ToolController {
 		String[] regions = IpUtils.getFullRegionName(ip);
 		if (ArrayExtUtils.isEmpty(regions)) {
 			String message = String.format(AppCode.ERROR_NOT_FOUND.getTemplate(), ip);
-			return ResultUtil.failDataListResult(AppCode.ERROR_NOT_FOUND.getCode(), message);
+			return ResultUtils.failDataListResult(AppCode.ERROR_NOT_FOUND.getCode(), message);
 		}
-		return ResultUtil.successDataListResult(Arrays.asList(regions));
+		return ResultUtils.successDataListResult(Arrays.asList(regions));
 	}
 
 	@GetMapping("/ip/getLocalRegion")
@@ -80,7 +80,7 @@ public class ToolController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("address", address);
 		map.put("regions", regions);
-		return ResultUtil.successDataResult(map);
+		return ResultUtils.successDataResult(map);
 	}
 
 }

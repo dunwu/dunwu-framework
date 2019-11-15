@@ -5,7 +5,7 @@ import io.github.dunwu.annotation.Manager;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.DataResult;
-import io.github.dunwu.core.ResultUtil;
+import io.github.dunwu.core.ResultUtils;
 import io.github.dunwu.quickstart.user.dto.RoleDTO;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
 import io.github.dunwu.quickstart.user.entity.Role;
@@ -79,7 +79,7 @@ public class UserManagerImpl implements UserManager {
 	public BaseResult register(UserDTO userDTO) {
 		DataResult<Boolean> dataResult = isUserExists(userDTO);
 		if (dataResult.getData()) {
-			return ResultUtil.failBaseResult(AppCode.ERROR_DB.getCode(), "用户已存在");
+			return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "用户已存在");
 		}
 
 		User user = BeanUtils.map(userDTO, User.class);
@@ -88,9 +88,9 @@ public class UserManagerImpl implements UserManager {
 			userRole.setUserId(user.getId());
 			userRole.setRoleId(2); // 默认注册用户的角色为 2（user）
 			userRoleMapper.insert(userRole);
-			return ResultUtil.successBaseResult();
+			return ResultUtils.successBaseResult();
 		} else {
-			return ResultUtil.failBaseResult(AppCode.ERROR_DB);
+			return ResultUtils.failBaseResult(AppCode.ERROR_DB);
 		}
 	}
 
@@ -104,10 +104,10 @@ public class UserManagerImpl implements UserManager {
 			if (StringUtils.isNotBlank(userDTO.getEmail())) {
 				checkUserExists("email", userDTO.getEmail());
 			}
-			return ResultUtil.successDataResult(false);
+			return ResultUtils.successDataResult(false);
 		} catch (IllegalArgumentException e) {
 			log.warn(e.getMessage());
-			return ResultUtil.successDataResult(true);
+			return ResultUtils.successDataResult(true);
 		}
 	}
 

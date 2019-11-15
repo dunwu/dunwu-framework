@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.mail.controller;
 
 import io.github.dunwu.core.BaseResult;
-import io.github.dunwu.core.ResultUtil;
+import io.github.dunwu.core.ResultUtils;
 import io.github.dunwu.quickstart.mail.dto.MailDTO;
 import io.github.dunwu.quickstart.mail.service.MailService;
 import io.swagger.annotations.Api;
@@ -30,7 +30,7 @@ public class MailController {
 	@ApiOperation(value = "发送邮件")
 	public BaseResult send(@RequestBody MailDTO mailDTO) {
 		mailService.send(mailDTO);
-		return ResultUtil.successBaseResult();
+		return ResultUtils.successBaseResult();
 	}
 
 }

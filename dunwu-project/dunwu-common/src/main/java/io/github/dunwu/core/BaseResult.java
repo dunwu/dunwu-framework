@@ -2,6 +2,7 @@ package io.github.dunwu.core;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Data
 @ToString
+@Accessors(chain = true)
 public class BaseResult implements Serializable {
 
 	private static final long serialVersionUID = 1L;

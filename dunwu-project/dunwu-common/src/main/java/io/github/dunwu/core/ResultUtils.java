@@ -11,7 +11,9 @@ import java.util.List;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-11
  */
-public class ResultUtil {
+public class ResultUtils {
+
+	private ResultUtils() {}
 
 	/**
 	 * 返回失败 Result 的默认应答
@@ -28,7 +30,7 @@ public class ResultUtil {
 	 * @param errorCode ErrorCode（系统应答状态码）
 	 * @return Result
 	 */
-	public static BaseResult failBaseResult(ErrorCode errorCode) {
+	public static BaseResult failBaseResult(final ErrorCode errorCode) {
 		return new BaseResult(errorCode);
 	}
 
@@ -39,7 +41,7 @@ public class ResultUtil {
 	 * @param params    补充信息数组
 	 * @return Result
 	 */
-	public static BaseResult failBaseResult(ErrorCode errorCode, Object... params) {
+	public static BaseResult failBaseResult(final ErrorCode errorCode, final Object... params) {
 		return new BaseResult(false, errorCode.getCode(), errorCode.getTemplate(),
 			params);
 	}
@@ -74,8 +76,7 @@ public class ResultUtil {
 	 * @param params   错误信息参数
 	 * @return Result
 	 */
-	public static BaseResult failBaseResult(String code, String template,
-		Object... params) {
+	public static BaseResult failBaseResult(String code, String template, Object... params) {
 		return new BaseResult(false, code, template, params);
 	}
 
@@ -120,8 +121,7 @@ public class ResultUtil {
 	 * @param <T>      数据类型
 	 * @return DataListResult
 	 */
-	public static <T> DataListResult<T> failDataListResult(String code,
-		List<String> messages) {
+	public static <T> DataListResult<T> failDataListResult(String code, List<String> messages) {
 		return new DataListResult<>(null, false, code, messages);
 	}
 
@@ -134,8 +134,7 @@ public class ResultUtil {
 	 * @param <T>      数据类型
 	 * @return DataListResult
 	 */
-	public static <T> DataListResult<T> failDataListResult(String code, String template,
-		Object... params) {
+	public static <T> DataListResult<T> failDataListResult(String code, String template, Object... params) {
 		return new DataListResult<>(null, false, code, template, params);
 	}
 
@@ -191,8 +190,7 @@ public class ResultUtil {
 	 * @param params   错误信息参数
 	 * @return Result
 	 */
-	public static <T> DataResult<T> failDataResult(String code, String template,
-		Object... params) {
+	public static <T> DataResult<T> failDataResult(String code, String template, Object... params) {
 		return new DataResult<>(null, false, code, template, params);
 	}
 
@@ -249,16 +247,11 @@ public class ResultUtil {
 	 * @param params   信息参数
 	 * @return PageResult
 	 */
-	public static <T> PageResult<T> failPageResult(String code, String template,
-		Object... params) {
+	public static <T> PageResult<T> failPageResult(String code, String template, Object... params) {
 		return new PageResult<>(null, false, code, template, params);
 	}
 
-	public static boolean isNotValidResult(BaseResult baseResult) {
-		return !isValidResult(baseResult);
-	}
-
-	public static boolean isValidResult(BaseResult baseResult) {
+	public static boolean isValid(BaseResult baseResult) {
 		if (baseResult == null) {
 			return false;
 		}
@@ -266,11 +259,7 @@ public class ResultUtil {
 		return baseResult.getSuccess();
 	}
 
-	public static <T> boolean isNotValidResult(DataResult<T> dataResult) {
-		return !isValidResult(dataResult);
-	}
-
-	public static <T> boolean isValidResult(DataResult<T> dataResult) {
+	public static <T> boolean isValid(DataResult<T> dataResult) {
 		if (dataResult == null || !dataResult.getSuccess()) {
 			return false;
 		}
@@ -278,11 +267,7 @@ public class ResultUtil {
 		return dataResult.getData() != null;
 	}
 
-	public static <T> boolean isNotValidResult(DataListResult<T> dataListResult) {
-		return !isValidResult(dataListResult);
-	}
-
-	public static <T> boolean isValidResult(DataListResult<T> dataListResult) {
+	public static <T> boolean isValid(DataListResult<T> dataListResult) {
 		if (dataListResult == null || !dataListResult.getSuccess()) {
 			return false;
 		}
@@ -290,17 +275,29 @@ public class ResultUtil {
 		return !CollectionUtils.isEmpty(dataListResult.getData());
 	}
 
-	public static <T> boolean isNotValidResult(PageResult<T> pageResult) {
-		return !isValidResult(pageResult);
-	}
-
-	public static <T> boolean isValidResult(PageResult<T> pageResult) {
+	public static <T> boolean isValid(PageResult<T> pageResult) {
 		if (pageResult == null || !pageResult.getSuccess()) {
 			return false;
 		}
 
 		Pagination<T> pagination = pageResult.getData();
 		return pagination != null && !CollectionUtils.isEmpty(pagination.getList());
+	}
+
+	public static boolean isNotValid(BaseResult baseResult) {
+		return !isValid(baseResult);
+	}
+
+	public static <T> boolean isNotValid(DataResult<T> dataResult) {
+		return !isValid(dataResult);
+	}
+
+	public static <T> boolean isNotValid(DataListResult<T> dataListResult) {
+		return !isValid(dataListResult);
+	}
+
+	public static <T> boolean isNotValid(PageResult<T> pageResult) {
+		return !isValid(pageResult);
 	}
 
 	/**

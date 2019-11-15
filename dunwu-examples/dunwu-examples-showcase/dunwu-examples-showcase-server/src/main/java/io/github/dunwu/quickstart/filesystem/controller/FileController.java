@@ -99,12 +99,12 @@ public class FileController {
 		String ip = ServletUtil.getRealRemoteAddr(request);
 		DataResult<Boolean> dataResult = fileManager.allowAccess(ip);
 		if (dataResult.getData()) {
-			return ResultUtil.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(),
+			return ResultUtils.failDataResult(AppCode.ERROR_AUTHENTICATION.getCode(),
 				"上传请求过于频繁，请稍后再尝试");
 		}
 
 		if (uploadFileDTO == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
+			return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
 		return fileManager.create(uploadFileDTO);

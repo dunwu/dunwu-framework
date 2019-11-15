@@ -74,7 +74,7 @@ public class FileManagerImpl implements FileManager {
 			} else if (now.getTime() - first.getTime() < uploadTimeLimit.getStatTimeRange()
 				&& accessDTO.getCount() + 1 > uploadTimeLimit.getStatTimeRange()) {
 				// 首次请求时间在时间间隔内，且访问次数超过限制，拒绝访问
-				return ResultUtil.successDataResult(true);
+				return ResultUtils.successDataResult(true);
 			} else {
 				accessDTO.setCount(accessDTO.getCount() + 1);
 			}
@@ -85,7 +85,7 @@ public class FileManagerImpl implements FileManager {
 		synchronized (map) {
 			map.put(ip, accessDTO);
 		}
-		return ResultUtil.successDataResult(false);
+		return ResultUtils.successDataResult(false);
 	}
 
 	@Override
@@ -97,19 +97,19 @@ public class FileManagerImpl implements FileManager {
 		FileDTO fileDTO = convert(uploadFileDTO);
 		String storeUrl = fileStorageService.create(uploadFileDTO);
 		if (StringUtils.isBlank(storeUrl)) {
-			return ResultUtil.failDataResult(AppCode.ERROR_IO);
+			return ResultUtils.failDataResult(AppCode.ERROR_IO);
 		}
 		File file = BeanUtils.map(fileDTO, File.class);
 		file.setStoreUrl(storeUrl);
 		fileInfoMapper.insert(file);
-		return ResultUtil.successDataResult(fileDTO);
+		return ResultUtils.successDataResult(fileDTO);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResult delete(FileQuery fileQuery) throws IOException {
 		if (fileQuery == null) {
-			return ResultUtil.failBaseResult(AppCode.ERROR_PARAMETER);
+			return ResultUtils.failBaseResult(AppCode.ERROR_PARAMETER);
 		}
 
 		File query = BeanUtils.map(fileQuery, File.class);
@@ -121,23 +121,23 @@ public class FileManagerImpl implements FileManager {
 		if (fileService.delete(fileDTO)) {
 			int num = fileInfoMapper.deleteById(file.getId());
 			if (num > 0) {
-				return ResultUtil.successBaseResult();
+				return ResultUtils.successBaseResult();
 			}
 		}
 
-		return ResultUtil.failBaseResult(AppCode.ERROR_DB);
+		return ResultUtils.failBaseResult(AppCode.ERROR_DB);
 	}
 
 	@Override
 	public DataResult<FileDTO> getOne(FileQuery fileQuery) throws IOException {
 		if (fileQuery == null) {
-			return ResultUtil.failDataResult(AppCode.ERROR_PARAMETER);
+			return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
 		}
 
 		File fileInfoQuery = BeanUtils.map(fileQuery, File.class);
 		File file = fileInfoMapper.selectOne(new QueryWrapper<>(fileInfoQuery));
 		if (file == null) {
-			return ResultUtil.successDataResult(null);
+			return ResultUtils.successDataResult(null);
 		}
 
 		FileStoreTypeEnum storeType = file.getStoreType();
@@ -145,7 +145,7 @@ public class FileManagerImpl implements FileManager {
 			FileStorageService.class);
 		FileDTO query = BeanUtils.map(file, FileDTO.class);
 		FileDTO fileDTO = fileService.getContent(query);
-		return ResultUtil.successDataResult(fileDTO);
+		return ResultUtils.successDataResult(fileDTO);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class FileManagerImpl implements FileManager {
 		pagination.setTotal(result.getTotal());
 		pagination.setPages(result.getPages());
 		pagination.setList(list);
-		return ResultUtil.successPageResult(pagination);
+		return ResultUtils.successPageResult(pagination);
 	}
 
 	/**
