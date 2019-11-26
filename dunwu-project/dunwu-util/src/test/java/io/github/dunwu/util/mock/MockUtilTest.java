@@ -169,7 +169,7 @@ public class MockUtilTest {
 	void mock() {
 		String[] charset = new String[] { "A", "B", "C", "D" };
 		List<String> list = Arrays.asList(charset);
-		System.out.println("random param: " + RandomExtUtils.randomStringInList(list));
+		System.out.println("random param: " + RandomExtUtils.randomInList(list));
 	}
 
 }

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.github.dunwu</groupId>
 		<artifactId>dunwu-project</artifactId>
-		<version>0.4.9</version>
+		<version>0.4.10-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -48,6 +48,7 @@
 		<swagger-annotations.version>1.5.22</swagger-annotations.version>
 		<swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
+		<fst.version>2.56</fst.version>
 
 		<!-- Plugin versions -->
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
@@ -350,6 +351,11 @@
 				<groupId>com.spring4all</groupId>
 				<artifactId>swagger-spring-boot-starter</artifactId>
 				<version>${swagger-spring-boot-starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.ruedigermoeller</groupId>
+				<artifactId>fst</artifactId>
+				<version>${fst.version}</version>
 			</dependency>
 			<!-- utils end -->
 		</dependencies>

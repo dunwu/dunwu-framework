@@ -15,8 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RandomExtUtilsTest {
 
-	final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
-
 	@RepeatedTest(30)
 	void anyCBoyFirstName() {
 		System.out.println("随机中文男孩名：" + RandomExtUtils.randomChineseBoyFirstName());
@@ -59,6 +57,7 @@ class RandomExtUtilsTest {
 		LocalDateTime min = LocalDateTime.of(2018, 12, 1, 0, 0, 0);
 		LocalDateTime max = LocalDateTime.of(2018, 12, 6, 23, 59, 59);
 
+		String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
 		String date = RandomExtUtils.randomDate(min, max, DATE_PATTERN);
 		System.out.println(
 			"RandomExtUtils.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
@@ -226,7 +225,7 @@ class RandomExtUtilsTest {
 	void randomStringInList() {
 		String[] charset = new String[] { "A", "B", "C", "D" };
 		List<String> list = Arrays.asList(charset);
-		System.out.println("random param: " + RandomExtUtils.randomStringInList(list));
+		System.out.println("random param: " + RandomExtUtils.randomInList(list));
 	}
 
 	enum Color {
