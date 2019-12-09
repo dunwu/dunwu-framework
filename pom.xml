@@ -5,13 +5,59 @@
 
 	<groupId>io.github.dunwu</groupId>
 	<artifactId>dunwu</artifactId>
-	<version>0.4.10-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<description>用于支持 Spring、Spring Boot 的全方面脚手架</description>
+	<name>dunwu</name>
+	<description>Dunwu Project</description>
 
 	<modules>
-		<module>dunwu-project</module>
-		<module>dunwu-examples</module>
+		<module>dunwu-dependencies</module>
+		<module>dunwu-parent</module>
+		<module>dunwu-tool</module>
+		<module>dunwu-common</module>
+		<module>dunwu-starters</module>
 	</modules>
 
+	<properties>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>release</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>oss</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
+				<repository>
+					<id>oss</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 </project>
