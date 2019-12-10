@@ -8,6 +8,7 @@ import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
 import io.github.dunwu.util.text.RegexUtils;
+import io.github.dunwu.util.text.ValidatorUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,7 +70,7 @@ public class IpUtils {
 	 * @return true / false
 	 */
 	public static boolean isValidIp(final String ipStr) {
-		return RegexUtils.isIpv4(ipStr) || RegexUtils.isIpv6(ipStr);
+		return ValidatorUtils.isIpv4(ipStr) || ValidatorUtils.isIpv6(ipStr);
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class IpUtils {
 	 * @return true / false
 	 */
 	public static boolean isValidIpv4(final String ipv4Str) {
-		return RegexUtils.isIpv4(ipv4Str);
+		return ValidatorUtils.isIpv4(ipv4Str);
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class IpUtils {
 	 * @return true / false
 	 */
 	public static boolean isValidIpv6(final String ipv6Str) {
-		return RegexUtils.isIpv6(ipv6Str);
+		return ValidatorUtils.isIpv6(ipv6Str);
 	}
 
 	// Inet4Address

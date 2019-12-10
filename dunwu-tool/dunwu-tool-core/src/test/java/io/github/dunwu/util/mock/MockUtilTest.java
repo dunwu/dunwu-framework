@@ -2,6 +2,7 @@ package io.github.dunwu.util.mock;
 
 import io.github.dunwu.util.RandomExtUtils;
 import io.github.dunwu.util.text.RegexUtils;
+import io.github.dunwu.util.text.ValidatorUtils;
 import io.github.dunwu.util.time.DateExtUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
@@ -125,7 +126,7 @@ public class MockUtilTest {
 	void anyIPv4() {
 		String ip = RandomExtUtils.randomIpv4();
 		System.out.println("RandomExtUtils.anyIpv4(): " + ip);
-		Assertions.assertTrue(RegexUtils.isIpv4(ip));
+		Assertions.assertTrue(ValidatorUtils.isIpv4(ip));
 	}
 
 	@RepeatedTest(10)

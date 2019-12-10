@@ -43,6 +43,7 @@
 		<swagger-annotations.version>1.5.22</swagger-annotations.version>
 		<swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
+		<zxing.version>3.4.0</zxing.version>
 		<fst.version>2.56</fst.version>
 
 		<!-- Plugin versions -->
@@ -346,6 +347,11 @@
 				<groupId>net.coobird</groupId>
 				<artifactId>thumbnailator</artifactId>
 				<version>${thumbnailator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.zxing</groupId>
+				<artifactId>core</artifactId>
+				<version>${zxing.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger</groupId>

@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import io.github.dunwu.util.SystemExtUtils;
 import io.github.dunwu.util.base.StringExtUtils;
 import io.github.dunwu.util.number.UnitConvertUtils;
-import io.github.dunwu.util.text.TextUtil;
+import io.github.dunwu.util.text.TextUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -1277,7 +1277,7 @@ public class FileExtUtils {
 
 		@Override
 		public boolean apply(File file) {
-			return file.isFile() && TextUtil.match(file.getName(), pattern);
+			return file.isFile() && TextUtils.match(file.getName(), pattern);
 		}
 
 	}

@@ -2,8 +2,8 @@ package io.github.dunwu.util.parser;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import io.github.dunwu.test.bean.GenderEnum;
-import io.github.dunwu.test.bean.User;
+import io.github.dunwu.bean.GenderEnum;
+import io.github.dunwu.bean.User;
 import io.github.dunwu.util.io.AnsiSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

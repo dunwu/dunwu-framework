@@ -19,5 +19,6 @@
 		<module>dunwu-tool-core</module>
 		<module>dunwu-tool-all</module>
 		<module>dunwu-tool-net</module>
+		<module>dunwu-tool-image</module>
 	</modules>
 </project>

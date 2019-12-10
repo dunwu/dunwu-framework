@@ -1,7 +1,7 @@
 package io.github.dunwu.util.io;
 
-import io.github.dunwu.test.bean.TestBean;
-import io.github.dunwu.test.bean.TestBeanUtils;
+import io.github.dunwu.bean.TestBean;
+import io.github.dunwu.bean.TestBeanUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

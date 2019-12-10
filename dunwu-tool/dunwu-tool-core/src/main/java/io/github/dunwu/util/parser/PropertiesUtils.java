@@ -1,6 +1,6 @@
 package io.github.dunwu.util.parser;
 
-import io.github.dunwu.util.io.UrlResourceUtil;
+import io.github.dunwu.util.io.ResourceUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
@@ -80,7 +80,7 @@ public class PropertiesUtils {
 	 */
 	public static Properties loadFromFile(String file) throws IOException {
 		Properties properties = new Properties();
-		InputStream inputStream = UrlResourceUtil.asStream(file);
+		InputStream inputStream = ResourceUtils.toInputStream(file);
 		Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 		properties.load(reader);
 		return properties;
