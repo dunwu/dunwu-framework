@@ -23,14 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuLogoutSuccessHandler implements LogoutSuccessHandler {
 
-	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-		Authentication authentication) throws IOException, ServletException {
-		BaseResult result = ResultUtils.successBaseResult();
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(JSON.toJSONString(result));
-	}
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException, ServletException {
+        BaseResult result = ResultUtils.successBaseResult();
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
 }

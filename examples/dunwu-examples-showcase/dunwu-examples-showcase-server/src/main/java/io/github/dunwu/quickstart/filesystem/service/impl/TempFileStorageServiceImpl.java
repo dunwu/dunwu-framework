@@ -32,48 +32,48 @@ import javax.annotation.PostConstruct;
 @Service(value = FileSystemConstant.TEMP_FILE_CONTENT_SERVICE)
 public class TempFileStorageServiceImpl implements FileStorageService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final FileSystemProperties fileSystemProperties;
+    private final FileSystemProperties fileSystemProperties;
 
-	@Override
-	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		String storeUrl = fileSystemProperties.getTemp().getLocation() + "/"
-			+ uploadFileDTO.getOriginName();
-		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
-		Files.write(path.resolve(storeUrl), uploadFileDTO.getFile().getBytes(),
-			StandardOpenOption.CREATE);
-		return storeUrl;
-	}
+    @Override
+    public String create(UploadFileDTO uploadFileDTO) throws IOException {
+        String storeUrl = fileSystemProperties.getTemp().getLocation() + "/"
+            + uploadFileDTO.getOriginName();
+        Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
+        Files.write(path.resolve(storeUrl), uploadFileDTO.getFile().getBytes(),
+            StandardOpenOption.CREATE);
+        return storeUrl;
+    }
 
-	@Override
-	public boolean delete(FileDTO fileDTO) throws IOException {
-		Path path = Paths.get(fileDTO.getStoreUrl());
-		Files.delete(path);
-		return true;
-	}
+    @Override
+    public boolean delete(FileDTO fileDTO) throws IOException {
+        Path path = Paths.get(fileDTO.getStoreUrl());
+        Files.delete(path);
+        return true;
+    }
 
-	@Override
-	public FileDTO getContent(FileDTO fileDTO) throws IOException {
-		Path path = Paths.get(fileDTO.getStoreUrl());
-		Resource resource = new UrlResource(path.toUri());
-		if (resource.exists() || resource.isReadable()) {
-			byte[] bytes = FileUtils.readFileToByteArray(resource.getFile());
-			fileDTO.setContent(bytes);
-			return fileDTO;
-		} else {
-			throw new IOException("Could not read file: " + fileDTO.getStoreUrl());
-		}
-	}
+    @Override
+    public FileDTO getContent(FileDTO fileDTO) throws IOException {
+        Path path = Paths.get(fileDTO.getStoreUrl());
+        Resource resource = new UrlResource(path.toUri());
+        if (resource.exists() || resource.isReadable()) {
+            byte[] bytes = FileUtils.readFileToByteArray(resource.getFile());
+            fileDTO.setContent(bytes);
+            return fileDTO;
+        } else {
+            throw new IOException("Could not read file: " + fileDTO.getStoreUrl());
+        }
+    }
 
-	@PostConstruct
-	public void init() {
-		Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
-		try {
-			Files.createDirectories(path);
-		} catch (IOException e) {
-			log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp().getLocation());
-		}
-	}
+    @PostConstruct
+    public void init() {
+        Path path = Paths.get(fileSystemProperties.getTemp().getLocation());
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            log.error("创建临时文件存储目录 {} 失败", fileSystemProperties.getTemp().getLocation());
+        }
+    }
 
 }

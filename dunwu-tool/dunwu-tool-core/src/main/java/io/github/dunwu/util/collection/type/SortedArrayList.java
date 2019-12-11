@@ -38,141 +38,141 @@ import java.util.Iterator;
  */
 public final class SortedArrayList<E> extends ArrayList<E> {
 
-	private static final long serialVersionUID = -8301136559614447593L;
+    private static final long serialVersionUID = -8301136559614447593L;
 
-	protected final Comparator<? super E> comparator;
+    protected final Comparator<? super E> comparator;
 
-	/**
-	 * Constructs a new <code>SortedArrayList</code>.
-	 */
-	public SortedArrayList(Comparator<? super E> c) {
-		comparator = c;
-	}
+    /**
+     * Constructs a new <code>SortedArrayList</code>.
+     */
+    public SortedArrayList(Comparator<? super E> c) {
+        comparator = c;
+    }
 
-	/**
-	 * Constructs a new <code>SortedArrayList</code> expecting elements are comparable.
-	 */
-	public SortedArrayList() {
-		comparator = null;
-	}
+    /**
+     * Constructs a new <code>SortedArrayList</code> expecting elements are comparable.
+     */
+    public SortedArrayList() {
+        comparator = null;
+    }
 
-	/**
-	 * Constructs a new <code>SortedArrayList</code> expecting elements are comparable.
-	 */
-	public SortedArrayList(Collection<? extends E> c) {
-		comparator = null;
-		addAll(c);
-	}
+    /**
+     * Constructs a new <code>SortedArrayList</code> expecting elements are comparable.
+     */
+    public SortedArrayList(Collection<? extends E> c) {
+        comparator = null;
+        addAll(c);
+    }
 
-	/**
-	 * Finds the index at which object should be inserted.
-	 */
-	public int findInsertionPoint(E o) {
-		return findInsertionPoint(o, 0, size() - 1);
-	}
+    /**
+     * Finds the index at which object should be inserted.
+     */
+    public int findInsertionPoint(E o) {
+        return findInsertionPoint(o, 0, size() - 1);
+    }
 
-	// ---------------------------------------------------------------- override
+    // ---------------------------------------------------------------- override
 
-	/**
-	 * Conducts a binary search to find the index where Object should be inserted.
-	 */
-	protected int findInsertionPoint(E o, int originalLow, int originalHigh) {
-		int low = originalLow;
-		int high = originalHigh;
-		while (low <= high) {
-			int mid = low + ((high - low) >>> 1);
-			int delta = compare(get(mid), o);
+    /**
+     * Conducts a binary search to find the index where Object should be inserted.
+     */
+    protected int findInsertionPoint(E o, int originalLow, int originalHigh) {
+        int low = originalLow;
+        int high = originalHigh;
+        while (low <= high) {
+            int mid = low + ((high - low) >>> 1);
+            int delta = compare(get(mid), o);
 
-			if (delta > 0) {
-				high = mid - 1;
-			} else {
-				low = mid + 1;
-			}
-		}
+            if (delta > 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
 
-		return low;
-	}
+        return low;
+    }
 
-	/**
-	 * Compares two keys using the correct comparison method for this collection.
-	 */
-	@SuppressWarnings({ "unchecked" })
-	protected int compare(E k1, E k2) {
-		if (comparator == null) {
-			return ((Comparable) k1).compareTo(k2);
-		}
-		return comparator.compare(k1, k2);
-	}
+    /**
+     * Compares two keys using the correct comparison method for this collection.
+     */
+    @SuppressWarnings({ "unchecked" })
+    protected int compare(E k1, E k2) {
+        if (comparator == null) {
+            return ((Comparable) k1).compareTo(k2);
+        }
+        return comparator.compare(k1, k2);
+    }
 
-	/**
-	 * @throws UnsupportedOperationException This method not supported.
-	 */
-	@Override
-	@Deprecated
-	public E set(int index, E element) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @throws UnsupportedOperationException This method not supported.
+     */
+    @Override
+    @Deprecated
+    public E set(int index, E element) {
+        throw new UnsupportedOperationException();
+    }
 
-	// ---------------------------------------------------------------- unsupported
-	// methods
+    // ---------------------------------------------------------------- unsupported
+    // methods
 
-	/**
-	 * Adds an Object to sorted list. Object is inserted at correct place, found using binary search. If the same item
-	 * exist, it will be put to the end of the range.
-	 * <p>
-	 * This method breaks original list contract since objects are not added at the list end, but in sorted manner.
-	 */
-	@Override
-	public boolean add(E o) {
-		int idx = 0;
-		if (!isEmpty()) {
-			idx = findInsertionPoint(o);
-		}
-		super.add(idx, o);
-		return true;
-	}
+    /**
+     * Adds an Object to sorted list. Object is inserted at correct place, found using binary search. If the same item
+     * exist, it will be put to the end of the range.
+     * <p>
+     * This method breaks original list contract since objects are not added at the list end, but in sorted manner.
+     */
+    @Override
+    public boolean add(E o) {
+        int idx = 0;
+        if (!isEmpty()) {
+            idx = findInsertionPoint(o);
+        }
+        super.add(idx, o);
+        return true;
+    }
 
-	/**
-	 * @throws UnsupportedOperationException This method not supported.
-	 */
-	@Override
-	@Deprecated
-	public void add(int index, E element) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @throws UnsupportedOperationException This method not supported.
+     */
+    @Override
+    @Deprecated
+    public void add(int index, E element) {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * Add all of the elements in the given collection to this list.
-	 */
-	@Override
-	public boolean addAll(Collection<? extends E> c) {
-		Iterator<? extends E> i = c.iterator();
-		boolean changed = false;
-		while (i.hasNext()) {
-			boolean ret = add(i.next());
-			if (!changed) {
-				changed = ret;
-			}
-		}
-		return changed;
-	}
+    /**
+     * Add all of the elements in the given collection to this list.
+     */
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        Iterator<? extends E> i = c.iterator();
+        boolean changed = false;
+        while (i.hasNext()) {
+            boolean ret = add(i.next());
+            if (!changed) {
+                changed = ret;
+            }
+        }
+        return changed;
+    }
 
-	// ---------------------------------------------------------------- sorting
+    // ---------------------------------------------------------------- sorting
 
-	/**
-	 * @throws UnsupportedOperationException This method not supported.
-	 */
-	@Override
-	@Deprecated
-	public boolean addAll(int index, Collection<? extends E> c) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * @throws UnsupportedOperationException This method not supported.
+     */
+    @Override
+    @Deprecated
+    public boolean addAll(int index, Collection<? extends E> c) {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * Returns comparator assigned to this collection, if such exist.
-	 */
-	public Comparator getComparator() {
-		return comparator;
-	}
+    /**
+     * Returns comparator assigned to this collection, if such exist.
+     */
+    public Comparator getComparator() {
+        return comparator;
+    }
 
 }

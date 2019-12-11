@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.github.dunwu</groupId>
-	<artifactId>dunwu</artifactId>
-	<version>0.5.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>dunwu</name>
-	<description>Dunwu Project</description>
+  <groupId>io.github.dunwu</groupId>
+  <artifactId>dunwu</artifactId>
+  <version>0.5.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>dunwu</name>
+  <description>Dunwu Project</description>
 
-	<modules>
-		<module>dunwu-dependencies</module>
-		<module>dunwu-parent</module>
-		<module>dunwu-tool</module>
-		<module>dunwu-common</module>
-		<module>dunwu-starters</module>
-	</modules>
+  <modules>
+    <module>dunwu-dependencies</module>
+    <module>dunwu-parent</module>
+    <module>dunwu-tool</module>
+    <module>dunwu-common</module>
+    <module>dunwu-starters</module>
+  </modules>
 
-	<properties>
-		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-	</properties>
+  <properties>
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+  </properties>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<activation>
-				<property>
-					<name>release</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>${maven-gpg-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-				</snapshotRepository>
-				<repository>
-					<id>oss</id>
-					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 </project>

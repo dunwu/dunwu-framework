@@ -15,28 +15,28 @@ package io.github.dunwu.util.io.constant;
  */
 public enum AnsiSgr implements AnsiElement {
 
-	NORMAL("0"),
-	BOLD("1"),
-	FAINT("2"),
-	ITALIC("3"),
-	UNDERLINE("4"),
-	SLOW_BLINK("5"),
-	RAPID_BLINK("6"),
-	REVERSE_VIDEO("7"),
-	CONCEAL("8");
+    NORMAL("0"),
+    BOLD("1"),
+    FAINT("2"),
+    ITALIC("3"),
+    UNDERLINE("4"),
+    SLOW_BLINK("5"),
+    RAPID_BLINK("6"),
+    REVERSE_VIDEO("7"),
+    CONCEAL("8");
 
-	private final String code;
+    private final String code;
 
-	AnsiSgr(String code) {
-		this.code = code;
-	}
+    AnsiSgr(String code) {
+        this.code = code;
+    }
 
-	@Override
-	public String toString() {
-		return code;
-	}
+    @Override
+    public String toString() {
+        return code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 }

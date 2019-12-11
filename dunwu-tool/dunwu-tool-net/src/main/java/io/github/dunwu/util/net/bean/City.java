@@ -13,89 +13,89 @@ import java.util.TreeSet;
  */
 public class City implements Comparable<City>, Serializable {
 
-	private static final long serialVersionUID = -4489647518591298590L;
+    private static final long serialVersionUID = -4489647518591298590L;
 
-	/**
-	 * 编码
-	 */
-	private String code;
+    /**
+     * 编码
+     */
+    private String code;
 
-	/**
-	 * 名称
-	 */
-	private String name;
+    /**
+     * 名称
+     */
+    private String name;
 
-	/**
-	 * 下辖区/县
-	 */
-	@JSONField(name = "children")
-	private Set<County> counties;
+    /**
+     * 下辖区/县
+     */
+    @JSONField(name = "children")
+    private Set<County> counties;
 
-	/**
-	 * 所属省
-	 */
-	private Province province;
+    /**
+     * 所属省
+     */
+    private Province province;
 
-	public City() {
-		counties = new TreeSet<>();
-	}
+    public City() {
+        counties = new TreeSet<>();
+    }
 
-	@Override
-	public int compareTo(City o) {
-		return this.getCode().compareToIgnoreCase(o.getCode());
-	}
+    @Override
+    public int compareTo(City o) {
+        return this.getCode().compareToIgnoreCase(o.getCode());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(code);
-	}
+    public String getCode() {
+        return code;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) { return true; }
-		if (!(o instanceof City)) { return false; }
-		City city = (City) o;
-		return code.equals(city.getCode());
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@Override
-	public String toString() {
-		return "City{" +
-			"code='" + code + '\'' +
-			", name='" + name + '\'' +
-			'}';
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (!(o instanceof City)) { return false; }
+        City city = (City) o;
+        return code.equals(city.getCode());
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Override
+    public String toString() {
+        return "City{" +
+            "code='" + code + '\'' +
+            ", name='" + name + '\'' +
+            '}';
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<County> getCounties() {
-		return counties;
-	}
+    public Set<County> getCounties() {
+        return counties;
+    }
 
-	public void setCounties(Set<County> counties) {
-		this.counties = counties;
-	}
+    public void setCounties(Set<County> counties) {
+        this.counties = counties;
+    }
 
-	public Province getProvince() {
-		return province;
-	}
+    public Province getProvince() {
+        return province;
+    }
 
-	public void setProvince(Province province) {
-		this.province = province;
-	}
+    public void setProvince(Province province) {
+        this.province = province;
+    }
 
 }

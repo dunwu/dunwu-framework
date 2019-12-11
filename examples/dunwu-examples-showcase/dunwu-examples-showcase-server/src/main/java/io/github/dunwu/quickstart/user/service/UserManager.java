@@ -10,10 +10,10 @@ import io.github.dunwu.quickstart.user.dto.UserDTO;
  */
 public interface UserManager {
 
-	UserDTO getByUsername(String username);
+    UserDTO getByUsername(String username);
 
-	BaseResult register(UserDTO userDTO);
+    BaseResult register(UserDTO userDTO);
 
-	DataResult<Boolean> isUserExists(UserDTO userDTO);
+    DataResult<Boolean> isUserExists(UserDTO userDTO);
 
 }

@@ -13,14 +13,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "dunwu.web.security")
 public class DunwuWebSecurityProperties {
 
-	private Boolean enable;
+    private Boolean enable;
 
-	private String registerUrl = "/user/register";
+    private String registerUrl = "/user/register";
 
-	private String loginUrl = "/user/login";
+    private String loginUrl = "/user/login";
 
-	private String logoutUrl = "/user/logout";
+    private String logoutUrl = "/user/logout";
 
-	private String validUrl = "/user/isValidUser";
+    private String validUrl = "/user/isValidUser";
 
 }

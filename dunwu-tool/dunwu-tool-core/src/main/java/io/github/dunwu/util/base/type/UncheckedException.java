@@ -5,15 +5,15 @@ package io.github.dunwu.util.base.type;
  */
 public class UncheckedException extends RuntimeException {
 
-	private static final long serialVersionUID = 4140223302171577501L;
+    private static final long serialVersionUID = 4140223302171577501L;
 
-	public UncheckedException(Throwable wrapped) {
-		super(wrapped);
-	}
+    public UncheckedException(Throwable wrapped) {
+        super(wrapped);
+    }
 
-	@Override
-	public String getMessage() {
-		return super.getCause().getMessage();
-	}
+    @Override
+    public String getMessage() {
+        return super.getCause().getMessage();
+    }
 
 }

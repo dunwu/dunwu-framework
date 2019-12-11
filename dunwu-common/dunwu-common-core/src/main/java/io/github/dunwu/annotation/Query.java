@@ -14,6 +14,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Query {
 
-	Class<?> entityClass() default Object.class;
+    Class<?> entityClass() default Object.class;
 
 }

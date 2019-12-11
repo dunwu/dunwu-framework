@@ -17,35 +17,35 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class PageResult<T> extends BaseResult {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Pagination<T> data;
+    private Pagination<T> data;
 
-	public PageResult() {
-	}
+    public PageResult() {
+    }
 
-	public PageResult(BaseResult result) {
-		super(result);
-		this.data = null;
-	}
+    public PageResult(BaseResult result) {
+        super(result);
+        this.data = null;
+    }
 
-	public PageResult(ErrorCode appCode) {
-		super(appCode);
-	}
+    public PageResult(ErrorCode appCode) {
+        super(appCode);
+    }
 
-	public PageResult(Pagination<T> data, Boolean success, String code, String message) {
-		super(success, code, message);
-		this.data = data;
-	}
+    public PageResult(Pagination<T> data, Boolean success, String code, String message) {
+        super(success, code, message);
+        this.data = data;
+    }
 
-	public PageResult(Pagination<T> data, Boolean success, String code, List<String> messages) {
-		super(success, code, messages);
-		this.data = data;
-	}
+    public PageResult(Pagination<T> data, Boolean success, String code, List<String> messages) {
+        super(success, code, messages);
+        this.data = data;
+    }
 
-	public PageResult(Pagination<T> data, Boolean success, String code, String message, Object... params) {
-		super(success, code, message, params);
-		this.data = data;
-	}
+    public PageResult(Pagination<T> data, Boolean success, String code, String message, Object... params) {
+        super(success, code, message, params);
+        this.data = data;
+    }
 
 }

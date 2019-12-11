@@ -24,14 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAccessDeniedHandler implements AccessDeniedHandler {
 
-	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-		AccessDeniedException e) throws IOException, ServletException {
-		BaseResult result = ResultUtils.failBaseResult(AppCode.UNAUTHORIZED);
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(JSON.toJSONString(result));
-	}
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+        AccessDeniedException e) throws IOException, ServletException {
+        BaseResult result = ResultUtils.failBaseResult(AppCode.UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
 }

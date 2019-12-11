@@ -8,16 +8,16 @@ package io.github.dunwu.quickstart.filesystem.constant;
  */
 public interface FileSystemConstant {
 
-	String FILE_SEPARATOR = ".";
+    String FILE_SEPARATOR = ".";
 
-	String DB_FILE_CONTENT_SERVICE = "dbFileContentService";
+    String DB_FILE_CONTENT_SERVICE = "dbFileContentService";
 
-	String FDFS_FILE_CONTENT_SERVICE = "fdfsFileContentService";
+    String FDFS_FILE_CONTENT_SERVICE = "fdfsFileContentService";
 
-	String HDFS_FILE_CONTENT_SERVICE = "hdfsFileContentService";
+    String HDFS_FILE_CONTENT_SERVICE = "hdfsFileContentService";
 
-	String TEMP_FILE_CONTENT_SERVICE = "tempFileContentService";
+    String TEMP_FILE_CONTENT_SERVICE = "tempFileContentService";
 
-	String OSS_FILE_CONTENT_SERVICE = "ossFileContentService";
+    String OSS_FILE_CONTENT_SERVICE = "ossFileContentService";
 
 }

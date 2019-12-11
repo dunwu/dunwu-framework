@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Inherited
 public @interface JobHandler {
 
-	@AliasFor(annotation = Component.class)
-	String value() default "";
+    @AliasFor(annotation = Component.class)
+    String value() default "";
 
 }

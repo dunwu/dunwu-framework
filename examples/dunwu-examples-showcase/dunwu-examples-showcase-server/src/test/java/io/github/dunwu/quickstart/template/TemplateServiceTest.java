@@ -23,32 +23,32 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 public class TemplateServiceTest {
 
-	public static final String MAIL_TO = "forbreak@163.com";
+    public static final String MAIL_TO = "forbreak@163.com";
 
-	@Autowired
-	private DunwuMailProperties dunwuMailProperties;
+    @Autowired
+    private DunwuMailProperties dunwuMailProperties;
 
-	@Autowired
-	private MailService mailService;
+    @Autowired
+    private MailService mailService;
 
-	@Autowired
-	private TemplateService templateService;
+    @Autowired
+    private TemplateService templateService;
 
-	@Test
-	public void test() throws IOException, TemplateException {
-		Map<String, String> params = new HashMap<>(2);
-		params.put("to", MAIL_TO);
-		params.put("checkCode", "123456");
-		String content;
-		content = templateService.mergeTemplate(TemplateService.TMPL_MAIL_CHECKCODE,
-			params);
+    @Test
+    public void test() throws IOException, TemplateException {
+        Map<String, String> params = new HashMap<>(2);
+        params.put("to", MAIL_TO);
+        params.put("checkCode", "123456");
+        String content;
+        content = templateService.mergeTemplate(TemplateService.TMPL_MAIL_CHECKCODE,
+            params);
 
-		MailDTO mailDTO = new MailDTO();
-		mailDTO.setTo(new String[] { MAIL_TO });
-		mailDTO.setFrom(dunwuMailProperties.getFrom());
-		mailDTO.setSubject("校验码");
-		mailDTO.setText(content);
-		mailService.send(mailDTO);
-	}
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setTo(new String[] { MAIL_TO });
+        mailDTO.setFrom(dunwuMailProperties.getFrom());
+        mailDTO.setSubject("校验码");
+        mailDTO.setText(content);
+        mailService.send(mailDTO);
+    }
 
 }

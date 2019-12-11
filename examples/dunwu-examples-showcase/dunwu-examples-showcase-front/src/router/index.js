@@ -57,7 +57,7 @@ export const constantRoutes = [{
     path: 'index',
     component: () => import('@/views/profile/index'),
     name: 'Profile',
-    meta: { title: 'Profile', icon: 'user', noCache: true, affix: true }
+    meta: {title: 'Profile', icon: 'user', noCache: true, affix: true}
   }]
 }]
 
@@ -69,11 +69,11 @@ export const asyncRoutes = [/** when your routing map is too long, you can split
   demosRouter, showcaseRouter,
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }]
+  {path: '*', redirect: '/404', hidden: true}]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }), routes: constantRoutes
+  scrollBehavior: () => ({y: 0}), routes: constantRoutes
 })
 
 const router = createRouter()

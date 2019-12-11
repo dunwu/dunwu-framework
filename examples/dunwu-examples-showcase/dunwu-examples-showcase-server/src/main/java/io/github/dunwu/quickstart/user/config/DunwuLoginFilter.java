@@ -37,65 +37,65 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-	private final UserManager userManager;
+    private final UserManager userManager;
 
-	DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager) {
-		super(new AntPathRequestMatcher(defaultFilterProcessesUrl,
-			HttpMethod.POST.name()));
-		this.userManager = userManager;
-	}
+    DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager) {
+        super(new AntPathRequestMatcher(defaultFilterProcessesUrl,
+            HttpMethod.POST.name()));
+        this.userManager = userManager;
+    }
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request,
-		HttpServletResponse response)
-		throws AuthenticationException, IOException, ServletException {
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request,
+        HttpServletResponse response)
+        throws AuthenticationException, IOException, ServletException {
 
-		ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
-		String requestBody = getRequestBody(request);
-		Map<String, String> map = objectMapper.readValue(requestBody,
-			new TypeReference<Map<String, String>>() {
-			});
-		String username = map.get("username");
-		String password = map.get("password");
+        ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
+        String requestBody = getRequestBody(request);
+        Map<String, String> map = objectMapper.readValue(requestBody,
+            new TypeReference<Map<String, String>>() {
+            });
+        String username = map.get("username");
+        String password = map.get("password");
 
-		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-			throw new AuthenticationServiceException("用户名或密码为空");
-		}
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            throw new AuthenticationServiceException("用户名或密码为空");
+        }
 
-		UserDTO userDTO = userManager.getByUsername(username);
-		if (userDTO == null) {
-			throw new UsernameNotFoundException("用户名不存在");
-		}
+        UserDTO userDTO = userManager.getByUsername(username);
+        if (userDTO == null) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
 
-		if (!userDTO.getPassword().equals(password)) {
-			throw new AuthenticationServiceException("密码错误");
-		}
+        if (!userDTO.getPassword().equals(password)) {
+            throw new AuthenticationServiceException("密码错误");
+        }
 
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		for (RoleDTO role : userDTO.getRoles()) {
-			authorities.add(new SimpleGrantedAuthority(role.getCode()));
-		}
-		return new UsernamePasswordAuthenticationToken(username, password, authorities);
-	}
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (RoleDTO role : userDTO.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getCode()));
+        }
+        return new UsernamePasswordAuthenticationToken(username, password, authorities);
+    }
 
-	/**
-	 * 获取请求体
-	 */
-	private String getRequestBody(HttpServletRequest request)
-		throws AuthenticationException {
-		try {
-			StringBuilder stringBuilder = new StringBuilder();
-			InputStream inputStream = request.getInputStream();
-			byte[] bs = new byte[StreamUtils.BUFFER_SIZE];
-			int len;
-			while ((len = inputStream.read(bs)) != -1) {
-				stringBuilder.append(new String(bs, 0, len));
-			}
-			return stringBuilder.toString();
-		} catch (IOException e) {
-			log.error("get request body error.");
-		}
-		throw new AuthenticationServiceException("invalid request body");
-	}
+    /**
+     * 获取请求体
+     */
+    private String getRequestBody(HttpServletRequest request)
+        throws AuthenticationException {
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            InputStream inputStream = request.getInputStream();
+            byte[] bs = new byte[StreamUtils.BUFFER_SIZE];
+            int len;
+            while ((len = inputStream.read(bs)) != -1) {
+                stringBuilder.append(new String(bs, 0, len));
+            }
+            return stringBuilder.toString();
+        } catch (IOException e) {
+            log.error("get request body error.");
+        }
+        throw new AuthenticationServiceException("invalid request body");
+    }
 
 }

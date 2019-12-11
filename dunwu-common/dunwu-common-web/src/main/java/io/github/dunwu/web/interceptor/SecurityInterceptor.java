@@ -16,31 +16,31 @@ import javax.servlet.http.HttpSession;
  */
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final String tokenKey;
+    private final String tokenKey;
 
-	public SecurityInterceptor(String tokenKey) {
-		this.tokenKey = tokenKey;
-	}
+    public SecurityInterceptor(String tokenKey) {
+        this.tokenKey = tokenKey;
+    }
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-		Object handler) {
-		if (WebConstant.HTTP_METHOD_OPTIONS.equals(request.getMethod())) {
-			return true;
-		}
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+        Object handler) {
+        if (WebConstant.HTTP_METHOD_OPTIONS.equals(request.getMethod())) {
+            return true;
+        }
 
-		HttpSession session = request.getSession();
-		log.info("[{}] url = {}", request.getMethod(), request.getRequestURL());
-		log.info("session id = {}", session.getId());
-		String token = (String) session.getAttribute(tokenKey);
-		log.info("inceptor {} = {}", tokenKey, token);
-		if (StringUtils.isNoneBlank(token)) {
-			return true;
-		}
-		log.error("没有 session");
-		return true;
-	}
+        HttpSession session = request.getSession();
+        log.info("[{}] url = {}", request.getMethod(), request.getRequestURL());
+        log.info("session id = {}", session.getId());
+        String token = (String) session.getAttribute(tokenKey);
+        log.info("inceptor {} = {}", tokenKey, token);
+        if (StringUtils.isNoneBlank(token)) {
+            return true;
+        }
+        log.error("没有 session");
+        return true;
+    }
 
 }

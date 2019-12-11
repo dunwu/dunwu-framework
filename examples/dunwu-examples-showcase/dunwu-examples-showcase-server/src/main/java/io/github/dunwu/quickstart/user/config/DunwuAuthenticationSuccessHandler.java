@@ -26,17 +26,17 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request,
-		HttpServletResponse response, Authentication authentication)
-		throws IOException, ServletException {
-		List<String> roles = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		DataListResult result = ResultUtils.successDataListResult(roles);
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(JSON.toJSONString(result));
-	}
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request,
+        HttpServletResponse response, Authentication authentication)
+        throws IOException, ServletException {
+        List<String> roles = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        DataListResult result = ResultUtils.successDataListResult(roles);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
 }

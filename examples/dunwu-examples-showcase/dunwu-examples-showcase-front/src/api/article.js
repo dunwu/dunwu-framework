@@ -8,13 +8,13 @@ export function fetchList(query) {
 
 export function fetchArticle(id) {
   return request({
-    url: '/article/detail', method: 'get', params: { id }
+    url: '/article/detail', method: 'get', params: {id}
   })
 }
 
 export function fetchPv(pv) {
   return request({
-    url: '/article/pv', method: 'get', params: { pv }
+    url: '/article/pv', method: 'get', params: {pv}
   })
 }
 

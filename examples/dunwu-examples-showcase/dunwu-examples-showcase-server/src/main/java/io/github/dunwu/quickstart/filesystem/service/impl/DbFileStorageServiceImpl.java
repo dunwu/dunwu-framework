@@ -29,43 +29,43 @@ import java.io.IOException;
 @Service(value = FileSystemConstant.DB_FILE_CONTENT_SERVICE)
 public class DbFileStorageServiceImpl implements FileStorageService {
 
-	protected final FileContentMapper fileContentMapper;
+    protected final FileContentMapper fileContentMapper;
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		FileContent fileContent = new FileContent();
-		fileContent.setFileName(uploadFileDTO.getFileName());
-		fileContent.setContent(uploadFileDTO.getFile().getBytes());
-		fileContentMapper.insert(fileContent);
-		return fileContent.getId().toString();
-	}
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String create(UploadFileDTO uploadFileDTO) throws IOException {
+        FileContent fileContent = new FileContent();
+        fileContent.setFileName(uploadFileDTO.getFileName());
+        fileContent.setContent(uploadFileDTO.getFile().getBytes());
+        fileContentMapper.insert(fileContent);
+        return fileContent.getId().toString();
+    }
 
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public boolean delete(FileDTO fileDTO) {
-		FileContent fileContent = new FileContent();
-		if (StringUtils.isNotBlank(fileDTO.getFileName())) {
-			fileContent.setFileName(fileDTO.getFileName());
-		}
-		return fileContentMapper.delete(new QueryWrapper<>(fileContent)) > 0;
-	}
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(FileDTO fileDTO) {
+        FileContent fileContent = new FileContent();
+        if (StringUtils.isNotBlank(fileDTO.getFileName())) {
+            fileContent.setFileName(fileDTO.getFileName());
+        }
+        return fileContentMapper.delete(new QueryWrapper<>(fileContent)) > 0;
+    }
 
-	@Override
-	public FileDTO getContent(FileDTO fileDTO) {
-		FileContent query = new FileContent();
-		if (StringUtils.isNotBlank(fileDTO.getFileName())) {
-			query.setFileName(fileDTO.getFileName());
-		}
-		FileContent result = fileContentMapper.selectOne(new QueryWrapper<>(query));
-		if (result != null) {
-			fileDTO.setContent(result.getContent());
-		} else {
-			log.error("查找文件失败");
-		}
-		return fileDTO;
-	}
+    @Override
+    public FileDTO getContent(FileDTO fileDTO) {
+        FileContent query = new FileContent();
+        if (StringUtils.isNotBlank(fileDTO.getFileName())) {
+            query.setFileName(fileDTO.getFileName());
+        }
+        FileContent result = fileContentMapper.selectOne(new QueryWrapper<>(query));
+        if (result != null) {
+            fileDTO.setContent(result.getContent());
+        } else {
+            log.error("查找文件失败");
+        }
+        return fileDTO;
+    }
 
 }

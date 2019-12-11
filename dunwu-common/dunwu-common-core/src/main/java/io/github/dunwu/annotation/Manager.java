@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 @Component
 public @interface Manager {
 
-	@AliasFor(annotation = Component.class)
-	String value() default "";
+    @AliasFor(annotation = Component.class)
+    String value() default "";
 
 }

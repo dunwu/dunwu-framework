@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "valid")
 public class ValidationController {
 
-	@PostMapping("test")
-	@ApiOperation(value = "测试校验器")
-	public BaseResult method(@Validated @RequestBody UserDTO userInfoDTO) {
-		return ResultUtils.successBaseResult();
-	}
+    @PostMapping("test")
+    @ApiOperation(value = "测试校验器")
+    public BaseResult method(@Validated @RequestBody UserDTO userInfoDTO) {
+        return ResultUtils.successBaseResult();
+    }
 
 }

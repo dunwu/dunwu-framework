@@ -26,35 +26,35 @@ import java.time.LocalDateTime;
 @ApiModel(value = "Template", description = "模板配置表")
 public class Template extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "创建时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	protected LocalDateTime createTime;
+    @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    protected LocalDateTime createTime;
 
-	@ApiModelProperty(value = "更新时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	protected LocalDateTime updateTime;
+    @ApiModelProperty(value = "更新时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    protected LocalDateTime updateTime;
 
-	@TableLogic
-	@TableField(select = false)
-	@ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")
-	protected Boolean deleted = false;
+    @TableLogic
+    @TableField(select = false)
+    @ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")
+    protected Boolean deleted = false;
 
-	@ApiModelProperty(value = "模板名")
-	@TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
-	private String name;
+    @ApiModelProperty(value = "模板名")
+    @TableField(condition = "%s LIKE CONCAT('%%',#{%s},'%%')")
+    private String name;
 
-	@ApiModelProperty(value = "命名空间")
-	private String namespace;
+    @ApiModelProperty(value = "命名空间")
+    private String namespace;
 
-	@ApiModelProperty(value = "标签")
-	private String tag;
+    @ApiModelProperty(value = "标签")
+    private String tag;
 
-	@ApiModelProperty(value = "模板内容")
-	private String content;
+    @ApiModelProperty(value = "模板内容")
+    private String content;
 
-	@ApiModelProperty(value = "模板元数据")
-	private String metadata;
+    @ApiModelProperty(value = "模板元数据")
+    private String metadata;
 
 }

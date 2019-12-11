@@ -30,135 +30,135 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailServiceImpl implements MailService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-	private final ExecutorService mailExecutor;
+    private final ExecutorService mailExecutor;
 
-	private final DunwuMailProperties mailProperties;
+    private final DunwuMailProperties mailProperties;
 
-	public MailServiceImpl(JavaMailSender javaMailSender,
-		DunwuMailProperties mailProperties,
-		@Qualifier("mailExecutor") ExecutorService mailExecutor) {
-		this.javaMailSender = javaMailSender;
-		this.mailExecutor = mailExecutor;
-		this.mailProperties = mailProperties;
-	}
+    public MailServiceImpl(JavaMailSender javaMailSender,
+        DunwuMailProperties mailProperties,
+        @Qualifier("mailExecutor") ExecutorService mailExecutor) {
+        this.javaMailSender = javaMailSender;
+        this.mailExecutor = mailExecutor;
+        this.mailProperties = mailProperties;
+    }
 
-	@Override
-	public boolean send(MailDTO mailDTO) {
-		Future<?> future;
-		if (mailDTO.getHtml()) {
-			future = mailExecutor.submit(() -> sendMimeMessage(mailDTO));
-		} else {
-			future = mailExecutor.submit(() -> sendSimpleMessage(mailDTO));
-		}
+    @Override
+    public boolean send(MailDTO mailDTO) {
+        Future<?> future;
+        if (mailDTO.getHtml()) {
+            future = mailExecutor.submit(() -> sendMimeMessage(mailDTO));
+        } else {
+            future = mailExecutor.submit(() -> sendSimpleMessage(mailDTO));
+        }
 
-		return future.isDone();
-	}
+        return future.isDone();
+    }
 
-	@Override
-	public void sendBatch(List<MailDTO> mailDTOS, boolean html) {
-		if (html) {
-			mailExecutor.submit(() -> sendMimeMessage(mailDTOS));
-		} else {
-			mailExecutor.submit(() -> sendSimpleMessage(mailDTOS));
-		}
-	}
+    private void sendMimeMessage(MailDTO mailDTO) {
+        try {
+            MimeMessage mimeMessage = fillMimeMessage(mailDTO);
+            javaMailSender.send(mimeMessage);
+            if (log.isDebugEnabled()) {
+                log.debug("发送 MIME 邮件成功");
+            }
+        } catch (MessagingException | MailException e) {
+            log.error("发送 MIME 邮件失败", e);
+        }
+    }
 
-	private void sendMimeMessage(List<MailDTO> mailDTOS) {
-		List<MimeMessage> messages = new ArrayList<>();
-		for (MailDTO mailDTO : mailDTOS) {
-			MimeMessage mimeMessage = null;
-			try {
-				mimeMessage = fillMimeMessage(mailDTO);
-			} catch (MessagingException e) {
-				log.error("批量发送 MIME 邮件失败", e);
-			}
-			messages.add(mimeMessage);
-		}
+    private void sendSimpleMessage(MailDTO mailDTO) {
+        SimpleMailMessage simpleMailMessage = BeanUtils.map(mailDTO,
+            SimpleMailMessage.class);
+        if (StringUtils.isBlank(mailDTO.getFrom())) {
+            simpleMailMessage.setFrom(mailProperties.getFrom());
+        }
 
-		javaMailSender.send(messages.toArray(new MimeMessage[] {}));
-		if (log.isDebugEnabled()) {
-			log.debug("批量发送 MIME 邮件成功");
-		}
-	}
+        try {
+            javaMailSender.send(simpleMailMessage);
+            if (log.isDebugEnabled()) {
+                log.debug("发送 SIMPLE 邮件成功");
+            }
+        } catch (MailException e) {
+            log.error("发送 SIMPLE 邮件失败", e);
+        }
+    }
 
-	private void sendSimpleMessage(List<MailDTO> mailDTOS) {
-		if (CollectionUtils.isEmpty(mailDTOS)) {
-			return;
-		}
+    private MimeMessage fillMimeMessage(MailDTO mailDTO) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true,
+            mailProperties.getDefaultEncoding().toString());
 
-		List<SimpleMailMessage> simpleMailMessages = BeanUtils.mapList(mailDTOS,
-			SimpleMailMessage.class);
-		for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
-			if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
-				simpleMailMessage.setFrom(mailProperties.getFrom());
-			}
-		}
+        if (StringUtils.isBlank(mailDTO.getFrom())) {
+            messageHelper.setFrom(mailProperties.getFrom());
+        } else {
+            messageHelper.setFrom(mailDTO.getFrom());
+        }
+        messageHelper.setTo(mailDTO.getTo());
+        messageHelper.setSubject(mailDTO.getSubject());
+        messageHelper.setText(mailDTO.getText(), true);
 
-		try {
-			javaMailSender.send(simpleMailMessages.toArray(new SimpleMailMessage[] {}));
-			if (log.isDebugEnabled()) {
-				log.debug("批量发送 SIMPLE 邮件成功");
-			}
-		} catch (MailException e) {
-			log.error("批量发送 SIMPLE 邮件失败", e);
-		}
-	}
+        // 添加邮件附件
+        if (mailDTO.getFilenames() != null && mailDTO.getFilenames().length > 0) {
+            for (String filename : mailDTO.getFilenames()) {
+                messageHelper.addAttachment(filename, new File(filename));
+            }
+        }
 
-	private void sendMimeMessage(MailDTO mailDTO) {
-		try {
-			MimeMessage mimeMessage = fillMimeMessage(mailDTO);
-			javaMailSender.send(mimeMessage);
-			if (log.isDebugEnabled()) {
-				log.debug("发送 MIME 邮件成功");
-			}
-		} catch (MessagingException | MailException e) {
-			log.error("发送 MIME 邮件失败", e);
-		}
-	}
+        return mimeMessage;
+    }
 
-	private void sendSimpleMessage(MailDTO mailDTO) {
-		SimpleMailMessage simpleMailMessage = BeanUtils.map(mailDTO,
-			SimpleMailMessage.class);
-		if (StringUtils.isBlank(mailDTO.getFrom())) {
-			simpleMailMessage.setFrom(mailProperties.getFrom());
-		}
+    @Override
+    public void sendBatch(List<MailDTO> mailDTOS, boolean html) {
+        if (html) {
+            mailExecutor.submit(() -> sendMimeMessage(mailDTOS));
+        } else {
+            mailExecutor.submit(() -> sendSimpleMessage(mailDTOS));
+        }
+    }
 
-		try {
-			javaMailSender.send(simpleMailMessage);
-			if (log.isDebugEnabled()) {
-				log.debug("发送 SIMPLE 邮件成功");
-			}
-		} catch (MailException e) {
-			log.error("发送 SIMPLE 邮件失败", e);
-		}
-	}
+    private void sendMimeMessage(List<MailDTO> mailDTOS) {
+        List<MimeMessage> messages = new ArrayList<>();
+        for (MailDTO mailDTO : mailDTOS) {
+            MimeMessage mimeMessage = null;
+            try {
+                mimeMessage = fillMimeMessage(mailDTO);
+            } catch (MessagingException e) {
+                log.error("批量发送 MIME 邮件失败", e);
+            }
+            messages.add(mimeMessage);
+        }
 
-	private MimeMessage fillMimeMessage(MailDTO mailDTO) throws MessagingException {
-		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true,
-			mailProperties.getDefaultEncoding().toString());
+        javaMailSender.send(messages.toArray(new MimeMessage[] {}));
+        if (log.isDebugEnabled()) {
+            log.debug("批量发送 MIME 邮件成功");
+        }
+    }
 
-		if (StringUtils.isBlank(mailDTO.getFrom())) {
-			messageHelper.setFrom(mailProperties.getFrom());
-		} else {
-			messageHelper.setFrom(mailDTO.getFrom());
-		}
-		messageHelper.setTo(mailDTO.getTo());
-		messageHelper.setSubject(mailDTO.getSubject());
-		messageHelper.setText(mailDTO.getText(), true);
+    private void sendSimpleMessage(List<MailDTO> mailDTOS) {
+        if (CollectionUtils.isEmpty(mailDTOS)) {
+            return;
+        }
 
-		// 添加邮件附件
-		if (mailDTO.getFilenames() != null && mailDTO.getFilenames().length > 0) {
-			for (String filename : mailDTO.getFilenames()) {
-				messageHelper.addAttachment(filename, new File(filename));
-			}
-		}
+        List<SimpleMailMessage> simpleMailMessages = BeanUtils.mapList(mailDTOS,
+            SimpleMailMessage.class);
+        for (SimpleMailMessage simpleMailMessage : simpleMailMessages) {
+            if (StringUtils.isBlank(simpleMailMessage.getFrom())) {
+                simpleMailMessage.setFrom(mailProperties.getFrom());
+            }
+        }
 
-		return mimeMessage;
-	}
+        try {
+            javaMailSender.send(simpleMailMessages.toArray(new SimpleMailMessage[] {}));
+            if (log.isDebugEnabled()) {
+                log.debug("批量发送 SIMPLE 邮件成功");
+            }
+        } catch (MailException e) {
+            log.error("批量发送 SIMPLE 邮件失败", e);
+        }
+    }
 
 }

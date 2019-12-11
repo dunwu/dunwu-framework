@@ -9,24 +9,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum InvokeTypeEnum {
 
-	/**
-	 * 执行组中的一个任务
-	 */
-	ONE_IN_GROUP(0),
-	/**
-	 * 执行组中的所有任务
-	 */
-	ALL_IN_GROUP(1);
+    /**
+     * 执行组中的一个任务
+     */
+    ONE_IN_GROUP(0),
+    /**
+     * 执行组中的所有任务
+     */
+    ALL_IN_GROUP(1);
 
-	@EnumValue
-	@JsonValue
-	private Integer key;
+    @EnumValue
+    @JsonValue
+    private Integer key;
 
-	InvokeTypeEnum(Integer key) {
-		this.key = key;
-	}
+    InvokeTypeEnum(Integer key) {
+        this.key = key;
+    }
 
-	public Integer getKey() {
-		return this.key;
-	}
+    public Integer getKey() {
+        return this.key;
+    }
 }

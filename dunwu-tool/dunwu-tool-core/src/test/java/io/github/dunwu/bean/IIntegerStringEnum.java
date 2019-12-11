@@ -2,8 +2,8 @@ package io.github.dunwu.bean;
 
 public interface IIntegerStringEnum {
 
-	int getKey();
+    int getKey();
 
-	String getValue();
+    String getValue();
 
 }

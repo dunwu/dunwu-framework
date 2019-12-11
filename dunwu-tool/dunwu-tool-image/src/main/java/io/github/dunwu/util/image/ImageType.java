@@ -7,9 +7,9 @@ package io.github.dunwu.util.image;
  * @since 2019-12-10
  */
 public enum ImageType {
-	png,
-	jpg,
-	jpeg,
-	bmp,
-	gif
+    png,
+    jpg,
+    jpeg,
+    bmp,
+    gif
 }

@@ -25,61 +25,61 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableConfigurationProperties({ DunwuWebSecurityProperties.class })
 public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 
-	private final DunwuWebSecurityProperties properties;
+    private final DunwuWebSecurityProperties properties;
 
-	private final UserManager userManager;
+    private final UserManager userManager;
 
-	private final DunwuAccessDeniedHandler accessDeniedHandler;
+    private final DunwuAccessDeniedHandler accessDeniedHandler;
 
-	private final DunwuAuthenticationEntryPoint authenticationEntryPoint;
+    private final DunwuAuthenticationEntryPoint authenticationEntryPoint;
 
-	private final DunwuAuthenticationFailureHandler authenticationFailureHandler;
+    private final DunwuAuthenticationFailureHandler authenticationFailureHandler;
 
-	private final DunwuAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final DunwuAuthenticationSuccessHandler authenticationSuccessHandler;
 
-	private final DunwuLogoutSuccessHandler logoutSuccessHandler;
+    private final DunwuLogoutSuccessHandler logoutSuccessHandler;
 
-	/**
-	 * 匹配 "/register" 路径，不需要权限即可访问
-	 * <p>
-	 * 匹配 "/user" 及其以下所有路径，都需要 "USER" 权限
-	 * <p>
-	 * 登录地址为 "/login"，登录成功返回响应状态码
-	 * <p>
-	 * 退出登录的地址为"/logout"，退出成功返回响应状态码
-	 * <p>
-	 * 禁用 CSRF
-	 */
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable();
+    /**
+     * 匹配 "/register" 路径，不需要权限即可访问
+     * <p>
+     * 匹配 "/user" 及其以下所有路径，都需要 "USER" 权限
+     * <p>
+     * 登录地址为 "/login"，登录成功返回响应状态码
+     * <p>
+     * 退出登录的地址为"/logout"，退出成功返回响应状态码
+     * <p>
+     * 禁用 CSRF
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable();
 
-		// http.authorizeRequests()
-		// 	.antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
-		// 	.antMatchers(properties.getRegisterUrl(), properties.getLoginUrl(), properties.getLogoutUrl())
-		// 	.permitAll();
+        // http.authorizeRequests()
+        // 	.antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
+        // 	.antMatchers(properties.getRegisterUrl(), properties.getLoginUrl(), properties.getLogoutUrl())
+        // 	.permitAll();
 
-		http.authorizeRequests().antMatchers("/user/**").permitAll()
-			.anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/user/**").permitAll()
+            .anyRequest().authenticated();
 
-		http.logout().logoutUrl(properties.getLogoutUrl())
-			.logoutSuccessHandler(logoutSuccessHandler).clearAuthentication(true)
-			.permitAll();
+        http.logout().logoutUrl(properties.getLogoutUrl())
+            .logoutSuccessHandler(logoutSuccessHandler).clearAuthentication(true)
+            .permitAll();
 
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
-			.accessDeniedHandler(accessDeniedHandler);
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+            .accessDeniedHandler(accessDeniedHandler);
 
-		http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
-	}
+        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 
-	/**
-	 * 自定义认证过滤器
-	 */
-	private DunwuLoginFilter customLoginFilter() {
-		DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(properties.getLoginUrl(), userManager);
-		customLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-		customLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-		return customLoginFilter;
-	}
+    /**
+     * 自定义认证过滤器
+     */
+    private DunwuLoginFilter customLoginFilter() {
+        DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(properties.getLoginUrl(), userManager);
+        customLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        customLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        return customLoginFilter;
+    }
 
 }

@@ -21,12 +21,12 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "UserRole", description = "用户角色表")
 public class UserRole extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "用户ID", example = "0")
-	private Integer userId;
+    @ApiModelProperty(value = "用户ID", example = "0")
+    private Integer userId;
 
-	@ApiModelProperty(value = "角色ID", example = "0")
-	private Integer roleId;
+    @ApiModelProperty(value = "角色ID", example = "0")
+    private Integer roleId;
 
 }

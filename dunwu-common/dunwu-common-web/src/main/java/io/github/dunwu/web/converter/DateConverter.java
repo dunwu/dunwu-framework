@@ -1,6 +1,6 @@
 package io.github.dunwu.web.converter;
 
-import io.github.dunwu.util.time.DateFormatExtUtils;
+import io.github.dunwu.util.time.DateFormatExtUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 
@@ -13,21 +13,21 @@ import java.util.Date;
  */
 public class DateConverter implements Converter<String, Date> {
 
-	@Override
-	public Date convert(String dateString) {
-		if (StringUtils.isBlank(dateString)) {
-			return null;
-		}
+    @Override
+    public Date convert(String dateString) {
+        if (StringUtils.isBlank(dateString)) {
+            return null;
+        }
 
-		Date date = null;
-		try {
-			date = DateFormatExtUtils.parseDate(
-				DateFormatExtUtils.DatePattern.PATTERN_DEFAULT_ON_SECOND, dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+        Date date = null;
+        try {
+            date = DateFormatExtUtil.parseDate(
+                DateFormatExtUtil.DatePattern.PATTERN_DEFAULT_ON_SECOND, dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-		return date;
-	}
+        return date;
+    }
 
 }

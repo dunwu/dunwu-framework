@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>io.github.dunwu</groupId>
-		<artifactId>dunwu-parent</artifactId>
-		<version>0.5.0-SNAPSHOT</version>
-		<relativePath>../dunwu-parent</relativePath>
-	</parent>
+  <parent>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu-parent</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <relativePath>../dunwu-parent</relativePath>
+  </parent>
 
-	<artifactId>dunwu-common</artifactId>
-	<packaging>pom</packaging>
-	<name>dunwu-common</name>
-	<description>Dunwu 公共包</description>
+  <artifactId>dunwu-common</artifactId>
+  <packaging>pom</packaging>
+  <name>dunwu-common</name>
+  <description>Dunwu 公共包</description>
 
-	<modules>
-		<module>dunwu-common-core</module>
-		<module>dunwu-common-data</module>
-		<module>dunwu-common-web</module>
-		<module>dunwu-common-generator</module>
-	</modules>
+  <modules>
+    <module>dunwu-common-core</module>
+    <module>dunwu-common-data</module>
+    <module>dunwu-common-web</module>
+    <module>dunwu-common-generator</module>
+  </modules>
 </project>

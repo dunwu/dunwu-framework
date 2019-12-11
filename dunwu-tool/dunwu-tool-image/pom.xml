@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>io.github.dunwu</groupId>
-		<artifactId>dunwu-parent</artifactId>
-		<version>0.5.0-SNAPSHOT</version>
-		<relativePath>../../dunwu-parent</relativePath>
-	</parent>
+  <parent>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu-parent</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <relativePath>../../dunwu-parent</relativePath>
+  </parent>
 
-	<artifactId>dunwu-tool-image</artifactId>
-	<packaging>jar</packaging>
-	<name>dunwu-tool-image</name>
-	<description>图形处理工具类</description>
+  <artifactId>dunwu-tool-image</artifactId>
+  <packaging>jar</packaging>
+  <name>dunwu-tool-image</name>
+  <description>图形处理工具类</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>io.github.dunwu</groupId>
-			<artifactId>dunwu-tool-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.coobird</groupId>
-			<artifactId>thumbnailator</artifactId>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-tool-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.coobird</groupId>
+      <artifactId>thumbnailator</artifactId>
+    </dependency>
+  </dependencies>
 </project>

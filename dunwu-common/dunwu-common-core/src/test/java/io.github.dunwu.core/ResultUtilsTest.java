@@ -11,14 +11,14 @@ import java.util.Arrays;
  */
 public class ResultUtilsTest {
 
-	@Test
-	void test() {
-		String[] array = new String[] { "1", "2", "3" };
-		System.out.println(JSON.toJSONString(ResultUtils.successBaseResult()));
-		System.out.println(JSON.toJSONString(ResultUtils.successDataResult("Data")));
-		System.out.println(JSON.toJSONString(ResultUtils.successDataListResult(Arrays.asList(array))));
-		Pagination<String> pagination = new Pagination<>(1, 5, 3, Arrays.asList(array));
-		System.out.println(JSON.toJSONString(ResultUtils.successPageResult(pagination)));
-	}
+    @Test
+    void test() {
+        String[] array = new String[] { "1", "2", "3" };
+        System.out.println(JSON.toJSONString(ResultUtils.successBaseResult()));
+        System.out.println(JSON.toJSONString(ResultUtils.successDataResult("Data")));
+        System.out.println(JSON.toJSONString(ResultUtils.successDataListResult(Arrays.asList(array))));
+        Pagination<String> pagination = new Pagination<>(1, 5, 3, Arrays.asList(array));
+        System.out.println(JSON.toJSONString(ResultUtils.successPageResult(pagination)));
+    }
 
 }

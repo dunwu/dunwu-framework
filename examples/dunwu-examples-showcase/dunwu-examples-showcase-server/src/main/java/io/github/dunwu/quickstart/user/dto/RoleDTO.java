@@ -19,26 +19,26 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "UserDTO", description = "用户信息 DTO")
 public class RoleDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "ID", example = "0")
-	private Integer id;
+    @ApiModelProperty(value = "ID", example = "0")
+    private Integer id;
 
-	@NotNull
-	@ApiModelProperty(value = "角色名")
-	private String name;
+    @NotNull
+    @ApiModelProperty(value = "角色名")
+    private String name;
 
-	@ApiModelProperty(value = "角色类型")
-	private String type;
+    @ApiModelProperty(value = "角色类型")
+    private String type;
 
-	@NotNull
-	@ApiModelProperty(value = "角色code")
-	private String code;
+    @NotNull
+    @ApiModelProperty(value = "角色code")
+    private String code;
 
-	@ApiModelProperty(value = "状态", example = "0")
-	private Integer status;
+    @ApiModelProperty(value = "状态", example = "0")
+    private Integer status;
 
-	@ApiModelProperty(value = "备注")
-	private String notes;
+    @ApiModelProperty(value = "备注")
+    private String notes;
 
 }

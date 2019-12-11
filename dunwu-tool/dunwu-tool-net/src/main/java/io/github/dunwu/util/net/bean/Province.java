@@ -13,76 +13,76 @@ import java.util.TreeSet;
  */
 public class Province implements Comparable<Province>, Serializable {
 
-	private static final long serialVersionUID = 4767006458888002150L;
+    private static final long serialVersionUID = 4767006458888002150L;
 
-	/**
-	 * 编码
-	 */
-	private String code;
+    /**
+     * 编码
+     */
+    private String code;
 
-	/**
-	 * 名称
-	 */
-	private String name;
+    /**
+     * 名称
+     */
+    private String name;
 
-	/**
-	 * 下辖城市
-	 */
-	@JSONField(name = "children")
-	private Set<City> cities;
+    /**
+     * 下辖城市
+     */
+    @JSONField(name = "children")
+    private Set<City> cities;
 
-	public Province() {
-		cities = new TreeSet<>();
-	}
+    public Province() {
+        cities = new TreeSet<>();
+    }
 
-	@Override
-	public int compareTo(Province o) {
-		return this.getCode().compareToIgnoreCase(o.getCode());
-	}
+    @Override
+    public int compareTo(Province o) {
+        return this.getCode().compareToIgnoreCase(o.getCode());
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(code);
-	}
+    public String getCode() {
+        return code;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) { return true; }
-		if (!(o instanceof Province)) { return false; }
-		Province province = (Province) o;
-		return code.equals(province.getCode());
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@Override
-	public String toString() {
-		return "Province{" +
-			"code='" + code + '\'' +
-			", name='" + name + '\'' +
-			'}';
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (!(o instanceof Province)) { return false; }
+        Province province = (Province) o;
+        return code.equals(province.getCode());
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Override
+    public String toString() {
+        return "Province{" +
+            "code='" + code + '\'' +
+            ", name='" + name + '\'' +
+            '}';
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<City> getCities() {
-		return cities;
-	}
+    public Set<City> getCities() {
+        return cities;
+    }
 
-	public void setCities(Set<City> cities) {
-		this.cities = cities;
-	}
+    public void setCities(Set<City> cities) {
+        this.cities = cities;
+    }
 
 }

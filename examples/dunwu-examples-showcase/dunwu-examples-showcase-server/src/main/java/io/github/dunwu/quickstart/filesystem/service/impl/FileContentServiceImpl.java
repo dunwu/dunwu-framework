@@ -16,6 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FileContentServiceImpl extends ServiceImpl<FileContentMapper, FileContent>
-	implements FileContentService {
+    implements FileContentService {
 
 }

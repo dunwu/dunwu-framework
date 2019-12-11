@@ -17,10 +17,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class AccessDTO {
 
-	private String ip;
+    private String ip;
 
-	private Date date;
+    private Date date;
 
-	private Integer count;
+    private Integer count;
 
 }

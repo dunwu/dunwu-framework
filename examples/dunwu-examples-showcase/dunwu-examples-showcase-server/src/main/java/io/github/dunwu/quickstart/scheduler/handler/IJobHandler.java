@@ -8,6 +8,6 @@ import io.github.dunwu.core.BaseResult;
  */
 public interface IJobHandler {
 
-	BaseResult execute(String params) throws Exception;
+    BaseResult execute(String params) throws Exception;
 
 }

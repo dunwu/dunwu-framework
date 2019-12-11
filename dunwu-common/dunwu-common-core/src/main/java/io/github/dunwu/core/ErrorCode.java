@@ -6,12 +6,12 @@ package io.github.dunwu.core;
  */
 public interface ErrorCode {
 
-	String SUCCESS_CODE = "0";
+    String SUCCESS_CODE = "0";
 
-	String getCode();
+    String getCode();
 
-	String getMessage();
+    String getMessage();
 
-	String getTemplate();
+    String getTemplate();
 
 }

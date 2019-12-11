@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface MailService {
 
-	boolean send(MailDTO mailDTO);
+    boolean send(MailDTO mailDTO);
 
-	void sendBatch(List<MailDTO> mailDTO, boolean html);
+    void sendBatch(List<MailDTO> mailDTO, boolean html);
 
 }

@@ -13,7 +13,7 @@ package io.github.dunwu.core;
  */
 public enum AppCode implements ErrorCode {
 
-	// @formatter:off
+    // @formatter:off
 	SUCCESS(ErrorCode.SUCCESS_CODE, "success", "成功"),
 	FAIL("-1", "fail", "失败"),
 	UNAVAILABLE_SERVICE("2", "服务暂停", "服务暂停"),
@@ -61,30 +61,30 @@ public enum AppCode implements ErrorCode {
 	MISSING_KEY("409", "缺失 key", "缺失 key (%s)");
 	// @formatter:on
 
-	private final String code;
+    private final String code;
 
-	private final String message;
+    private final String message;
 
-	private final String template;
+    private final String template;
 
-	AppCode(String code, String msg, String template) {
-		this.code = code;
-		this.message = msg;
-		this.template = template;
-	}
+    AppCode(String code, String msg, String template) {
+        this.code = code;
+        this.message = msg;
+        this.template = template;
+    }
 
-	@Override
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public String getCode() {
+        return code;
+    }
 
-	@Override
-	public String getMessage() {
-		return message;
-	}
+    @Override
+    public String getMessage() {
+        return message;
+    }
 
-	@Override
-	public String getTemplate() {
-		return template;
-	}
+    @Override
+    public String getTemplate() {
+        return template;
+    }
 }

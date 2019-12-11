@@ -15,8 +15,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "dunwu.web.security")
 public class DunwuWebSecurityProperties {
 
-	private Boolean enable = false;
+    private Boolean enable = false;
 
-	private String authTokenKey = "token";
+    private String authTokenKey = "token";
 
 }

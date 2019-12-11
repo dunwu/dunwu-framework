@@ -9,25 +9,25 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum TriggerStatusEnum {
 
-	/**
-	 * 运行中
-	 */
-	EXECUTING(0),
+    /**
+     * 运行中
+     */
+    EXECUTING(0),
 
-	/**
-	 * 暂停
-	 */
-	PAUSED(1);
+    /**
+     * 暂停
+     */
+    PAUSED(1);
 
-	@EnumValue
-	@JsonValue
-	private Integer key;
+    @EnumValue
+    @JsonValue
+    private Integer key;
 
-	TriggerStatusEnum(Integer key) {
-		this.key = key;
-	}
+    TriggerStatusEnum(Integer key) {
+        this.key = key;
+    }
 
-	public Integer getKey() {
-		return this.key;
-	}
+    public Integer getKey() {
+        return this.key;
+    }
 }

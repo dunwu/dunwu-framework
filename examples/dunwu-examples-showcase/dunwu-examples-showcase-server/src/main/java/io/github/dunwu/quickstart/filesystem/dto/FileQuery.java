@@ -19,24 +19,24 @@ import java.io.Serializable;
 @ApiModel(value = "FileQuery", description = "文件查询实体")
 public class FileQuery implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "ID", example = "0")
-	private String id;
+    @ApiModelProperty(value = "ID", example = "0")
+    private String id;
 
-	@ApiModelProperty(value = "命名空间。一般对应业务系统")
-	private String namespace;
+    @ApiModelProperty(value = "命名空间。一般对应业务系统")
+    private String namespace;
 
-	@ApiModelProperty(value = "标签。供业务系统使用")
-	private String tag;
+    @ApiModelProperty(value = "标签。供业务系统使用")
+    private String tag;
 
-	@ApiModelProperty(value = "源文件名")
-	private String originName;
+    @ApiModelProperty(value = "源文件名")
+    private String originName;
 
-	@ApiModelProperty(value = "实际文件名")
-	private String fileName;
+    @ApiModelProperty(value = "实际文件名")
+    private String fileName;
 
-	@ApiModelProperty(value = "文件存储服务类型")
-	private FileStoreTypeEnum storeType;
+    @ApiModelProperty(value = "文件存储服务类型")
+    private FileStoreTypeEnum storeType;
 
 }

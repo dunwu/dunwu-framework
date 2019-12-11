@@ -23,19 +23,19 @@ import javax.mail.MessagingException;
 @ConditionalOnSingleCandidate(JavaMailSenderImpl.class)
 public class MailSenderValidatorAutoConfiguration {
 
-	private final JavaMailSenderImpl mailSender;
+    private final JavaMailSenderImpl mailSender;
 
-	public MailSenderValidatorAutoConfiguration(JavaMailSenderImpl mailSender) {
-		this.mailSender = mailSender;
-	}
+    public MailSenderValidatorAutoConfiguration(JavaMailSenderImpl mailSender) {
+        this.mailSender = mailSender;
+    }
 
-	@PostConstruct
-	public void validateConnection() {
-		try {
-			this.mailSender.testConnection();
-		} catch (MessagingException ex) {
-			throw new IllegalStateException("Mail server is not available", ex);
-		}
-	}
+    @PostConstruct
+    public void validateConnection() {
+        try {
+            this.mailSender.testConnection();
+        } catch (MessagingException ex) {
+            throw new IllegalStateException("Mail server is not available", ex);
+        }
+    }
 
 }

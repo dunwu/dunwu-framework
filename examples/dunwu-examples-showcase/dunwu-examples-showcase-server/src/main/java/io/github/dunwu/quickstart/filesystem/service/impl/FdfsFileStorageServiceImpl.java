@@ -27,33 +27,33 @@ import java.io.IOException;
 @Service(value = FileSystemConstant.FDFS_FILE_CONTENT_SERVICE)
 public class FdfsFileStorageServiceImpl implements FileStorageService {
 
-	private final FastFileStorageClient storageClient;
+    private final FastFileStorageClient storageClient;
 
-	private final FileSystemProperties fileSystemProperties;
+    private final FileSystemProperties fileSystemProperties;
 
-	@Override
-	public String create(UploadFileDTO uploadFileDTO) throws IOException {
-		StorePath storePath = storageClient.uploadFile(
-			fileSystemProperties.getFdfs().getGroup(),
-			uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(),
-			uploadFileDTO.getExtension());
-		return storePath.getFullPath();
-	}
+    @Override
+    public String create(UploadFileDTO uploadFileDTO) throws IOException {
+        StorePath storePath = storageClient.uploadFile(
+            fileSystemProperties.getFdfs().getGroup(),
+            uploadFileDTO.getFile().getInputStream(), uploadFileDTO.getSize(),
+            uploadFileDTO.getExtension());
+        return storePath.getFullPath();
+    }
 
-	@Override
-	public boolean delete(FileDTO fileDTO) throws IOException {
-		storageClient.deleteFile(fileDTO.getStoreUrl());
-		return true;
-	}
+    @Override
+    public boolean delete(FileDTO fileDTO) throws IOException {
+        storageClient.deleteFile(fileDTO.getStoreUrl());
+        return true;
+    }
 
-	@Override
-	public FileDTO getContent(FileDTO fileDTO) throws IOException {
-		StorePath path = StorePath.parseFromUrl(fileDTO.getStoreUrl());
-		byte[] bytes = storageClient.downloadFile(
-			fileSystemProperties.getFdfs().getGroup(), path.getPath(),
-			new DownloadByteArray());
-		fileDTO.setContent(bytes);
-		return fileDTO;
-	}
+    @Override
+    public FileDTO getContent(FileDTO fileDTO) throws IOException {
+        StorePath path = StorePath.parseFromUrl(fileDTO.getStoreUrl());
+        byte[] bytes = storageClient.downloadFile(
+            fileSystemProperties.getFdfs().getGroup(), path.getPath(),
+            new DownloadByteArray());
+        fileDTO.setContent(bytes);
+        return fileDTO;
+    }
 
 }

@@ -17,28 +17,28 @@ import java.io.IOException;
 @Configuration
 public class TemplateConfig {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Bean
-	public freemarker.template.Configuration freemarkConfig() {
-		/* ------------------------------------------------------------------------ */
-		/* You should do this ONLY ONCE in the whole application life-cycle: */
+    @Bean
+    public freemarker.template.Configuration freemarkConfig() {
+        /* ------------------------------------------------------------------------ */
+        /* You should do this ONLY ONCE in the whole application life-cycle: */
 
-		/* Create and adjust the configuration singleton */
-		freemarker.template.Configuration cfg = new freemarker.template.Configuration(
-			freemarker.template.Configuration.VERSION_2_3_22);
+        /* Create and adjust the configuration singleton */
+        freemarker.template.Configuration cfg = new freemarker.template.Configuration(
+            freemarker.template.Configuration.VERSION_2_3_22);
 
-		File folder = null;
-		try {
-			folder = ResourceUtils.getFile("classpath:templates");
-			cfg.setDirectoryForTemplateLoading(folder);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        File folder = null;
+        try {
+            folder = ResourceUtils.getFile("classpath:templates");
+            cfg.setDirectoryForTemplateLoading(folder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		cfg.setDefaultEncoding("UTF-8");
-		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-		return cfg;
-	}
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        return cfg;
+    }
 
 }

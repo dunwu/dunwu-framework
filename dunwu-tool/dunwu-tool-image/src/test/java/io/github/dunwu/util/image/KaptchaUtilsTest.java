@@ -12,17 +12,17 @@ import java.io.IOException;
  */
 class KaptchaUtilsTest {
 
-	static final String OUTPUT_FILE = "D:\\Temp\\kaptcha.png";
+    static final String OUTPUT_FILE = "D:\\Temp\\kaptcha.png";
 
-	@Test
-	void test() {
-		KaptchaUtils.Kaptcha kaptcha = KaptchaUtils.create();
-		System.out.println("验证码的值为：" + kaptcha.getCode());
-		try {
-			KaptchaUtils.toFile(kaptcha, new File(OUTPUT_FILE));
-		} catch (IOException e) {
-			Assertions.fail("生成验证码失败", e);
-		}
-	}
+    @Test
+    void test() {
+        KaptchaUtils.Kaptcha kaptcha = KaptchaUtils.create();
+        System.out.println("验证码的值为：" + kaptcha.getCode());
+        try {
+            KaptchaUtils.toFile(kaptcha, new File(OUTPUT_FILE));
+        } catch (IOException e) {
+            Assertions.fail("生成验证码失败", e);
+        }
+    }
 
 }

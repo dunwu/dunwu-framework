@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Component
 public @interface Dao {
 
-	@AliasFor(annotation = Component.class)
-	String value() default "";
+    @AliasFor(annotation = Component.class)
+    String value() default "";
 
 }

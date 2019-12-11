@@ -16,10 +16,10 @@ import java.io.Serializable;
 @Data
 public abstract class BaseEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@TableId(value = "id", type = IdType.AUTO)
-	@ApiModelProperty(value = "ID", example = "0")
-	protected Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty(value = "ID", example = "0")
+    protected Integer id;
 
 }

@@ -9,7 +9,7 @@ const articleRouter = {
     path: 'create',
     component: () => import('@/views/demos/article/create'),
     name: 'CreateArticle',
-    meta: { title: 'Create Article', icon: 'edit' }
+    meta: {title: 'Create Article', icon: 'edit'}
   }, {
     path: 'edit/:id(\\d+)', component: () => import('@/views/demos/article/edit'), name: 'EditArticle', meta: {
       title: 'Edit Article', noCache: true, activeMenu: '/demos/article/list'
@@ -18,7 +18,7 @@ const articleRouter = {
     path: 'list',
     component: () => import('@/views/demos/article/list'),
     name: 'ArticleList',
-    meta: { title: 'Article List', icon: 'list' }
+    meta: {title: 'Article List', icon: 'list'}
   }]
 }
 
@@ -29,17 +29,17 @@ const chartsRouter = {
     path: 'keyboard',
     component: () => import('@/views/demos/charts/keyboard'),
     name: 'KeyboardChart',
-    meta: { title: 'Keyboard Chart', noCache: true }
+    meta: {title: 'Keyboard Chart', noCache: true}
   }, {
     path: 'line',
     component: () => import('@/views/demos/charts/line'),
     name: 'LineChart',
-    meta: { title: 'Line Chart', noCache: true }
+    meta: {title: 'Line Chart', noCache: true}
   }, {
     path: 'mix-chart',
     component: () => import('@/views/demos/charts/mix-chart'),
     name: 'MixChart',
-    meta: { title: 'Mix Chart', noCache: true }
+    meta: {title: 'Mix Chart', noCache: true}
   }]
 }
 
@@ -47,7 +47,7 @@ const dashboardRouter = {
   path: 'dashboard',
   component: () => import('@/views/demos/dashboard/index'),
   name: 'Dashboard',
-  meta: { title: 'Dashboard', icon: 'dashboard' }
+  meta: {title: 'Dashboard', icon: 'dashboard'}
 }
 
 const excelRouter = {
@@ -62,22 +62,22 @@ const excelRouter = {
     path: 'export-excel',
     component: () => import('@/views/demos/excel/export-excel'),
     name: 'ExportExcel',
-    meta: { title: 'Export Excel' }
+    meta: {title: 'Export Excel'}
   }, {
     path: 'export-selected-excel',
     component: () => import('@/views/demos/excel/select-excel'),
     name: 'SelectExcel',
-    meta: { title: 'Export Selected' }
+    meta: {title: 'Export Selected'}
   }, {
     path: 'export-merge-header',
     component: () => import('@/views/demos/excel/merge-header'),
     name: 'MergeHeader',
-    meta: { title: 'Merge Header' }
+    meta: {title: 'Merge Header'}
   }, {
     path: 'upload-excel',
     component: () => import('@/views/demos/excel/upload-excel'),
     name: 'UploadExcel',
-    meta: { title: 'Upload Excel' }
+    meta: {title: 'Upload Excel'}
   }]
 }
 
@@ -85,26 +85,26 @@ const clipboardRouter = {
   path: '/demos/clipboard',
   component: () => import('@/views/demos/clipboard/index'),
   name: 'ClipboardDemo',
-  meta: { title: 'Clipboard', icon: 'clipboard' }
+  meta: {title: 'Clipboard', icon: 'clipboard'}
 }
 
 const guideRouter = {
   path: '/demos/guide',
   component: () => import('@/views/demos/guide/index'),
   name: 'Guide',
-  meta: { title: 'Guide', icon: 'guide', noCache: true }
+  meta: {title: 'Guide', icon: 'guide', noCache: true}
 }
 
 const iconRouter = {
   path: '/demos/icon',
   component: () => import('@/views/demos/icons/index'),
   name: 'Icons',
-  meta: { title: 'Icons', icon: 'icon', noCache: true }
+  meta: {title: 'Icons', icon: 'icon', noCache: true}
 }
 
 const pdfRouter = {
   path: '/demos/pdf', component: () => import('@/views/demos/pdf/index'), children: [{
-    path: 'test', component: () => import('@/views/demos/pdf/test'), name: 'PDF', meta: { title: 'PDF', icon: 'pdf' }
+    path: 'test', component: () => import('@/views/demos/pdf/test'), name: 'PDF', meta: {title: 'PDF', icon: 'pdf'}
   }, {
     path: '/download', component: () => import('@/views/demos/pdf/download'), hidden: true
   }]
@@ -145,43 +145,43 @@ const tableRouter = {
     path: 'dynamic-table',
     component: () => import('@/views/demos/table/dynamic-table/index'),
     name: 'DynamicTable',
-    meta: { title: 'Dynamic Table' }
+    meta: {title: 'Dynamic Table'}
   }, {
     path: 'drag-table',
     component: () => import('@/views/demos/table/drag-table'),
     name: 'DragTable',
-    meta: { title: 'Drag Table' }
+    meta: {title: 'Drag Table'}
   }, {
     path: 'inline-edit-table',
     component: () => import('@/views/demos/table/inline-edit-table'),
     name: 'InlineEditTable',
-    meta: { title: 'Inline Edit' }
+    meta: {title: 'Inline Edit'}
   }, {
     path: 'complex-table',
     component: () => import('@/views/demos/table/complex-table'),
     name: 'ComplexTable',
-    meta: { title: 'Complex Table' }
+    meta: {title: 'Complex Table'}
   }]
 }
 
 const tabRouter = {
-  path: '/demos/tab', component: () => import('@/views/demos/tab/index'), name: 'Tab', meta: { title: 'Tab', icon: 'tab' }
+  path: '/demos/tab', component: () => import('@/views/demos/tab/index'), name: 'Tab', meta: {title: 'Tab', icon: 'tab'}
 }
 
 const themeRouter = {
   path: '/demos/theme',
   component: () => import('@/views/demos/theme/index'),
   name: 'Theme',
-  meta: { title: 'Theme', icon: 'theme' }
+  meta: {title: 'Theme', icon: 'theme'}
 }
 
 const zipRouter = {
-  path: '/demos/zip', component: () => import('@/views/demos/zip/index'), name: 'ExportZip', meta: { title: 'Export Zip' }
+  path: '/demos/zip', component: () => import('@/views/demos/zip/index'), name: 'ExportZip', meta: {title: 'Export Zip'}
 }
 
 const externalRouter = {
   path: 'external-link', component: Layout, children: [{
-    path: 'https://github.com/dunwu/dunwu', meta: { title: 'External Link', icon: 'link' }
+    path: 'https://github.com/dunwu/dunwu', meta: {title: 'External Link', icon: 'link'}
   }]
 }
 
@@ -190,7 +190,7 @@ const demosRouter = {
   component: Layout,
   redirect: '/demos/article/list',
   name: 'Demos',
-  meta: { title: 'Demos', icon: 'example' },
+  meta: {title: 'Demos', icon: 'example'},
   children: [componentsRouter, articleRouter, chartsRouter, clipboardRouter, dashboardRouter, excelRouter, guideRouter, iconRouter, pdfRouter, permissionRouter, nestedRouter, tableRouter, tabRouter, themeRouter, zipRouter, externalRouter]
 }
 

@@ -8,38 +8,38 @@ package io.github.dunwu.core;
  */
 public class AppException extends RuntimeException {
 
-	private static final long serialVersionUID = -7027578114976830416L;
+    private static final long serialVersionUID = -7027578114976830416L;
 
-	private BaseResult result;
+    private BaseResult result;
 
-	public AppException(BaseResult result) {
-		this.result = new BaseResult(result.getSuccess(), result.getCode(),
-			result.getMessage());
-	}
+    public AppException(BaseResult result) {
+        this.result = new BaseResult(result.getSuccess(), result.getCode(),
+            result.getMessage());
+    }
 
-	public AppException(ErrorCode appCode) {
-		this.result = ResultUtils.failBaseResult(appCode);
-	}
+    public AppException(ErrorCode appCode) {
+        this.result = ResultUtils.failBaseResult(appCode);
+    }
 
-	@Override
-	public String toString() {
-		return "AppException{" + "result=" + result + '}';
-	}
+    @Override
+    public String toString() {
+        return "AppException{" + "result=" + result + '}';
+    }
 
-	/**
-	 * 覆盖原方法，解决抓取堆性能开销
-	 */
-	@Override
-	public Throwable fillInStackTrace() {
-		return this;
-	}
+    /**
+     * 覆盖原方法，解决抓取堆性能开销
+     */
+    @Override
+    public Throwable fillInStackTrace() {
+        return this;
+    }
 
-	public BaseResult getResult() {
-		return result;
-	}
+    public BaseResult getResult() {
+        return result;
+    }
 
-	public void setResult(BaseResult result) {
-		this.result = result;
-	}
+    public void setResult(BaseResult result) {
+        this.result = result;
+    }
 
 }

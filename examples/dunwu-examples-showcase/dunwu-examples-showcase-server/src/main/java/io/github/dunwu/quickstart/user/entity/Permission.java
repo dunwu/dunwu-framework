@@ -21,24 +21,24 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "Permission", description = "权限表")
 public class Permission extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "模块")
-	private String module;
+    @ApiModelProperty(value = "模块")
+    private String module;
 
-	@ApiModelProperty(value = "权限名")
-	private String name;
+    @ApiModelProperty(value = "权限名")
+    private String name;
 
-	@ApiModelProperty(value = "权限类型")
-	private String type;
+    @ApiModelProperty(value = "权限类型")
+    private String type;
 
-	@ApiModelProperty(value = "表达式")
-	private String expression;
+    @ApiModelProperty(value = "表达式")
+    private String expression;
 
-	@ApiModelProperty(value = "状态", example = "0")
-	private Integer status;
+    @ApiModelProperty(value = "状态", example = "0")
+    private Integer status;
 
-	@ApiModelProperty(value = "备注")
-	private String notes;
+    @ApiModelProperty(value = "备注")
+    private String notes;
 
 }

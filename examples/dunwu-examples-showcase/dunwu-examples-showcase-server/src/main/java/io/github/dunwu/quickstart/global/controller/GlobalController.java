@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "global")
 public class GlobalController {
 
-	@GetMapping("/403")
-	public String error403() {
-		return "error/403";
-	}
+    @GetMapping("/403")
+    public String error403() {
+        return "error/403";
+    }
 
-	@GetMapping("/404")
-	public String error404() {
-		return "error/404";
-	}
+    @GetMapping("/404")
+    public String error404() {
+        return "error/404";
+    }
 
-	@GetMapping("/500")
-	public String error500() {
-		return "error/500";
-	}
+    @GetMapping("/500")
+    public String error500() {
+        return "error/500";
+    }
 
-	@RequestMapping("/")
-	public String index() {
-		return "index";
-	}
+    @RequestMapping("/")
+    public String index() {
+        return "index";
+    }
 
 }

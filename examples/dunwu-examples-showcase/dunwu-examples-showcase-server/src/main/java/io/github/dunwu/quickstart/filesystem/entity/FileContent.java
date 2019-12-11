@@ -21,12 +21,12 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "FileContent", description = "文件内容表")
 public class FileContent extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "实际文件名")
-	private String fileName;
+    @ApiModelProperty(value = "实际文件名")
+    private String fileName;
 
-	@ApiModelProperty(value = "文件内容")
-	private byte[] content;
+    @ApiModelProperty(value = "文件内容")
+    private byte[] content;
 
 }

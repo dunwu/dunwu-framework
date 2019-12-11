@@ -24,15 +24,15 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class DunwuAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request,
-		HttpServletResponse response, AuthenticationException exception)
-		throws IOException, ServletException {
-		BaseResult result = ResultUtils.failBaseResult(AppCode.ERROR_AUTHENTICATION.getCode(), exception.getMessage());
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		response.getWriter().write(JSON.toJSONString(result));
-	}
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request,
+        HttpServletResponse response, AuthenticationException exception)
+        throws IOException, ServletException {
+        BaseResult result = ResultUtils.failBaseResult(AppCode.ERROR_AUTHENTICATION.getCode(), exception.getMessage());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
 }

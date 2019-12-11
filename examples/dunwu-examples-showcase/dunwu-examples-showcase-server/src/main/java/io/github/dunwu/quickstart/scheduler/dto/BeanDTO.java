@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class BeanDTO {
 
-	private String beanName;
+    private String beanName;
 
-	private Class<?> beanType;
+    private Class<?> beanType;
 
 }

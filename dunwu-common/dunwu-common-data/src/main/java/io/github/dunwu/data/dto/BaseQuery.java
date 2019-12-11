@@ -18,22 +18,22 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public abstract class BaseQuery<T> implements Serializable {
 
-	@ApiModelProperty(value = "ID", example = "0")
-	protected String id;
+    @ApiModelProperty(value = "ID", example = "0")
+    protected String id;
 
-	@ApiModelProperty(value = "创建者")
-	protected String createUser;
+    @ApiModelProperty(value = "创建者")
+    protected String createUser;
 
-	@ApiModelProperty(value = "更新者")
-	protected String updateUser;
+    @ApiModelProperty(value = "更新者")
+    protected String updateUser;
 
-	@ApiModelProperty(value = "创建时间")
-	protected LocalDateTime createTime;
+    @ApiModelProperty(value = "创建时间")
+    protected LocalDateTime createTime;
 
-	@ApiModelProperty(value = "更新时间")
-	protected LocalDateTime updateTime;
+    @ApiModelProperty(value = "更新时间")
+    protected LocalDateTime updateTime;
 
-	@ApiModelProperty(value = "分页信息")
-	private Pagination<T> pagination;
+    @ApiModelProperty(value = "分页信息")
+    private Pagination<T> pagination;
 
 }

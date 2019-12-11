@@ -21,21 +21,21 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "Role", description = "角色表")
 public class Role extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "角色名")
-	private String name;
+    @ApiModelProperty(value = "角色名")
+    private String name;
 
-	@ApiModelProperty(value = "角色类型")
-	private String type;
+    @ApiModelProperty(value = "角色类型")
+    private String type;
 
-	@ApiModelProperty(value = "角色code")
-	private String code;
+    @ApiModelProperty(value = "角色code")
+    private String code;
 
-	@ApiModelProperty(value = "状态", example = "0")
-	private Integer status;
+    @ApiModelProperty(value = "状态", example = "0")
+    private Integer status;
 
-	@ApiModelProperty(value = "备注")
-	private String notes;
+    @ApiModelProperty(value = "备注")
+    private String notes;
 
 }

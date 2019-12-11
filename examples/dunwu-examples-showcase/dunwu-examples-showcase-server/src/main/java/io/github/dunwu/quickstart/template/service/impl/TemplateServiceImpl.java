@@ -22,21 +22,21 @@ import java.util.Map;
  */
 @Service
 public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template>
-	implements TemplateService {
+    implements TemplateService {
 
-	private final Configuration freemarkConfig;
+    private final Configuration freemarkConfig;
 
-	public TemplateServiceImpl(Configuration freemarkConfig) {
-		this.freemarkConfig = freemarkConfig;
-	}
+    public TemplateServiceImpl(Configuration freemarkConfig) {
+        this.freemarkConfig = freemarkConfig;
+    }
 
-	@Override
-	public String mergeTemplate(String tmplFile, Map params)
-		throws IOException, TemplateException {
-		freemarker.template.Template template = freemarkConfig.getTemplate(tmplFile);
-		StringWriter stringWriter = new StringWriter();
-		template.process(params, stringWriter);
-		return stringWriter.toString();
-	}
+    @Override
+    public String mergeTemplate(String tmplFile, Map params)
+        throws IOException, TemplateException {
+        freemarker.template.Template template = freemarkConfig.getTemplate(tmplFile);
+        StringWriter stringWriter = new StringWriter();
+        template.process(params, stringWriter);
+        return stringWriter.toString();
+    }
 
 }

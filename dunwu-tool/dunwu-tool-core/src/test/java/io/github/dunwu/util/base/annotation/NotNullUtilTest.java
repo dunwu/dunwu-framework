@@ -8,44 +8,44 @@ import org.junit.jupiter.api.Test;
  */
 public class NotNullUtilTest {
 
-	@Test
-	public void test() {
-		MyBean myBean = new MyBean(null, "jack");
-		try {
-			NotNullUtil.check(myBean);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
+    @Test
+    public void test() {
+        MyBean myBean = new MyBean(null, "jack");
+        try {
+            NotNullUtil.check(myBean);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
-	static class MyBean {
+    static class MyBean {
 
-		@NotNull
-		private Integer id;
+        @NotNull
+        private Integer id;
 
-		private String name;
+        private String name;
 
-		public MyBean(Integer id, String name) {
-			this.id = id;
-			this.name = name;
-		}
+        public MyBean(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
 
-		public Integer getId() {
-			return id;
-		}
+        public Integer getId() {
+            return id;
+        }
 
-		public void setId(Integer id) {
-			this.id = id;
-		}
+        public void setId(Integer id) {
+            this.id = id;
+        }
 
-		public String getName() {
-			return name;
-		}
+        public String getName() {
+            return name;
+        }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+        public void setName(String name) {
+            this.name = name;
+        }
 
-	}
+    }
 
 }

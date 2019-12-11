@@ -2,7 +2,7 @@ package io.github.dunwu.util.net;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.io.Files;
-import io.github.dunwu.util.collection.CollectionUtils;
+import io.github.dunwu.util.collection.CollectionUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
@@ -27,195 +27,195 @@ import java.util.stream.Collectors;
  */
 public class RegionUtils {
 
-	private static final String JSON_DATA_FILE = "db/cn-area-info.json";
+    private static final String JSON_DATA_FILE = "db/cn-area-info.json";
 
-	private static List<Province> provinces = new LinkedList<>();
+    private static List<Province> provinces = new LinkedList<>();
 
-	private static List<City> cities = new LinkedList<>();
+    private static List<City> cities = new LinkedList<>();
 
-	private static List<County> counties = new LinkedList<>();
+    private static List<County> counties = new LinkedList<>();
 
-	static {
-		loadRegionDbData();
-	}
+    static {
+        loadRegionDbData();
+    }
 
-	private RegionUtils() {
-	}
+    private RegionUtils() {
+    }
 
-	/**
-	 * 获取所有（地级行政单位）集合
-	 *
-	 * @return Set<Province>
-	 */
-	public static List<City> getAllCities() {
-		return cities;
-	}
+    /**
+     * 获取所有（地级行政单位）集合
+     *
+     * @return Set<Province>
+     */
+    public static List<City> getAllCities() {
+        return cities;
+    }
 
-	/**
-	 * 获取所有（县级行政单位）集合
-	 *
-	 * @return Set<Province>
-	 */
-	public static List<County> getAllCounties() {
-		return counties;
-	}
+    /**
+     * 获取所有（县级行政单位）集合
+     *
+     * @return Set<Province>
+     */
+    public static List<County> getAllCounties() {
+        return counties;
+    }
 
-	/**
-	 * 获取所有（省级行政单位）集合
-	 *
-	 * @return Set<Province>
-	 */
-	public static List<Province> getAllProvinces() {
-		return provinces;
-	}
+    /**
+     * 获取所有（省级行政单位）集合
+     *
+     * @return Set<Province>
+     */
+    public static List<Province> getAllProvinces() {
+        return provinces;
+    }
 
-	/**
-	 * 根据编码查询（地级行政单位）
-	 *
-	 * @param code 编码
-	 * @return City
-	 */
-	public static City getCityByCode(String code) {
-		if (CollectionUtils.isEmpty(cities)) {
-			return null;
-		}
+    /**
+     * 根据编码查询（地级行政单位）
+     *
+     * @param code 编码
+     * @return City
+     */
+    public static City getCityByCode(String code) {
+        if (CollectionUtil.isEmpty(cities)) {
+            return null;
+        }
 
-		return cities.stream().filter(item -> item.getCode().equals(code)).findAny()
-			.orElse(null);
-	}
+        return cities.stream().filter(item -> item.getCode().equals(code)).findAny()
+            .orElse(null);
+    }
 
-	/**
-	 * 根据编码查询（县级行政单位）
-	 *
-	 * @param code 编码
-	 * @return County
-	 */
-	public static County getCountyByCode(String code) {
-		if (CollectionUtils.isEmpty(counties)) {
-			return null;
-		}
+    /**
+     * 根据编码查询（县级行政单位）
+     *
+     * @param code 编码
+     * @return County
+     */
+    public static County getCountyByCode(String code) {
+        if (CollectionUtil.isEmpty(counties)) {
+            return null;
+        }
 
-		return counties.stream().filter(item -> item.getCode().equals(code)).findAny()
-			.orElse(null);
-	}
+        return counties.stream().filter(item -> item.getCode().equals(code)).findAny()
+            .orElse(null);
+    }
 
-	/**
-	 * 根据名称查询（县级行政单位）
-	 * <p>
-	 * 注：全国范围内的区/县级行政单位可能存在重名情况
-	 *
-	 * @param name 名称
-	 * @return Set<County>
-	 */
-	public static Set<County> getCountyByName(String name) {
-		if (CollectionUtils.isEmpty(counties)) {
-			return null;
-		}
+    /**
+     * 根据名称查询（县级行政单位）
+     * <p>
+     * 注：全国范围内的区/县级行政单位可能存在重名情况
+     *
+     * @param name 名称
+     * @return Set<County>
+     */
+    public static Set<County> getCountyByName(String name) {
+        if (CollectionUtil.isEmpty(counties)) {
+            return null;
+        }
 
-		return counties.stream().filter(item -> item.getName().contains(name))
-			.collect(Collectors.toSet());
-	}
+        return counties.stream().filter(item -> item.getName().contains(name))
+            .collect(Collectors.toSet());
+    }
 
-	public static County getCountyByName(String cityName, String countyName) {
-		City city = getCityByName(cityName);
-		return getCountyByName(city, countyName);
-	}
+    public static County getCountyByName(String cityName, String countyName) {
+        City city = getCityByName(cityName);
+        return getCountyByName(city, countyName);
+    }
 
-	public static County getCountyByName(City city, String countyName) {
-		if (city == null) {
-			return null;
-		}
+    /**
+     * 根据名称查询（地级行政单位）
+     *
+     * @param name 名称
+     * @return City
+     */
+    public static City getCityByName(String name) {
+        if (CollectionUtil.isEmpty(cities)) {
+            return null;
+        }
 
-		Set<County> counties = city.getCounties();
-		if (CollectionUtils.isEmpty(counties)) {
-			return null;
-		}
+        return cities.stream().filter(item -> item.getName().contains(name)).findAny()
+            .orElse(null);
+    }
 
-		for (County item : counties) {
-			if (item.getName().equals(countyName)) {
-				return item;
-			}
-		}
-		return null;
-	}
+    public static County getCountyByName(City city, String countyName) {
+        if (city == null) {
+            return null;
+        }
 
-	/**
-	 * 根据名称查询（地级行政单位）
-	 *
-	 * @param name 名称
-	 * @return City
-	 */
-	public static City getCityByName(String name) {
-		if (CollectionUtils.isEmpty(cities)) {
-			return null;
-		}
+        Set<County> counties = city.getCounties();
+        if (CollectionUtil.isEmpty(counties)) {
+            return null;
+        }
 
-		return cities.stream().filter(item -> item.getName().contains(name)).findAny()
-			.orElse(null);
-	}
+        for (County item : counties) {
+            if (item.getName().equals(countyName)) {
+                return item;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 根据编码查询（省级行政单位）
-	 *
-	 * @param code 编码
-	 * @return Province
-	 */
-	public static Province getProvinceByCode(String code) {
-		if (CollectionUtils.isEmpty(provinces)) {
-			return null;
-		}
+    /**
+     * 根据编码查询（省级行政单位）
+     *
+     * @param code 编码
+     * @return Province
+     */
+    public static Province getProvinceByCode(String code) {
+        if (CollectionUtil.isEmpty(provinces)) {
+            return null;
+        }
 
-		return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
-			.orElse(null);
-	}
+        return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
+            .orElse(null);
+    }
 
-	/**
-	 * 根据名称查询（省级行政单位）
-	 *
-	 * @param name 名称
-	 * @return Province
-	 */
-	public static Province getProvinceByName(String name) {
-		if (CollectionUtils.isEmpty(provinces)) {
-			return null;
-		}
+    /**
+     * 根据名称查询（省级行政单位）
+     *
+     * @param name 名称
+     * @return Province
+     */
+    public static Province getProvinceByName(String name) {
+        if (CollectionUtil.isEmpty(provinces)) {
+            return null;
+        }
 
-		return provinces.stream().filter(item -> item.getName().contains(name)).findAny()
-			.orElse(null);
-	}
+        return provinces.stream().filter(item -> item.getName().contains(name)).findAny()
+            .orElse(null);
+    }
 
-	private static void loadRegionDbData() {
-		String json = null;
-		try {
-			URL url = RegionUtils.class.getClassLoader().getResource(JSON_DATA_FILE);
-			json = Files.asCharSource(new File(url.getPath()), StandardCharsets.UTF_8).read();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    private static void loadRegionDbData() {
+        String json = null;
+        try {
+            URL url = RegionUtils.class.getClassLoader().getResource(JSON_DATA_FILE);
+            json = Files.asCharSource(new File(url.getPath()), StandardCharsets.UTF_8).read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		parseRegionsFromJson(json);
-	}
+        parseRegionsFromJson(json);
+    }
 
-	private static void parseRegionsFromJson(final String json) {
-		provinces.clear();
-		cities.clear();
-		counties.clear();
+    private static void parseRegionsFromJson(final String json) {
+        provinces.clear();
+        cities.clear();
+        counties.clear();
 
-		provinces = JSON.parseArray(json, Province.class);
-		if (CollectionUtils.isEmpty(provinces)) {
-			return;
-		}
-		for (Province province : provinces) {
-			for (City city : province.getCities()) {
-				city.setProvince(province);
-				for (County county : city.getCounties()) {
-					county.setProvince(province);
-					county.setCity(city);
-					counties.add(county);
-				}
-				cities.add(city);
-			}
-		}
-	}
+        provinces = JSON.parseArray(json, Province.class);
+        if (CollectionUtil.isEmpty(provinces)) {
+            return;
+        }
+        for (Province province : provinces) {
+            for (City city : province.getCities()) {
+                city.setProvince(province);
+                for (County county : city.getCounties()) {
+                    county.setProvince(province);
+                    county.setCity(city);
+                    counties.add(county);
+                }
+                cities.add(city);
+            }
+        }
+    }
 
 }

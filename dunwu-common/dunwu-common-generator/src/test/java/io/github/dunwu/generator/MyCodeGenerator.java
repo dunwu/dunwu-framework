@@ -13,8 +13,8 @@ package io.github.dunwu.generator;
  */
 public class MyCodeGenerator extends DefaultCodeGenerator {
 
-	public static void main(String[] args) {
-		new MyCodeGenerator().generate();
-	}
+    public static void main(String[] args) {
+        new MyCodeGenerator().generate();
+    }
 
 }

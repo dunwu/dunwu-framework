@@ -20,8 +20,8 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @MapperScan("io.github.dunwu.quickstart.*.mapper")
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
 }

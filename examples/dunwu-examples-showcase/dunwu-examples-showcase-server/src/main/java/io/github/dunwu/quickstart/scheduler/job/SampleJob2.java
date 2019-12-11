@@ -17,25 +17,25 @@ import org.slf4j.LoggerFactory;
 @JobHandler("sampleJob2")
 public class SampleJob2 implements IJobHandler {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Override
-	public BaseResult execute(String params) {
-		Person person = JSON.parseObject(params, Person.class);
-		log.info("person = {}", person);
-		return ResultUtils.successBaseResult();
-	}
+    @Override
+    public BaseResult execute(String params) {
+        Person person = JSON.parseObject(params, Person.class);
+        log.info("person = {}", person);
+        return ResultUtils.successBaseResult();
+    }
 
-	@Data
-	@ToString
-	private static class Person {
+    @Data
+    @ToString
+    private static class Person {
 
-		private String name;
+        private String name;
 
-		private Integer age;
+        private Integer age;
 
-		private String sex;
+        private String sex;
 
-	}
+    }
 
 }
