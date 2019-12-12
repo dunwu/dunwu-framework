@@ -1,19 +1,15 @@
 package io.github.dunwu.util.net;
 
-import com.google.common.net.InetAddresses;
-import io.github.dunwu.util.base.ByteExtUtil;
-import io.github.dunwu.util.base.NumberExtUtil;
-import io.github.dunwu.util.collection.ArrayExtUtil;
+import io.github.dunwu.tool.convert.Convert;
+import io.github.dunwu.tool.util.ArrayUtil;
+import io.github.dunwu.tool.util.StringUtil;
+import io.github.dunwu.tool.util.ValidatorUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
-import io.github.dunwu.util.text.ValidatorUtil;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -39,6 +35,10 @@ public class IpUtils {
 
     private static final String IP_DB_FILE = "db/17monipdb.dat";
 
+    private static final int IPV4_PART_COUNT = 4;
+
+    private static final int IPV6_PART_COUNT = 8;
+
     private static final String REGION_CHINA = "中国";
 
     private static final int IP_DB_INDEX_LENGTH = 256;
@@ -54,7 +54,7 @@ public class IpUtils {
     private static ReentrantLock lock = new ReentrantLock();
 
     static {
-        init();
+        loadData();
     }
 
     private IpUtils() {}
@@ -82,49 +82,25 @@ public class IpUtils {
         return ValidatorUtil.isIpv6(ipv6Str);
     }
 
-    /**
-     * 从 int 转换为 Inet4Address (仅支持IPV4)
-     */
-    public static Inet4Address getInet4AddressFromInt(final int address) {
-        return InetAddresses.fromInteger(address);
-    }
-
     // Inet4Address
     // -------------------------------------------------------------------------------------------------
-
-    /**
-     * 从 String 转换为 Inet4Address (仅支持 ipv4)，失败则返回 null
-     */
-    public static Inet4Address getInet4AddressFromStr(final String address) {
-        byte[] bytes = ipv4StrToBytes(address);
-        if (bytes == null) {
-            return null;
-        }
-
-        try {
-            return (Inet4Address) Inet4Address.getByAddress(bytes);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * Ipv4 String 转换为 byte[]，失败则返回 null
      */
     public static byte[] ipv4StrToBytes(final String ipv4Str) {
-        if (StringUtils.isBlank(ipv4Str)) {
+        if (StringUtil.isBlank(ipv4Str)) {
             return null;
         }
 
-        String[] arrays = StringUtils.split(ipv4Str, ".", 4);
-        if (arrays == null || arrays.length != 4) {
+        List<String> list = StringUtil.split(ipv4Str, '.', 4);
+        if (list == null || list.size() != 4) {
             return null;
         }
 
         byte[] bytes = new byte[4];
         for (int i = 0; i < 4; i++) {
-            int value = Integer.parseInt(arrays[i]);
+            int value = Integer.parseInt(list.get(i));
             if (value > 255) {
                 return null;
             }
@@ -134,24 +110,10 @@ public class IpUtils {
     }
 
     /**
-     * 从 String 转换为 InetAddress（可以是 ipv4 或 ipv6）。
-     */
-    public static InetAddress getInetAddressFromStr(final String address) {
-        return InetAddresses.forString(address);
-    }
-
-    /**
-     * 从 InetAddress 转换为 int（可以是 ipv4 或 ipv6）。
-     */
-    public static int getIntFromInetAddress(final InetAddress address) {
-        return InetAddresses.coerceToInteger(address);
-    }
-
-    /**
      * 从 InetAddress 转换为 String（可以是 ipv4 或 ipv6）。
      */
     public static String getStrFromInetAddress(final InetAddress address) {
-        return InetAddresses.toAddrString(address);
+        return address.getHostAddress();
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -168,10 +130,10 @@ public class IpUtils {
      */
     public static int ipv4StrToInt(final String ipv4Str) {
         byte[] bytes = ipv4StrToBytes(ipv4Str);
-        if (ArrayUtils.isEmpty(bytes)) {
+        if (ArrayUtil.isEmpty(bytes)) {
             return 0;
         } else {
-            return NumberExtUtil.parseInt(bytes);
+            return Convert.bytesToInt(bytes);
         }
     }
 
@@ -193,7 +155,7 @@ public class IpUtils {
     public static String getRegionCode(final String ip) {
         String[] regionNames = getFullRegionName(ip);
         if (REGION_CHINA.equals(regionNames[0])) {
-            if (StringUtils.isBlank(ArrayExtUtil.indexOf(regionNames, 1))) {
+            if (StringUtil.isBlank(ArrayUtil.get(regionNames, 1))) {
                 return null;
             }
 
@@ -202,7 +164,7 @@ public class IpUtils {
                 return null;
             }
 
-            if (StringUtils.isBlank(ArrayExtUtil.indexOf(regionNames, 2))) {
+            if (StringUtil.isBlank(ArrayUtil.get(regionNames, 2))) {
                 return province.getCode();
             }
             City city = RegionUtils.getCityByName(regionNames[2]);
@@ -232,7 +194,7 @@ public class IpUtils {
      * @return 所属地的名称数组
      */
     public static String[] getFullRegionName(final String ip) {
-        if (StringUtils.isBlank(ip)) {
+        if (StringUtil.isBlank(ip)) {
             throw new IllegalArgumentException(ip + " must not be null");
         }
 
@@ -249,9 +211,8 @@ public class IpUtils {
         byte b = 0;
         for (start = start * 8 + 1024; start < maxCompLen; start += 8) {
             if (indexBuffer.getInt(start) >= ip2longValue) {
-                indexOffset =
-                    ByteExtUtil.bytesToLong(b, indexBuffer.get(start + 6), indexBuffer.get(start + 5),
-                        indexBuffer.get(start + 4));
+                indexOffset = Convert.bytesToLong(b, indexBuffer.get(start + 6),
+                    indexBuffer.get(start + 5), indexBuffer.get(start + 4));
                 indexLength = 0xFF & indexBuffer.get(start + 7);
                 break;
             }
@@ -284,13 +245,13 @@ public class IpUtils {
     }
 
     private static String[] toStandardRegionNames(final String[] regionNames) {
-        if (ArrayUtils.isEmpty(regionNames)) {
+        if (ArrayUtil.isEmpty(regionNames)) {
             return null;
         }
 
         // 国家级行政单位为空，直接返回 null
-        String country = ArrayExtUtil.indexOf(regionNames, 0);
-        if (StringUtils.isBlank(country)) {
+        String country = ArrayUtil.get(regionNames, 0);
+        if (StringUtil.isBlank(country)) {
             return null;
         }
 
@@ -302,8 +263,8 @@ public class IpUtils {
 
             // 国内地名需查询省市区
             // 省级行政单位为空，直接返回 null
-            String provinceStr = ArrayExtUtil.indexOf(regionNames, 1);
-            if (StringUtils.isBlank(provinceStr)) {
+            String provinceStr = ArrayUtil.get(regionNames, 1);
+            if (StringUtil.isBlank(provinceStr)) {
                 return result.toArray(new String[0]);
             }
             // 查询省级行政单位标准名称
@@ -314,8 +275,8 @@ public class IpUtils {
             result.add(province.getName());
 
             // 市级行政单位为空，直接返回 null
-            String cityStr = ArrayExtUtil.indexOf(regionNames, 2);
-            if (StringUtils.isBlank(cityStr)) {
+            String cityStr = ArrayUtil.get(regionNames, 2);
+            if (StringUtil.isBlank(cityStr)) {
                 return result.toArray(new String[0]);
             }
             // 正常情况下，省级行政单位不应该和市级行政单位同名
@@ -330,8 +291,8 @@ public class IpUtils {
             result.add(city.getName());
 
             // 区/县级行政单位为空，直接返回 null
-            String countyStr = ArrayExtUtil.indexOf(regionNames, 3);
-            if (StringUtils.isBlank(countyStr)) {
+            String countyStr = ArrayUtil.get(regionNames, 3);
+            if (StringUtil.isBlank(countyStr)) {
                 return result.toArray(new String[0]);
             }
             County county = RegionUtils.getCountyByName(city, countyStr);
@@ -344,7 +305,7 @@ public class IpUtils {
         } else {
             // 国外地名无需查询省市区
             // 数组过滤空字符串
-            String[] temp = ArrayExtUtil.trim(regionNames);
+            String[] temp = ArrayUtil.removeEmpty(regionNames);
             // 地名去重
             return getDeduplicateArray(temp);
         }
@@ -363,13 +324,13 @@ public class IpUtils {
      */
     public static String getRegionName(final String ip) {
         String[] regionNames = getFullRegionName(ip);
-        if (ArrayUtils.isEmpty(regionNames)) {
+        if (ArrayUtil.isEmpty(regionNames)) {
             return null;
         }
 
         int end = regionNames.length - 1;
         for (int i = end; i >= 0; i--) {
-            if (StringUtils.isNotBlank(regionNames[i])) {
+            if (StringUtil.isNotBlank(regionNames[i])) {
                 return regionNames[i];
             }
         }
@@ -382,7 +343,7 @@ public class IpUtils {
         }
 
         byte[] ipv4Bytes = ipv4StrToBytes(ipv4Str);
-        if (ArrayUtils.isEmpty(ipv4Bytes)) {
+        if (ArrayUtil.isEmpty(ipv4Bytes)) {
             return null;
         }
 
@@ -395,7 +356,7 @@ public class IpUtils {
         return address.getHostAddress();
     }
 
-    private static void init() {
+    private static void loadData() {
 
         InputStream fis = null;
         lock.lock();

@@ -1,16 +1,14 @@
 package io.github.dunwu.util.net;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.io.Files;
-import io.github.dunwu.util.collection.CollectionUtil;
+import io.github.dunwu.tool.collection.CollectionUtil;
+import io.github.dunwu.tool.io.FileUtil;
+import io.github.dunwu.tool.util.CharsetUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +34,7 @@ public class RegionUtils {
     private static List<County> counties = new LinkedList<>();
 
     static {
-        loadRegionDbData();
+        loadData();
     }
 
     private RegionUtils() {
@@ -184,15 +182,9 @@ public class RegionUtils {
             .orElse(null);
     }
 
-    private static void loadRegionDbData() {
-        String json = null;
-        try {
-            URL url = RegionUtils.class.getClassLoader().getResource(JSON_DATA_FILE);
-            json = Files.asCharSource(new File(url.getPath()), StandardCharsets.UTF_8).read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private static void loadData() {
+        URL url = RegionUtils.class.getClassLoader().getResource(JSON_DATA_FILE);
+        String json = FileUtil.readString(url, CharsetUtil.UTF_8);
         parseRegionsFromJson(json);
     }
 

@@ -5,7 +5,7 @@ import io.github.dunwu.autoconfigure.mail.DunwuMailProperties;
 import io.github.dunwu.quickstart.mail.dto.MailDTO;
 import io.github.dunwu.quickstart.mail.service.MailService;
 import io.github.dunwu.quickstart.template.service.TemplateService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

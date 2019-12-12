@@ -149,7 +149,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
     @Override
     public BaseResult removeByMap(Map<String, Object> columnMap) {
-        Assert.notEmpty(columnMap, "error: columnMap must not be empty");
+        Assertions.notEmpty(columnMap, "error: columnMap must not be empty");
         boolean result = SqlHelper.retBool(baseMapper.deleteByMap(columnMap));
         if (result) {
             return ResultUtils.successBaseResult();
@@ -215,10 +215,10 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         if (null != entity) {
             Class<?> cls = entity.getClass();
             TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-            Assert.notNull(tableInfo,
+            Assertions.notNull(tableInfo,
                 "error: can not execute. because can not find cache of TableInfo for entity!");
             String keyProperty = tableInfo.getKeyProperty();
-            Assert.notEmpty(keyProperty,
+            Assertions.notEmpty(keyProperty,
                 "error: can not execute. because can not find column for id from entity!");
             Object idVal = ReflectionKit.getMethodValue(cls, entity,
                 tableInfo.getKeyProperty());
@@ -233,13 +233,13 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResult saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
-        Assert.notEmpty(entityList, "error: entityList must not be empty");
+        Assertions.notEmpty(entityList, "error: entityList must not be empty");
         Class<?> cls = currentModelClass();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-        Assert.notNull(tableInfo,
+        Assertions.notNull(tableInfo,
             "error: can not execute. because can not find cache of TableInfo for entity!");
         String keyProperty = tableInfo.getKeyProperty();
-        Assert.notEmpty(keyProperty,
+        Assertions.notEmpty(keyProperty,
             "error: can not execute. because can not find column for id from entity!");
         try (SqlSession batchSqlSession = sqlSessionBatch()) {
             int i = 0;
@@ -278,7 +278,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResult updateBatchById(Collection<T> entityList, int batchSize) {
-        Assert.notEmpty(entityList, "error: entityList must not be empty");
+        Assertions.notEmpty(entityList, "error: entityList must not be empty");
         String sqlStatement = sqlStatement(SqlMethod.UPDATE_BY_ID);
         try (SqlSession batchSqlSession = sqlSessionBatch()) {
             int i = 0;

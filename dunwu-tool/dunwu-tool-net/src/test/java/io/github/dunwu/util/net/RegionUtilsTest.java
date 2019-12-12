@@ -1,10 +1,10 @@
 package io.github.dunwu.util.net;
 
-import io.github.dunwu.util.io.AnsiSystem;
+import io.github.dunwu.tool.io.AnsiSystem;
+import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -65,7 +65,7 @@ class RegionUtilsTest {
 
     @Test
     void getCityByName() {
-        String[] cityNames = StringUtils.splitByWholeSeparator(CITY_STR, ",");
+        String[] cityNames = StringUtil.split(CITY_STR, ",");
         Arrays.stream(cityNames).forEach(item -> {
             City city = RegionUtils.getCityByName(item);
             assertThat(city).isNotNull();
@@ -74,7 +74,7 @@ class RegionUtilsTest {
 
     @Test
     void getCountyByName() {
-        String[] countyNames = StringUtils.splitByWholeSeparator(COUNTY_STR, ",");
+        String[] countyNames = StringUtil.split(COUNTY_STR, ",");
         Arrays.stream(countyNames).forEach(item -> {
             Set<County> counties = RegionUtils.getCountyByName(item);
             assertThat(counties).isNotNull();
@@ -83,7 +83,7 @@ class RegionUtilsTest {
 
     @Test
     void getProvinceByName() {
-        String[] provinceNames = StringUtils.splitByWholeSeparator(PROVINCE_STR, ",");
+        String[] provinceNames = StringUtil.split(PROVINCE_STR, ",");
         Arrays.stream(provinceNames).forEach(item -> {
             Province province = RegionUtils.getProvinceByName(item);
             assertThat(province).isNotNull();

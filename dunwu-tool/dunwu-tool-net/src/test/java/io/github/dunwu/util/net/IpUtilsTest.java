@@ -1,7 +1,7 @@
 package io.github.dunwu.util.net;
 
-import io.github.dunwu.util.base.StringExtUtil;
-import io.github.dunwu.util.io.AnsiSystem;
+import io.github.dunwu.tool.io.AnsiSystem;
+import io.github.dunwu.tool.util.StringUtil;
 import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
@@ -9,17 +9,6 @@ import java.net.UnknownHostException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class IpUtilsTest {
-
-    @Test
-    void inetAddress() {
-        assertThat(IpUtils.getInet4AddressFromInt(-1062731775).getHostAddress()).isEqualTo("192.168.0.1");
-        assertThat(IpUtils.getInet4AddressFromInt(-1062731774).getHostAddress()).isEqualTo("192.168.0.2");
-        assertThat(IpUtils.getInetAddressFromStr("192.168.0.1").getHostAddress()).isEqualTo("192.168.0.1");
-        assertThat(IpUtils.getInetAddressFromStr("192.168.0.2").getHostAddress()).isEqualTo("192.168.0.2");
-        assertThat(IpUtils.getInet4AddressFromStr("192.168.0.1").getHostAddress()).isEqualTo("192.168.0.1");
-        assertThat(IpUtils.getInet4AddressFromStr("192.168.0.2").getHostAddress()).isEqualTo("192.168.0.2");
-        assertThat(IpUtils.getIntFromInetAddress(IpUtils.getInetAddressFromStr("192.168.0.1"))).isEqualTo(-1062731775);
-    }
 
     @Test
     void isValidIp() {
@@ -69,8 +58,8 @@ class IpUtilsTest {
         for (String ip : ips) {
             String[] regionNames = IpUtils.getFullRegionName(ip);
             long beginTime = System.nanoTime();
-            AnsiSystem.BLUE.println(ip + " 所属完整行政单位：" + StringExtUtil.join(regionNames, ","));
-            AnsiSystem.BLUE.println(ip + " 最小行政单位：" + StringExtUtil.join(IpUtils.getRegionName(ip)));
+            AnsiSystem.BLUE.println(ip + " 所属完整行政单位：" + StringUtil.join(",", regionNames));
+            AnsiSystem.BLUE.println(ip + " 最小行政单位：" + StringUtil.join(IpUtils.getRegionName(ip)));
             long endTime = System.nanoTime();
             long value = (endTime - beginTime) / 1000000;
             time += value;

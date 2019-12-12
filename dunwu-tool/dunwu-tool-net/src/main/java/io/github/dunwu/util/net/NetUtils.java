@@ -1,7 +1,6 @@
 package io.github.dunwu.util.net;
 
-import com.google.common.annotations.Beta;
-import io.github.dunwu.util.SystemExtUtil;
+import io.github.dunwu.tool.util.SystemUtil;
 
 import java.net.*;
 import java.util.Enumeration;
@@ -13,7 +12,6 @@ import javax.net.ServerSocketFactory;
 /**
  * 关于网络的工具类. 1. 获取本机IP地址与HostName 2. 查找空闲端口
  */
-@Beta
 public class NetUtils {
 
     public static final int PORT_RANGE_MIN = 1024;
@@ -130,7 +128,7 @@ public class NetUtils {
         public LocalAddress() {
             initLocalAddress();
             // from Common Lang SystemUtils
-            hostName = SystemExtUtil.IS_OS_WINDOWS ? System.getenv("COMPUTERNAME")
+            hostName = SystemUtil.IS_OS_WINDOWS ? System.getenv("COMPUTERNAME")
                 : System.getenv("HOSTNAME");
         }
 
