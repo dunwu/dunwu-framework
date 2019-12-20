@@ -16,7 +16,7 @@
 
 package io.github.dunwu.autoconfigure.mail;
 
-import io.github.dunwu.util.concurrent.ThreadPoolUtil;
+import io.github.dunwu.tool.thread.ThreadPoolUtil;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -59,15 +59,15 @@ public class MailSenderAutoConfiguration {
     @Bean("mailExecutor")
     public ExecutorService mailExecutor() {
         DunwuMailProperties.Pool pool = dunwuMailProperties.getPool();
-        ThreadPoolUtil.QueuableCachedThreadPoolBuilder builder = ThreadPoolUtil
-            .queuableCachedPool();
-        builder.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize())
+
+        ThreadPoolUtil.QueuableCachedThreadPoolBuilder queuableCachedPool = ThreadPoolUtil.queuableCachedPool();
+        queuableCachedPool.setMinSize(pool.getMinSize()).setMinSize(pool.getMaxSize())
             .setKeepAliveSecs(pool.getKeepAliveSecs())
             .setQueueSize(pool.getQueueSize())
             .setThreadFactory(ThreadPoolUtil
                 .buildThreadFactory(pool.getThreadNamePrefix(), pool.getDaemon()))
             .setRejectHanlder(new ThreadPoolExecutor.AbortPolicy());
-        return builder.build();
+        return queuableCachedPool.build();
     }
 
     /**

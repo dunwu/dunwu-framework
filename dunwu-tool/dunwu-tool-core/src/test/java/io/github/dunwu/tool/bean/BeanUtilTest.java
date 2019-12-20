@@ -1,12 +1,13 @@
 package io.github.dunwu.tool.bean;
 
-import io.github.dunwu.tool.bean.copier.CopyOptions;
-import io.github.dunwu.tool.bean.copier.ValueProvider;
+import com.alibaba.fastjson.JSON;
+import io.github.dunwu.tool.bean.support.BeanOptions;
+import io.github.dunwu.tool.bean.support.BeanValueProvider;
+import io.github.dunwu.tool.bean.support.NamingStrategy;
+import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.collection.CollectionUtil;
 import io.github.dunwu.tool.map.MapUtil;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +15,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Bean工具单元测试
@@ -54,7 +52,7 @@ public class BeanUtilTest {
                 // 总是存在key
                 return true;
             }
-        }, CopyOptions.create());
+        }, BeanOptions.create());
 
         Assertions.assertEquals(person.getName(), "张三");
         Assertions.assertEquals(person.getAge(), 18);
@@ -69,7 +67,7 @@ public class BeanUtilTest {
         SubPerson person = BeanUtil.fillBeanWithMapIgnoreCase(map, new SubPerson(), false);
         Assertions.assertEquals(person.getName(), "Joe");
         Assertions.assertEquals(person.getAge(), 12);
-        Assertions.assertEquals(person.getOpenid(), "DFDFSDFWERWER");
+        Assertions.assertEquals(person.getOpenId(), "DFDFSDFWERWER");
     }
 
     @Test
@@ -94,7 +92,7 @@ public class BeanUtilTest {
         mapping.put("a_name", "name");
         mapping.put("b_age", "age");
 
-        Person person = BeanUtil.toBean(map, Person.class, CopyOptions.create().setFieldMapping(mapping));
+        Person person = BeanUtil.toBean(map, Person.class, BeanOptions.create().setFieldMapping(mapping));
         Assertions.assertEquals("Joe", person.getName());
         Assertions.assertEquals(12, person.getAge());
     }
@@ -103,7 +101,7 @@ public class BeanUtilTest {
     public void beanToMapTest() {
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
 
@@ -120,7 +118,7 @@ public class BeanUtilTest {
     public void beanToMapTest2() {
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
 
@@ -134,7 +132,7 @@ public class BeanUtilTest {
 
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
         person.setDate(now);
@@ -149,7 +147,7 @@ public class BeanUtilTest {
     public void getPropertyTest() {
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
 
@@ -225,7 +223,7 @@ public class BeanUtilTest {
         Person person = new Person();
         person.setAge(1);
         person.setName("  张三 ");
-        person.setOpenid(null);
+        person.setOpenId(null);
         Person person2 = BeanUtil.trimStrFields(person);
 
         // 是否改变原对象
@@ -233,17 +231,55 @@ public class BeanUtilTest {
         Assertions.assertEquals("张三", person2.getName());
     }
 
+    @Data
+    @AllArgsConstructor
+    class MyData {
+
+        String a;
+
+        String b;
+
+        Date c;
+
+    }
+
     @Test
-    public void test() {
+    public void formatKeysTest() {
+        List<String> keys = BeanUtil.formatKeys(Person.class, NamingStrategy.LOWER_DASHED);
+        System.out.println(keys);
+        Assertions.assertEquals("[name, age, open-id]", keys.toString());
+    }
+
+    @Test
+    public void joinValuesAndJoinKeysTest() {
+        MyData myData = new MyData("A", "B", new Date());
+        String myDataStr = BeanUtil.joinValues(myData, ",");
+        System.out.println(myDataStr);
+
         Person p = new Person("user", 18, "xxx");
-        String result = BeanUtil.formatValues(p, ",");
+        String result = BeanUtil.joinValues(p, ",");
         System.out.println(result);
         Assertions.assertEquals("user,18,xxx", result);
 
         Person p2 = new Person("user2", 20, null);
-        String result2 = BeanUtil.formatValues(p2, ",");
+        String result2 = BeanUtil.joinValues(p2, ",");
         System.out.println(result2);
         Assertions.assertEquals("user2,20,null", result2);
+
+        String result3 = BeanUtil.joinKeys(Person.class, "_");
+        System.out.println(result3);
+    }
+
+    @Test
+    public void toBeanTest() {
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("timestamp", new Date());
+        String json = JSON.toJSONString(map);
+        BeanA beanA = new BeanA();
+        beanA.setInfo(json);
+        BeanValueProvider beanValueProvider = new BeanValueProvider(beanA, false, true);
+        BeanB beanB = BeanUtil.toBean(BeanB.class, beanValueProvider, BeanOptions.defaultBeanOptions());
+        System.out.println(beanB);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -282,15 +318,31 @@ public class BeanUtilTest {
 
         private int age;
 
-        private String openid;
+        private String openId;
 
         public Person() {}
 
-        public Person(String name, int age, String openid) {
+        public Person(String name, int age, String openId) {
             this.name = name;
             this.age = age;
-            this.openid = openid;
+            this.openId = openId;
         }
+
+    }
+
+    @Data
+    @ToString
+    public static class BeanA {
+
+        private String info;
+
+    }
+
+    @Data
+    @ToString
+    public static class BeanB {
+
+        private Map<String, Object> info;
 
     }
 

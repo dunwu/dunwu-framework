@@ -20,7 +20,7 @@ public class ConvertToBeanTest {
     public void beanToMapTest() {
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
 
@@ -34,7 +34,7 @@ public class ConvertToBeanTest {
     public void beanToMapTest2() {
         SubPerson person = new SubPerson();
         person.setAge(14);
-        person.setOpenid("11213232");
+        person.setOpenId("11213232");
         person.setName("测试A11");
         person.setSubName("sub名字");
 
@@ -73,9 +73,9 @@ public class ConvertToBeanTest {
         SubPerson subPerson = Convert.convert(SubPerson.class, map);
         Assertions.assertEquals("88dc4b28-91b1-4a1a-bab5-444b795c7ecd", subPerson.getId().toString());
         Assertions.assertEquals(14, subPerson.getAge());
-        Assertions.assertEquals("11213232", subPerson.getOpenid());
+        Assertions.assertEquals("11213232", subPerson.getOpenId());
         Assertions.assertEquals("测试A11", subPerson.getName());
-        Assertions.assertEquals("11213232", subPerson.getOpenid());
+        Assertions.assertEquals("11213232", subPerson.getOpenId());
     }
 
 }

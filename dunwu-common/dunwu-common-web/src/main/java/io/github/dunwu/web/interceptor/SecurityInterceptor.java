@@ -1,7 +1,7 @@
 package io.github.dunwu.web.interceptor;
 
+import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.web.constant.WebConstant;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -36,7 +36,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         log.info("session id = {}", session.getId());
         String token = (String) session.getAttribute(tokenKey);
         log.info("inceptor {} = {}", tokenKey, token);
-        if (StringUtils.isNoneBlank(token)) {
+        if (StringUtil.isBlank(token)) {
             return true;
         }
         log.error("没有 session");

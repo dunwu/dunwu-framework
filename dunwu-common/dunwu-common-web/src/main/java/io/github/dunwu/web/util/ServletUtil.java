@@ -1,8 +1,8 @@
 package io.github.dunwu.web.util;
 
-import com.google.common.net.HttpHeaders;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
+import io.github.dunwu.web.constant.HttpHeaders;
 import io.github.dunwu.web.constant.WebConstant;
 
 import java.io.UnsupportedEncodingException;

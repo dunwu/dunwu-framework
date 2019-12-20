@@ -1,4 +1,4 @@
-package io.github.dunwu.data.service;
+package io.github.dunwu.data.mybatis;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
@@ -6,11 +6,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
+import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import io.github.dunwu.core.*;
-import io.github.dunwu.data.entity.BaseEntity;
-import io.github.dunwu.data.util.PageUtil;
+import io.github.dunwu.data.mybatis.support.MybatisPlusUtil;
+import io.github.dunwu.tool.util.StringUtil;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
@@ -105,16 +108,16 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     @Override
     public PageResult<T> page(Pagination<T> pagination, Wrapper<T> queryWrapper) {
         IPage<T> resultPage = baseMapper
-            .selectPage(PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
-        return ResultUtils.successPageResult(PageUtil.transToPagination(resultPage));
+            .selectPage(MybatisPlusUtil.transToMybatisPlusPage(pagination), queryWrapper);
+        return ResultUtils.successPageResult(MybatisPlusUtil.transToPagination(resultPage));
     }
 
     @Override
     public PageResult<Map<String, Object>> pageMaps(Pagination<T> pagination,
         Wrapper<T> queryWrapper) {
         IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(
-            PageUtil.transToMybatisPlusPage(pagination), queryWrapper);
-        return ResultUtils.successPageResult(PageUtil.transToPagination(resultPage));
+            MybatisPlusUtil.transToMybatisPlusPage(pagination), queryWrapper);
+        return ResultUtils.successPageResult(MybatisPlusUtil.transToPagination(resultPage));
     }
 
     @Override
@@ -149,7 +152,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
     @Override
     public BaseResult removeByMap(Map<String, Object> columnMap) {
-        Assertions.notEmpty(columnMap, "error: columnMap must not be empty");
+        Assert.notEmpty(columnMap, "error: columnMap must not be empty");
         boolean result = SqlHelper.retBool(baseMapper.deleteByMap(columnMap));
         if (result) {
             return ResultUtils.successBaseResult();
@@ -198,15 +201,15 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
             .getSqlStatement(sqlMethod.getMethod());
     }
 
+    protected Class<T> currentModelClass() {
+        return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
+    }
+
     /**
      * 批量操作 SqlSession
      */
     protected SqlSession sqlSessionBatch() {
         return SqlHelper.sqlSessionBatch(currentModelClass());
-    }
-
-    protected Class<T> currentModelClass() {
-        return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
     }
 
     @Override
@@ -215,14 +218,14 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         if (null != entity) {
             Class<?> cls = entity.getClass();
             TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-            Assertions.notNull(tableInfo,
+            Assert.notNull(tableInfo,
                 "error: can not execute. because can not find cache of TableInfo for entity!");
             String keyProperty = tableInfo.getKeyProperty();
-            Assertions.notEmpty(keyProperty,
+            Assert.notEmpty(keyProperty,
                 "error: can not execute. because can not find column for id from entity!");
             Object idVal = ReflectionKit.getMethodValue(cls, entity,
                 tableInfo.getKeyProperty());
-            return StringUtils.checkValNull(idVal)
+            return StringUtil.isEmptyIfStr(idVal)
                 || Objects.isNull(getById((Serializable) idVal)) ? save(entity)
                 : updateById(entity);
         }
@@ -233,19 +236,19 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResult saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
-        Assertions.notEmpty(entityList, "error: entityList must not be empty");
+        Assert.notEmpty(entityList, "error: entityList must not be empty");
         Class<?> cls = currentModelClass();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
-        Assertions.notNull(tableInfo,
+        Assert.notNull(tableInfo,
             "error: can not execute. because can not find cache of TableInfo for entity!");
         String keyProperty = tableInfo.getKeyProperty();
-        Assertions.notEmpty(keyProperty,
+        Assert.notEmpty(keyProperty,
             "error: can not execute. because can not find column for id from entity!");
         try (SqlSession batchSqlSession = sqlSessionBatch()) {
             int i = 0;
             for (T entity : entityList) {
                 Object idVal = ReflectionKit.getMethodValue(cls, entity, keyProperty);
-                if (StringUtils.checkValNull(idVal)
+                if (StringUtil.isEmptyIfStr(idVal)
                     || Objects.isNull(getById((Serializable) idVal))) {
                     batchSqlSession.insert(sqlStatement(SqlMethod.INSERT_ONE), entity);
                 } else {
@@ -278,7 +281,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseResult updateBatchById(Collection<T> entityList, int batchSize) {
-        Assertions.notEmpty(entityList, "error: entityList must not be empty");
+        Assert.notEmpty(entityList, "error: entityList must not be empty");
         String sqlStatement = sqlStatement(SqlMethod.UPDATE_BY_ID);
         try (SqlSession batchSqlSession = sqlSessionBatch()) {
             int i = 0;

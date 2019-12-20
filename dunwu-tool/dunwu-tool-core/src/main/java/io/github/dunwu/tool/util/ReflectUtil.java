@@ -690,7 +690,7 @@ public class ReflectUtil {
      * @return 是否为equals方法
      */
     public static boolean isEqualsMethod(Method method) {
-        if (method == null || false == method.getName().equals("equals")) {
+        if (method == null || false == "equals".equals(method.getName())) {
             return false;
         }
         final Class<?>[] paramTypes = method.getParameterTypes();
@@ -704,7 +704,7 @@ public class ReflectUtil {
      * @return 是否为hashCode方法
      */
     public static boolean isHashCodeMethod(Method method) {
-        return (method != null && method.getName().equals("hashCode") && method.getParameterTypes().length == 0);
+        return (method != null && "hashCode".equals(method.getName()) && method.getParameterTypes().length == 0);
     }
 
     /**
@@ -714,7 +714,7 @@ public class ReflectUtil {
      * @return 是否为toString方法
      */
     public static boolean isToStringMethod(Method method) {
-        return (method != null && method.getName().equals("toString") && method.getParameterTypes().length == 0);
+        return (method != null && "toString".equals(method.getName()) && method.getParameterTypes().length == 0);
     }
 
     // --------------------------------------------------------------------------------------------------------- invoke

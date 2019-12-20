@@ -1,18 +1,18 @@
 package io.github.dunwu.tool.bean;
 
-import io.github.dunwu.tool.bean.copier.BeanCopier;
-import io.github.dunwu.tool.bean.copier.CopyOptions;
-import io.github.dunwu.tool.bean.copier.ValueProvider;
+import io.github.dunwu.tool.bean.support.BeanCopier;
+import io.github.dunwu.tool.bean.support.BeanOptions;
+import io.github.dunwu.tool.bean.support.NamingStrategy;
+import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.collection.CollectionUtil;
 import io.github.dunwu.tool.convert.Convert;
+import io.github.dunwu.tool.date.DatePattern;
+import io.github.dunwu.tool.date.DateUtil;
 import io.github.dunwu.tool.lang.Editor;
 import io.github.dunwu.tool.lang.Filter;
 import io.github.dunwu.tool.map.CaseInsensitiveMap;
 import io.github.dunwu.tool.map.MapUtil;
-import io.github.dunwu.tool.util.ArrayUtil;
-import io.github.dunwu.tool.util.ClassUtil;
-import io.github.dunwu.tool.util.ReflectUtil;
-import io.github.dunwu.tool.util.StringUtil;
+import io.github.dunwu.tool.util.*;
 
 import java.beans.*;
 import java.lang.reflect.Field;
@@ -24,27 +24,29 @@ import java.util.*;
  *
  * <p>
  * 把一个拥有对属性进行set和get方法的类，我们就可以称之为JavaBean。
- * </p>
  *
  * @author Looly
+ * @author Zhang Peng
  * @since 3.1.2
  */
 public class BeanUtil {
 
-    // ------------------------------------------------------------------------------ toBean
+    private BeanUtil() {}
+
+    // ------------------------------------------------------------------------------ copyProperties
 
     /**
      * 复制Bean对象属性<br> 限制类用于限制拷贝的属性，例如一个类我只想复制其父类的一些属性，就可以将editable设置为父类
      *
      * @param source      源Bean对象
      * @param target      目标Bean对象
-     * @param copyOptions 拷贝选项，见 {@link CopyOptions}
+     * @param beanOptions 拷贝选项，见 {@link BeanOptions}
      */
-    public static void copyProperties(Object source, Object target, CopyOptions copyOptions) {
-        if (null == copyOptions) {
-            copyOptions = new CopyOptions();
+    public static void copyProperties(Object source, Object target, BeanOptions beanOptions) {
+        if (null == beanOptions) {
+            beanOptions = BeanOptions.defaultBeanOptions();
         }
-        BeanCopier.create(source, target, copyOptions).copy();
+        BeanCopier.create(source, target, beanOptions).copy();
     }
 
     /**
@@ -55,7 +57,7 @@ public class BeanUtil {
      * @param ignoreCase 是否忽略大小写
      */
     public static void copyProperties(Object source, Object target, boolean ignoreCase) {
-        BeanCopier.create(source, target, CopyOptions.create().setIgnoreCase(ignoreCase)).copy();
+        BeanCopier.create(source, target, BeanOptions.create().setIgnoreCase(ignoreCase)).copy();
     }
 
     /**
@@ -65,7 +67,7 @@ public class BeanUtil {
      * @param target 目标Bean对象
      */
     public static void copyProperties(Object source, Object target) {
-        copyProperties(source, target, CopyOptions.create());
+        copyProperties(source, target, BeanOptions.create());
     }
 
     /**
@@ -76,7 +78,7 @@ public class BeanUtil {
      * @param ignoreProperties 不拷贝的的属性列表
      */
     public static void copyProperties(Object source, Object target, String... ignoreProperties) {
-        copyProperties(source, target, CopyOptions.create().setIgnoreProperties(ignoreProperties));
+        copyProperties(source, target, BeanOptions.create().setIgnoreProperties(ignoreProperties));
     }
 
     // ------------------------------------------------------------------------------ 针对 field 的操作
@@ -433,15 +435,15 @@ public class BeanUtil {
      * @param <T>           Bean类型
      * @param bean          Bean
      * @param valueProvider 值提供者
-     * @param copyOptions   拷贝选项，见 {@link CopyOptions}
+     * @param beanOptions   拷贝选项，见 {@link BeanOptions}
      * @return Bean
      */
-    public static <T> T fillBean(T bean, ValueProvider<String> valueProvider, CopyOptions copyOptions) {
+    public static <T> T fillBean(T bean, ValueProvider<String> valueProvider, BeanOptions beanOptions) {
         if (null == valueProvider) {
             return bean;
         }
 
-        return BeanCopier.create(valueProvider, bean, copyOptions).copy();
+        return BeanCopier.create(valueProvider, bean, beanOptions).copy();
     }
 
     /**
@@ -468,7 +470,7 @@ public class BeanUtil {
      * @return Bean
      */
     public static <T> T fillBeanWithMap(Map<?, ?> map, T bean, boolean isToCamelCase, boolean isIgnoreError) {
-        return fillBeanWithMap(map, bean, isToCamelCase, CopyOptions.create().setIgnoreError(isIgnoreError));
+        return fillBeanWithMap(map, bean, isToCamelCase, BeanOptions.create().setIgnoreError(isIgnoreError));
     }
 
     /**
@@ -478,18 +480,18 @@ public class BeanUtil {
      * @param map           Map
      * @param bean          Bean
      * @param isToCamelCase 是否将Map中的下划线风格key转换为驼峰风格
-     * @param copyOptions   属性复制选项 {@link CopyOptions}
+     * @param beanOptions   属性复制选项 {@link BeanOptions}
      * @return Bean
      * @since 3.3.1
      */
-    public static <T> T fillBeanWithMap(Map<?, ?> map, T bean, boolean isToCamelCase, CopyOptions copyOptions) {
+    public static <T> T fillBeanWithMap(Map<?, ?> map, T bean, boolean isToCamelCase, BeanOptions beanOptions) {
         if (MapUtil.isEmpty(map)) {
             return bean;
         }
         if (isToCamelCase) {
             map = MapUtil.toCamelCaseMap(map);
         }
-        return BeanCopier.create(map, bean, copyOptions).copy();
+        return BeanCopier.create(map, bean, beanOptions).copy();
     }
 
     /**
@@ -498,11 +500,11 @@ public class BeanUtil {
      * @param <T>         Bean类型
      * @param map         Map
      * @param bean        Bean
-     * @param copyOptions 属性复制选项 {@link CopyOptions}
+     * @param beanOptions 属性复制选项 {@link BeanOptions}
      * @return Bean
      */
-    public static <T> T fillBeanWithMap(Map<?, ?> map, T bean, CopyOptions copyOptions) {
-        return fillBeanWithMap(map, bean, false, copyOptions);
+    public static <T> T fillBeanWithMap(Map<?, ?> map, T bean, BeanOptions beanOptions) {
+        return fillBeanWithMap(map, bean, false, beanOptions);
     }
 
     /**
@@ -515,7 +517,8 @@ public class BeanUtil {
      * @return Bean
      */
     public static <T> T fillBeanWithMapIgnoreCase(Map<?, ?> map, T bean, boolean isIgnoreError) {
-        return fillBeanWithMap(map, bean, CopyOptions.create().setIgnoreCase(true).setIgnoreError(isIgnoreError));
+        BeanOptions beanOptions = BeanOptions.create().setIgnoreCase(true).setIgnoreError(isIgnoreError);
+        return fillBeanWithMap(map, bean, beanOptions);
     }
 
     // ------------------------------------------------------------------------------ toBean
@@ -526,11 +529,11 @@ public class BeanUtil {
      * @param <T>           Bean类型
      * @param beanClass     Bean Class
      * @param valueProvider 值提供者
-     * @param copyOptions   拷贝选项，见 {@link CopyOptions}
+     * @param beanOptions   拷贝选项，见 {@link BeanOptions}
      * @return Bean
      */
-    public static <T> T toBean(Class<T> beanClass, ValueProvider<String> valueProvider, CopyOptions copyOptions) {
-        return fillBean(ReflectUtil.newInstance(beanClass), valueProvider, copyOptions);
+    public static <T> T toBean(Class<T> beanClass, ValueProvider<String> valueProvider, BeanOptions beanOptions) {
+        return fillBean(ReflectUtil.newInstance(beanClass), valueProvider, beanOptions);
     }
 
     /**
@@ -567,11 +570,11 @@ public class BeanUtil {
      * @param <T>         Bean类型
      * @param map         {@link Map}
      * @param beanClass   Bean Class
-     * @param copyOptions 转Bean选项
+     * @param beanOptions 转Bean选项
      * @return Bean
      */
-    public static <T> T toBean(Map<?, ?> map, Class<T> beanClass, CopyOptions copyOptions) {
-        return fillBeanWithMap(map, ReflectUtil.newInstance(beanClass), copyOptions);
+    public static <T> T toBean(Map<?, ?> map, Class<T> beanClass, BeanOptions beanOptions) {
+        return fillBeanWithMap(map, ReflectUtil.newInstance(beanClass), beanOptions);
     }
 
     /**
@@ -590,45 +593,45 @@ public class BeanUtil {
     // ------------------------------------------------------------------------------ toMap
 
     /**
-     * 对象转Map，不进行驼峰转下划线，不忽略值为空的字段
+     * 对象转 Map，不忽略值为空的字段
      *
      * @param bean bean对象
      * @return Map
      */
     public static Map<String, Object> toMap(Object bean) {
-        return toMap(bean, false, false);
+        return toMap(bean, NamingStrategy.DEFAULT, false);
     }
 
     /**
      * 对象转Map
      *
-     * @param bean              bean对象
-     * @param isToUnderlineCase 是否转换为下划线模式
-     * @param ignoreNullValue   是否忽略值为空的字段
+     * @param bean            bean对象
+     * @param namingStrategy  命名策略 {@link NamingStrategy}
+     * @param ignoreNullValue 是否忽略值为空的字段
      * @return Map
      */
-    public static Map<String, Object> toMap(Object bean, boolean isToUnderlineCase, boolean ignoreNullValue) {
-        return toMap(bean, new LinkedHashMap<>(), isToUnderlineCase, ignoreNullValue);
+    public static Map<String, Object> toMap(Object bean, NamingStrategy namingStrategy, boolean ignoreNullValue) {
+        return toMap(bean, new LinkedHashMap<>(), namingStrategy, ignoreNullValue);
     }
 
     /**
      * 对象转Map
      *
-     * @param bean              bean对象
-     * @param targetMap         目标的Map
-     * @param isToUnderlineCase 是否转换为下划线模式
-     * @param ignoreNullValue   是否忽略值为空的字段
+     * @param bean            bean对象
+     * @param targetMap       目标的Map
+     * @param namingStrategy  命名策略 {@link NamingStrategy}
+     * @param ignoreNullValue 是否忽略值为空的字段
      * @return Map
      * @since 3.2.3
      */
     public static Map<String, Object> toMap(Object bean, Map<String, Object> targetMap,
-        final boolean isToUnderlineCase, boolean ignoreNullValue) {
+        final NamingStrategy namingStrategy, boolean ignoreNullValue) {
         if (bean == null) {
             return null;
         }
 
         return toMap(bean, targetMap, ignoreNullValue,
-            key -> isToUnderlineCase ? StringUtil.toUnderlineCase(key) : key);
+            key -> formatKeyword(key, namingStrategy));
     }
 
     /**
@@ -670,7 +673,7 @@ public class BeanUtil {
                 } catch (Exception ignore) {
                     continue;
                 }
-                if (false == ignoreNullValue || (null != value && false == value.equals(bean))) {
+                if (!ignoreNullValue || (null != value && !value.equals(bean))) {
                     key = keyEditor.edit(key);
                     if (null != key) {
                         targetMap.put(key, value);
@@ -691,34 +694,100 @@ public class BeanUtil {
         return PropertyEditorManager.findEditor(type);
     }
 
-    // ------------------------------------------------------------------------------ format
+    // ------------------------------------------------------------------------------ 格式化处理 Bean 字段
+
     /**
-     * 将 Bean 的所有 key 格式化为一个字符串
+     * 将指定的 keyword 按照 {@link NamingStrategy} 记性格式化处理
      *
-     * @param bean      需要格式化为字符串的 Bean
-     * @param separator 分隔符
-     * @param <T>       Bean 类型
-     * @return 字符串
+     * @param keyword        需要格式化的 keyword
+     * @param namingStrategy 重新命名的策略
+     * @return 格式化后的字符串
      */
-    public static <T> String formatKeys(T bean, String separator) {
-        Map<String, Object> map = BeanUtil.toMap(bean);
-        return StringUtil.join(separator, map.keySet().toArray());
+    public static String formatKeyword(final String keyword, final NamingStrategy namingStrategy) {
+        if (StringUtil.isBlank(keyword)) {
+            return keyword;
+        }
+
+        String formatStr = keyword;
+        switch (namingStrategy) {
+            case CAMEL:
+                formatStr = StringUtil.toCamelCase(formatStr);
+                break;
+            case LOWER_UNDERLINE:
+                formatStr = StringUtil.toUnderlineCase(formatStr).toLowerCase();
+                break;
+            case UPPER_UNDERLINE:
+                formatStr = StringUtil.toUnderlineCase(formatStr).toUpperCase();
+                break;
+            case LOWER_DASHED:
+                formatStr = StringUtil.toSymbolCase(formatStr, CharUtil.DASHED).toLowerCase();
+                break;
+            case UPPER_DASHED:
+                formatStr = StringUtil.toSymbolCase(formatStr, CharUtil.DASHED).toUpperCase();
+                break;
+            case DEFAULT:
+            default:
+                break;
+        }
+        return formatStr;
     }
 
     /**
-     * 将 Bean 的所有 value 格式化为一个字符串
+     * 将 Bean 所属类的所有 key 格式化为一个字符串
+     *
+     * @param clazz 需要格式化为字符串的 Bean
+     * @return 已经按照配置格式化后的 Bean 成员名称列表
+     */
+    public static List<String> formatKeys(Class<?> clazz, NamingStrategy namingStrategy) {
+        Field[] fields = ReflectUtil.getFields(clazz);
+        List<String> fieldNames = new ArrayList<>();
+        for (Field field : fields) {
+            String fieldName = field.getName();
+            fieldName = formatKeyword(fieldName, namingStrategy);
+            fieldNames.add(fieldName);
+        }
+        return fieldNames;
+    }
+
+    /**
+     * 将类的所有 field 用指定字符拼接为一个字符串
+     *
+     * @param clazz
+     * @param separator
+     * @return
+     */
+    public static String joinKeys(Class<?> clazz, String separator) {
+        List<String> keys = formatKeys(clazz, NamingStrategy.DEFAULT);
+        return StringUtil.join(separator, keys.toArray());
+    }
+
+    /**
+     * 将 Bean 的所有 value 用指定字符拼接为一个字符串
      *
      * @param bean      需要格式化为字符串的 Bean
      * @param separator 分隔符
      * @param <T>       Bean 类型
      * @return 字符串
      */
-    public static <T> String formatValues(T bean, String separator) {
+    public static <T> String joinValues(T bean, String separator) {
         Map<String, Object> map = BeanUtil.toMap(bean);
         if (MapUtil.isEmpty(map)) {
             return StringUtil.EMPTY;
         }
-        return StringUtil.join(separator, map.values().toArray());
+
+        List<Object> list = new ArrayList<>();
+        Collection<Object> collection = map.values();
+        for (Object obj : collection) {
+
+            if (obj instanceof Date) {
+                Date date = (Date) obj;
+                String dateStr = DateUtil.format(date, DatePattern.NORM_DATETIME_PATTERN);
+                list.add(dateStr);
+            } else {
+                list.add(obj);
+            }
+        }
+        return StringUtil.join(separator, list.toArray());
     }
 
 }

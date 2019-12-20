@@ -1,7 +1,7 @@
 package io.github.dunwu.web.util;
 
-import io.github.dunwu.util.collection.ArrayExtUtil;
-import org.apache.commons.lang3.StringUtils;
+import io.github.dunwu.tool.util.ArrayUtil;
+import io.github.dunwu.tool.util.StringUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class CookieUtil {
      */
     public static String getCookie(HttpServletRequest request, String key) {
         Cookie[] cookies = request.getCookies();
-        if (ArrayExtUtil.isEmpty(cookies) || StringUtils.isBlank(key)) {
+        if (ArrayUtil.isEmpty(cookies) || StringUtil.isBlank(key)) {
             return null;
         }
 
@@ -64,11 +64,11 @@ public class CookieUtil {
         String domain) {
         Cookie cookie = new Cookie(key, null);
 
-        if (StringUtils.isEmpty(path)) {
+        if (StringUtil.isEmpty(path)) {
             cookie.setPath(path);
         }
 
-        if (StringUtils.isEmpty(domain)) {
+        if (StringUtil.isEmpty(domain)) {
             cookie.setDomain(domain);
         }
 

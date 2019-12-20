@@ -21,8 +21,8 @@ import java.util.*;
  * 表达式栗子：
  *
  * <pre>
- * persion
- * persion.name
+ * person
+ * person.name
  * persons[3]
  * person.friends[5].name
  * ['person']['friends'][5]['name']
@@ -38,11 +38,11 @@ public class BeanPath implements Serializable {
     /**
      * 表达式边界符号数组
      */
-    private static final char[] expChars = { CharUtil.DOT, CharUtil.BRACKET_START, CharUtil.BRACKET_END };
+    private static final char[] EXP_CHARS = { CharUtil.DOT, CharUtil.BRACKET_START, CharUtil.BRACKET_END };
 
     protected List<String> patternParts;
 
-    private boolean isStartWith$ = false;
+    private boolean isStartWith = false;
 
     /**
      * 构造
@@ -69,24 +69,20 @@ public class BeanPath implements Serializable {
             c = expression.charAt(i);
             if (0 == i && '$' == c) {
                 // 忽略开头的$符，表示当前对象
-                isStartWith$ = true;
+                isStartWith = true;
                 continue;
             }
 
-            if (ArrayUtil.contains(expChars, c)) {
+            if (ArrayUtil.contains(EXP_CHARS, c)) {
                 // 处理边界符号
                 if (CharUtil.BRACKET_END == c) {
                     // 中括号（数字下标）结束
-                    if (false == isNumStart) {
+                    if (!isNumStart) {
                         throw new IllegalArgumentException(
                             StringUtil.format("Bad expression '{}':{}, we find ']' but no '[' !", expression, i));
                     }
                     isNumStart = false;
                     // 中括号结束加入下标
-                    if (builder.length() > 0) {
-                        localPatternParts.add(unWrapIfPossible(builder));
-                    }
-                    builder.reset();
                 } else {
                     if (isNumStart) {
                         // 非结束中括号情况下发现起始中括号报错（中括号未关闭）
@@ -97,11 +93,11 @@ public class BeanPath implements Serializable {
                         isNumStart = true;
                     }
                     // 每一个边界符之前的表达式是一个完整的KEY，开始处理KEY
-                    if (builder.length() > 0) {
-                        localPatternParts.add(unWrapIfPossible(builder));
-                    }
-                    builder.reset();
                 }
+                if (builder.length() > 0) {
+                    localPatternParts.add(unWrapIfPossible(builder));
+                }
+                builder.reset();
             } else {
                 // 非边界符号，追加字符
                 builder.append(c);
@@ -145,8 +141,8 @@ public class BeanPath implements Serializable {
      * 表达式栗子：
      *
      * <pre>
-     * persion
-     * persion.name
+     * person
+     * person.name
      * persons[3]
      * person.friends[5].name
      * ['person']['friends'][5]['name']
@@ -192,7 +188,7 @@ public class BeanPath implements Serializable {
             subBean = getFieldValue(subBean, patternPart);
             if (null == subBean) {
                 // 支持表达式的第一个对象为Bean本身（若用户定义表达式$开头，则不做此操作）
-                if (isFirst && false == this.isStartWith$ && BeanUtil.isMatchName(bean, patternPart, true)) {
+                if (isFirst && !this.isStartWith && BeanUtil.isMatchName(bean, patternPart, true)) {
                     subBean = bean;
                     isFirst = false;
                 } else {

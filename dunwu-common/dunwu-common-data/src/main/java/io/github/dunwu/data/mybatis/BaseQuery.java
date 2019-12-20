@@ -1,4 +1,4 @@
-package io.github.dunwu.data.dto;
+package io.github.dunwu.data.mybatis;
 
 import io.github.dunwu.core.Pagination;
 import io.swagger.annotations.ApiModelProperty;

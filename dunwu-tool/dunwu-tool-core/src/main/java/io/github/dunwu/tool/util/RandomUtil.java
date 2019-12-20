@@ -2,6 +2,7 @@ package io.github.dunwu.tool.util;
 
 import io.github.dunwu.tool.collection.CollectionUtil;
 import io.github.dunwu.tool.date.DateField;
+import io.github.dunwu.tool.date.DatePattern;
 import io.github.dunwu.tool.date.DateTime;
 import io.github.dunwu.tool.date.DateUtil;
 import io.github.dunwu.tool.exceptions.UtilException;
@@ -679,7 +680,7 @@ public class RandomUtil {
     }
 
     public static String randomDate(final Date min, final Date max) {
-        return randomDate(min, max, "yyyy-MM-dd HH:mm:ss");
+        return randomDate(min, max, DatePattern.NORM_DATETIME_PATTERN);
     }
 
     public static String randomDate(final Date min, final Date max,

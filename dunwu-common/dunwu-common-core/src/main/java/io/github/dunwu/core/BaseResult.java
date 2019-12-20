@@ -1,9 +1,9 @@
 package io.github.dunwu.core;
 
+import io.github.dunwu.tool.util.StringUtil;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,8 +34,7 @@ public class BaseResult implements Serializable {
      */
     protected String message;
 
-    public BaseResult() {
-    }
+    public BaseResult() {}
 
     public BaseResult(ErrorCode appCode) {
         this.success = ErrorCode.SUCCESS_CODE.equals(appCode.getCode());
@@ -64,7 +63,7 @@ public class BaseResult implements Serializable {
     public BaseResult(Boolean success, String code, List<String> messages) {
         this.success = success;
         this.code = code;
-        this.message = StringUtils.join(messages, "\n");
+        this.message = StringUtil.join("\n", messages.toArray());
     }
 
 }

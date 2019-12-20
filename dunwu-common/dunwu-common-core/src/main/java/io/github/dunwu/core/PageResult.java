@@ -21,8 +21,7 @@ public class PageResult<T> extends BaseResult {
 
     private Pagination<T> data;
 
-    public PageResult() {
-    }
+    public PageResult() {}
 
     public PageResult(BaseResult result) {
         super(result);

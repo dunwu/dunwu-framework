@@ -2127,7 +2127,7 @@ public class FileUtil {
      */
     public static List<File> loopFiles(File file, FileFilter fileFilter) {
         final List<File> fileList = new ArrayList<>();
-        if (null == file || false == file.exists()) {
+        if (null == file || !file.exists()) {
             return fileList;
         }
 
@@ -2158,9 +2158,9 @@ public class FileUtil {
      */
     public static List<File> loopFiles(File file, int maxDepth, final FileFilter fileFilter) {
         final List<File> fileList = new ArrayList<>();
-        if (null == file || false == file.exists()) {
+        if (null == file || !file.exists()) {
             return fileList;
-        } else if (false == file.isDirectory()) {
+        } else if (!file.isDirectory()) {
             if (null == fileFilter || fileFilter.accept(file)) {
                 fileList.add(file);
             }

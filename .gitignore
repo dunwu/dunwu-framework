@@ -29,6 +29,7 @@ hs_err_pid*
 
 # maven plugin temp files
 .flattened-pom.xml
+dependency-reduced-pom.xml
 package-lock.json
 
 

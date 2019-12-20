@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
  * 字符串工具类
  *
  * @author xiaoleilu
+ * @author Zhang Peng
  */
 public class StringUtil {
 
@@ -3679,13 +3680,13 @@ public class StringUtil {
         }
 
         String name2 = name.toString();
-        if (name2.contains(UNDERLINE)) {
+        if (name2.contains(UNDERLINE) || name2.contains(DASHED)) {
             final StringBuilder sb = new StringBuilder(name2.length());
             boolean upperCase = false;
             for (int i = 0; i < name2.length(); i++) {
                 char c = name2.charAt(i);
 
-                if (c == CharUtil.UNDERLINE) {
+                if (c == CharUtil.UNDERLINE || c == CharUtil.DASHED) {
                     upperCase = true;
                 } else if (upperCase) {
                     sb.append(Character.toUpperCase(c));

@@ -1,4 +1,4 @@
-package io.github.dunwu.data.util;
+package io.github.dunwu.data.mybatis.support;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,7 +8,7 @@ import io.github.dunwu.core.Pagination;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-08-07
  */
-public class PageUtil {
+public class MybatisPlusUtil {
 
     public static <S, T> IPage<T> transToMybatisPlusPage(Pagination<S> page) {
         return new Page<T>(page.getCurrent(), page.getSize(), page.getTotal());

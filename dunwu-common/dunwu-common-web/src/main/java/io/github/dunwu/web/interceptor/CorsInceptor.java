@@ -1,7 +1,7 @@
 package io.github.dunwu.web.interceptor;
 
+import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.web.constant.WebConstant;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -33,7 +33,7 @@ public class CorsInceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
         Object handler) throws Exception {
-        if (StringUtils.isBlank(WHITELIST_REGEX) || StringUtils.isBlank(HEADER_KEY)) {
+        if (StringUtil.isBlank(WHITELIST_REGEX) || StringUtil.isBlank(HEADER_KEY)) {
             throw new ServletException("读取跨域过滤器的配置参数失败");
         }
 
@@ -41,7 +41,7 @@ public class CorsInceptor extends HandlerInterceptorAdapter {
         String domain = request.getHeader(HEADER_KEY);
         String origin = request.getHeader(ORIGIN);
 
-        if (StringUtils.isBlank(origin) || StringUtils.isBlank(domain)) {
+        if (StringUtil.isBlank(origin) || StringUtil.isBlank(domain)) {
             log.debug("origin = {}, domain = {}, 跳过检查", origin, domain);
             return true;
         }

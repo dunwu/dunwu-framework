@@ -67,7 +67,7 @@ public class NumberWordFormater {
         StringBuilder lm = new StringBuilder(); // 用来存放转换後的整数部分
         for (int i = 0; i < lstrrev.length() / 3; i++) {
             a[i] = StringUtil.reverse(lstrrev.substring(3 * i, 3 * i + 3)); // 截取第一个叁位
-            if (!a[i].equals("000")) { // 用来避免这种情况：1000000 = one million
+            if (!"000".equals(a[i])) { // 用来避免这种情况：1000000 = one million
                 // thousand only
                 if (i != 0) {
                     lm.insert(0, transThree(a[i]) + " " + parseMore(i) + " "); // 加:
@@ -133,7 +133,7 @@ public class NumberWordFormater {
         String value;
         if (s.startsWith("0")) {// 是否小於100
             value = transTwo(s.substring(1));
-        } else if (s.substring(1).equals("00")) {// 是否被100整除
+        } else if ("00".equals(s.substring(1))) {// 是否被100整除
             value = parseFirst(s.substring(0, 1)) + " HUNDRED";
         } else {
             value = parseFirst(s.substring(0, 1)) + " HUNDRED AND " + transTwo(s.substring(1));

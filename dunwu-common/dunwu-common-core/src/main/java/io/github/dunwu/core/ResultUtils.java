@@ -1,6 +1,6 @@
 package io.github.dunwu.core;
 
-import io.github.dunwu.util.collection.CollectionUtil;
+import io.github.dunwu.tool.collection.CollectionUtil;
 
 import java.util.Collection;
 import java.util.List;

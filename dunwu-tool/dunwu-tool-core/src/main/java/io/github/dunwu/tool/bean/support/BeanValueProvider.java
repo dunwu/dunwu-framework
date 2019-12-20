@@ -1,8 +1,8 @@
-package io.github.dunwu.tool.bean.copier.provider;
+package io.github.dunwu.tool.bean.support;
 
 import io.github.dunwu.tool.bean.BeanDesc;
 import io.github.dunwu.tool.bean.BeanUtil;
-import io.github.dunwu.tool.bean.copier.ValueProvider;
+import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.exceptions.UtilException;
 import io.github.dunwu.tool.util.StringUtil;
 
@@ -39,7 +39,8 @@ public class BeanValueProvider implements ValueProvider<String> {
     @Override
     public Object value(String key, Type valueType) {
         BeanDesc.PropDesc sourcePd = sourcePdMap.get(key);
-        if (null == sourcePd && (Boolean.class == valueType || boolean.class == valueType)) {
+        boolean valueTypeIsBool = Boolean.class == valueType || boolean.class == valueType;
+        if (null == sourcePd && valueTypeIsBool) {
             //boolean类型字段字段名支持两种方式
             sourcePd = sourcePdMap.get(StringUtil.upperFirstAndAddPre(key, "is"));
         }
@@ -50,7 +51,7 @@ public class BeanValueProvider implements ValueProvider<String> {
                 try {
                     return getter.invoke(source);
                 } catch (Exception e) {
-                    if (false == ignoreError) {
+                    if (!ignoreError) {
                         throw new UtilException(e, "Inject [{}] error!", key);
                     }
                 }

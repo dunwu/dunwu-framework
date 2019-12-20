@@ -344,6 +344,14 @@ public class StringUtilTest {
         String str1 = "TableTestOfDay";
         String result1 = StringUtil.toCamelCase(str1);
         Assertions.assertEquals("TableTestOfDay", result1);
+
+        String str2 = "table_test_of_day";
+        String result2 = StringUtil.toCamelCase(str2);
+        Assertions.assertEquals("tableTestOfDay", result2);
+
+        String str3 = "table-test_of_day";
+        String result3 = StringUtil.toCamelCase(str3);
+        Assertions.assertEquals("tableTestOfDay", result2);
     }
 
     @Test

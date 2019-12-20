@@ -18,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import io.github.dunwu.tool.date.DatePattern;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -93,14 +94,14 @@ public class DunwuMybatisAutoConfiguration {
     private void setConfigForJdk8(ObjectMapper objectMapper) {
         JavaTimeModule timeModule = new JavaTimeModule();
         timeModule.addSerializer(LocalDate.class,
-            new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            new LocalDateSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
         timeModule.addDeserializer(LocalDate.class,
-            new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            new LocalDateDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
 
         timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
         timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .registerModule(timeModule).registerModule(new ParameterNamesModule())
             .registerModule(new Jdk8Module());

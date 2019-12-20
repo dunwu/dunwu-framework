@@ -1,9 +1,9 @@
 package io.github.dunwu.tool.convert.impl;
 
 import io.github.dunwu.tool.bean.BeanUtil;
-import io.github.dunwu.tool.bean.copier.BeanCopier;
-import io.github.dunwu.tool.bean.copier.CopyOptions;
-import io.github.dunwu.tool.bean.copier.ValueProvider;
+import io.github.dunwu.tool.bean.support.BeanCopier;
+import io.github.dunwu.tool.bean.support.BeanOptions;
+import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.convert.AbstractConverter;
 import io.github.dunwu.tool.map.MapProxy;
 import io.github.dunwu.tool.util.ReflectUtil;
@@ -32,7 +32,7 @@ public class BeanConverter<T> extends AbstractConverter<T> {
 
     private final Class<T> beanClass;
 
-    private final CopyOptions copyOptions;
+    private final BeanOptions beanOptions;
 
     /**
      * 构造，默认转换选项，注入失败的字段忽略
@@ -40,20 +40,20 @@ public class BeanConverter<T> extends AbstractConverter<T> {
      * @param beanType 转换成的目标Bean类型
      */
     public BeanConverter(Type beanType) {
-        this(beanType, CopyOptions.create().setIgnoreError(true));
+        this(beanType, BeanOptions.create().setIgnoreError(true));
     }
 
     /**
      * 构造
      *
      * @param beanType    转换成的目标Bean类
-     * @param copyOptions Bean转换选项参数
+     * @param beanOptions Bean转换选项参数
      */
     @SuppressWarnings("unchecked")
-    public BeanConverter(Type beanType, CopyOptions copyOptions) {
+    public BeanConverter(Type beanType, BeanOptions beanOptions) {
         this.beanType = beanType;
         this.beanClass = (Class<T>) TypeUtil.getClass(beanType);
-        this.copyOptions = copyOptions;
+        this.beanOptions = beanOptions;
     }
 
     /**
@@ -62,7 +62,7 @@ public class BeanConverter<T> extends AbstractConverter<T> {
      * @param beanClass 转换成的目标Bean类
      */
     public BeanConverter(Class<T> beanClass) {
-        this(beanClass, CopyOptions.create().setIgnoreError(true));
+        this(beanClass, BeanOptions.create().setIgnoreError(true));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class BeanConverter<T> extends AbstractConverter<T> {
 
             //限定被转换对象类型
             return BeanCopier.create(value, ReflectUtil.newInstanceIfPossible(this.beanClass), this.beanType,
-                this.copyOptions).copy();
+                this.beanOptions).copy();
         }
         return null;
     }

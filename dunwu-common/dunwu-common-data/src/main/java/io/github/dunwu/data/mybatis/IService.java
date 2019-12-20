@@ -1,4 +1,4 @@
-package io.github.dunwu.data.service;
+package io.github.dunwu.data.mybatis;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

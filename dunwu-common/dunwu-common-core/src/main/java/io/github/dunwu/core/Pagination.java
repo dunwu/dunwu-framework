@@ -16,20 +16,19 @@ public class Pagination<T> implements Serializable {
     /**
      * 当前查询页
      */
-    private long current = 1L;
+    protected long current = 1L;
 
     /**
      * 每页展示记录数
      */
-    private long size = 10L;
+    protected long size = 10L;
 
     /**
      * 总记录数
      */
-    private long total = 0L;
+    protected long total = 0L;
 
-    public Pagination() {
-    }
+    public Pagination() {}
 
     public Pagination(long current, long size, long total) {
         this.current = current;
@@ -50,39 +49,29 @@ public class Pagination<T> implements Serializable {
             + ", total=" + total + '}';
     }
 
-    public long getCurrent() {
-        return current;
-    }
-
-    public Pagination setCurrent(long current) {
-        this.current = current;
-        return this;
-    }
-
     public Collection<T> getList() {
         return list;
     }
 
-    public void setList(Collection<T> list) {
+    public Pagination<T> setList(Collection<T> list) {
         this.list = list;
+        return this;
     }
 
-    public long getPages() {
-        if (getSize() == 0) {
-            return 0L;
-        }
-        long pages = getTotal() / getSize();
-        if (getTotal() % getSize() != 0) {
-            pages++;
-        }
-        return pages;
+    public long getCurrent() {
+        return current;
+    }
+
+    public Pagination<T> setCurrent(long current) {
+        this.current = current;
+        return this;
     }
 
     public long getSize() {
         return size;
     }
 
-    public Pagination setSize(long size) {
+    public Pagination<T> setSize(long size) {
         this.size = size;
         return this;
     }
@@ -91,12 +80,8 @@ public class Pagination<T> implements Serializable {
         return total;
     }
 
-    public Pagination setTotal(long total) {
+    public Pagination<T> setTotal(long total) {
         this.total = total;
-        return this;
-    }
-
-    public Pagination setPages(long pages) {
         return this;
     }
 

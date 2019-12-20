@@ -1,6 +1,7 @@
 package io.github.dunwu.tool.util;
 
 import io.github.dunwu.tool.collection.CollectionUtil;
+import io.github.dunwu.tool.date.DatePattern;
 import io.github.dunwu.tool.lang.Console;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -84,10 +85,9 @@ public class RandomUtilTest {
         LocalDateTime min = LocalDateTime.of(2018, 12, 1, 0, 0, 0);
         LocalDateTime max = LocalDateTime.of(2018, 12, 6, 23, 59, 59);
 
-        String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
-        String date = RandomUtil.randomDate(min, max, DATE_PATTERN);
+        String date = RandomUtil.randomDate(min, max, DatePattern.NORM_DATETIME_PATTERN);
         System.out.println(
-            "RandomUtil.anyDate(min, max, \"yyyy-MM-dd hh:mm:ss\"): " + date);
+            "RandomUtil.randomDate(min, max, DatePattern.NORM_DATETIME_PATTERN) : " + date);
         // Assertions.assertTrue(DateUtil.che(date, DATE_PATTERN));
 
         Date date2 = RandomUtil.randomDate(min, max);

@@ -20,5 +20,6 @@
     <module>dunwu-tool-all</module>
     <module>dunwu-tool-net</module>
     <module>dunwu-tool-image</module>
+    <module>dunwu-tool-test</module>
   </modules>
 </project>

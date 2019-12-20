@@ -26,9 +26,9 @@ public enum BeanDescCache {
      * 加入缓存
      *
      * @param beanClass Bean的类
-     * @param BeanDesc  属性名和{@link BeanDesc}映射
+     * @param beanDesc  属性名和{@link BeanDesc}映射
      */
-    public void putBeanDesc(Class<?> beanClass, BeanDesc BeanDesc) {
-        bdCache.put(beanClass, BeanDesc);
+    public void putBeanDesc(Class<?> beanClass, BeanDesc beanDesc) {
+        bdCache.put(beanClass, beanDesc);
     }
 }

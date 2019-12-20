@@ -137,7 +137,7 @@ public class BeanDesc implements Serializable {
         methodName = methodName.toLowerCase();
         fieldName = fieldName.toLowerCase();
 
-        if (false == methodName.startsWith("get") && false == methodName.startsWith("is")) {
+        if (!methodName.startsWith("get") && !methodName.startsWith("is")) {
             // 非标准Getter方法
             return false;
         }

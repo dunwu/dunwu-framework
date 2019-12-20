@@ -107,17 +107,17 @@ public enum CodeGeneratorKey {
      * Entity 类超类
      */
     MYBATIS_GENERATOR_SC_SUPER_ENTITY("mybatis.generator.sc.super.entity",
-        "io.github.dunwu.data.entity.BaseEntity"),
+        "io.github.dunwu.data.mybatis.BaseEntity"),
     /**
      * Service 类超类
      */
     MYBATIS_GENERATOR_SC_SUPER_SERVICE("mybatis.generator.sc.super.service",
-        "io.github.dunwu.data.service.IService"),
+        "io.github.dunwu.data.mybatis.IService"),
     /**
      * Service 实现类超类
      */
     MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL("mybatis.generator.sc.super.service.impl",
-        "io.github.dunwu.data.service.ServiceImpl");
+        "io.github.dunwu.data.mybatis.ServiceImpl");
 
     /**
      * 配置参数 key

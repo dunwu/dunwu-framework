@@ -680,7 +680,7 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
             for (final String[] zoneNames : zones) {
                 // offset 0 is the time zone ID and is not localized
                 final String tzId = zoneNames[ID];
-                if (tzId.equalsIgnoreCase("GMT")) {
+                if ("GMT".equalsIgnoreCase(tzId)) {
                     continue;
                 }
                 final TimeZone tz = TimeZone.getTimeZone(tzId);
@@ -794,7 +794,7 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
          */
         @Override
         void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
-            if (value.equals("Z")) {
+            if ("Z".equals(value)) {
                 cal.setTimeZone(TimeZone.getTimeZone("UTC"));
             } else {
                 cal.setTimeZone(TimeZone.getTimeZone("GMT" + value));

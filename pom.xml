@@ -14,8 +14,8 @@
     <module>dunwu-dependencies</module>
     <module>dunwu-parent</module>
     <module>dunwu-tool</module>
-<!--    <module>dunwu-common</module>-->
-<!--    <module>dunwu-starters</module>-->
+    <module>dunwu-common</module>
+    <module>dunwu-starters</module>
   </modules>
 
   <properties>

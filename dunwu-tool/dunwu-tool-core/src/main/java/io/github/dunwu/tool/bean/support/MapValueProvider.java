@@ -1,6 +1,6 @@
-package io.github.dunwu.tool.bean.copier.provider;
+package io.github.dunwu.tool.bean.support;
 
-import io.github.dunwu.tool.bean.copier.ValueProvider;
+import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.convert.Convert;
 import io.github.dunwu.tool.map.CaseInsensitiveMap;
 import io.github.dunwu.tool.util.StringUtil;
@@ -24,7 +24,7 @@ public class MapValueProvider implements ValueProvider<String> {
      * @param ignoreCase 是否忽略key的大小写
      */
     public MapValueProvider(Map<?, ?> map, boolean ignoreCase) {
-        if (false == ignoreCase || map instanceof CaseInsensitiveMap) {
+        if (!ignoreCase || map instanceof CaseInsensitiveMap) {
             //不忽略大小写或者提供的Map本身为CaseInsensitiveMap则无需转换
             this.map = map;
         } else {

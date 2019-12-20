@@ -1,4 +1,4 @@
-package io.github.dunwu.data.entity;
+package io.github.dunwu.data.mybatis;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -1,9 +1,7 @@
-package io.github.dunwu.tool.bean.copier;
+package io.github.dunwu.tool.bean.support;
 
 import io.github.dunwu.tool.bean.BeanDesc;
 import io.github.dunwu.tool.bean.BeanUtil;
-import io.github.dunwu.tool.bean.copier.provider.BeanValueProvider;
-import io.github.dunwu.tool.bean.copier.provider.MapValueProvider;
 import io.github.dunwu.tool.collection.CollectionUtil;
 import io.github.dunwu.tool.convert.Convert;
 import io.github.dunwu.tool.exceptions.UtilException;
@@ -53,7 +51,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
     /**
      * 拷贝选项
      */
-    private final CopyOptions copyOptions;
+    private final BeanOptions beanOptions;
 
     /**
      * 构造
@@ -61,13 +59,13 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param source      来源对象，可以是Bean或者Map
      * @param dest        目标Bean对象
      * @param destType    目标的泛型类型，用于标注有泛型参数的Bean对象
-     * @param copyOptions 拷贝属性选项
+     * @param beanOptions 拷贝属性选项
      */
-    public BeanCopier(Object source, T dest, Type destType, CopyOptions copyOptions) {
+    public BeanCopier(Object source, T dest, Type destType, BeanOptions beanOptions) {
         this.source = source;
         this.dest = dest;
         this.destType = destType;
-        this.copyOptions = copyOptions;
+        this.beanOptions = beanOptions;
     }
 
     /**
@@ -76,11 +74,11 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param <T>         目标Bean类型
      * @param source      来源对象，可以是Bean或者Map
      * @param dest        目标Bean对象
-     * @param copyOptions 拷贝属性选项
+     * @param beanOptions 拷贝属性选项
      * @return BeanCopier
      */
-    public static <T> BeanCopier<T> create(Object source, T dest, CopyOptions copyOptions) {
-        return create(source, dest, dest.getClass(), copyOptions);
+    public static <T> BeanCopier<T> create(Object source, T dest, BeanOptions beanOptions) {
+        return create(source, dest, dest.getClass(), beanOptions);
     }
 
     /**
@@ -90,11 +88,11 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param source      来源对象，可以是Bean或者Map
      * @param dest        目标Bean对象
      * @param destType    目标的泛型类型，用于标注有泛型参数的Bean对象
-     * @param copyOptions 拷贝属性选项
+     * @param beanOptions 拷贝属性选项
      * @return BeanCopier
      */
-    public static <T> BeanCopier<T> create(Object source, T dest, Type destType, CopyOptions copyOptions) {
-        return new BeanCopier<>(source, dest, destType, copyOptions);
+    public static <T> BeanCopier<T> create(Object source, T dest, Type destType, BeanOptions beanOptions) {
+        return new BeanCopier<>(source, dest, destType, beanOptions);
     }
 
     /**
@@ -144,7 +142,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      */
     private void beanToBean(Object providerBean, Object destBean) {
         valueProviderToBean(
-            new BeanValueProvider(providerBean, this.copyOptions.ignoreCase, this.copyOptions.ignoreError), destBean);
+            new BeanValueProvider(providerBean, this.beanOptions.ignoreCase, this.beanOptions.ignoreError), destBean);
     }
 
     /**
@@ -154,7 +152,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param bean Bean
      */
     private void mapToBean(Map<?, ?> map, Object bean) {
-        valueProviderToBean(new MapValueProvider(map, this.copyOptions.ignoreCase), bean);
+        valueProviderToBean(new MapValueProvider(map, this.beanOptions.ignoreCase), bean);
     }
 
     /**
@@ -181,8 +179,8 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
     private void beanToMap(Object bean, Map targetMap) {
         final Collection<BeanDesc.PropDesc> props = BeanUtil.getBeanDesc(bean.getClass()).getProps();
         final HashSet<String> ignoreSet =
-            (null != copyOptions.ignoreProperties) ? CollectionUtil.newHashSet(copyOptions.ignoreProperties) : null;
-        final CopyOptions copyOptions = this.copyOptions;
+            (null != this.beanOptions.ignoreProperties) ? CollectionUtil.newHashSet(this.beanOptions.ignoreProperties) : null;
+        final BeanOptions beanOptions = this.beanOptions;
 
         String key;
         Method getter;
@@ -197,7 +195,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
                 try {
                     value = getter.invoke(bean);
                 } catch (Exception e) {
-                    if (copyOptions.ignoreError) {
+                    if (beanOptions.ignoreError) {
                         continue;// 忽略反射失败
                     } else {
                         throw new UtilException(e, "Get value of [{}] error!", prop.getFieldName());
@@ -207,13 +205,13 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
                     // 目标属性值被忽略或值提供者无此key时跳过
                     continue;
                 }
-                if (null == value && copyOptions.ignoreNullValue) {
+                if (null == value && beanOptions.ignoreNullValue) {
                     continue;// 当允许跳过空时，跳过
                 }
                 if (bean.equals(value)) {
                     continue;// 值不能为bean本身，防止循环引用
                 }
-                targetMap.put(mappingKey(copyOptions.fieldMapping, key), value);
+                targetMap.put(mappingKey(beanOptions.fieldMapping, key), value);
             }
         }
     }
@@ -229,20 +227,20 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
             return;
         }
 
-        final CopyOptions copyOptions = this.copyOptions;
+        final BeanOptions beanOptions = this.beanOptions;
         Class<?> actualEditable = bean.getClass();
-        if (null != copyOptions.editable) {
+        if (null != beanOptions.editable) {
             // 检查限制类是否为target的父类或接口
-            if (false == copyOptions.editable.isInstance(bean)) {
+            if (!beanOptions.editable.isInstance(bean)) {
                 throw new IllegalArgumentException(
                     StringUtil.format("Target class [{}] not assignable to Editable class [{}]",
-                        bean.getClass().getName(), copyOptions.editable.getName()));
+                        bean.getClass().getName(), beanOptions.editable.getName()));
             }
-            actualEditable = copyOptions.editable;
+            actualEditable = beanOptions.editable;
         }
         final HashSet<String> ignoreSet =
-            (null != copyOptions.ignoreProperties) ? CollectionUtil.newHashSet(copyOptions.ignoreProperties) : null;
-        final Map<String, String> fieldReverseMapping = copyOptions.getReversedMapping();
+            (null != beanOptions.ignoreProperties) ? CollectionUtil.newHashSet(beanOptions.ignoreProperties) : null;
+        final Map<String, String> fieldReverseMapping = beanOptions.getReversedMapping();
 
         final Collection<BeanDesc.PropDesc> props = BeanUtil.getBeanDesc(actualEditable).getProps();
         String fieldName;
@@ -257,7 +255,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
                 continue;
             }
             final String providerKey = mappingKey(fieldReverseMapping, fieldName);
-            if (false == valueProvider.containsKey(providerKey)) {
+            if (!valueProvider.containsKey(providerKey)) {
                 // 无对应值可提供
                 continue;
             }
@@ -289,7 +287,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
             }
 
             value = valueProvider.value(providerKey, firstParamType);
-            if (null == value && copyOptions.ignoreNullValue) {
+            if (null == value && beanOptions.ignoreNullValue) {
                 continue;// 当允许跳过空时，跳过
             }
             if (bean.equals(value)) {
@@ -299,9 +297,9 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
             try {
                 // valueProvider在没有对值做转换且当类型不匹配的时候，执行默认转换
                 propClass = prop.getFieldClass();
-                if (false == propClass.isInstance(value)) {
+                if (!propClass.isInstance(value)) {
                     value = Convert.convert(propClass, value);
-                    if (null == value && copyOptions.ignoreNullValue) {
+                    if (null == value && beanOptions.ignoreNullValue) {
                         continue;// 当允许跳过空时，跳过
                     }
                 }
@@ -309,7 +307,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
                 // 执行set方法注入值
                 setterMethod.invoke(bean, value);
             } catch (Exception e) {
-                if (false == copyOptions.ignoreError) {
+                if (!beanOptions.ignoreError) {
                     throw new UtilException(e, "Inject [{}] error!", prop.getFieldName());
                 }
                 // 忽略注入失败
