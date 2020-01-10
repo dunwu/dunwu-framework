@@ -122,7 +122,7 @@ public class BeanUtilTest {
         person.setName("测试A11");
         person.setSubName("sub名字");
 
-        Map<String, Object> map = BeanUtil.toMap(person, true, true);
+        Map<String, Object> map = BeanUtil.toMap(person, NamingStrategy.DEFAULT, true);
         Assertions.assertEquals("sub名字", map.get("sub_name"));
     }
 
@@ -138,7 +138,7 @@ public class BeanUtilTest {
         person.setDate(now);
         person.setDate2(now.toLocalDate());
 
-        Map<String, Object> map = BeanUtil.toMap(person, false, true);
+        Map<String, Object> map = BeanUtil.toMap(person, NamingStrategy.DEFAULT, true);
         Assertions.assertEquals(now, map.get("date"));
         Assertions.assertEquals(now.toLocalDate(), map.get("date2"));
     }

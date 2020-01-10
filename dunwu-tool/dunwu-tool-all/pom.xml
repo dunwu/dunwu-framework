@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.5.0</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
@@ -21,6 +21,16 @@
       <artifactId>dunwu-tool-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-tool-image</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-tool-net</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -28,7 +38,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -43,6 +52,34 @@
                 </includes>
               </artifactSet>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>oss</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <failOnError>false</failOnError>
+          <doclint>none</doclint>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>package</phase>
           </execution>
         </executions>
       </plugin>

@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.user.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import io.github.dunwu.constant.IIntegerStringEnum;
+import io.github.dunwu.common.constant.IIntegerStringEnum;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>

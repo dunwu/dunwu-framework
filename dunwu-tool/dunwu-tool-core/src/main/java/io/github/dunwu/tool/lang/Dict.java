@@ -1,6 +1,7 @@
 package io.github.dunwu.tool.lang;
 
 import io.github.dunwu.tool.bean.BeanUtil;
+import io.github.dunwu.tool.bean.support.NamingStrategy;
 import io.github.dunwu.tool.collection.CollectionUtil;
 import io.github.dunwu.tool.convert.Convert;
 import io.github.dunwu.tool.getter.BasicTypeGetter;
@@ -324,7 +325,7 @@ public class Dict extends LinkedHashMap<String, Object> implements BasicTypeGett
      */
     public <T> Dict parseBean(T bean, boolean isToUnderlineCase, boolean ignoreNullValue) {
         Assert.notNull(bean, "Bean class must be not null");
-        this.putAll(BeanUtil.toMap(bean, isToUnderlineCase, ignoreNullValue));
+        this.putAll(BeanUtil.toMap(bean, NamingStrategy.LOWER_UNDERLINE, ignoreNullValue));
         return this;
     }
 

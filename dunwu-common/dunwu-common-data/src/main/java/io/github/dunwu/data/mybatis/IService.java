@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import io.github.dunwu.core.*;
+import io.github.dunwu.common.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;

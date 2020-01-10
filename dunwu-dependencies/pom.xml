@@ -5,10 +5,11 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.5.0-SNAPSHOT</version>
+  <version>0.5.0</version>
   <packaging>pom</packaging>
   <name>dunwu-dependencies</name>
-  <description>Dunwu Dependencies</description>
+  <description>管理常用jar包版本</description>
+  <url>https://github.com/dunwu/dunwu</url>
 
   <properties>
     <!-- Spring Boot version -->
@@ -112,11 +113,6 @@
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-tool-test</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-core</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -133,6 +129,11 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-common-all</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -532,7 +533,7 @@
             <version>${maven-gpg-plugin.version}</version>
             <executions>
               <execution>
-                <id>sign-artifacts</id>
+                <id>oss</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
@@ -555,7 +556,6 @@
     </profile>
   </profiles>
 
-  <url>https://github.com/dunwu/dunwu</url>
   <inceptionYear>2018 - Now</inceptionYear>
   <licenses>
     <license>

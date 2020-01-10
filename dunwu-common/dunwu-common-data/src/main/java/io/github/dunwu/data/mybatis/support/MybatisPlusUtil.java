@@ -2,7 +2,7 @@ package io.github.dunwu.data.mybatis.support;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.github.dunwu.core.Pagination;
+import io.github.dunwu.common.Pagination;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>

@@ -1,6 +1,8 @@
 package io.github.dunwu.core;
 
 import com.alibaba.fastjson.JSON;
+import io.github.dunwu.common.Pagination;
+import io.github.dunwu.common.ResultUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

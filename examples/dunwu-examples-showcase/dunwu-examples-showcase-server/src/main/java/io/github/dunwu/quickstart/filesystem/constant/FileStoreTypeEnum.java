@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.filesystem.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import io.github.dunwu.constant.IStringStringEnum;
+import io.github.dunwu.common.constant.IStringStringEnum;
 
 /**
  * 文件存储类型

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class RequestGlobalHandler {
 
-    public static final String APP_VERSION = "0.5.0-SNAPSHOT";
+    public static final String APP_VERSION = "0.5.0";
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

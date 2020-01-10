@@ -172,4 +172,24 @@ public class RegexUtilTest {
 
     }
 
+    @Test
+    public void getKeys() {
+        String text = "select * from t_user where name=#{name} and date > #{date}";
+        List<String> groups = RegexUtil.getAll(text, "#\\{\\w*\\}", 0, new ArrayList<>());
+        List<String> keys = new ArrayList<>();
+        groups.forEach(item -> {
+            String key = RegexUtil.getFirst(item, "[A-Za-z0-9_]{1,}");
+            keys.add(key);
+        });
+        System.out.println(keys);
+    }
+
+    @Test
+    public void replaceKeys() {
+        String text = "select * from t_user where name=#{name} and date > #{date}";
+        List<String> values = CollectionUtil.toList("zhangsan", "2019");
+        final String newText = RegexUtil.replaceAll(text, "#\\{\\w*\\}", values);
+        System.out.println(newText);
+    }
+
 }

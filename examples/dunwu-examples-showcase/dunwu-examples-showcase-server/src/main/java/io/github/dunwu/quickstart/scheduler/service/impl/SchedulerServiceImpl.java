@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.scheduler.service.impl;
 
-import io.github.dunwu.annotation.JobHandler;
+import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.data.service.ServiceImpl;
 import io.github.dunwu.quickstart.scheduler.constant.SchedulerConstant;
 import io.github.dunwu.quickstart.scheduler.constant.TriggerStatusEnum;

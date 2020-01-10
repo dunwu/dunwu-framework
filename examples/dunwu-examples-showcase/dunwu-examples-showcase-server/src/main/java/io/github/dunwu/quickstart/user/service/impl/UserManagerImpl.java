@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.dunwu.annotation.Manager;
+import io.github.dunwu.common.annotation.Manager;
 import io.github.dunwu.core.AppCode;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.DataResult;

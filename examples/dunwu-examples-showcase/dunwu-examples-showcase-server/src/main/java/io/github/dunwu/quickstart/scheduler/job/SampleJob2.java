@@ -1,7 +1,7 @@
 package io.github.dunwu.quickstart.scheduler.job;
 
 import com.alibaba.fastjson.JSON;
-import io.github.dunwu.annotation.JobHandler;
+import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.core.BaseResult;
 import io.github.dunwu.core.ResultUtils;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;

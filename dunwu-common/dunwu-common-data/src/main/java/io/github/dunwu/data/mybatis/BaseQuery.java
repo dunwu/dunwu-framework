@@ -1,6 +1,6 @@
 package io.github.dunwu.data.mybatis;
 
-import io.github.dunwu.core.Pagination;
+import io.github.dunwu.common.Pagination;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
