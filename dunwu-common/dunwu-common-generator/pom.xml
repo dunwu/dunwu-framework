@@ -6,11 +6,13 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.1</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
   <artifactId>dunwu-common-generator</artifactId>
+  <packaging>jar</packaging>
+  <name>dunwu-common-generator</name>
   <description>Dunwu 代码生成器</description>
 
   <properties>

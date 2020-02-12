@@ -752,9 +752,9 @@ public class BeanUtil {
     /**
      * 将类的所有 field 用指定字符拼接为一个字符串
      *
-     * @param clazz
-     * @param separator
-     * @return
+     * @param clazz     需要拼接的类
+     * @param separator 分隔符
+     * @return 字符串
      */
     public static String joinKeys(Class<?> clazz, String separator) {
         List<String> keys = formatKeys(clazz, NamingStrategy.DEFAULT);
