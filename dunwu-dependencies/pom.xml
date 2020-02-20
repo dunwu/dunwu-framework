@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
   <packaging>pom</packaging>
   <name>dunwu-dependencies</name>
   <description>管理常用jar包版本</description>
