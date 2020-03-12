@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.2</version>
+    <version>${revision}</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
@@ -19,12 +19,30 @@
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common-core</artifactId>
-      <version>${project.version}</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common-web</artifactId>
-      <version>${project.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-common-dlock</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!--redis-->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <!--zookeeper-->
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-framework</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!-- SPRING BOOT BEGIN -->

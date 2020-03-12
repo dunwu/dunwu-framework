@@ -3,9 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.dunwu</groupId>
+  <parent>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.5.2</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
   <name>dunwu-dependencies</name>
   <description>管理常用jar包版本</description>
@@ -14,6 +20,7 @@
   <properties>
     <!-- Spring Boot version -->
     <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+
 
     <!-- Dependency versions -->
     <caffeine.version>2.8.0</caffeine.version>
@@ -47,6 +54,7 @@
     <thumbnailator.version>0.4.8</thumbnailator.version>
     <zxing.version>3.4.0</zxing.version>
     <fst.version>2.56</fst.version>
+    <curator.version>4.2.0</curator.version>
 
     <!-- Plugin versions -->
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
@@ -94,77 +102,87 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-dependencies</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-tool-core</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-tool-net</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-tool-all</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-core</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-data</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-common-dlock</artifactId>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-generator</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-web</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-common-all</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-autoconfigure</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-starters</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-starter-parent</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-starter-mybatis</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-starter-web</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-starter-mail</artifactId>
-        <version>${project.version}</version>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-starter-dlock</artifactId>
+        <version>${revision}</version>
       </dependency>
       <!-- dunwu dependencies end -->
 
@@ -241,6 +259,18 @@
         <groupId>com.github.ben-manes.caffeine</groupId>
         <artifactId>caffeine</artifactId>
         <version>${caffeine.version}</version>
+      </dependency>
+
+      <!--zookeeper-->
+      <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-framework</artifactId>
+        <version>${curator.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-test</artifactId>
+        <version>${curator.version}</version>
       </dependency>
       <!-- data end -->
 

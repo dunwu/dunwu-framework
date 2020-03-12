@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2019-04-21
  */
 @Configuration
+@ConditionalOnProperty(value = "io.github.dunwu.web.enable", havingValue = "true")
 @EnableWebMvc
 @ServletComponentScan(basePackages = "io.github.dunwu.web")
 @EnableConfigurationProperties({ DunwuWebProperties.class,

@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.2</version>
+    <version>${revision}</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
@@ -32,5 +32,6 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
     </dependency>
+
   </dependencies>
 </project>

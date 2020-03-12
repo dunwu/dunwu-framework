@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.2</version>
+    <version>${revision}</version>
     <relativePath>../dunwu-parent</relativePath>
   </parent>
 
@@ -22,6 +22,7 @@
     <module>dunwu-starter-mybatis</module>
     <module>dunwu-starter-web</module>
     <module>dunwu-starter-mail</module>
+    <module>dunwu-starter-dlock</module>
   </modules>
 
   <build>
