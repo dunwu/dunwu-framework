@@ -1,6 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-io.github.dunwu.autoconfigure.mybatis.DunwuMybatisAutoConfiguration,\
-io.github.dunwu.autoconfigure.mybatis.DunwuMybatisAutoConfiguration,\
-io.github.dunwu.autoconfigure.mail.MailSenderAutoConfiguration,\
-io.github.dunwu.autoconfigure.zookeeper.ZookeeperAutoConfiguration,\
-io.github.dunwu.autoconfigure.dlock.DistributedLockAutoConfiguration

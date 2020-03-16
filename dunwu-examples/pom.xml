@@ -3,15 +3,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.dunwu</groupId>
-  <artifactId>dunwu</artifactId>
-  <version>0.5.4</version>
+  <parent>
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu-starter-parent</artifactId>
+    <version>0.5.4</version>
+  </parent>
+
+  <artifactId>dunwu-examples</artifactId>
   <packaging>pom</packaging>
-  <name>DUNWU</name>
-  <description>Dunwu Project</description>
 
   <modules>
-    <module>dunwu-project</module>
-    <module>dunwu-examples</module>
+    <module>dunwu-app</module>
+    <module>dunwu-admin/dunwu-admin-server-spring-security</module>
   </modules>
 </project>
