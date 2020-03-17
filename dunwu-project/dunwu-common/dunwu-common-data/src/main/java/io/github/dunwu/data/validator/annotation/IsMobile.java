@@ -1,4 +1,4 @@
-package io.github.dunwu.data.annotation;
+package io.github.dunwu.data.validator.annotation;
 
 import io.github.dunwu.data.validator.MobileValidator;
 
@@ -11,6 +11,8 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * 验证被修饰字段、参数字符串是否为手机号
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-15
  */

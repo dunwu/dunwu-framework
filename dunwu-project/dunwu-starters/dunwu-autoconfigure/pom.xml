@@ -53,6 +53,11 @@
       <artifactId>spring-boot-starter-security</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.spring4all</groupId>
+      <artifactId>swagger-spring-boot-starter</artifactId>
+      <optional>true</optional>
+    </dependency>
     <!--SPRING BOOT END-->
 
     <dependency>

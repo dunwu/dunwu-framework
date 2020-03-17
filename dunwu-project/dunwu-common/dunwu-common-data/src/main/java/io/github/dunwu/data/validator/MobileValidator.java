@@ -1,6 +1,6 @@
 package io.github.dunwu.data.validator;
 
-import io.github.dunwu.data.annotation.IsMobile;
+import io.github.dunwu.data.validator.annotation.IsMobile;
 import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.tool.util.ValidatorUtil;
 
@@ -14,7 +14,7 @@ import javax.validation.ConstraintValidatorContext;
 public class MobileValidator implements ConstraintValidator<IsMobile, String> {
 
     @Override
-    public void initialize(IsMobile isMobile) {}
+    public void initialize(IsMobile constraintAnnotation) {}
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {

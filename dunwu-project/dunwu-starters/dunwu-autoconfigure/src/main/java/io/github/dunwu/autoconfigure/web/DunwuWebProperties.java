@@ -2,6 +2,7 @@ package io.github.dunwu.autoconfigure.web;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ToString
+@Accessors(chain = true)
 @ConfigurationProperties(prefix = "dunwu.web")
 public class DunwuWebProperties {
 
@@ -24,6 +26,11 @@ public class DunwuWebProperties {
      * 打印 Http 请求应答 Debug 信息开关
      */
     private boolean httpDebugEnabled = true;
+
+    /**
+     * XSS 防御开关
+     */
+    private boolean xssEnabled = true;
 
     /**
      * http 数据自动格式化开关
@@ -39,7 +46,7 @@ public class DunwuWebProperties {
     @ToString
     public static class Security {
 
-        private boolean enabled = true;
+        private boolean enabled;
 
         /**
          * 放开跨域限制开关

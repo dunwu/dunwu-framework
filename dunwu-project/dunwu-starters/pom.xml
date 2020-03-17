@@ -22,7 +22,6 @@
     <module>dunwu-starter-mail</module>
     <module>dunwu-starter-mybatis</module>
     <module>dunwu-starter-parent</module>
-    <module>dunwu-starter-test</module>
     <module>dunwu-starter-web</module>
   </modules>
 

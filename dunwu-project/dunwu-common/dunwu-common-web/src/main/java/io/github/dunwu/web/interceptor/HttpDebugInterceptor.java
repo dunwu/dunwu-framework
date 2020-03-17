@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * HTTP 请求拦截器
+ * 使用日志 DEBUG 级别打印 HTTP 请求、应答信息的拦截器
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-21

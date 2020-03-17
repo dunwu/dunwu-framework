@@ -13,38 +13,62 @@
   <artifactId>dunwu-common-data</artifactId>
   <packaging>jar</packaging>
   <name>dunwu-common-data</name>
-  <description>Dunwu 数据库脚手架</description>
+  <description>Dunwu 数据层脚手架</description>
 
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency>
+
+    <!--ORM-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus</artifactId>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
+
+    <!--API-->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!--validator-->
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <scope>provided</scope>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>validation-api</artifactId>
+          <groupId>javax.validation</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!--data-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-elasticsearch</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <optional>true</optional>
+    </dependency>
 
-    <!--SQL 监控-->
+    <!--sql monitor-->
     <dependency>
       <groupId>p6spy</groupId>
       <artifactId>p6spy</artifactId>
