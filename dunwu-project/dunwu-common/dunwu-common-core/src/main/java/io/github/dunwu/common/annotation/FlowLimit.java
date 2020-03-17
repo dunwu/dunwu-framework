@@ -2,12 +2,19 @@ package io.github.dunwu.common.annotation;
 
 import io.github.dunwu.common.constant.FlowLimitType;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * 流控注解
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-15
  */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface FlowLimit {
 
     /**

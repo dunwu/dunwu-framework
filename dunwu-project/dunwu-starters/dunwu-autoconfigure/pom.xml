@@ -55,12 +55,19 @@
     </dependency>
     <!--SPRING BOOT END-->
 
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <optional>true</optional>
+    </dependency>
+
     <!--DATA CLIENT BEGIN-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
       <optional>true</optional>
     </dependency>
+    <!--SQL 监控-->
     <dependency>
       <groupId>p6spy</groupId>
       <artifactId>p6spy</artifactId>
