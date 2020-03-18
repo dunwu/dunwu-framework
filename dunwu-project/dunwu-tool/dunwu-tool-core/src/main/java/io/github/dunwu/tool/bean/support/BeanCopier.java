@@ -179,7 +179,8 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
     private void beanToMap(Object bean, Map targetMap) {
         final Collection<BeanDesc.PropDesc> props = BeanUtil.getBeanDesc(bean.getClass()).getProps();
         final HashSet<String> ignoreSet =
-            (null != this.beanOptions.ignoreProperties) ? CollectionUtil.newHashSet(this.beanOptions.ignoreProperties) : null;
+            (null != this.beanOptions.ignoreProperties) ? CollectionUtil.newHashSet(this.beanOptions.ignoreProperties)
+                : null;
         final BeanOptions beanOptions = this.beanOptions;
 
         String key;

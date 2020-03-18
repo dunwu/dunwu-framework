@@ -27,6 +27,10 @@ import java.net.InetAddress;
 @RequiredArgsConstructor
 public class DunwuCheckerRunner implements ApplicationRunner {
 
+    private final RestTemplate restTemplate;
+
+    private final ConfigurableApplicationContext context;
+
     @Value("${server.port:8080}")
     private int port;
 
@@ -35,10 +39,6 @@ public class DunwuCheckerRunner implements ApplicationRunner {
 
     @Value("${spring.profiles.active}")
     private String profile;
-
-    private final RestTemplate restTemplate;
-
-    private final ConfigurableApplicationContext context;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

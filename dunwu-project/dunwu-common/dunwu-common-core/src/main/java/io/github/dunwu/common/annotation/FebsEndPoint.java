@@ -8,11 +8,13 @@ import java.lang.annotation.*;
 /**
  * @author MrBird
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
 public @interface FebsEndPoint {
+
     @AliasFor(annotation = Component.class)
     String value() default "";
+
 }

@@ -1684,6 +1684,31 @@ public class NumberUtil {
     }
 
     /**
+     * 数字转{@link BigDecimal}
+     *
+     * @param number 数字
+     * @return {@link BigDecimal}
+     * @since 4.0.9
+     */
+    public static BigDecimal toBigDecimal(Number number) {
+        if (null == number) {
+            return BigDecimal.ZERO;
+        }
+        return toBigDecimal(number.toString());
+    }
+
+    /**
+     * 数字转{@link BigDecimal}
+     *
+     * @param number 数字
+     * @return {@link BigDecimal}
+     * @since 4.0.9
+     */
+    public static BigDecimal toBigDecimal(String number) {
+        return (null == number) ? BigDecimal.ZERO : new BigDecimal(number);
+    }
+
+    /**
      * 可以用于计算双色球、大乐透注数的方法<br> 比如大乐透35选5可以这样调用processMultiple(7,5); 就是数学中的：C75=7*6/2*1
      *
      * @param selectNum 选中小球个数
@@ -1755,6 +1780,28 @@ public class NumberUtil {
      */
     public static BigDecimal round(BigDecimal number, int scale) {
         return round(number, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 保留固定位数小数<br> 例如保留四位小数：123.456789 =》 123.4567
+     *
+     * @param number       数字值
+     * @param scale        保留小数位数，如果传入小于0，则默认0
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}，如果传入null则默认四舍五入
+     * @return 新值
+     */
+    public static BigDecimal round(BigDecimal number, int scale, RoundingMode roundingMode) {
+        if (null == number) {
+            number = BigDecimal.ZERO;
+        }
+        if (scale < 0) {
+            scale = 0;
+        }
+        if (null == roundingMode) {
+            roundingMode = RoundingMode.HALF_UP;
+        }
+
+        return number.setScale(scale, roundingMode);
     }
 
     /**
@@ -1830,20 +1877,6 @@ public class NumberUtil {
     }
 
     /**
-     * 数字转{@link BigDecimal}
-     *
-     * @param number 数字
-     * @return {@link BigDecimal}
-     * @since 4.0.9
-     */
-    public static BigDecimal toBigDecimal(Number number) {
-        if (null == number) {
-            return BigDecimal.ZERO;
-        }
-        return toBigDecimal(number.toString());
-    }
-
-    /**
      * 保留固定位数小数<br> 采用四舍五入策略 {@link RoundingMode#HALF_UP}<br> 例如保留2位小数：123.456789 =》 123.46
      *
      * @param v     值
@@ -1891,39 +1924,6 @@ public class NumberUtil {
             scale = 0;
         }
         return round(toBigDecimal(numberStr), scale, roundingMode);
-    }
-
-    /**
-     * 保留固定位数小数<br> 例如保留四位小数：123.456789 =》 123.4567
-     *
-     * @param number       数字值
-     * @param scale        保留小数位数，如果传入小于0，则默认0
-     * @param roundingMode 保留小数的模式 {@link RoundingMode}，如果传入null则默认四舍五入
-     * @return 新值
-     */
-    public static BigDecimal round(BigDecimal number, int scale, RoundingMode roundingMode) {
-        if (null == number) {
-            number = BigDecimal.ZERO;
-        }
-        if (scale < 0) {
-            scale = 0;
-        }
-        if (null == roundingMode) {
-            roundingMode = RoundingMode.HALF_UP;
-        }
-
-        return number.setScale(scale, roundingMode);
-    }
-
-    /**
-     * 数字转{@link BigDecimal}
-     *
-     * @param number 数字
-     * @return {@link BigDecimal}
-     * @since 4.0.9
-     */
-    public static BigDecimal toBigDecimal(String number) {
-        return (null == number) ? BigDecimal.ZERO : new BigDecimal(number);
     }
 
     /**

@@ -113,30 +113,18 @@ public class RuntimeUtil {
     }
 
     /**
-     * 执行系统命令，使用系统默认编码
+     * 销毁进程
      *
-     * @param cmds 命令列表，每个元素代表一条命令
-     * @return 执行结果
-     * @throws IORuntimeException IO异常
+     * @param process 进程
+     * @since 3.1.2
      */
-    public static String execForStr(String... cmds) throws IORuntimeException {
-        return execForStr(CharsetUtil.systemCharset(), cmds);
+    public static void destroy(Process process) {
+        if (null != process) {
+            process.destroy();
+        }
     }
 
     // -------------------------------------------------------------------------------------------------- result
-
-    /**
-     * 执行系统命令，使用系统默认编码
-     *
-     * @param charset 编码
-     * @param cmds    命令列表，每个元素代表一条命令
-     * @return 执行结果
-     * @throws IORuntimeException IO异常
-     * @since 3.1.2
-     */
-    public static String execForStr(Charset charset, String... cmds) throws IORuntimeException {
-        return getResult(exec(cmds), charset);
-    }
 
     /**
      * 执行命令<br> 命令带参数时参数可作为其中一个参数，也可以将命令和参数组合为一个字符串传入
@@ -168,6 +156,30 @@ public class RuntimeUtil {
     }
 
     /**
+     * 执行系统命令，使用系统默认编码
+     *
+     * @param cmds 命令列表，每个元素代表一条命令
+     * @return 执行结果
+     * @throws IORuntimeException IO异常
+     */
+    public static String execForStr(String... cmds) throws IORuntimeException {
+        return execForStr(CharsetUtil.systemCharset(), cmds);
+    }
+
+    /**
+     * 执行系统命令，使用系统默认编码
+     *
+     * @param charset 编码
+     * @param cmds    命令列表，每个元素代表一条命令
+     * @return 执行结果
+     * @throws IORuntimeException IO异常
+     * @since 3.1.2
+     */
+    public static String execForStr(Charset charset, String... cmds) throws IORuntimeException {
+        return getResult(exec(cmds), charset);
+    }
+
+    /**
      * 获取命令执行结果，获取后销毁进程
      *
      * @param process {@link Process} 进程
@@ -183,18 +195,6 @@ public class RuntimeUtil {
         } finally {
             IoUtil.close(in);
             destroy(process);
-        }
-    }
-
-    /**
-     * 销毁进程
-     *
-     * @param process 进程
-     * @since 3.1.2
-     */
-    public static void destroy(Process process) {
-        if (null != process) {
-            process.destroy();
         }
     }
 

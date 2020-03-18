@@ -28,17 +28,17 @@ public class P6spySlf4jLogger extends FormattedLogger {
     }
 
     @Override
+    public boolean isCategoryEnabled(Category category) {
+        return true;
+    }
+
+    @Override
     public void logSQL(int connectionId, String now, long elapsed, Category category, String prepared, String sql,
         String url) {
         String msg = this.strategy.formatMessage(connectionId, now, elapsed, category.toString(), prepared, sql, url);
         if (log.isDebugEnabled()) {
             log.debug(msg);
         }
-    }
-
-    @Override
-    public boolean isCategoryEnabled(Category category) {
-        return true;
     }
 
 }

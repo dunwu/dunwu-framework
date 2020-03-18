@@ -30,6 +30,31 @@ public final class Ansi8BitColor implements AnsiElement {
         this.code = code;
     }
 
+    /**
+     * Return a background ANSI color code instance for the given code.
+     *
+     * @param code the color code
+     * @return an ANSI color code instance
+     */
+    public static Ansi8BitColor background(int code) {
+        return new Ansi8BitColor("48;5;", code);
+    }
+
+    /**
+     * Return a foreground ANSI color code instance for the given code.
+     *
+     * @param code the color code
+     * @return an ANSI color code instance
+     */
+    public static Ansi8BitColor foreground(int code) {
+        return new Ansi8BitColor("38;5;", code);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.prefix.hashCode() * 31 + this.code;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -43,33 +68,8 @@ public final class Ansi8BitColor implements AnsiElement {
     }
 
     @Override
-    public int hashCode() {
-        return this.prefix.hashCode() * 31 + this.code;
-    }
-
-    @Override
     public String toString() {
         return this.prefix + this.code;
-    }
-
-    /**
-     * Return a foreground ANSI color code instance for the given code.
-     *
-     * @param code the color code
-     * @return an ANSI color code instance
-     */
-    public static Ansi8BitColor foreground(int code) {
-        return new Ansi8BitColor("38;5;", code);
-    }
-
-    /**
-     * Return a background ANSI color code instance for the given code.
-     *
-     * @param code the color code
-     * @return an ANSI color code instance
-     */
-    public static Ansi8BitColor background(int code) {
-        return new Ansi8BitColor("48;5;", code);
     }
 
 }

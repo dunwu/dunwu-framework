@@ -2,7 +2,6 @@ package io.github.dunwu.quickstart.user.config;
 
 import com.alibaba.fastjson.JSON;
 import io.github.dunwu.common.DataListResult;
-import io.github.dunwu.common.ResultUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +31,7 @@ public class DunwuAuthenticationSuccessHandler implements AuthenticationSuccessH
         throws IOException, ServletException {
         List<String> roles = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        DataListResult result = ResultUtils.successDataListResult(roles);
+        DataListResult<String> result = DataListResult.success(roles);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());

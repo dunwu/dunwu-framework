@@ -68,7 +68,7 @@
 </div>
 
 <script>
-  var _c = document.getElementById('content')
+  var _c = document.getElementById('content');
   _c.innerHTML = (_c.innerHTML || '').replace(/(href|formAction|onclick|javascript)/gi, '__$1')
 </script>
 <style type="text/css">

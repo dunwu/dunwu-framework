@@ -12,12 +12,7 @@
  */
 package io.github.dunwu.dlock.provider;
 
-import io.github.dunwu.dlock.core.AbstractDistributedLock;
-import io.github.dunwu.dlock.core.LockConfiguration;
-import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.core.DistributedLock;
-import io.github.dunwu.dlock.core.LockException;
-import io.github.dunwu.dlock.core.Utils;
+import io.github.dunwu.dlock.core.*;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -73,15 +68,15 @@ public class RedisLockProvider implements LockProvider {
         this(new StringRedisTemplate(redisConn), environment, keyPrefix);
     }
 
-    public RedisLockProvider(@NotNull StringRedisTemplate redisTemplate) {
-        this(redisTemplate, ENV_DEFAULT, KEY_PREFIX_DEFAULT);
-    }
-
     public RedisLockProvider(@NotNull StringRedisTemplate redisTemplate, @NotNull String environment,
         @NotNull String keyPrefix) {
         this.redisTemplate = redisTemplate;
         this.environment = environment;
         this.keyPrefix = keyPrefix;
+    }
+
+    public RedisLockProvider(@NotNull StringRedisTemplate redisTemplate) {
+        this(redisTemplate, ENV_DEFAULT, KEY_PREFIX_DEFAULT);
     }
 
     @Override
@@ -102,6 +97,29 @@ public class RedisLockProvider implements LockProvider {
 
     private static long getMsUntil(Instant until) {
         return Duration.between(Instant.now(), until).toMillis();
+    }
+
+    String buildKey(String lockName) {
+        return RedisLockProvider.buildKey(lockName, keyPrefix, environment);
+    }
+
+    static String buildKey(String lockName, String keyPrefix, String environment) {
+        return String.format("%s:%s:%s", keyPrefix, environment, lockName);
+    }
+
+    static Boolean tryToSetExpiration(StringRedisTemplate redisTemplate, String key, Expiration expiration,
+        SetOption option) {
+        byte[] finalKey = serialize(redisTemplate, key);
+        byte[] finalValue = serialize(redisTemplate, buildValue());
+        return redisTemplate.execute(connection -> connection.set(finalKey, finalValue, expiration, option), false);
+    }
+
+    static String buildValue() {
+        return String.format("ADDED:%s@%s", Utils.toIsoString(Instant.now()), Utils.getHostname());
+    }
+
+    static byte[] serialize(StringRedisTemplate redisTemplate, String string) {
+        return redisTemplate.getStringSerializer().serialize(string);
     }
 
     private static final class RedisLock extends AbstractDistributedLock {
@@ -131,29 +149,6 @@ public class RedisLockProvider implements LockProvider {
             }
         }
 
-    }
-
-    String buildKey(String lockName) {
-        return RedisLockProvider.buildKey(lockName, keyPrefix, environment);
-    }
-
-    static Boolean tryToSetExpiration(StringRedisTemplate redisTemplate, String key, Expiration expiration,
-        SetOption option) {
-        byte[] finalKey = serialize(redisTemplate, key);
-        byte[] finalValue = serialize(redisTemplate, buildValue());
-        return redisTemplate.execute(connection -> connection.set(finalKey, finalValue, expiration, option), false);
-    }
-
-    static String buildKey(String lockName, String keyPrefix, String environment) {
-        return String.format("%s:%s:%s", keyPrefix, environment, lockName);
-    }
-
-    static String buildValue() {
-        return String.format("ADDED:%s@%s", Utils.toIsoString(Instant.now()), Utils.getHostname());
-    }
-
-    static byte[] serialize(StringRedisTemplate redisTemplate, String string) {
-        return redisTemplate.getStringSerializer().serialize(string);
     }
 
 }

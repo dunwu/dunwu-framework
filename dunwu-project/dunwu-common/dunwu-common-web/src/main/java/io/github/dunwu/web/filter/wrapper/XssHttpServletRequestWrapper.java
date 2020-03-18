@@ -60,6 +60,10 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return arr;
     }
 
+    private String clean(String content) {
+        return Jsoup.clean(content, StringUtil.EMPTY, WHITE_LIST, OUTPUT_SETTING);
+    }
+
     /**
      * 覆盖getHeader方法，将参数名和参数值都做 xss过滤 如果需要获得原始的值，则通过super.getHeaders(name)来获取 getHeaderNames 也可能需要覆盖
      */
@@ -71,10 +75,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             value = clean(value);
         }
         return value;
-    }
-
-    private String clean(String content) {
-        return Jsoup.clean(content, StringUtil.EMPTY, WHITE_LIST, OUTPUT_SETTING);
     }
 
 }

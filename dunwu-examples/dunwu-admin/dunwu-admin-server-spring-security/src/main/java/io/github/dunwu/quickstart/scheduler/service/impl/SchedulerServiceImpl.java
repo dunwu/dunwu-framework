@@ -3,9 +3,8 @@ package io.github.dunwu.quickstart.scheduler.service.impl;
 import io.github.dunwu.common.BaseResult;
 import io.github.dunwu.common.DataListResult;
 import io.github.dunwu.common.DataResult;
-import io.github.dunwu.common.ResultUtils;
 import io.github.dunwu.common.annotation.JobHandler;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import io.github.dunwu.data.mybatis.ServiceImpl;
 import io.github.dunwu.quickstart.scheduler.constant.SchedulerConstant;
 import io.github.dunwu.quickstart.scheduler.constant.TriggerStatusEnum;
@@ -58,31 +57,31 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Transactional(rollbackFor = Exception.class)
     public BaseResult createJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         try {
             fillFields(schedulerInfo);
         } catch (SchedulerException e) {
-            return ResultUtils.failBaseResult();
+            return BaseResult.fail();
         }
 
         DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
         if (CollectionUtil.isNotEmpty(dataListResult.getData())) {
-            return ResultUtils.failBaseResult();
+            return BaseResult.fail();
         }
 
         DataResult<? extends Serializable> dataResult = super.save(schedulerInfo);
-        if (ResultUtils.isNotValid(dataResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "创建调度作业数据库记录失败");
+        if (dataResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "创建调度作业数据库记录失败");
         }
         try {
             createQuartzJob(schedulerInfo);
         } catch (SchedulerException e) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+            return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                 "创建调度作业失败");
         }
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     private void fillFields(Scheduler schedulerInfo) throws SchedulerException {
@@ -156,19 +155,19 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Transactional(rollbackFor = Exception.class)
     public BaseResult deleteJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
-        if (ResultUtils.isNotValid(dataListResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到调度器");
+        if (dataListResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "未找到调度器");
         }
 
         for (Scheduler item : dataListResult.getData()) {
             // 删除记录
             BaseResult baseResult = super.removeById(item.getId());
-            if (ResultUtils.isNotValid(baseResult)) {
-                return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(),
+            if (baseResult.isNotOk()) {
+                return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(),
                     "删除调度作业数据库记录失败");
             }
 
@@ -178,7 +177,7 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
                 List<String> messages = new ArrayList<>();
                 messages.add("删除调度作业失败");
                 messages.add(e.getMessage());
-                return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+                return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                     messages);
             }
 
@@ -188,7 +187,7 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
             }
         }
 
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     private boolean deleteQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
@@ -207,7 +206,7 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Override
     public BaseResult executeJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         try {
@@ -215,10 +214,10 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
         } catch (SchedulerException e) {
             log.error("执行调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
                 schedulerInfo.getJobName(), e);
-            return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+            return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                 "执行调度作业失败");
         }
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     private void executeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
@@ -258,19 +257,19 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Override
     public BaseResult pauseJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
-        if (ResultUtils.isNotValid(dataListResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(), "未找到调度器");
+        if (dataListResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(), "未找到调度器");
         }
 
         for (Scheduler item : dataListResult.getData()) {
             item.setStatus(TriggerStatusEnum.PAUSED);
             BaseResult baseResult = super.updateById(item);
-            if (ResultUtils.isNotValid(baseResult)) {
-                return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(),
+            if (baseResult.isNotOk()) {
+                return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(),
                     "更新调度作业数据库记录失败");
             }
 
@@ -280,11 +279,11 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
                 List<String> messages = new ArrayList<>();
                 messages.add("暂停调度作业失败");
                 messages.add(e.getMessage());
-                return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+                return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                     messages);
             }
         }
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     private void pauseQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
@@ -299,19 +298,19 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Override
     public BaseResult resumeJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         DataListResult<Scheduler> dataListResult = super.list(schedulerInfo);
-        if (ResultUtils.isNotValid(dataListResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(), "未找到调度器");
+        if (dataListResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(), "未找到调度器");
         }
 
         for (Scheduler item : dataListResult.getData()) {
             item.setStatus(TriggerStatusEnum.EXECUTING);
             BaseResult baseResult = super.updateById(item);
-            if (ResultUtils.isNotValid(baseResult)) {
-                return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(),
+            if (baseResult.isNotOk()) {
+                return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(),
                     "更新调度作业数据库记录失败");
             }
 
@@ -321,11 +320,11 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
                 List<String> messages = new ArrayList<>();
                 messages.add("恢复调度作业失败");
                 messages.add(e.getMessage());
-                return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+                return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                     messages);
             }
         }
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     private void resumeQuartzJob(Scheduler schedulerInfo) throws SchedulerException {
@@ -341,33 +340,33 @@ public class SchedulerServiceImpl extends ServiceImpl<SchedulerMapper, Scheduler
     @Transactional(rollbackFor = Exception.class)
     public BaseResult updateJob(Scheduler schedulerInfo) {
         if (schedulerInfo == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         DataResult<Scheduler> dataResult = super.getById(schedulerInfo.getId());
-        if (ResultUtils.isNotValid(dataResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "未找到记录");
+        if (dataResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "未找到记录");
         }
 
         BaseResult baseResult = super.updateById(schedulerInfo);
-        if (ResultUtils.isNotValid(baseResult)) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "更新调度作业数据库记录失败");
+        if (baseResult.isNotOk()) {
+            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "更新调度作业数据库记录失败");
         }
 
         try {
             // 由于作业组、作业名都可能发生变更，所以必须重新创建作业
             if (!deleteQuartzJob(schedulerInfo)) {
-                return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+                return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                     "删除调度作业失败");
             }
             createQuartzJob(schedulerInfo);
         } catch (SchedulerException e) {
             log.error("更新调度作业 jobGroup={},jobName={} 失败", schedulerInfo.getJobGroup(),
                 schedulerInfo.getJobName(), e);
-            return ResultUtils.failBaseResult(AppCode.ERROR_SCHEDULER.getCode(),
+            return BaseResult.fail(AppResulstStatus.ERROR_SCHEDULER.getCode(),
                 "创建调度作业失败");
         }
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     @Override

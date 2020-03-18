@@ -1,9 +1,14 @@
 package io.github.dunwu.common;
 
+import lombok.Data;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
+@Data
+@ToString
 public class Pagination<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,48 +46,6 @@ public class Pagination<T> implements Serializable {
         this.size = size;
         this.total = total;
         this.list = list;
-    }
-
-    @Override
-    public String toString() {
-        return "Pagination{" + "list=" + list + ", current=" + current + ", size=" + size
-            + ", total=" + total + '}';
-    }
-
-    public Collection<T> getList() {
-        return list;
-    }
-
-    public Pagination<T> setList(Collection<T> list) {
-        this.list = list;
-        return this;
-    }
-
-    public long getCurrent() {
-        return current;
-    }
-
-    public Pagination<T> setCurrent(long current) {
-        this.current = current;
-        return this;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public Pagination<T> setSize(long size) {
-        this.size = size;
-        return this;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public Pagination<T> setTotal(long total) {
-        this.total = total;
-        return this;
     }
 
 }

@@ -17,13 +17,6 @@ public class MarkdownFileFormatTest {
 
     public static final String MD_FILE_PATH = "D:\\Codes\\ZPTutorial\\javacore\\docs\\basics\\Java反射.md";
 
-    private static boolean isMarkdownFile(File file) {
-        if (!FileUtil.isFile(file)) {
-            return false;
-        }
-        return file.getPath().toLowerCase().endsWith(".md");
-    }
-
     @Test
     public void test() {
         List<File> files = FileUtil.loopFiles(MD_DIR_PATH, MarkdownFileFormatTest::isMarkdownFile);
@@ -32,6 +25,13 @@ public class MarkdownFileFormatTest {
             String context = FileUtil.readString(file, CharsetUtil.UTF_8);
             System.out.println(context);
         });
+    }
+
+    private static boolean isMarkdownFile(File file) {
+        if (!FileUtil.isFile(file)) {
+            return false;
+        }
+        return file.getPath().toLowerCase().endsWith(".md");
     }
 
     @Test

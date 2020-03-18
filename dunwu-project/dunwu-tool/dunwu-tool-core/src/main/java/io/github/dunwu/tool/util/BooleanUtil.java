@@ -216,6 +216,16 @@ public class BooleanUtil {
     }
 
     /**
+     * boolean值转为int
+     *
+     * @param value Boolean值
+     * @return int值
+     */
+    public static int toInt(boolean value) {
+        return value ? 1 : 0;
+    }
+
+    /**
      * boolean值转为Character
      *
      * @param value Boolean值
@@ -286,16 +296,6 @@ public class BooleanUtil {
     }
 
     /**
-     * boolean值转为int
-     *
-     * @param value Boolean值
-     * @return int值
-     */
-    public static int toInt(boolean value) {
-        return value ? 1 : 0;
-    }
-
-    /**
      * boolean值转为Long
      *
      * @param value Boolean值
@@ -351,21 +351,6 @@ public class BooleanUtil {
     }
 
     /**
-     * 将boolean转换为字符串 {@code 'true'} 或者 {@code 'false'}.
-     *
-     * <pre>
-     *   BooleanUtil.toStringTrueFalse(true)   = "true"
-     *   BooleanUtil.toStringTrueFalse(false)  = "false"
-     * </pre>
-     *
-     * @param bool Boolean值
-     * @return {@code 'true'}, {@code 'false'}
-     */
-    public static String toStringTrueFalse(boolean bool) {
-        return toString(bool, "true", "false");
-    }
-
-    /**
      * 将boolean转换为字符串
      *
      * <pre>
@@ -380,6 +365,21 @@ public class BooleanUtil {
      */
     public static String toString(boolean bool, String trueString, String falseString) {
         return bool ? trueString : falseString;
+    }
+
+    /**
+     * 将boolean转换为字符串 {@code 'true'} 或者 {@code 'false'}.
+     *
+     * <pre>
+     *   BooleanUtil.toStringTrueFalse(true)   = "true"
+     *   BooleanUtil.toStringTrueFalse(false)  = "false"
+     * </pre>
+     *
+     * @param bool Boolean值
+     * @return {@code 'true'}, {@code 'false'}
+     */
+    public static String toStringTrueFalse(boolean bool) {
+        return toString(bool, "true", "false");
     }
 
     /**

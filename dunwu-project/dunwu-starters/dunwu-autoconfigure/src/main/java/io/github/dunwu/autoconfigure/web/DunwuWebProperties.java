@@ -18,6 +18,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DunwuWebProperties {
 
     /**
+     * web 安全配置
+     */
+    private final Security security = new Security();
+
+    /**
      * Dunwu Web 扩展配置开启
      */
     private boolean enabled = true;
@@ -36,11 +41,6 @@ public class DunwuWebProperties {
      * http 数据自动格式化开关
      */
     private boolean formatEnabled = true;
-
-    /**
-     * web 安全配置
-     */
-    private final Security security = new Security();
 
     @Data
     @ToString

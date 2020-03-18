@@ -17,17 +17,11 @@ import javax.imageio.ImageIO;
  */
 public class ImageUtils {
 
-    public static byte[] toBytes(BufferedImage image, String format) throws IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image, format, os);
-        byte[] bytes = os.toByteArray();
+    public static void outputStreamToBytes(OutputStream os, byte[] bytes)
+        throws IOException {
+        os.write(bytes);
         os.flush();
         os.close();
-        return bytes;
-    }
-
-    public static InputStream toInputStream(byte[] bytes) {
-        return new ByteArrayInputStream(bytes);
     }
 
     public static BufferedImage toBufferedImage(byte[] bytes) throws IOException {
@@ -37,11 +31,13 @@ public class ImageUtils {
         return image;
     }
 
-    public static void outputStreamToBytes(OutputStream os, byte[] bytes)
-        throws IOException {
-        os.write(bytes);
+    public static byte[] toBytes(BufferedImage image, String format) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(image, format, os);
+        byte[] bytes = os.toByteArray();
         os.flush();
         os.close();
+        return bytes;
     }
 
     public static void toFile(String input, String output, ImageProperties params)
@@ -147,6 +143,10 @@ public class ImageUtils {
         Thumbnails.Builder builder = Thumbnails.fromFiles(input);
         fillBuilderWithParams(builder, params);
         builder.toFiles(output);
+    }
+
+    public static InputStream toInputStream(byte[] bytes) {
+        return new ByteArrayInputStream(bytes);
     }
 
     public static void toOutputStream(String input, OutputStream output,

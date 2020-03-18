@@ -24,8 +24,8 @@ import javax.validation.constraints.NotNull;
 public final class Utils {
 
     /**
-     * A {@link DateTimeFormatter} like {@link DateTimeFormatter#ISO_INSTANT} with
-     * the exception that it always appends exactly three fractional digits (nano seconds).
+     * A {@link DateTimeFormatter} like {@link DateTimeFormatter#ISO_INSTANT} with the exception that it always appends
+     * exactly three fractional digits (nano seconds).
      * <p>
      * This is required in order to guarantee natural sorting, which enables us to use
      * <code>&lt;=</code> comparision in queries.
@@ -37,9 +37,8 @@ public final class Utils {
      * 2018-12-07T12:30:37.820Z
      * </pre>
      * <p>
-     * When using variable fractional digit count as done in {@link DateTimeFormatter#ISO_INSTANT ISO_INSTANT}
-     * and {@link DateTimeFormatter#ISO_OFFSET_DATE_TIME ISO_OFFSET_DATE_TIME} the following sorting
-     * occurs:
+     * When using variable fractional digit count as done in {@link DateTimeFormatter#ISO_INSTANT ISO_INSTANT} and
+     * {@link DateTimeFormatter#ISO_OFFSET_DATE_TIME ISO_OFFSET_DATE_TIME} the following sorting occurs:
      *
      * <pre>
      * 2018-12-07T12:30:37.819Z

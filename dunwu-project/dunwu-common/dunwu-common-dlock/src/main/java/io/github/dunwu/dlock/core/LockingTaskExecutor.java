@@ -59,6 +59,14 @@ public interface LockingTaskExecutor {
             this.result = result;
         }
 
+        static <T> TaskResult<T> result(@Nullable T result) {
+            return new TaskResult<>(true, result);
+        }
+
+        static <T> TaskResult<T> notExecuted() {
+            return new TaskResult<>(false, null);
+        }
+
         public boolean wasExecuted() {
             return executed;
         }
@@ -66,14 +74,6 @@ public interface LockingTaskExecutor {
         @Nullable
         public T getResult() {
             return result;
-        }
-
-        static <T> TaskResult<T> result(@Nullable T result) {
-            return new TaskResult<>(true, result);
-        }
-
-        static <T> TaskResult<T> notExecuted() {
-            return new TaskResult<>(false, null);
         }
 
     }

@@ -12,8 +12,8 @@
  */
 package io.github.dunwu.dlock.provider;
 
-import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.AbstractStorageAccessor;
+import io.github.dunwu.dlock.core.LockConfiguration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -125,6 +125,21 @@ class JdbcTemplateStorageAccessor extends AbstractStorageAccessor {
     }
 
     @Override
+    public void unlock(@NotNull LockConfiguration lockConfiguration) {
+        String sql = "UPDATE " + tableName() + " SET " + lockUntil() + " = ? WHERE " + name() + " = ?";
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+
+                jdbcTemplate.update(sql, statement -> {
+                    setTimestamp(statement, 1, lockConfiguration.getUnlockTime());
+                    statement.setString(2, lockConfiguration.getName());
+                });
+            }
+        });
+    }
+
+    @Override
     public boolean extend(@NotNull LockConfiguration lockConfiguration) {
         String sql = "UPDATE "
             + tableName()
@@ -158,21 +173,6 @@ class JdbcTemplateStorageAccessor extends AbstractStorageAccessor {
         } else {
             preparedStatement.setTimestamp(parameterIndex, Timestamp.from(time), Calendar.getInstance(timeZone));
         }
-    }
-
-    @Override
-    public void unlock(@NotNull LockConfiguration lockConfiguration) {
-        String sql = "UPDATE " + tableName() + " SET " + lockUntil() + " = ? WHERE " + name() + " = ?";
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-
-                jdbcTemplate.update(sql, statement -> {
-                    setTimestamp(statement, 1, lockConfiguration.getUnlockTime());
-                    statement.setString(2, lockConfiguration.getName());
-                });
-            }
-        });
     }
 
     private String name() {

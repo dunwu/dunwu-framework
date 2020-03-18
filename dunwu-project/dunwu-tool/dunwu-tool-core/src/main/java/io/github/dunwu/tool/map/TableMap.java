@@ -68,7 +68,9 @@ public class TableMap<K, V> implements Map<K, V>, Serializable {
             throw new UnsupportedOperationException("setValue not supported.");
         }
 
-    }    @Override
+    }
+
+    @Override
     public int size() {
         return keys.size();
     }
@@ -151,7 +153,5 @@ public class TableMap<K, V> implements Map<K, V>, Serializable {
         }
         return hashSet;
     }
-
-
 
 }

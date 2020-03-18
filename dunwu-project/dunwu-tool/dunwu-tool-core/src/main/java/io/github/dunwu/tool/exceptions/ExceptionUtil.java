@@ -37,6 +37,42 @@ public class ExceptionUtil {
     }
 
     /**
+     * 转化指定异常为来自或者包含指定异常
+     *
+     * @param <T>            异常类型
+     * @param throwable      异常
+     * @param exceptionClass 定义的引起异常的类
+     * @param checkCause     判断cause
+     * @return 结果为null 不是来自或者包含
+     * @since 4.4.1
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T convertFromOrSuppressedThrowable(Throwable throwable, Class<T> exceptionClass,
+        boolean checkCause) {
+        if (throwable == null || exceptionClass == null) {
+            return null;
+        }
+        if (exceptionClass.isAssignableFrom(throwable.getClass())) {
+            return (T) throwable;
+        }
+        if (checkCause) {
+            Throwable cause = throwable.getCause();
+            if (cause != null && exceptionClass.isAssignableFrom(cause.getClass())) {
+                return (T) cause;
+            }
+        }
+        Throwable[] throwables = throwable.getSuppressed();
+        if (ArrayUtil.isNotEmpty(throwables)) {
+            for (Throwable throwable1 : throwables) {
+                if (exceptionClass.isAssignableFrom(throwable1.getClass())) {
+                    return (T) throwable1;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取异常链中最尾端的异常的消息，消息格式为：{SimpleClassName}: {ThrowableMessage}
      *
      * @param th 异常
@@ -108,6 +144,16 @@ public class ExceptionUtil {
     }
 
     /**
+     * 获取当前栈信息
+     *
+     * @return 当前栈信息
+     */
+    public static StackTraceElement[] getStackElements() {
+        // return (new Throwable()).getStackTrace();
+        return Thread.currentThread().getStackTrace();
+    }
+
+    /**
      * 获得消息，调用异常类的getMessage方法
      *
      * @param e 异常
@@ -126,16 +172,6 @@ public class ExceptionUtil {
      */
     public static StackTraceElement getStackElement(int i) {
         return getStackElements()[i];
-    }
-
-    /**
-     * 获取当前栈信息
-     *
-     * @return 当前栈信息
-     */
-    public static StackTraceElement[] getStackElements() {
-        // return (new Throwable()).getStackTrace();
-        return Thread.currentThread().getStackTrace();
     }
 
     /**
@@ -183,42 +219,6 @@ public class ExceptionUtil {
      */
     public static boolean isFromOrSuppressedThrowable(Throwable throwable, Class<? extends Throwable> exceptionClass) {
         return convertFromOrSuppressedThrowable(throwable, exceptionClass, true) != null;
-    }
-
-    /**
-     * 转化指定异常为来自或者包含指定异常
-     *
-     * @param <T>            异常类型
-     * @param throwable      异常
-     * @param exceptionClass 定义的引起异常的类
-     * @param checkCause     判断cause
-     * @return 结果为null 不是来自或者包含
-     * @since 4.4.1
-     */
-    @SuppressWarnings("unchecked")
-    public static <T extends Throwable> T convertFromOrSuppressedThrowable(Throwable throwable, Class<T> exceptionClass,
-        boolean checkCause) {
-        if (throwable == null || exceptionClass == null) {
-            return null;
-        }
-        if (exceptionClass.isAssignableFrom(throwable.getClass())) {
-            return (T) throwable;
-        }
-        if (checkCause) {
-            Throwable cause = throwable.getCause();
-            if (cause != null && exceptionClass.isAssignableFrom(cause.getClass())) {
-                return (T) cause;
-            }
-        }
-        Throwable[] throwables = throwable.getSuppressed();
-        if (ArrayUtil.isNotEmpty(throwables)) {
-            for (Throwable throwable1 : throwables) {
-                if (exceptionClass.isAssignableFrom(throwable1.getClass())) {
-                    return (T) throwable1;
-                }
-            }
-        }
-        return null;
     }
 
     /**

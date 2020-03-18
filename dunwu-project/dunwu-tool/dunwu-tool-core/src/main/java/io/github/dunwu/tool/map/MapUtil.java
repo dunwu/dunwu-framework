@@ -237,6 +237,20 @@ public class MapUtil {
     }
 
     /**
+     * 获取Map指定key的值，并转换为指定类型
+     *
+     * @param <T>  目标值类型
+     * @param map  Map
+     * @param key  键
+     * @param type 值类型
+     * @return 值
+     * @since 4.0.6
+     */
+    public static <T> T get(Map<?, ?> map, Object key, Class<T> type) {
+        return null == map ? null : Convert.convert(type, map.get(key));
+    }
+
+    /**
      * 获取Map指定key的值，并转换为Character
      *
      * @param map Map
@@ -247,6 +261,8 @@ public class MapUtil {
     public static Character getChar(Map<?, ?> map, Object key) {
         return get(map, key, Character.class);
     }
+
+    // ----------------------------------------------------------------------------------------------- value of
 
     /**
      * 获取Map指定key的值，并转换为{@link Date}
@@ -259,8 +275,6 @@ public class MapUtil {
     public static Date getDate(Map<?, ?> map, Object key) {
         return get(map, key, Date.class);
     }
-
-    // ----------------------------------------------------------------------------------------------- value of
 
     /**
      * 获取Map指定key的值，并转换为Double
@@ -332,20 +346,6 @@ public class MapUtil {
      */
     public static String getStr(Map<?, ?> map, Object key) {
         return get(map, key, String.class);
-    }
-
-    /**
-     * 获取Map指定key的值，并转换为指定类型
-     *
-     * @param <T>  目标值类型
-     * @param map  Map
-     * @param key  键
-     * @param type 值类型
-     * @return 值
-     * @since 4.0.6
-     */
-    public static <T> T get(Map<?, ?> map, Object key, Class<T> type) {
-        return null == map ? null : Convert.convert(type, map.get(key));
     }
 
     // ----------------------------------------------------------------------------------------------- join

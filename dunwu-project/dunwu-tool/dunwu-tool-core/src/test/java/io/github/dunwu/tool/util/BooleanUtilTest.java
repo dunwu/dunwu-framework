@@ -30,4 +30,5 @@ public class BooleanUtilTest {
         Assertions.assertFalse(BooleanUtil.negate(true));
         Assertions.assertTrue(BooleanUtil.negate(false));
     }
+
 }

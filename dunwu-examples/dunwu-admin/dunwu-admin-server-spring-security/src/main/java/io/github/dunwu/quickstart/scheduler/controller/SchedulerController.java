@@ -195,7 +195,7 @@ public class SchedulerController {
     @GetMapping("/getJobBeans")
     @ApiOperation(value = "获取所有 Service 类")
     public DataListResult<BeanDTO> getJobBeans() {
-        return ResultUtils.successDataListResult(service.getJobHandlers());
+        return DataListResult.success(service.getJobHandlers());
     }
 
 }

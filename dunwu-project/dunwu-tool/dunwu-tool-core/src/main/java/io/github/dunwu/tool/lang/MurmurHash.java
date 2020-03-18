@@ -190,6 +190,15 @@ public class MurmurHash implements Serializable {
         return new long[] { h1, h2 };
     }
 
+    private static long fmix64(long h) {
+        h ^= (h >>> 33);
+        h *= 0xff51afd7ed558ccdL;
+        h ^= (h >>> 33);
+        h *= 0xc4ceb9fe1a85ec53L;
+        h ^= (h >>> 33);
+        return h;
+    }
+
     /**
      * Murmur3 32-bit Hash值计算
      *
@@ -348,15 +357,6 @@ public class MurmurHash implements Serializable {
         hash = fmix64(hash);
 
         return hash;
-    }
-
-    private static long fmix64(long h) {
-        h ^= (h >>> 33);
-        h *= 0xff51afd7ed558ccdL;
-        h ^= (h >>> 33);
-        h *= 0xc4ceb9fe1a85ec53L;
-        h ^= (h >>> 33);
-        return h;
     }
 
 }

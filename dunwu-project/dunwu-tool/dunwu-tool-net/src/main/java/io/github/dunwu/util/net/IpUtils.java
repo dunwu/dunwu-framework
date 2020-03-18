@@ -63,90 +63,6 @@ public class IpUtils {
     // -------------------------------------------------------------------------------------------------
 
     /**
-     * 判断传入的字符串是否为有效 ip 地址（ipv4/ipv6都支持）
-     *
-     * @param ipStr ip 地址
-     * @return true / false
-     */
-    public static boolean isValidIp(final String ipStr) {
-        return ValidatorUtil.isIpv4(ipStr) || ValidatorUtil.isIpv6(ipStr);
-    }
-
-    /**
-     * 判断传入的字符串是否为有效 ipv6 地址
-     *
-     * @param ipv6Str ipv6 地址
-     * @return true / false
-     */
-    public static boolean isValidIpv6(final String ipv6Str) {
-        return ValidatorUtil.isIpv6(ipv6Str);
-    }
-
-    // Inet4Address
-    // -------------------------------------------------------------------------------------------------
-
-    /**
-     * Ipv4 String 转换为 byte[]，失败则返回 null
-     */
-    public static byte[] ipv4StrToBytes(final String ipv4Str) {
-        if (StringUtil.isBlank(ipv4Str)) {
-            return null;
-        }
-
-        List<String> list = StringUtil.split(ipv4Str, '.', 4);
-        if (list == null || list.size() != 4) {
-            return null;
-        }
-
-        byte[] bytes = new byte[4];
-        for (int i = 0; i < 4; i++) {
-            int value = Integer.parseInt(list.get(i));
-            if (value > 255) {
-                return null;
-            }
-            bytes[i] = (byte) value;
-        }
-        return bytes;
-    }
-
-    /**
-     * 从 InetAddress 转换为 String（可以是 ipv4 或 ipv6）。
-     */
-    public static String getStrFromInetAddress(final InetAddress address) {
-        return address.getHostAddress();
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    /**
-     * Ipv4 String 转换到 long
-     */
-    public static long ipv4StrToLong(final String ipv4Str) {
-        return ipv4StrToInt(ipv4Str);
-    }
-
-    /**
-     * Ipv4 String 转换到 int
-     */
-    public static int ipv4StrToInt(final String ipv4Str) {
-        byte[] bytes = ipv4StrToBytes(ipv4Str);
-        if (ArrayUtil.isEmpty(bytes)) {
-            return 0;
-        } else {
-            return Convert.bytesToInt(bytes);
-        }
-    }
-
-    /**
-     * int转换到IPV4 String, from Netty NetUtil
-     */
-    public static String intToIpv4Str(final int i) {
-        return new StringBuilder(15).append((i >> 24) & 0xff).append('.')
-            .append(i >> 16 & 0xff).append('.').append((i >> 8) & 0xff).append('.')
-            .append(i & 0xff).toString();
-    }
-
-    /**
      * 返回 IP 地址所属地的编码（返回能得到的最小行政单位）
      *
      * @param ip IP 地址
@@ -183,9 +99,6 @@ public class IpUtils {
             return null;
         }
     }
-
-    // getRegion
-    // -------------------------------------------------------------------------------------------------
 
     /**
      * 返回 IP 地址所属地（返回能得到的所有级别行政单位）
@@ -233,6 +146,9 @@ public class IpUtils {
 
         return toStandardRegionNames(regions);
     }
+
+    // Inet4Address
+    // -------------------------------------------------------------------------------------------------
 
     /**
      * 判断传入的字符串是否为有效 ipv4 地址
@@ -311,9 +227,47 @@ public class IpUtils {
         }
     }
 
+    // -------------------------------------------------------------------------------------------------
+
     public static String[] getDeduplicateArray(final String[] array) {
         Set<String> set = new TreeSet<>(Arrays.asList(array));
         return set.toArray(new String[0]);
+    }
+
+    /**
+     * Ipv4 String 转换到 int
+     */
+    public static int ipv4StrToInt(final String ipv4Str) {
+        byte[] bytes = ipv4StrToBytes(ipv4Str);
+        if (ArrayUtil.isEmpty(bytes)) {
+            return 0;
+        } else {
+            return Convert.bytesToInt(bytes);
+        }
+    }
+
+    /**
+     * Ipv4 String 转换为 byte[]，失败则返回 null
+     */
+    public static byte[] ipv4StrToBytes(final String ipv4Str) {
+        if (StringUtil.isBlank(ipv4Str)) {
+            return null;
+        }
+
+        List<String> list = StringUtil.split(ipv4Str, '.', 4);
+        if (list == null || list.size() != 4) {
+            return null;
+        }
+
+        byte[] bytes = new byte[4];
+        for (int i = 0; i < 4; i++) {
+            int value = Integer.parseInt(list.get(i));
+            if (value > 255) {
+                return null;
+            }
+            bytes[i] = (byte) value;
+        }
+        return bytes;
     }
 
     /**
@@ -337,6 +291,32 @@ public class IpUtils {
         return null;
     }
 
+    // getRegion
+    // -------------------------------------------------------------------------------------------------
+
+    /**
+     * 从 InetAddress 转换为 String（可以是 ipv4 或 ipv6）。
+     */
+    public static String getStrFromInetAddress(final InetAddress address) {
+        return address.getHostAddress();
+    }
+
+    /**
+     * int转换到IPV4 String, from Netty NetUtil
+     */
+    public static String intToIpv4Str(final int i) {
+        return new StringBuilder(15).append((i >> 24) & 0xff).append('.')
+            .append(i >> 16 & 0xff).append('.').append((i >> 8) & 0xff).append('.')
+            .append(i & 0xff).toString();
+    }
+
+    /**
+     * Ipv4 String 转换到 long
+     */
+    public static long ipv4StrToLong(final String ipv4Str) {
+        return ipv4StrToInt(ipv4Str);
+    }
+
     public static String ipv4ToIpv6(final String ipv4Str) throws UnknownHostException {
         if (!isValidIpv4(ipv4Str)) {
             throw new IllegalArgumentException(ipv4Str + " is invalid ipv4 address");
@@ -354,6 +334,26 @@ public class IpUtils {
         ipv6Bytes[15] = ipv4Bytes[3];
         InetAddress address = Inet6Address.getByAddress(ipv6Bytes);
         return address.getHostAddress();
+    }
+
+    /**
+     * 判断传入的字符串是否为有效 ip 地址（ipv4/ipv6都支持）
+     *
+     * @param ipStr ip 地址
+     * @return true / false
+     */
+    public static boolean isValidIp(final String ipStr) {
+        return ValidatorUtil.isIpv4(ipStr) || ValidatorUtil.isIpv6(ipStr);
+    }
+
+    /**
+     * 判断传入的字符串是否为有效 ipv6 地址
+     *
+     * @param ipv6Str ipv6 地址
+     * @return true / false
+     */
+    public static boolean isValidIpv6(final String ipv6Str) {
+        return ValidatorUtil.isIpv6(ipv6Str);
     }
 
     private static void loadData() {

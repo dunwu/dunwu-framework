@@ -73,17 +73,30 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
 
     private static final Strategy DAY_OF_WEEK_IN_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_WEEK_IN_MONTH);
 
-    private static final Strategy HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY);    @Override
-    public Object parseObject(final String source) throws ParseException {
-        return parse(source);
-    }
+    private static final Strategy HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY);
 
     private static final Strategy HOUR24_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY) {
         @Override
         int modify(final FastDateParser parser, final int iValue) {
             return iValue == 24 ? 0 : iValue;
         }
+    };
+
+    private static final Strategy HOUR12_STRATEGY = new NumberStrategy(Calendar.HOUR) {
+        @Override
+        int modify(final FastDateParser parser, final int iValue) {
+            return iValue == 12 ? 0 : iValue;
+        }
     };    @Override
+    public Object parseObject(final String source) throws ParseException {
+        return parse(source);
+    }
+
+    private static final Strategy HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR);
+
+    private static final Strategy MINUTE_STRATEGY = new NumberStrategy(Calendar.MINUTE);
+
+    private static final Strategy SECOND_STRATEGY = new NumberStrategy(Calendar.SECOND);    @Override
     public Date parse(final String source) throws ParseException {
         final ParsePosition pp = new ParsePosition(0);
         final Date date = parse(source, pp);
@@ -101,43 +114,6 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
         return date;
     }
 
-    private static final Strategy HOUR12_STRATEGY = new NumberStrategy(Calendar.HOUR) {
-        @Override
-        int modify(final FastDateParser parser, final int iValue) {
-            return iValue == 12 ? 0 : iValue;
-        }
-    };    @Override
-    public Object parseObject(final String source, final ParsePosition pos) {
-        return parse(source, pos);
-    }
-
-    private static final Strategy HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR);    @Override
-    public Date parse(final String source, final ParsePosition pos) {
-        // timing tests indicate getting new instance is 19% faster than cloning
-        final Calendar cal = Calendar.getInstance(timeZone, locale);
-        cal.clear();
-
-        return parse(source, pos, cal) ? cal.getTime() : null;
-    }
-
-    private static final Strategy MINUTE_STRATEGY = new NumberStrategy(Calendar.MINUTE);    @Override
-    public boolean parse(final String source, final ParsePosition pos, final Calendar calendar) {
-        final ListIterator<StrategyAndWidth> lt = patterns.listIterator();
-        while (lt.hasNext()) {
-            final StrategyAndWidth strategyAndWidth = lt.next();
-            final int maxWidth = strategyAndWidth.getMaxWidth(lt);
-            if (!strategyAndWidth.strategy.parse(this, calendar, source, pos, maxWidth)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Support for strategies
-    // -----------------------------------------------------------------------
-
-    private static final Strategy SECOND_STRATEGY = new NumberStrategy(Calendar.SECOND);
-
     private static final Strategy MILLISECOND_STRATEGY = new NumberStrategy(Calendar.MILLISECOND);
 
     /**
@@ -145,7 +121,10 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
      */
     private final int century;
 
-    private final int startYear;
+    private final int startYear;    @Override
+    public Object parseObject(final String source, final ParsePosition pos) {
+        return parse(source, pos);
+    }
 
     // derived fields
     private transient List<StrategyAndWidth> patterns;
@@ -196,6 +175,13 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
         startYear = centuryStartYear - century;
 
         init(definingCalendar);
+    }    @Override
+    public Date parse(final String source, final ParsePosition pos) {
+        // timing tests indicate getting new instance is 19% faster than cloning
+        final Calendar cal = Calendar.getInstance(timeZone, locale);
+        cal.clear();
+
+        return parse(source, pos, cal) ? cal.getTime() : null;
     }
 
     /**
@@ -246,7 +232,21 @@ class FastDateParser extends AbstractDateBasic implements DateParser {
             simpleQuote(regex, symbol).append('|');
         }
         return values;
+    }    @Override
+    public boolean parse(final String source, final ParsePosition pos, final Calendar calendar) {
+        final ListIterator<StrategyAndWidth> lt = patterns.listIterator();
+        while (lt.hasNext()) {
+            final StrategyAndWidth strategyAndWidth = lt.next();
+            final int maxWidth = strategyAndWidth.getMaxWidth(lt);
+            if (!strategyAndWidth.strategy.parse(this, calendar, source, pos, maxWidth)) {
+                return false;
+            }
+        }
+        return true;
     }
+
+    // Support for strategies
+    // -----------------------------------------------------------------------
 
     private static StringBuilder simpleQuote(final StringBuilder sb, final String value) {
         for (int i = 0; i < value.length(); ++i) {

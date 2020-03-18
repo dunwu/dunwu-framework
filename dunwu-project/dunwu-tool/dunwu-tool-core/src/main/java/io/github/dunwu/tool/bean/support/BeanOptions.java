@@ -82,19 +82,6 @@ public class BeanOptions implements Serializable {
      *
      * @return 拷贝选项
      */
-    public static BeanOptions defaultBeanOptions() {
-        BeanOptions beanOptions = new BeanOptions();
-        beanOptions.setIgnoreCase(true)
-            .setIgnoreError(true)
-            .setIgnoreNullValue(true);
-        return beanOptions;
-    }
-
-    /**
-     * 创建拷贝选项
-     *
-     * @return 拷贝选项
-     */
     public static BeanOptions create() {
         return new BeanOptions();
     }
@@ -109,6 +96,19 @@ public class BeanOptions implements Serializable {
      */
     public static BeanOptions create(Class<?> editable, boolean ignoreNullValue, String... ignoreProperties) {
         return new BeanOptions(editable, ignoreNullValue, ignoreProperties);
+    }
+
+    /**
+     * 创建拷贝选项
+     *
+     * @return 拷贝选项
+     */
+    public static BeanOptions defaultBeanOptions() {
+        BeanOptions beanOptions = new BeanOptions();
+        beanOptions.setIgnoreCase(true)
+            .setIgnoreError(true)
+            .setIgnoreNullValue(true);
+        return beanOptions;
     }
 
     /**

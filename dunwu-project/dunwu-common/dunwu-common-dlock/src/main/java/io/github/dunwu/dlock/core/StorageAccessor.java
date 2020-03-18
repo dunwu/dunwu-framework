@@ -12,8 +12,6 @@
  */
 package io.github.dunwu.dlock.core;
 
-import io.github.dunwu.dlock.core.LockConfiguration;
-
 import javax.validation.constraints.NotNull;
 
 public interface StorageAccessor {

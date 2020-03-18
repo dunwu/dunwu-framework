@@ -70,23 +70,6 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-    private void sendSimpleMessage(MailDTO mailDTO) {
-        SimpleMailMessage simpleMailMessage = BeanUtil.toBean(mailDTO,
-            SimpleMailMessage.class);
-        if (StringUtils.isBlank(mailDTO.getFrom())) {
-            simpleMailMessage.setFrom(mailProperties.getFrom());
-        }
-
-        try {
-            javaMailSender.send(simpleMailMessage);
-            if (log.isDebugEnabled()) {
-                log.debug("发送 SIMPLE 邮件成功");
-            }
-        } catch (MailException e) {
-            log.error("发送 SIMPLE 邮件失败", e);
-        }
-    }
-
     private MimeMessage fillMimeMessage(MailDTO mailDTO) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true,
@@ -109,6 +92,23 @@ public class MailServiceImpl implements MailService {
         }
 
         return mimeMessage;
+    }
+
+    private void sendSimpleMessage(MailDTO mailDTO) {
+        SimpleMailMessage simpleMailMessage = BeanUtil.toBean(mailDTO,
+            SimpleMailMessage.class);
+        if (StringUtils.isBlank(mailDTO.getFrom())) {
+            simpleMailMessage.setFrom(mailProperties.getFrom());
+        }
+
+        try {
+            javaMailSender.send(simpleMailMessage);
+            if (log.isDebugEnabled()) {
+                log.debug("发送 SIMPLE 邮件成功");
+            }
+        } catch (MailException e) {
+            log.error("发送 SIMPLE 邮件失败", e);
+        }
     }
 
     @Override

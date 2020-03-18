@@ -12,12 +12,7 @@
  */
 package io.github.dunwu.dlock.provider;
 
-import io.github.dunwu.dlock.core.AbstractDistributedLock;
-import io.github.dunwu.dlock.core.LockConfiguration;
-import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.core.DistributedLock;
-import io.github.dunwu.dlock.core.LockException;
-import io.github.dunwu.dlock.core.Utils;
+import io.github.dunwu.dlock.core.*;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.utils.PathUtils;
 import org.apache.zookeeper.CreateMode;
@@ -41,11 +36,11 @@ public class ZookeeperLockProvider implements LockProvider {
 
     public static final String DEFAULT_PATH = "/dunwulock";
 
+    private static final Logger logger = LoggerFactory.getLogger(ZookeeperLockProvider.class);
+
     private final String path;
 
     private final CuratorFramework client;
-
-    private static final Logger logger = LoggerFactory.getLogger(ZookeeperLockProvider.class);
 
     public ZookeeperLockProvider(@NotNull CuratorFramework client) {
         this(client, DEFAULT_PATH);
@@ -95,6 +90,10 @@ public class ZookeeperLockProvider implements LockProvider {
         }
     }
 
+    private static byte[] serialize(Instant date) {
+        return Utils.toIsoString(date).getBytes();
+    }
+
     private boolean createNode(LockConfiguration lockConfiguration, String nodePath) {
         try {
             client.create()
@@ -107,11 +106,6 @@ public class ZookeeperLockProvider implements LockProvider {
         } catch (Exception e) {
             throw new LockException("Can not create node", e);
         }
-    }
-
-    boolean isLocked(String nodePath) throws Exception {
-        byte[] data = client.getData().forPath(nodePath);
-        return isLocked(data);
     }
 
     private boolean isLocked(byte[] data) {
@@ -129,16 +123,17 @@ public class ZookeeperLockProvider implements LockProvider {
         }
     }
 
-    private static byte[] serialize(Instant date) {
-        return Utils.toIsoString(date).getBytes();
-    }
-
     private static Instant parse(byte[] data) {
         return Instant.parse(new String(data));
     }
 
     String getNodePath(String lockName) {
         return path + "/" + lockName;
+    }
+
+    boolean isLocked(String nodePath) throws Exception {
+        byte[] data = client.getData().forPath(nodePath);
+        return isLocked(data);
     }
 
     private static final class CuratorLock extends AbstractDistributedLock {

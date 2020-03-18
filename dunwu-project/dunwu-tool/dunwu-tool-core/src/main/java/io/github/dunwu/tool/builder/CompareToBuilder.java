@@ -83,8 +83,8 @@ public class CompareToBuilder implements Builder<Integer> {
      *
      * @param lhs 第一个对象
      * @param rhs 第二个对象
-     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater
-     * r than <code>rhs</code>
+     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater r
+     * than <code>rhs</code>
      * @throws NullPointerException if either (but not both) parameters are
      *                              <code>null</code>
      * @throws ClassCastException   if <code>rhs</code> is not assignment-compatible with <code>lhs</code>
@@ -114,8 +114,8 @@ public class CompareToBuilder implements Builder<Integer> {
      * @param lhs               left-hand object
      * @param rhs               right-hand object
      * @param compareTransients whether to compare transient fields
-     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater
-     * r than <code>rhs</code>
+     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater r
+     * than <code>rhs</code>
      * @throws NullPointerException if either <code>lhs</code> or <code>rhs</code> (but not both) is <code>null</code>
      * @throws ClassCastException   if <code>rhs</code> is not assignment-compatible with <code>lhs</code>
      */
@@ -144,8 +144,8 @@ public class CompareToBuilder implements Builder<Integer> {
      * @param lhs           left-hand object
      * @param rhs           right-hand object
      * @param excludeFields Collection of String fields to exclude
-     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater
-     * r than <code>rhs</code>
+     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater r
+     * than <code>rhs</code>
      * @throws NullPointerException if either <code>lhs</code> or <code>rhs</code> (but not both) is <code>null</code>
      * @throws ClassCastException   if <code>rhs</code> is not assignment-compatible with <code>lhs</code>
      * @since 2.2
@@ -175,8 +175,8 @@ public class CompareToBuilder implements Builder<Integer> {
      * @param lhs           left-hand object
      * @param rhs           right-hand object
      * @param excludeFields array of fields to exclude
-     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater
-     * r than <code>rhs</code>
+     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater r
+     * than <code>rhs</code>
      * @throws NullPointerException if either <code>lhs</code> or <code>rhs</code> (but not both) is <code>null</code>
      * @throws ClassCastException   if <code>rhs</code> is not assignment-compatible with <code>lhs</code>
      * @since 2.2
@@ -209,8 +209,8 @@ public class CompareToBuilder implements Builder<Integer> {
      * @param compareTransients whether to compare transient fields
      * @param reflectUpToClass  last superclass for which fields are compared
      * @param excludeFields     fields to exclude
-     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater
-     * r than <code>rhs</code>
+     * @return a negative integer, zero, or a positive integer as <code>lhs</code> is less than, equal to, or greater r
+     * than <code>rhs</code>
      * @throws NullPointerException if either <code>lhs</code> or <code>rhs</code> (but not both) is <code>null</code>
      * @throws ClassCastException   if <code>rhs</code> is not assignment-compatible with <code>lhs</code>
      * @since 2.2 (2.0 as <code>reflectionCompare(Object, Object, boolean, Class)</code>)

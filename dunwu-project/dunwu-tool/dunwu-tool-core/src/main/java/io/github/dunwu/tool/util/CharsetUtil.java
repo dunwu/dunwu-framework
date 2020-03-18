@@ -118,6 +118,15 @@ public class CharsetUtil {
     }
 
     /**
+     * 系统默认字符集编码
+     *
+     * @return 系统字符集编码
+     */
+    public static Charset defaultCharset() {
+        return Charset.defaultCharset();
+    }
+
+    /**
      * 系统字符集编码，如果是Windows，则默认为GBK编码，否则取 {@link CharsetUtil#defaultCharsetName()}
      *
      * @return 系统字符集编码
@@ -137,15 +146,6 @@ public class CharsetUtil {
      */
     public static Charset systemCharset() {
         return FileUtil.isWindows() ? CHARSET_GBK : defaultCharset();
-    }
-
-    /**
-     * 系统默认字符集编码
-     *
-     * @return 系统字符集编码
-     */
-    public static Charset defaultCharset() {
-        return Charset.defaultCharset();
     }
 
 }

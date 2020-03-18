@@ -1,6 +1,5 @@
 package io.github.dunwu.tool.bean.support;
 
-import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.convert.Convert;
 import io.github.dunwu.tool.map.CaseInsensitiveMap;
 import io.github.dunwu.tool.util.StringUtil;

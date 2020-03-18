@@ -152,17 +152,6 @@ public class IdcardUtil {
     }
 
     /**
-     * 从身份证号码中获取生日日期，只支持15或18位身份证号码
-     *
-     * @param idCard 身份证号码
-     * @return 日期
-     */
-    public static DateTime getBirthDate(String idCard) {
-        final String birthByIdCard = getBirthByIdCard(idCard);
-        return null == birthByIdCard ? null : DateUtil.parse(birthByIdCard, DatePattern.PURE_DATE_FORMAT);
-    }
-
-    /**
      * 根据身份编号获取生日，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
@@ -221,6 +210,79 @@ public class IdcardUtil {
             return null;
         }
         return idCard18.toString();
+    }
+
+    /**
+     * 获得18位身份证校验码
+     *
+     * @param code17 18位身份证号中的前17位
+     * @return 第18位
+     */
+    private static char getCheckCode18(String code17) {
+        int sum = getPowerSum(code17.toCharArray());
+        return getCheckCode18(sum);
+    }
+
+    /**
+     * 将power和值与11取模获得余数进行校验码判断
+     *
+     * @param iSum 加权和
+     * @return 校验位
+     */
+    private static char getCheckCode18(int iSum) {
+        switch (iSum % 11) {
+            case 10:
+                return '2';
+            case 9:
+                return '3';
+            case 8:
+                return '4';
+            case 7:
+                return '5';
+            case 6:
+                return '6';
+            case 5:
+                return '7';
+            case 4:
+                return '8';
+            case 3:
+                return '9';
+            case 2:
+                return 'x';
+            case 1:
+                return '0';
+            case 0:
+                return '1';
+            default:
+                return CharUtil.SPACE;
+        }
+    }
+
+    /**
+     * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
+     *
+     * @param iArr 身份证号码的数组
+     * @return 身份证编码
+     */
+    private static int getPowerSum(char[] iArr) {
+        int iSum = 0;
+        if (power.length == iArr.length) {
+            for (int i = 0; i < iArr.length; i++) {
+                iSum += Integer.parseInt(String.valueOf(iArr[i])) * power[i];
+            }
+        }
+        return iSum;
+    }
+
+    /**
+     * 从身份证号码中获取生日日期，只支持15或18位身份证号码
+     *
+     * @param idCard 身份证号码
+     * @return 日期
+     */
+    public static DateTime getBirthDate(String idCard) {
+        final String birthByIdCard = getBirthByIdCard(idCard);
+        return null == birthByIdCard ? null : DateUtil.parse(birthByIdCard, DatePattern.PURE_DATE_FORMAT);
     }
 
     /**
@@ -394,68 +456,6 @@ public class IdcardUtil {
             return val == code18;
         }
         return false;
-    }
-
-    /**
-     * 获得18位身份证校验码
-     *
-     * @param code17 18位身份证号中的前17位
-     * @return 第18位
-     */
-    private static char getCheckCode18(String code17) {
-        int sum = getPowerSum(code17.toCharArray());
-        return getCheckCode18(sum);
-    }
-
-    /**
-     * 将power和值与11取模获得余数进行校验码判断
-     *
-     * @param iSum 加权和
-     * @return 校验位
-     */
-    private static char getCheckCode18(int iSum) {
-        switch (iSum % 11) {
-            case 10:
-                return '2';
-            case 9:
-                return '3';
-            case 8:
-                return '4';
-            case 7:
-                return '5';
-            case 6:
-                return '6';
-            case 5:
-                return '7';
-            case 4:
-                return '8';
-            case 3:
-                return '9';
-            case 2:
-                return 'x';
-            case 1:
-                return '0';
-            case 0:
-                return '1';
-            default:
-                return CharUtil.SPACE;
-        }
-    }
-
-    /**
-     * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
-     *
-     * @param iArr 身份证号码的数组
-     * @return 身份证编码
-     */
-    private static int getPowerSum(char[] iArr) {
-        int iSum = 0;
-        if (power.length == iArr.length) {
-            for (int i = 0; i < iArr.length; i++) {
-                iSum += Integer.parseInt(String.valueOf(iArr[i])) * power[i];
-            }
-        }
-        return iSum;
     }
 
     /**

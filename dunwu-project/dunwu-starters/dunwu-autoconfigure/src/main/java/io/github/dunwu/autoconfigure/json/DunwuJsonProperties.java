@@ -14,9 +14,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "dunwu.json")
 public class DunwuJsonProperties {
 
+    private final Jackson jackson = new Jackson();
+
     private Type type = Type.Jackson;
 
-    private final Jackson jackson = new Jackson();
+    enum Type {
+        Jackson,
+        Fastjon
+    }
 
     @Data
     public static class Jackson {
@@ -33,11 +38,6 @@ public class DunwuJsonProperties {
          */
         private boolean allowSingleQuotes = true;
 
-    }
-
-    enum Type {
-        Jackson,
-        Fastjon
     }
 
 }

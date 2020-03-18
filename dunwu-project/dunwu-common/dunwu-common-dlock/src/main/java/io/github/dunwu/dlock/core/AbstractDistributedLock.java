@@ -18,9 +18,9 @@ import javax.validation.constraints.NotNull;
 
 public abstract class AbstractDistributedLock implements DistributedLock {
 
-    private boolean valid = true;
-
     protected final LockConfiguration lockConfiguration;
+
+    private boolean valid = true;
 
     protected AbstractDistributedLock(LockConfiguration lockConfiguration) {
         this.lockConfiguration = lockConfiguration;

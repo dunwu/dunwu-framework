@@ -15,23 +15,19 @@ public enum OrderType {
     DESC;
 
     /**
-     * Returns whether the direction is ascending.
+     * Returns the {@link OrderType} enum for the given {@link String} or null if it cannot be parsed into an enum
+     * value.
      *
-     * @return true/false
-     * @since 1.13
+     * @param value 字符串
+     * @return 可选类型
      */
-    public boolean isAscending() {
-        return this.equals(ASC);
-    }
+    public static Optional<OrderType> fromOptionalString(String value) {
 
-    /**
-     * Returns whether the direction is descending.
-     *
-     * @return true/false
-     * @since 1.13
-     */
-    public boolean isDescending() {
-        return this.equals(DESC);
+        try {
+            return Optional.of(fromString(value));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -52,18 +48,22 @@ public enum OrderType {
     }
 
     /**
-     * Returns the {@link OrderType} enum for the given {@link String} or null if it cannot be parsed into an enum
-     * value.
+     * Returns whether the direction is ascending.
      *
-     * @param value 字符串
-     * @return 可选类型
+     * @return true/false
+     * @since 1.13
      */
-    public static Optional<OrderType> fromOptionalString(String value) {
+    public boolean isAscending() {
+        return this.equals(ASC);
+    }
 
-        try {
-            return Optional.of(fromString(value));
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
+    /**
+     * Returns whether the direction is descending.
+     *
+     * @return true/false
+     * @since 1.13
+     */
+    public boolean isDescending() {
+        return this.equals(DESC);
     }
 }

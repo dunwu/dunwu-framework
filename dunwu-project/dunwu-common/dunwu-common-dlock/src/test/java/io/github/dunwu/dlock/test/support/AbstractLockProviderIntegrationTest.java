@@ -12,9 +12,9 @@
  */
 package io.github.dunwu.dlock.test.support;
 
+import io.github.dunwu.dlock.core.DistributedLock;
 import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.core.DistributedLock;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -29,15 +29,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractLockProviderIntegrationTest {
 
-    protected static final String LOCK_NAME1 = "name";
-
     public static final Duration LOCK_AT_LEAST_FOR = Duration.of(2, SECONDS);
 
-    protected abstract LockProvider getLockProvider();
-
-    protected abstract void assertUnlocked(String lockName);
-
-    protected abstract void assertLocked(String lockName);
+    protected static final String LOCK_NAME1 = "name";
 
     @Test
     public void shouldCreateLock() {
@@ -47,6 +41,21 @@ public abstract class AbstractLockProviderIntegrationTest {
         assertLocked(LOCK_NAME1);
         lock.get().unlock();
         assertUnlocked(LOCK_NAME1);
+    }
+
+    protected abstract LockProvider getLockProvider();
+
+    protected abstract void assertUnlocked(String lockName);
+
+    protected abstract void assertLocked(String lockName);
+
+    protected static LockConfiguration lockConfig(String name) {
+        return lockConfig(name, Duration.of(5, MINUTES), Duration.ZERO);
+    }
+
+    protected static LockConfiguration lockConfig(String name, Duration lockAtMostFor, Duration lockAtLeastFor) {
+        Instant now = Instant.now();
+        return new LockConfiguration(name, now.plus(lockAtMostFor), now.plus(lockAtLeastFor));
     }
 
     @Test
@@ -138,15 +147,6 @@ public abstract class AbstractLockProviderIntegrationTest {
         } catch (InterruptedException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    protected static LockConfiguration lockConfig(String name) {
-        return lockConfig(name, Duration.of(5, MINUTES), Duration.ZERO);
-    }
-
-    protected static LockConfiguration lockConfig(String name, Duration lockAtMostFor, Duration lockAtLeastFor) {
-        Instant now = Instant.now();
-        return new LockConfiguration(name, now.plus(lockAtMostFor), now.plus(lockAtLeastFor));
     }
 
 }

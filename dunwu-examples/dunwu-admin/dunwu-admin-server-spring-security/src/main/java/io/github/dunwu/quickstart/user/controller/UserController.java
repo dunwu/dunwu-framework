@@ -176,7 +176,7 @@ public class UserController {
     @ApiOperation(value = "获取用户信息")
     public DataResult<UserDTO> getInfo(@AuthenticationPrincipal Principal principal) {
         UserDTO userDTO = userManager.getByUsername(principal.getName());
-        return ResultUtils.successDataResult(userDTO);
+        return DataResult.success(userDTO);
     }
 
 }

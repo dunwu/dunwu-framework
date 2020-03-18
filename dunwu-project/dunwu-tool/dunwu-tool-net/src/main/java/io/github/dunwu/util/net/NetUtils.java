@@ -233,6 +233,16 @@ public class NetUtils {
         }
 
         /**
+         * 检查环境变量名不能有'.'，在linux下不支持
+         */
+        private static void checkEnvName(String envName) {
+            if (envName == null || envName.contains(SEPARATOR)) {
+                throw new IllegalArgumentException(
+                    "envName " + envName + "is null or has dot which is not valid");
+            }
+        }
+
+        /**
          * 检查有否非ipv6，非127.0.0.1的inetaddress
          */
         private static InetAddress findAvailableInetAddress(NetworkInterface nic) {
@@ -245,16 +255,6 @@ public class NetUtils {
                 }
             }
             return null;
-        }
-
-        /**
-         * 检查环境变量名不能有'.'，在linux下不支持
-         */
-        private static void checkEnvName(String envName) {
-            if (envName == null || envName.contains(SEPARATOR)) {
-                throw new IllegalArgumentException(
-                    "envName " + envName + "is null or has dot which is not valid");
-            }
         }
 
     }

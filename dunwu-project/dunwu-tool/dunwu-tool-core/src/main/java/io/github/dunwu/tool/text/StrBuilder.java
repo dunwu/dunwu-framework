@@ -302,6 +302,33 @@ public class StrBuilder implements CharSequence, Appendable, Serializable {
 
     // ------------------------------------------------------------------------------------ Others
 
+    /**
+     * 生成字符串
+     *
+     * @param isReset 是否重置，重置后相当于空的构建器
+     * @return 生成的字符串
+     */
+    public String toString(boolean isReset) {
+        if (position > 0) {
+            final String s = new String(value, 0, position);
+            if (isReset) {
+                reset();
+            }
+            return s;
+        }
+        return StringUtil.EMPTY;
+    }
+
+    /**
+     * 删除全部字符，位置归零
+     *
+     * @return this
+     */
+    public StrBuilder reset() {
+        this.position = 0;
+        return this;
+    }
+
     @Override
     public int length() {
         return this.position;
@@ -451,15 +478,7 @@ public class StrBuilder implements CharSequence, Appendable, Serializable {
         return reset();
     }
 
-    /**
-     * 删除全部字符，位置归零
-     *
-     * @return this
-     */
-    public StrBuilder reset() {
-        this.position = 0;
-        return this;
-    }
+    // ------------------------------------------------------------------------------------ Private method start
 
     /**
      * 删除到指定位置<br> 如果新位置小于等于0，则删除全部
@@ -473,8 +492,6 @@ public class StrBuilder implements CharSequence, Appendable, Serializable {
         }
         return del(newPosition, this.position);
     }
-
-    // ------------------------------------------------------------------------------------ Private method start
 
     /**
      * 删除指定长度的字符，规则如下：
@@ -524,23 +541,6 @@ public class StrBuilder implements CharSequence, Appendable, Serializable {
      */
     public String toStringAndReset() {
         return toString(true);
-    }
-
-    /**
-     * 生成字符串
-     *
-     * @param isReset 是否重置，重置后相当于空的构建器
-     * @return 生成的字符串
-     */
-    public String toString(boolean isReset) {
-        if (position > 0) {
-            final String s = new String(value, 0, position);
-            if (isReset) {
-                reset();
-            }
-            return s;
-        }
-        return StringUtil.EMPTY;
     }
 
     /**

@@ -12,9 +12,9 @@
  */
 package io.github.dunwu.dlock.test.support;
 
+import io.github.dunwu.dlock.core.DistributedLock;
 import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.core.DistributedLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,19 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class FuzzTester {
 
+    public static final int SHORT_ITERATION = 10;
+
     private static final int THREADS = 8;
 
     private static final int ITERATIONS = 100;
 
-    public static final int SHORT_ITERATION = 10;
-
     private final LockProvider lockProvider;
-
-    private int counter;
 
     private final LockConfiguration config = new LockConfiguration("lock", Instant.now().plus(5, ChronoUnit.MINUTES));
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private int counter;
 
     public FuzzTester(LockProvider lockProvider) {
         this.lockProvider = lockProvider;

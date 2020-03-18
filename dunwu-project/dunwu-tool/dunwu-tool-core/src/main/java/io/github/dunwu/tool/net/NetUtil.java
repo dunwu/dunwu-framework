@@ -131,23 +131,6 @@ public class NetUtil {
     }
 
     /**
-     * 获取本机网卡IP地址，这个地址为所有网卡中非回路地址的第一个<br> 如果获取失败调用 {@link InetAddress#getLocalHost()}方法获取。<br>
-     * 此方法不会抛出异常，获取失败将返回<code>null</code><br>
-     * <p>
-     * 参考：http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
-     *
-     * @return 本机网卡IP地址，获取失败返回<code>null</code>
-     * @since 3.0.7
-     */
-    public static String getLocalhostStr() {
-        InetAddress localhost = getLocalhost();
-        if (null != localhost) {
-            return localhost.getHostAddress();
-        }
-        return null;
-    }
-
-    /**
      * 获取本机网卡IP地址，规则如下：
      *
      * <pre>
@@ -182,6 +165,58 @@ public class NetUtil {
             // ignore
         }
 
+        return null;
+    }
+
+    /**
+     * 获取所有满足过滤条件的本地IP地址对象
+     *
+     * @param addressFilter 过滤器，null表示不过滤，获取所有地址
+     * @return 过滤后的地址对象列表
+     * @since 4.5.17
+     */
+    public static LinkedHashSet<InetAddress> localAddressList(Filter<InetAddress> addressFilter) {
+        Enumeration<NetworkInterface> networkInterfaces;
+        try {
+            networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            throw new UtilException(e);
+        }
+
+        if (networkInterfaces == null) {
+            throw new UtilException("Get network interface error!");
+        }
+
+        final LinkedHashSet<InetAddress> ipSet = new LinkedHashSet<>();
+
+        while (networkInterfaces.hasMoreElements()) {
+            final NetworkInterface networkInterface = networkInterfaces.nextElement();
+            final Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                final InetAddress inetAddress = inetAddresses.nextElement();
+                if (inetAddress != null && (null == addressFilter || addressFilter.accept(inetAddress))) {
+                    ipSet.add(inetAddress);
+                }
+            }
+        }
+
+        return ipSet;
+    }
+
+    /**
+     * 获取本机网卡IP地址，这个地址为所有网卡中非回路地址的第一个<br> 如果获取失败调用 {@link InetAddress#getLocalHost()}方法获取。<br>
+     * 此方法不会抛出异常，获取失败将返回<code>null</code><br>
+     * <p>
+     * 参考：http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+     *
+     * @return 本机网卡IP地址，获取失败返回<code>null</code>
+     * @since 3.0.7
+     */
+    public static String getLocalhostStr() {
+        InetAddress localhost = getLocalhost();
+        if (null != localhost) {
+            return localhost.getHostAddress();
+        }
         return null;
     }
 
@@ -505,17 +540,6 @@ public class NetUtil {
     }
 
     /**
-     * 获得本机的IPv4地址列表<br> 返回的IP列表有序，按照系统设备顺序
-     *
-     * @return IP地址列表 {@link LinkedHashSet}
-     */
-    public static LinkedHashSet<String> localIpv4s() {
-        final LinkedHashSet<InetAddress> localAddressList = localAddressList(t -> t instanceof Inet4Address);
-
-        return toIpList(localAddressList);
-    }
-
-    /**
      * 地址列表转换为IP地址列表
      *
      * @param addressList 地址{@link Inet4Address} 列表
@@ -532,38 +556,14 @@ public class NetUtil {
     }
 
     /**
-     * 获取所有满足过滤条件的本地IP地址对象
+     * 获得本机的IPv4地址列表<br> 返回的IP列表有序，按照系统设备顺序
      *
-     * @param addressFilter 过滤器，null表示不过滤，获取所有地址
-     * @return 过滤后的地址对象列表
-     * @since 4.5.17
+     * @return IP地址列表 {@link LinkedHashSet}
      */
-    public static LinkedHashSet<InetAddress> localAddressList(Filter<InetAddress> addressFilter) {
-        Enumeration<NetworkInterface> networkInterfaces;
-        try {
-            networkInterfaces = NetworkInterface.getNetworkInterfaces();
-        } catch (SocketException e) {
-            throw new UtilException(e);
-        }
+    public static LinkedHashSet<String> localIpv4s() {
+        final LinkedHashSet<InetAddress> localAddressList = localAddressList(t -> t instanceof Inet4Address);
 
-        if (networkInterfaces == null) {
-            throw new UtilException("Get network interface error!");
-        }
-
-        final LinkedHashSet<InetAddress> ipSet = new LinkedHashSet<>();
-
-        while (networkInterfaces.hasMoreElements()) {
-            final NetworkInterface networkInterface = networkInterfaces.nextElement();
-            final Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
-            while (inetAddresses.hasMoreElements()) {
-                final InetAddress inetAddress = inetAddresses.nextElement();
-                if (inetAddress != null && (null == addressFilter || addressFilter.accept(inetAddress))) {
-                    ipSet.add(inetAddress);
-                }
-            }
-        }
-
-        return ipSet;
+        return toIpList(localAddressList);
     }
 
     /**

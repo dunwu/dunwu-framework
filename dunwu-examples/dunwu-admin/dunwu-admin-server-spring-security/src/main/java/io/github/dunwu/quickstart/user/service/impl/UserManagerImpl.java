@@ -3,9 +3,8 @@ package io.github.dunwu.quickstart.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.dunwu.common.BaseResult;
 import io.github.dunwu.common.DataResult;
-import io.github.dunwu.common.ResultUtils;
 import io.github.dunwu.common.annotation.Manager;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import io.github.dunwu.quickstart.user.dto.RoleDTO;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
 import io.github.dunwu.quickstart.user.entity.Role;
@@ -75,7 +74,7 @@ public class UserManagerImpl implements UserManager {
     public BaseResult register(UserDTO userDTO) {
         DataResult<Boolean> dataResult = isUserExists(userDTO);
         if (dataResult.getData()) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB.getCode(), "用户已存在");
+            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "用户已存在");
         }
 
         User user = BeanUtil.toBean(userDTO, User.class);
@@ -84,9 +83,9 @@ public class UserManagerImpl implements UserManager {
             userRole.setUserId(user.getId());
             userRole.setRoleId(2); // 默认注册用户的角色为 2（user）
             userRoleMapper.insert(userRole);
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -100,10 +99,10 @@ public class UserManagerImpl implements UserManager {
             if (StringUtils.isNotBlank(userDTO.getEmail())) {
                 checkUserExists("email", userDTO.getEmail());
             }
-            return ResultUtils.successDataResult(false);
+            return DataResult.success(false);
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
-            return ResultUtils.successDataResult(true);
+            return DataResult.success(true);
         }
     }
 

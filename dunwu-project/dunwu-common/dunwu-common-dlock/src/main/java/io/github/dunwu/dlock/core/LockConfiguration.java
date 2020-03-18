@@ -54,6 +54,15 @@ public class LockConfiguration {
         }
     }
 
+    @Override
+    public String toString() {
+        return "LockConfiguration{" +
+            "name='" + name + '\'' +
+            ", lockAtMostUntil=" + lockMaxTime +
+            ", lockAtLeastUntil=" + lockMinTime +
+            '}';
+    }
+
     public String getName() {
         return name;
     }
@@ -72,15 +81,6 @@ public class LockConfiguration {
     public Instant getUnlockTime() {
         Instant now = Instant.now();
         return lockMinTime.isAfter(now) ? lockMinTime : now;
-    }
-
-    @Override
-    public String toString() {
-        return "LockConfiguration{" +
-            "name='" + name + '\'' +
-            ", lockAtMostUntil=" + lockMaxTime +
-            ", lockAtLeastUntil=" + lockMinTime +
-            '}';
     }
 
 }

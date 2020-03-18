@@ -33,23 +33,13 @@ public class ClipboardUtil {
     }
 
     /**
-     * 从剪贴板的{@link Transferable}获取图片
+     * 设置内容到剪贴板
      *
-     * @param content {@link Transferable}
-     * @return 图片
-     * @since 4.5.6
+     * @param contents 内容
+     * @param owner    所有者
      */
-    public static Image getImage(Transferable content) {
-        return (Image) get(content, DataFlavor.imageFlavor);
-    }
-
-    /**
-     * 从剪贴板获取文本
-     *
-     * @return 文本
-     */
-    public static String getStr() {
-        return (String) get(DataFlavor.stringFlavor);
+    public static void set(Transferable contents, ClipboardOwner owner) {
+        getClipboard().setContents(contents, owner);
     }
 
     /**
@@ -81,6 +71,35 @@ public class ClipboardUtil {
     }
 
     /**
+     * 获取系统剪贴板
+     *
+     * @return {@link Clipboard}
+     */
+    public static Clipboard getClipboard() {
+        return Toolkit.getDefaultToolkit().getSystemClipboard();
+    }
+
+    /**
+     * 从剪贴板的{@link Transferable}获取图片
+     *
+     * @param content {@link Transferable}
+     * @return 图片
+     * @since 4.5.6
+     */
+    public static Image getImage(Transferable content) {
+        return (Image) get(content, DataFlavor.imageFlavor);
+    }
+
+    /**
+     * 从剪贴板获取文本
+     *
+     * @return 文本
+     */
+    public static String getStr() {
+        return (String) get(DataFlavor.stringFlavor);
+    }
+
+    /**
      * 设置字符串文本到剪贴板
      *
      * @param text 字符串文本
@@ -96,25 +115,6 @@ public class ClipboardUtil {
      */
     public static void set(Transferable contents) {
         set(contents, null);
-    }
-
-    /**
-     * 设置内容到剪贴板
-     *
-     * @param contents 内容
-     * @param owner    所有者
-     */
-    public static void set(Transferable contents, ClipboardOwner owner) {
-        getClipboard().setContents(contents, owner);
-    }
-
-    /**
-     * 获取系统剪贴板
-     *
-     * @return {@link Clipboard}
-     */
-    public static Clipboard getClipboard() {
-        return Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
     /**

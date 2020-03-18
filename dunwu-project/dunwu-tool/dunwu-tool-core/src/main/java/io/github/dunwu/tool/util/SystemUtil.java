@@ -1430,103 +1430,14 @@ public class SystemUtil {
 
     /**
      * <p>
-     * Gets the Java home directory as a {@code File}.
-     * </p>
-     *
-     * @return a directory
-     * @throws SecurityException if a security manager exists and its {@code checkPropertyAccess} method doesn't allow
-     *                           access to the specified system property.
-     * @see System#getProperty(String)
-     * @since 2.1
-     */
-    public static File getJavaHome() {
-        return new File(System.getProperty(JAVA_HOME_KEY));
-    }
-
-    /**
-     * Gets the host name from an environment variable.
-     *
-     * <p>
-     * If you want to know what the network stack says is the host name, you should use {@code
-     * InetAddress.getLocalHost().getHostName()}.
-     * </p>
-     *
-     * @return the host name.
-     * @since 3.6
-     */
-    public static String getHostName() {
-        return IS_OS_WINDOWS ? System.getenv("COMPUTERNAME") : System.getenv("HOSTNAME");
-    }
-
-    /**
-     * <p>
-     * Gets the Java IO temporary directory as a {@code File}.
-     * </p>
-     *
-     * @return a directory
-     * @throws SecurityException if a security manager exists and its {@code checkPropertyAccess} method doesn't allow
-     *                           access to the specified system property.
-     * @see System#getProperty(String)
-     * @since 2.1
-     */
-    public static File getJavaIoTmpDir() {
-        return new File(System.getProperty(JAVA_IO_TMPDIR_KEY));
-    }
-
-    /**
-     * <p>
-     * Decides if the Java version matches.
-     * </p>
-     *
-     * @param versionPrefix the prefix for the java version
-     * @return true if matches, or false if not or can't determine
-     */
-    private static boolean getJavaVersionMatches(final String versionPrefix) {
-        return isJavaVersionMatch(JAVA_SPECIFICATION_VERSION, versionPrefix);
-    }
-
-    /**
-     * Decides if the operating system matches.
-     *
-     * @param osVersionPrefix the prefix for the version
-     * @return true if matches, or false if not or can't determine
-     */
-    private static boolean getOsMatches(final String osVersionPrefix) {
-        return isOSMatch(OS_NAME, OS_VERSION, OS_NAME_MAC_PREFIX, osVersionPrefix);
-    }
-
-    /**
-     * Decides if the operating system matches.
-     *
-     * @param osNamePrefix the prefix for the OS name
-     * @return true if matches, or false if not or can't determine
-     */
-    private static boolean getOsMatchesName(final String osNamePrefix) {
-        return isOSNameMatch(OS_NAME, osNamePrefix);
-    }
-
-    /**
-     * <p>
-     * Gets a System property, defaulting to {@code null} if the property cannot be read.
+     * SystemUtils instances should NOT be constructed in standard programming. Instead, the class should be used as
+     * {@code SystemUtils.FILE_SEPARATOR}.
      * </p>
      * <p>
-     * If a {@code SecurityException} is caught, the return value is {@code null} and a message is written to {@code
-     * System.err}.
+     * This constructor is public to permit tools that require a JavaBean instance to operate.
      * </p>
-     *
-     * @param property the system property name
-     * @return the system property value or {@code null} if a security problem occurs
      */
-    private static String getSystemProperty(final String property) {
-        try {
-            return System.getProperty(property);
-        } catch (final SecurityException ex) {
-            // we are not allowed to look at this property
-            // System.err.println("Caught a SecurityException reading the system property '" + property
-            // + "'; the SystemUtils property value will default to null.");
-            return null;
-        }
-    }
+    private SystemUtil() {}
 
     /**
      * <p>
@@ -1551,6 +1462,51 @@ public class SystemUtil {
             // System.err.println("Caught a SecurityException reading the environment variable '" + name + "'.");
             return defaultValue;
         }
+    }
+
+    /**
+     * Gets the host name from an environment variable.
+     *
+     * <p>
+     * If you want to know what the network stack says is the host name, you should use {@code
+     * InetAddress.getLocalHost().getHostName()}.
+     * </p>
+     *
+     * @return the host name.
+     * @since 3.6
+     */
+    public static String getHostName() {
+        return IS_OS_WINDOWS ? System.getenv("COMPUTERNAME") : System.getenv("HOSTNAME");
+    }
+
+    /**
+     * <p>
+     * Gets the Java home directory as a {@code File}.
+     * </p>
+     *
+     * @return a directory
+     * @throws SecurityException if a security manager exists and its {@code checkPropertyAccess} method doesn't allow
+     *                           access to the specified system property.
+     * @see System#getProperty(String)
+     * @since 2.1
+     */
+    public static File getJavaHome() {
+        return new File(System.getProperty(JAVA_HOME_KEY));
+    }
+
+    /**
+     * <p>
+     * Gets the Java IO temporary directory as a {@code File}.
+     * </p>
+     *
+     * @return a directory
+     * @throws SecurityException if a security manager exists and its {@code checkPropertyAccess} method doesn't allow
+     *                           access to the specified system property.
+     * @see System#getProperty(String)
+     * @since 2.1
+     */
+    public static File getJavaIoTmpDir() {
+        return new File(System.getProperty(JAVA_IO_TMPDIR_KEY));
     }
 
     /**
@@ -1599,6 +1555,18 @@ public class SystemUtil {
      * <p>
      * Decides if the Java version matches.
      * </p>
+     *
+     * @param versionPrefix the prefix for the java version
+     * @return true if matches, or false if not or can't determine
+     */
+    private static boolean getJavaVersionMatches(final String versionPrefix) {
+        return isJavaVersionMatch(JAVA_SPECIFICATION_VERSION, versionPrefix);
+    }
+
+    /**
+     * <p>
+     * Decides if the Java version matches.
+     * </p>
      * <p>
      * This method is package private instead of private to support unit test invocation.
      * </p>
@@ -1612,6 +1580,16 @@ public class SystemUtil {
             return false;
         }
         return version.startsWith(versionPrefix);
+    }
+
+    /**
+     * Decides if the operating system matches.
+     *
+     * @param osVersionPrefix the prefix for the version
+     * @return true if matches, or false if not or can't determine
+     */
+    private static boolean getOsMatches(final String osVersionPrefix) {
+        return isOSMatch(OS_NAME, OS_VERSION, OS_NAME_MAC_PREFIX, osVersionPrefix);
     }
 
     /**
@@ -1677,17 +1655,39 @@ public class SystemUtil {
         return true;
     }
 
+    /**
+     * Decides if the operating system matches.
+     *
+     * @param osNamePrefix the prefix for the OS name
+     * @return true if matches, or false if not or can't determine
+     */
+    private static boolean getOsMatchesName(final String osNamePrefix) {
+        return isOSNameMatch(OS_NAME, osNamePrefix);
+    }
+
     // -----------------------------------------------------------------------
 
     /**
      * <p>
-     * SystemUtils instances should NOT be constructed in standard programming. Instead, the class should be used as
-     * {@code SystemUtils.FILE_SEPARATOR}.
+     * Gets a System property, defaulting to {@code null} if the property cannot be read.
      * </p>
      * <p>
-     * This constructor is public to permit tools that require a JavaBean instance to operate.
+     * If a {@code SecurityException} is caught, the return value is {@code null} and a message is written to {@code
+     * System.err}.
      * </p>
+     *
+     * @param property the system property name
+     * @return the system property value or {@code null} if a security problem occurs
      */
-    private SystemUtil() {}
+    private static String getSystemProperty(final String property) {
+        try {
+            return System.getProperty(property);
+        } catch (final SecurityException ex) {
+            // we are not allowed to look at this property
+            // System.err.println("Caught a SecurityException reading the system property '" + property
+            // + "'; the SystemUtils property value will default to null.");
+            return null;
+        }
+    }
 
 }

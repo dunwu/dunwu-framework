@@ -57,6 +57,10 @@ public class AnsiSystem {
         setCode(elements);
     }
 
+    public static void setEnabled(boolean enabled) {
+        AnsiSystem.enabled = enabled;
+    }
+
     public void printf(String format, Object... args) {
         String message = String.format(format, args);
         if (enabled) {
@@ -64,6 +68,12 @@ public class AnsiSystem {
         } else {
             System.out.print(message);
         }
+    }
+
+    private String encode(String message) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.code).append(message).append(RESET);
+        return sb.toString();
     }
 
     public void print(String message) {
@@ -82,10 +92,6 @@ public class AnsiSystem {
         }
     }
 
-    public static void setEnabled(boolean enabled) {
-        AnsiSystem.enabled = enabled;
-    }
-
     public String getCode() {
         return code;
     }
@@ -98,12 +104,6 @@ public class AnsiSystem {
         }
         sb.append(ENCODE_END);
         this.code = sb.toString();
-    }
-
-    private String encode(String message) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.code).append(message).append(RESET);
-        return sb.toString();
     }
 
 }

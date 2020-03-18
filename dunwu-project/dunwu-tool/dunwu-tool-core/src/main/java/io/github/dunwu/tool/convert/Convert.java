@@ -103,6 +103,20 @@ public class Convert {
      * @param defaultValue 默认值
      * @return 转换后的值
      * @throws ConvertException 转换器不存在
+     */
+    public static <T> T convert(Type type, Object value, T defaultValue) throws ConvertException {
+        return ConverterRegistry.getInstance().convert(type, value, defaultValue);
+    }
+
+    /**
+     * 转换值为指定类型
+     *
+     * @param <T>          目标类型
+     * @param type         类型
+     * @param value        值
+     * @param defaultValue 默认值
+     * @return 转换后的值
+     * @throws ConvertException 转换器不存在
      * @since 4.0.0
      */
     public static <T> T convert(Class<T> type, Object value, T defaultValue) throws ConvertException {
@@ -122,6 +136,33 @@ public class Convert {
     @SuppressWarnings("unchecked")
     public static <T> T convertByClassName(String className, Object value) throws ConvertException {
         return (T) convert(ClassUtil.loadClass(className), value);
+    }
+
+    /**
+     * 转换值为指定类型
+     *
+     * @param <T>   目标类型
+     * @param type  类型
+     * @param value 值
+     * @return 转换后的值
+     * @throws ConvertException 转换器不存在
+     * @since 4.0.0
+     */
+    public static <T> T convert(Class<T> type, Object value) throws ConvertException {
+        return convert((Type) type, value);
+    }
+
+    /**
+     * 转换值为指定类型
+     *
+     * @param <T>   目标类型
+     * @param type  类型
+     * @param value 值
+     * @return 转换后的值
+     * @throws ConvertException 转换器不存在
+     */
+    public static <T> T convert(Type type, Object value) throws ConvertException {
+        return convert(type, value, null);
     }
 
     /**
@@ -152,6 +193,24 @@ public class Convert {
      */
     public static <T> T convertQuietly(Type type, Object value) {
         return convertQuietly(type, value, null);
+    }
+
+    /**
+     * 转换值为指定类型，不抛异常转换<br> 当转换失败时返回默认值
+     *
+     * @param <T>          目标类型
+     * @param type         目标类型
+     * @param value        值
+     * @param defaultValue 默认值
+     * @return 转换后的值
+     * @since 4.5.10
+     */
+    public static <T> T convertQuietly(Type type, Object value, T defaultValue) {
+        try {
+            return convert(type, value, defaultValue);
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -633,6 +692,8 @@ public class Convert {
         return convertQuietly(Instant.class, value, defaultValue);
     }
 
+    // ----------------------------------------------------------------------- 全角半角转换
+
     /**
      * 转换为int<br> 如果给定的值为<code>null</code>，或者转换失败，返回默认值<code>null</code><br> 转换失败不会报错
      *
@@ -675,7 +736,7 @@ public class Convert {
         return convert(List.class, value);
     }
 
-    // ----------------------------------------------------------------------- 全角半角转换
+    // --------------------------------------------------------------------- hex
 
     /**
      * 转换为ArrayList
@@ -725,8 +786,6 @@ public class Convert {
     public static Long toLong(Object value) {
         return toLong(value, null);
     }
-
-    // --------------------------------------------------------------------- hex
 
     /**
      * 转换为long<br> 如果给定的值为空，或者转换失败，返回默认值<br> 转换失败不会报错
@@ -798,6 +857,8 @@ public class Convert {
         return toNumber(value, null);
     }
 
+    // --------------------------------------------------------------- 原始包装类型转换
+
     /**
      * 转换为Number<br> 如果给定的值为空，或者转换失败，返回默认值<br> 转换失败不会报错
      *
@@ -819,6 +880,8 @@ public class Convert {
     public static Number[] toNumberArray(Object value) {
         return convert(Number[].class, value);
     }
+
+    // -------------------------------------------------------------------------- 数字和英文转换
 
     /**
      * 半角转全角
@@ -854,8 +917,6 @@ public class Convert {
         return new String(c);
     }
 
-    // --------------------------------------------------------------- 原始包装类型转换
-
     /**
      * 转换为Short<br> 如果给定的值为<code>null</code>，或者转换失败，返回默认值<code>null</code><br> 转换失败不会报错
      *
@@ -865,6 +926,8 @@ public class Convert {
     public static Short toShort(Object value) {
         return toShort(value, null);
     }
+
+    // -------------------------------------------------------------------------- 数字转换
 
     /**
      * 转换为Short<br> 如果给定的值为<code>null</code>，或者转换失败，返回默认值<br> 转换失败不会报错
@@ -876,8 +939,6 @@ public class Convert {
     public static Short toShort(Object value, Short defaultValue) {
         return convertQuietly(Short.class, value, defaultValue);
     }
-
-    // -------------------------------------------------------------------------- 数字和英文转换
 
     /**
      * 转换为Short数组
@@ -911,40 +972,6 @@ public class Convert {
         return convertQuietly(String.class, value, defaultValue);
     }
 
-    // -------------------------------------------------------------------------- 数字转换
-
-    /**
-     * 转换值为指定类型，不抛异常转换<br> 当转换失败时返回默认值
-     *
-     * @param <T>          目标类型
-     * @param type         目标类型
-     * @param value        值
-     * @param defaultValue 默认值
-     * @return 转换后的值
-     * @since 4.5.10
-     */
-    public static <T> T convertQuietly(Type type, Object value, T defaultValue) {
-        try {
-            return convert(type, value, defaultValue);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>          目标类型
-     * @param type         类型
-     * @param value        值
-     * @param defaultValue 默认值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(Type type, Object value, T defaultValue) throws ConvertException {
-        return ConverterRegistry.getInstance().convert(type, value, defaultValue);
-    }
-
     /**
      * 转换为String数组
      *
@@ -954,33 +981,6 @@ public class Convert {
      */
     public static String[] toStrArray(Object value) {
         return convert(String[].class, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>   目标类型
-     * @param type  类型
-     * @param value 值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     * @since 4.0.0
-     */
-    public static <T> T convert(Class<T> type, Object value) throws ConvertException {
-        return convert((Type) type, value);
-    }
-
-    /**
-     * 转换值为指定类型
-     *
-     * @param <T>   目标类型
-     * @param type  类型
-     * @param value 值
-     * @return 转换后的值
-     * @throws ConvertException 转换器不存在
-     */
-    public static <T> T convert(Type type, Object value) throws ConvertException {
-        return convert(type, value, null);
     }
 
     /**

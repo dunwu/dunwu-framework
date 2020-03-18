@@ -84,9 +84,6 @@ public class ArrayIter<E> implements Iterator<E>, Iterable<E>, Serializable {
     @Override
     public Iterator<E> iterator() {
         return this;
-    }    @Override
-    public boolean hasNext() {
-        return (index < endIndex);
     }
 
     /**
@@ -96,7 +93,21 @@ public class ArrayIter<E> implements Iterator<E>, Iterable<E>, Serializable {
      */
     public Object getArray() {
         return array;
+    }
+
+    /**
+     * 重置数组位置
+     */
+    public void reset() {
+        this.index = this.startIndex;
     }    @Override
+    public boolean hasNext() {
+        return (index < endIndex);
+    }
+
+
+
+    @Override
     @SuppressWarnings("unchecked")
     public E next() {
         if (hasNext() == false) {
@@ -106,11 +117,6 @@ public class ArrayIter<E> implements Iterator<E>, Iterable<E>, Serializable {
     }
 
     /**
-     * 重置数组位置
-     */
-    public void reset() {
-        this.index = this.startIndex;
-    }    /**
      * 不允许操作数组元素
      *
      * @throws UnsupportedOperationException always
@@ -122,11 +128,4 @@ public class ArrayIter<E> implements Iterator<E>, Iterable<E>, Serializable {
 
     // Properties
     // -----------------------------------------------------------------------
-
-
-
-
-
-
-
 }

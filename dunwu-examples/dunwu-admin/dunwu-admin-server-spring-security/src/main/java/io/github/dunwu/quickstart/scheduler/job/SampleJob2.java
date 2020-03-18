@@ -1,9 +1,8 @@
 package io.github.dunwu.quickstart.scheduler.job;
 
 import com.alibaba.fastjson.JSON;
-import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.common.BaseResult;
-import io.github.dunwu.common.ResultUtils;
+import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;
 import lombok.Data;
 import lombok.ToString;
@@ -23,7 +22,7 @@ public class SampleJob2 implements IJobHandler {
     public BaseResult execute(String params) {
         Person person = JSON.parseObject(params, Person.class);
         log.info("person = {}", person);
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     @Data

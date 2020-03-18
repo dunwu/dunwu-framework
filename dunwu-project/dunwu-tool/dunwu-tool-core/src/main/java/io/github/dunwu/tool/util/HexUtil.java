@@ -69,41 +69,6 @@ public class HexUtil {
     }
 
     /**
-     * 将十六进制字符数组转换为字符串，默认编码UTF-8
-     *
-     * @param hexStr 十六进制String
-     * @return 字符串
-     */
-    public static String decodeHexStr(String hexStr) {
-        return decodeHexStr(hexStr, CharsetUtil.CHARSET_UTF_8);
-    }
-
-    /**
-     * 将十六进制字符数组转换为字符串
-     *
-     * @param hexStr  十六进制String
-     * @param charset 编码
-     * @return 字符串
-     */
-    public static String decodeHexStr(String hexStr, Charset charset) {
-        if (StringUtil.isEmpty(hexStr)) {
-            return hexStr;
-        }
-        return decodeHexStr(hexStr.toCharArray(), charset);
-    }
-
-    /**
-     * 将十六进制字符数组转换为字符串
-     *
-     * @param hexData 十六进制char[]
-     * @param charset 编码
-     * @return 字符串
-     */
-    public static String decodeHexStr(char[] hexData, Charset charset) {
-        return StringUtil.str(decodeHex(hexData), charset);
-    }
-
-    /**
      * 将十六进制字符数组转换为字节数组
      *
      * @param hexData 十六进制char[]
@@ -146,6 +111,41 @@ public class HexUtil {
             throw new RuntimeException("Illegal hexadecimal character " + ch + " at index " + index);
         }
         return digit;
+    }
+
+    /**
+     * 将十六进制字符数组转换为字符串，默认编码UTF-8
+     *
+     * @param hexStr 十六进制String
+     * @return 字符串
+     */
+    public static String decodeHexStr(String hexStr) {
+        return decodeHexStr(hexStr, CharsetUtil.CHARSET_UTF_8);
+    }
+
+    /**
+     * 将十六进制字符数组转换为字符串
+     *
+     * @param hexStr  十六进制String
+     * @param charset 编码
+     * @return 字符串
+     */
+    public static String decodeHexStr(String hexStr, Charset charset) {
+        if (StringUtil.isEmpty(hexStr)) {
+            return hexStr;
+        }
+        return decodeHexStr(hexStr.toCharArray(), charset);
+    }
+
+    /**
+     * 将十六进制字符数组转换为字符串
+     *
+     * @param hexData 十六进制char[]
+     * @param charset 编码
+     * @return 字符串
+     */
+    public static String decodeHexStr(char[] hexData, Charset charset) {
+        return StringUtil.str(decodeHex(hexData), charset);
     }
 
     // ---------------------------------------------------------------------------------------------------- decode

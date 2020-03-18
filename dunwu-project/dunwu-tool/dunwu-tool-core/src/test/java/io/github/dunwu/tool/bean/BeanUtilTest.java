@@ -231,18 +231,6 @@ public class BeanUtilTest {
         Assertions.assertEquals("张三", person2.getName());
     }
 
-    @Data
-    @AllArgsConstructor
-    class MyData {
-
-        String a;
-
-        String b;
-
-        Date c;
-
-    }
-
     @Test
     public void formatKeysTest() {
         List<String> keys = BeanUtil.formatKeys(Person.class, NamingStrategy.LOWER_DASHED);
@@ -343,6 +331,18 @@ public class BeanUtilTest {
     public static class BeanB {
 
         private Map<String, Object> info;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    class MyData {
+
+        String a;
+
+        String b;
+
+        Date c;
 
     }
 

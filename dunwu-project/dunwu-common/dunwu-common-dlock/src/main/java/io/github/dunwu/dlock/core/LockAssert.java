@@ -25,6 +25,15 @@ public class LockAssert {
 
     private static final ThreadLocal<String> CURRENT_LOCK_NAME = ThreadLocal.withInitial(() -> null);
 
+    /**
+     * Throws an exception if the lock is not present.
+     */
+    public static void assertLocked() {
+        if (CURRENT_LOCK_NAME.get() == null) {
+            throw new IllegalStateException("The task is not locked.");
+        }
+    }
+
     static void startLock(String name) {
         CURRENT_LOCK_NAME.set(name);
     }
@@ -35,15 +44,6 @@ public class LockAssert {
 
     static void endLock() {
         CURRENT_LOCK_NAME.remove();
-    }
-
-    /**
-     * Throws an exception if the lock is not present.
-     */
-    public static void assertLocked() {
-        if (CURRENT_LOCK_NAME.get() == null) {
-            throw new IllegalStateException("The task is not locked.");
-        }
     }
 
 }

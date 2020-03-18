@@ -2,7 +2,6 @@ package io.github.dunwu.tool.bean.support;
 
 import io.github.dunwu.tool.bean.BeanDesc;
 import io.github.dunwu.tool.bean.BeanUtil;
-import io.github.dunwu.tool.bean.support.ValueProvider;
 import io.github.dunwu.tool.exceptions.UtilException;
 import io.github.dunwu.tool.util.StringUtil;
 

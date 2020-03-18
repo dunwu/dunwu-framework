@@ -49,6 +49,10 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
 
     private static final String DEFAULT_TABLE_NAME = "dunwulock";
 
+    public JdbcTemplateLockProvider(@NotNull DataSource dataSource) {
+        this(new JdbcTemplate(dataSource));
+    }
+
     public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate) {
         this(jdbcTemplate, (PlatformTransactionManager) null);
     }
@@ -56,18 +60,6 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
     public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate,
         PlatformTransactionManager transactionManager) {
         this(jdbcTemplate, transactionManager, DEFAULT_TABLE_NAME);
-    }
-
-    public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate, @NotNull String tableName) {
-        this(jdbcTemplate, null, tableName);
-    }
-
-    public JdbcTemplateLockProvider(@NotNull DataSource dataSource) {
-        this(new JdbcTemplate(dataSource));
-    }
-
-    public JdbcTemplateLockProvider(@NotNull DataSource dataSource, @NotNull String tableName) {
-        this(new JdbcTemplate(dataSource), tableName);
     }
 
     public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate,
@@ -82,6 +74,14 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
 
     public JdbcTemplateLockProvider(@NotNull Configuration configuration) {
         super(new JdbcTemplateStorageAccessor(configuration));
+    }
+
+    public JdbcTemplateLockProvider(@NotNull DataSource dataSource, @NotNull String tableName) {
+        this(new JdbcTemplate(dataSource), tableName);
+    }
+
+    public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate, @NotNull String tableName) {
+        this(jdbcTemplate, null, tableName);
     }
 
     public static class Configuration {
@@ -113,6 +113,10 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
             this.lockedByValue = requireNonNull(lockedByValue, "lockedByValue can not be null");
         }
 
+        public static Configuration.Builder builder() {
+            return new Configuration.Builder();
+        }
+
         public JdbcTemplate getJdbcTemplate() {
             return jdbcTemplate;
         }
@@ -135,10 +139,6 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
 
         public String getLockedByValue() {
             return lockedByValue;
-        }
-
-        public static Configuration.Builder builder() {
-            return new Configuration.Builder();
         }
 
         public static class Builder {

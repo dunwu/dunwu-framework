@@ -184,14 +184,14 @@ public class NumberConverter extends AbstractConverter<Number> {
     }
 
     @Override
-    protected String convertToStr(Object value) {
-        return StringUtil.trim(super.convertToStr(value));
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public Class<Number> getTargetType() {
         return (Class<Number>) this.targetType;
+    }
+
+    @Override
+    protected String convertToStr(Object value) {
+        return StringUtil.trim(super.convertToStr(value));
     }
 
 }

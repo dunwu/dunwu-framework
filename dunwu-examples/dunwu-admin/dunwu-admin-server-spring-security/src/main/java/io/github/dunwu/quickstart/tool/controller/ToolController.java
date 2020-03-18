@@ -2,8 +2,7 @@ package io.github.dunwu.quickstart.tool.controller;
 
 import io.github.dunwu.common.DataListResult;
 import io.github.dunwu.common.DataResult;
-import io.github.dunwu.common.ResultUtils;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import io.github.dunwu.tool.lang.Snowflake;
 import io.github.dunwu.tool.util.ArrayUtil;
 import io.github.dunwu.tool.util.IdUtil;
@@ -43,7 +42,7 @@ public class ToolController {
         for (int i = 0; i < max; i++) {
             ids.add(snowFlakeId.nextIdStr());
         }
-        return ResultUtils.successDataListResult(ids);
+        return DataListResult.success(ids);
     }
 
     @GetMapping("/id/generateUuid")
@@ -59,7 +58,7 @@ public class ToolController {
                 ids.add(IdUtil.simpleUUID());
             }
         }
-        return ResultUtils.successDataListResult(ids);
+        return DataListResult.success(ids);
     }
 
     @GetMapping("/ip/getRegion")
@@ -67,10 +66,10 @@ public class ToolController {
     public DataListResult<String> getRegion(@RequestParam("ip") String ip) {
         String[] regions = IpUtils.getFullRegionName(ip);
         if (ArrayUtil.isEmpty(regions)) {
-            String message = String.format(AppCode.ERROR_NOT_FOUND.getTemplate(), ip);
-            return ResultUtils.failDataListResult(AppCode.ERROR_NOT_FOUND.getCode(), message);
+            String message = String.format("未找到 %s", ip);
+            return DataListResult.failDataList(AppResulstStatus.ERROR_NOT_FOUND.getCode(), message);
         }
-        return ResultUtils.successDataListResult(Arrays.asList(regions));
+        return DataListResult.success(Arrays.asList(regions));
     }
 
     @GetMapping("/ip/getLocalRegion")
@@ -80,7 +79,7 @@ public class ToolController {
         Map<String, Object> map = new HashMap<>();
         map.put("address", address);
         map.put("regions", regions);
-        return ResultUtils.successDataResult(map);
+        return DataResult.success(map);
     }
 
 }

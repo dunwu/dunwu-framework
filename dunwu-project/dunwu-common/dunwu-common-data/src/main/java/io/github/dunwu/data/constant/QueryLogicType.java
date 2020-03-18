@@ -5,6 +5,6 @@ package io.github.dunwu.data.constant;
  * @since 2019-12-17
  */
 public enum QueryLogicType {
-	AND,
-	OR
+    AND,
+    OR
 }

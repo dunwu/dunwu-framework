@@ -54,7 +54,7 @@ public class ExecuteMethodJobHandler extends QuartzJobBean {
             JobDetail jobDetail = context.getJobDetail();
             JobKey jobKey = jobDetail.getKey();
             BaseResult baseResult = (BaseResult) method.invoke(bean, methodParams);
-            if (baseResult != null && baseResult.getSuccess()) {
+            if (baseResult != null && baseResult.isOk()) {
                 log.info("jobGroup = {}, jobName = {} execute success.",
                     jobKey.getGroup(), jobKey.getName());
             } else {

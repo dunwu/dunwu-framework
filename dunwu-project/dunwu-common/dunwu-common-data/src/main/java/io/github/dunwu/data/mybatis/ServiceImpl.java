@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import io.github.dunwu.common.*;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import io.github.dunwu.data.mybatis.support.MybatisPlusUtil;
 import io.github.dunwu.tool.util.StringUtil;
 import org.apache.ibatis.binding.MapperMethod;
@@ -45,20 +45,20 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
     @Override
     public DataResult<Integer> count(Wrapper<T> queryWrapper) {
-        return ResultUtils.successDataResult(
+        return DataResult.success(
             SqlHelper.retCount(baseMapper.selectCount(queryWrapper)));
     }
 
     @Override
     public DataResult<T> getById(Serializable id) {
-        return ResultUtils.successDataResult(baseMapper.selectById(id));
+        return DataResult.success(baseMapper.selectById(id));
     }
 
     @Override
     public DataResult<Map<String, Object>> getMap(Wrapper<T> queryWrapper) {
         Map<String, Object> map = SqlHelper.getObject(log,
             baseMapper.selectMaps(queryWrapper));
-        return ResultUtils.successDataResult(map);
+        return DataResult.success(map);
     }
 
     @Override
@@ -66,36 +66,36 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         Function<? super Object, V> mapper) {
         List<V> list = (List<V>) listObjs(queryWrapper, mapper).getData();
         V entity = SqlHelper.getObject(log, list);
-        return ResultUtils.successDataResult(entity);
+        return DataResult.success(entity);
     }
 
     @Override
     public DataResult<T> getOne(Wrapper<T> queryWrapper, boolean throwEx) {
         if (throwEx) {
-            return ResultUtils.successDataResult(baseMapper.selectOne(queryWrapper));
+            return DataResult.success(baseMapper.selectOne(queryWrapper));
         }
         T entity = SqlHelper.getObject(log, baseMapper.selectList(queryWrapper));
-        return ResultUtils.successDataResult(entity);
+        return DataResult.success(entity);
     }
 
     @Override
     public DataListResult<T> list(Wrapper<T> queryWrapper) {
-        return ResultUtils.successDataListResult(baseMapper.selectList(queryWrapper));
+        return DataListResult.success(baseMapper.selectList(queryWrapper));
     }
 
     @Override
     public DataListResult<T> listByIds(Collection<? extends Serializable> idList) {
-        return ResultUtils.successDataListResult(baseMapper.selectBatchIds(idList));
+        return DataListResult.success(baseMapper.selectBatchIds(idList));
     }
 
     @Override
     public DataListResult<T> listByMap(Map<String, Object> columnMap) {
-        return ResultUtils.successDataListResult(baseMapper.selectByMap(columnMap));
+        return DataListResult.success(baseMapper.selectByMap(columnMap));
     }
 
     @Override
     public DataListResult<Map<String, Object>> listMaps(Wrapper<T> queryWrapper) {
-        return ResultUtils.successDataListResult(baseMapper.selectMaps(queryWrapper));
+        return DataListResult.success(baseMapper.selectMaps(queryWrapper));
     }
 
     @Override
@@ -103,14 +103,14 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         Function<? super Object, V> mapper) {
         List<V> list = baseMapper.selectObjs(queryWrapper).stream()
             .filter(Objects::nonNull).map(mapper).collect(Collectors.toList());
-        return ResultUtils.successDataListResult(list);
+        return DataListResult.success(list);
     }
 
     @Override
     public PageResult<T> page(Pagination<T> pagination, Wrapper<T> queryWrapper) {
         IPage<T> resultPage = baseMapper
             .selectPage(MybatisPlusUtil.transToMybatisPlusPage(pagination), queryWrapper);
-        return ResultUtils.successPageResult(MybatisPlusUtil.transToPagination(resultPage));
+        return PageResult.success(MybatisPlusUtil.transToPagination(resultPage));
     }
 
     @Override
@@ -118,16 +118,16 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         Wrapper<T> queryWrapper) {
         IPage<Map<String, Object>> resultPage = baseMapper.selectMapsPage(
             MybatisPlusUtil.transToMybatisPlusPage(pagination), queryWrapper);
-        return ResultUtils.successPageResult(MybatisPlusUtil.transToPagination(resultPage));
+        return PageResult.success(MybatisPlusUtil.transToPagination(resultPage));
     }
 
     @Override
     public BaseResult remove(Wrapper<T> wrapper) {
         boolean result = SqlHelper.retBool(baseMapper.delete(wrapper));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -135,9 +135,9 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     public BaseResult removeById(Serializable id) {
         boolean result = SqlHelper.retBool(baseMapper.deleteById(id));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -145,9 +145,9 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     public BaseResult removeByIds(Collection<? extends Serializable> idList) {
         boolean result = SqlHelper.retBool(baseMapper.deleteBatchIds(idList));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -156,9 +156,9 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         Assert.notEmpty(columnMap, "error: columnMap must not be empty");
         boolean result = SqlHelper.retBool(baseMapper.deleteByMap(columnMap));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -166,9 +166,9 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
     public DataResult<Integer> save(T entity) {
         boolean result = retBool(baseMapper.insert(entity));
         if (result) {
-            return ResultUtils.successDataResult(entity.getId());
+            return DataResult.success(entity.getId());
         } else {
-            return ResultUtils.failDataResult(AppCode.ERROR_DB);
+            return DataResult.failData(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -188,7 +188,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
             batchSqlSession.flushStatements();
         }
 
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     /**
@@ -231,7 +231,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
                 : updateById(entity);
         }
 
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     @Override
@@ -266,16 +266,16 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
             batchSqlSession.flushStatements();
         }
 
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     @Override
     public BaseResult update(T entity, Wrapper<T> updateWrapper) {
         boolean result = retBool(baseMapper.update(entity, updateWrapper));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 
@@ -298,16 +298,16 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
             batchSqlSession.flushStatements();
         }
 
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
     @Override
     public BaseResult updateById(T entity) {
         boolean result = retBool(baseMapper.updateById(entity));
         if (result) {
-            return ResultUtils.successBaseResult();
+            return BaseResult.success();
         } else {
-            return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+            return BaseResult.fail(AppResulstStatus.ERROR_DB);
         }
     }
 

@@ -26,13 +26,32 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ServletUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(ServletUtil.class);
-
     public static final String UNKNOWN = "unknown";
+
+    private static final Logger log = LoggerFactory.getLogger(ServletUtil.class);
 
     public static HttpServletRequest getHttpServletRequest() {
         return ((ServletRequestAttributes) Objects.requireNonNull(
             RequestContextHolder.getRequestAttributes())).getRequest();
+    }
+
+    public static RequestIdentityInfo getRequestIdentityInfo(HttpServletRequest request) {
+        RequestIdentityInfo requestIdentityInfo = new RequestIdentityInfo();
+        try {
+            requestIdentityInfo.setIp(getRealRemoteAddr(request));
+            requestIdentityInfo.setLocation(IpUtils.getRegionName(requestIdentityInfo.getIp()));
+            StringBuilder userAgent = new StringBuilder("[");
+            userAgent.append(request.getHeader("User-Agent"));
+            userAgent.append("]");
+            requestIdentityInfo.setSystem(getOsInfo(userAgent.toString()));
+            String browser = getBrowserInfo(userAgent.toString());
+            requestIdentityInfo.setBrowser(browser.replace("/", " "));
+        } catch (Exception e) {
+            log.error("获取登录信息失败：{}", e.getMessage());
+            requestIdentityInfo.setSystem("");
+            requestIdentityInfo.setBrowser("");
+        }
+        return requestIdentityInfo;
     }
 
     /**
@@ -65,71 +84,6 @@ public class ServletUtil {
             ip = request.getRemoteAddr();
         }
         return ip;
-    }
-
-    /**
-     * 设置让浏览器弹出下载对话框的Header,不同浏览器使用不同的编码方式.
-     *
-     * @param fileName 下载后的文件名.
-     */
-    public static void setFileDownloadHeader(HttpServletRequest request,
-        HttpServletResponse response, String fileName, byte[] bytes) {
-        response.reset();
-        Collection<String> types = MimeUtil.getMimeTypes(bytes);
-        response.setContentType(types.toArray(new MimeType[types.size()])[0].toString());
-        response.setCharacterEncoding("utf-8");
-        response.setContentLength(bytes.length);
-
-        try {
-            String agent = request.getHeader("User-Agent");
-            String encodedfileName = null;
-            if (null != agent) {
-                agent = agent.toLowerCase();
-                if (agent.contains(WebConstant.BrowserType.firefox.name())
-                    || agent.contains(WebConstant.BrowserType.chrome.name())
-                    || agent.contains(WebConstant.BrowserType.safari.name())) {
-                    encodedfileName = "filename=\""
-                        + new String(fileName.getBytes(), "ISO8859-1") + "\"";
-                } else if (agent.contains(WebConstant.BrowserType.msie.name())) {
-                    encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
-                        + "\"";
-                } else if (agent.contains(WebConstant.BrowserType.opera.name())) {
-                    encodedfileName = "filename*=UTF-8\"" + fileName + "\"";
-                } else {
-                    encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
-                        + "\"";
-                }
-            }
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; " + encodedfileName);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void setFileShowHeader(HttpServletResponse response) {
-        response.reset();
-        response.setContentType("text/html; charset=UTF-8");
-        response.setContentType("image/jpeg");
-    }
-
-    public static RequestIdentityInfo getRequestIdentityInfo(HttpServletRequest request) {
-        RequestIdentityInfo requestIdentityInfo = new RequestIdentityInfo();
-        try {
-            requestIdentityInfo.setIp(getRealRemoteAddr(request));
-            requestIdentityInfo.setLocation(IpUtils.getRegionName(requestIdentityInfo.getIp()));
-            StringBuilder userAgent = new StringBuilder("[");
-            userAgent.append(request.getHeader("User-Agent"));
-            userAgent.append("]");
-            requestIdentityInfo.setSystem(getOsInfo(userAgent.toString()));
-            String browser = getBrowserInfo(userAgent.toString());
-            requestIdentityInfo.setBrowser(browser.replace("/", " "));
-        } catch (Exception e) {
-            log.error("获取登录信息失败：{}", e.getMessage());
-            requestIdentityInfo.setSystem("");
-            requestIdentityInfo.setBrowser("");
-        }
-        return requestIdentityInfo;
     }
 
     public static String getBrowserInfo(String userAgent) {
@@ -218,6 +172,52 @@ public class ServletUtil {
             }
         }
         return os;
+    }
+
+    /**
+     * 设置让浏览器弹出下载对话框的Header,不同浏览器使用不同的编码方式.
+     *
+     * @param fileName 下载后的文件名.
+     */
+    public static void setFileDownloadHeader(HttpServletRequest request,
+        HttpServletResponse response, String fileName, byte[] bytes) {
+        response.reset();
+        Collection<String> types = MimeUtil.getMimeTypes(bytes);
+        response.setContentType(types.toArray(new MimeType[types.size()])[0].toString());
+        response.setCharacterEncoding("utf-8");
+        response.setContentLength(bytes.length);
+
+        try {
+            String agent = request.getHeader("User-Agent");
+            String encodedfileName = null;
+            if (null != agent) {
+                agent = agent.toLowerCase();
+                if (agent.contains(WebConstant.BrowserType.firefox.name())
+                    || agent.contains(WebConstant.BrowserType.chrome.name())
+                    || agent.contains(WebConstant.BrowserType.safari.name())) {
+                    encodedfileName = "filename=\""
+                        + new String(fileName.getBytes(), "ISO8859-1") + "\"";
+                } else if (agent.contains(WebConstant.BrowserType.msie.name())) {
+                    encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
+                        + "\"";
+                } else if (agent.contains(WebConstant.BrowserType.opera.name())) {
+                    encodedfileName = "filename*=UTF-8\"" + fileName + "\"";
+                } else {
+                    encodedfileName = "filename=\"" + URLEncoder.encode(fileName, "UTF-8")
+                        + "\"";
+                }
+            }
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; " + encodedfileName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setFileShowHeader(HttpServletResponse response) {
+        response.reset();
+        response.setContentType("text/html; charset=UTF-8");
+        response.setContentType("image/jpeg");
     }
 
     public static class RequestIdentityInfo {

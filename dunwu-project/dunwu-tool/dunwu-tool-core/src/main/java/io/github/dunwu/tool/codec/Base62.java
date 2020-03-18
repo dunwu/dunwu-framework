@@ -37,16 +37,6 @@ public class Base62 {
     /**
      * Base62解码
      *
-     * @param source 被解码的Base62字符串
-     * @return 被加密后的字符串
-     */
-    public static String decodeStrGbk(CharSequence source) {
-        return decodeStr(source, CharsetUtil.CHARSET_GBK);
-    }
-
-    /**
-     * Base62解码
-     *
      * @param source  被解码的Base62字符串
      * @param charset 字符集
      * @return 被加密后的字符串
@@ -73,6 +63,16 @@ public class Base62 {
      */
     public static byte[] decode(byte[] base62bytes) {
         return codec.decode(base62bytes);
+    }
+
+    /**
+     * Base62解码
+     *
+     * @param source 被解码的Base62字符串
+     * @return 被加密后的字符串
+     */
+    public static String decodeStrGbk(CharSequence source) {
+        return decodeStr(source, CharsetUtil.CHARSET_GBK);
     }
 
     // -------------------------------------------------------------------- decode
@@ -112,6 +112,16 @@ public class Base62 {
     /**
      * Base62编码
      *
+     * @param source 被编码的Base62字符串
+     * @return 被加密后的字符串
+     */
+    public static String encode(byte[] source) {
+        return new String(codec.encode(source));
+    }
+
+    /**
+     * Base62编码
+     *
      * @param file 被编码Base62的文件
      * @return 被加密后的字符串
      */
@@ -138,16 +148,6 @@ public class Base62 {
      */
     public static String encode(CharSequence source, Charset charset) {
         return encode(StringUtil.toBytes(source, charset));
-    }
-
-    /**
-     * Base62编码
-     *
-     * @param source 被编码的Base62字符串
-     * @return 被加密后的字符串
-     */
-    public static String encode(byte[] source) {
-        return new String(codec.encode(source));
     }
 
 }

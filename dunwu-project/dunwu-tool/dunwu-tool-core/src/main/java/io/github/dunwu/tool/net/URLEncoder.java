@@ -93,6 +93,15 @@ public class URLEncoder implements Serializable {
     }
 
     /**
+     * 增加安全字符<br> 安全字符不被编码
+     *
+     * @param c 字符
+     */
+    public void addSafeCharacter(char c) {
+        safeCharacters.set(c);
+    }
+
+    /**
      * 创建默认{@link URLEncoder}<br> 默认的编码器针对URI路径编码，定义如下：
      *
      * <pre>
@@ -128,15 +137,6 @@ public class URLEncoder implements Serializable {
         encoder.addSafeCharacter('/');
 
         return encoder;
-    }
-
-    /**
-     * 增加安全字符<br> 安全字符不被编码
-     *
-     * @param c 字符
-     */
-    public void addSafeCharacter(char c) {
-        safeCharacters.set(c);
     }
 
     /**

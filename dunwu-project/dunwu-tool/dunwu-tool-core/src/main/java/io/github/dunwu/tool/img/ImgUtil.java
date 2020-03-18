@@ -206,6 +206,63 @@ public class ImgUtil {
     }
 
     /**
+     * 将已有Image复制新的一份出来
+     *
+     * @param img       {@link Image}
+     * @param imageType 目标图片类型，{@link BufferedImage}中的常量，例如黑白等
+     * @return {@link BufferedImage}
+     * @see BufferedImage#TYPE_INT_RGB
+     * @see BufferedImage#TYPE_INT_ARGB
+     * @see BufferedImage#TYPE_INT_ARGB_PRE
+     * @see BufferedImage#TYPE_INT_BGR
+     * @see BufferedImage#TYPE_3BYTE_BGR
+     * @see BufferedImage#TYPE_4BYTE_ABGR
+     * @see BufferedImage#TYPE_4BYTE_ABGR_PRE
+     * @see BufferedImage#TYPE_BYTE_GRAY
+     * @see BufferedImage#TYPE_USHORT_GRAY
+     * @see BufferedImage#TYPE_BYTE_BINARY
+     * @see BufferedImage#TYPE_BYTE_INDEXED
+     * @see BufferedImage#TYPE_USHORT_565_RGB
+     * @see BufferedImage#TYPE_USHORT_555_RGB
+     */
+    public static BufferedImage copyImage(Image img, int imageType) {
+        return copyImage(img, imageType, null);
+    }
+
+    /**
+     * 将已有Image复制新的一份出来
+     *
+     * @param img             {@link Image}
+     * @param imageType       目标图片类型，{@link BufferedImage}中的常量，例如黑白等
+     * @param backgroundColor 背景色，{@code null} 表示默认背景色（黑色或者透明）
+     * @return {@link BufferedImage}
+     * @see BufferedImage#TYPE_INT_RGB
+     * @see BufferedImage#TYPE_INT_ARGB
+     * @see BufferedImage#TYPE_INT_ARGB_PRE
+     * @see BufferedImage#TYPE_INT_BGR
+     * @see BufferedImage#TYPE_3BYTE_BGR
+     * @see BufferedImage#TYPE_4BYTE_ABGR
+     * @see BufferedImage#TYPE_4BYTE_ABGR_PRE
+     * @see BufferedImage#TYPE_BYTE_GRAY
+     * @see BufferedImage#TYPE_USHORT_GRAY
+     * @see BufferedImage#TYPE_BYTE_BINARY
+     * @see BufferedImage#TYPE_BYTE_INDEXED
+     * @see BufferedImage#TYPE_USHORT_565_RGB
+     * @see BufferedImage#TYPE_USHORT_555_RGB
+     * @since 4.5.17
+     */
+    public static BufferedImage copyImage(Image img, int imageType, Color backgroundColor) {
+        final BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), imageType);
+        final Graphics2D bGr = GraphicsUtil.createGraphics(bimage, backgroundColor);
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------- cut
+
+    /**
      * 获取{@link ImageOutputStream}
      *
      * @param outFile {@link File}
@@ -222,6 +279,21 @@ public class ImgUtil {
     }
 
     /**
+     * 从文件中读取图片
+     *
+     * @param imageFile 图片文件
+     * @return 图片
+     * @since 3.2.2
+     */
+    public static BufferedImage read(File imageFile) {
+        try {
+            return ImageIO.read(imageFile);
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
      * 图像类型转换：GIF=》JPG、GIF=》PNG、PNG=》JPG、PNG=》GIF(X)、BMP=》PNG<br> 此方法并不关闭流
      *
      * @param srcStream  源图像流
@@ -232,8 +304,6 @@ public class ImgUtil {
     public static void convert(InputStream srcStream, String formatName, OutputStream destStream) {
         write(read(srcStream), formatName, getImageOutputStream(destStream));
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------- cut
 
     /**
      * 根据文件创建字体<br> 首先尝试创建{@link Font#TRUETYPE_FONT}字体，此类字体无效则创建{@link Font#TYPE1_FONT}
@@ -399,6 +469,8 @@ public class ImgUtil {
         writeJpg(cut(srcImage, rectangle), destImageStream);
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------- convert
+
     /**
      * 图像切割(按指定起点坐标和宽高切割)，填充满整个图片（直径取长宽最小值）
      *
@@ -438,7 +510,7 @@ public class ImgUtil {
         flip(read(imageFile), outFile);
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------- convert
+    // ---------------------------------------------------------------------------------------------------------------------- grey
 
     /**
      * 水平翻转图像
@@ -475,8 +547,6 @@ public class ImgUtil {
     public static void flip(Image image, ImageOutputStream out) throws IORuntimeException {
         writeJpg(flip(image), out);
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------- grey
 
     /**
      * 水平翻转图像
@@ -586,6 +656,8 @@ public class ImgUtil {
         return new Color(rgb);
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------- binary
+
     /**
      * 获取{@link ImageInputStream}
      *
@@ -631,8 +703,6 @@ public class ImgUtil {
         }
         return null;
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------- binary
 
     /**
      * 根据给定的Image对象和格式获取对应的{@link ImageWriter}，如果未找到合适的Writer，返回null
@@ -692,6 +762,8 @@ public class ImgUtil {
         gray(read(srcStream), getImageOutputStream(destStream));
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------- press
+
     /**
      * 彩色转为黑白<br> 此方法并不关闭流
      *
@@ -724,8 +796,6 @@ public class ImgUtil {
     public static void gray(Image srcImage, OutputStream out) {
         gray(srcImage, getImageOutputStream(out));
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------- press
 
     /**
      * 彩色转为黑白<br> 此方法并不关闭流
@@ -907,6 +977,8 @@ public class ImgUtil {
         pressText(read(srcStream), getImageOutputStream(destStream), pressText, color, font, x, y, alpha);
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------- rotate
+
     /**
      * 给图片添加文字水印<br> 此方法并不关闭流
      *
@@ -962,8 +1034,6 @@ public class ImgUtil {
         pressText(srcImage, getImageOutputStream(to), pressText, color, font, x, y, alpha);
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------- rotate
-
     /**
      * 给图片添加文字水印<br> 此方法并不关闭流
      *
@@ -998,6 +1068,8 @@ public class ImgUtil {
     public static Image pressText(Image srcImage, String pressText, Color color, Font font, int x, int y, float alpha) {
         return Img.from(srcImage).pressText(pressText, color, font, x, y, alpha).getImg();
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------- flip
 
     /**
      * 生成随机颜色
@@ -1034,8 +1106,6 @@ public class ImgUtil {
         return read(FileUtil.file(imageFilePath));
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------- flip
-
     /**
      * 从{@link Resource}中读取图片
      *
@@ -1046,6 +1116,23 @@ public class ImgUtil {
     public static BufferedImage read(Resource resource) {
         return read(resource.getStream());
     }
+
+    /**
+     * 从流中读取图片
+     *
+     * @param imageStream 图片文件
+     * @return 图片
+     * @since 3.2.2
+     */
+    public static BufferedImage read(InputStream imageStream) {
+        try {
+            return ImageIO.read(imageStream);
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------- compress
 
     /**
      * 从图片流中读取图片
@@ -1061,6 +1148,8 @@ public class ImgUtil {
             throw new IORuntimeException(e);
         }
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------- other
 
     /**
      * 从URL中读取图片
@@ -1103,8 +1192,6 @@ public class ImgUtil {
         write(rotate(image, degree), outFile);
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------- compress
-
     /**
      * 旋转图片为指定角度<br> 此方法不会关闭输出流
      *
@@ -1117,8 +1204,6 @@ public class ImgUtil {
     public static void rotate(Image image, int degree, OutputStream out) throws IORuntimeException {
         writeJpg(rotate(image, degree), getImageOutputStream(out));
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------- other
 
     /**
      * 旋转图片为指定角度<br> 此方法不会关闭输出流，输出格式为JPG
@@ -1167,21 +1252,6 @@ public class ImgUtil {
      */
     public static void scale(Image srcImg, File destFile, float scale) throws IORuntimeException {
         Img.from(srcImg).setTargetImageType(FileUtil.extName(destFile)).scale(scale).write(destFile);
-    }
-
-    /**
-     * 从文件中读取图片
-     *
-     * @param imageFile 图片文件
-     * @return 图片
-     * @since 3.2.2
-     */
-    public static BufferedImage read(File imageFile) {
-        try {
-            return ImageIO.read(imageFile);
-        } catch (IOException e) {
-            throw new IORuntimeException(e);
-        }
     }
 
     /**
@@ -1426,61 +1496,6 @@ public class ImgUtil {
     }
 
     /**
-     * 将已有Image复制新的一份出来
-     *
-     * @param img       {@link Image}
-     * @param imageType 目标图片类型，{@link BufferedImage}中的常量，例如黑白等
-     * @return {@link BufferedImage}
-     * @see BufferedImage#TYPE_INT_RGB
-     * @see BufferedImage#TYPE_INT_ARGB
-     * @see BufferedImage#TYPE_INT_ARGB_PRE
-     * @see BufferedImage#TYPE_INT_BGR
-     * @see BufferedImage#TYPE_3BYTE_BGR
-     * @see BufferedImage#TYPE_4BYTE_ABGR
-     * @see BufferedImage#TYPE_4BYTE_ABGR_PRE
-     * @see BufferedImage#TYPE_BYTE_GRAY
-     * @see BufferedImage#TYPE_USHORT_GRAY
-     * @see BufferedImage#TYPE_BYTE_BINARY
-     * @see BufferedImage#TYPE_BYTE_INDEXED
-     * @see BufferedImage#TYPE_USHORT_565_RGB
-     * @see BufferedImage#TYPE_USHORT_555_RGB
-     */
-    public static BufferedImage copyImage(Image img, int imageType) {
-        return copyImage(img, imageType, null);
-    }
-
-    /**
-     * 将已有Image复制新的一份出来
-     *
-     * @param img             {@link Image}
-     * @param imageType       目标图片类型，{@link BufferedImage}中的常量，例如黑白等
-     * @param backgroundColor 背景色，{@code null} 表示默认背景色（黑色或者透明）
-     * @return {@link BufferedImage}
-     * @see BufferedImage#TYPE_INT_RGB
-     * @see BufferedImage#TYPE_INT_ARGB
-     * @see BufferedImage#TYPE_INT_ARGB_PRE
-     * @see BufferedImage#TYPE_INT_BGR
-     * @see BufferedImage#TYPE_3BYTE_BGR
-     * @see BufferedImage#TYPE_4BYTE_ABGR
-     * @see BufferedImage#TYPE_4BYTE_ABGR_PRE
-     * @see BufferedImage#TYPE_BYTE_GRAY
-     * @see BufferedImage#TYPE_USHORT_GRAY
-     * @see BufferedImage#TYPE_BYTE_BINARY
-     * @see BufferedImage#TYPE_BYTE_INDEXED
-     * @see BufferedImage#TYPE_USHORT_565_RGB
-     * @see BufferedImage#TYPE_USHORT_555_RGB
-     * @since 4.5.17
-     */
-    public static BufferedImage copyImage(Image img, int imageType, Color backgroundColor) {
-        final BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), imageType);
-        final Graphics2D bGr = GraphicsUtil.createGraphics(bimage, backgroundColor);
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
-
-        return bimage;
-    }
-
-    /**
      * 图像切割（指定切片的行数和列数）
      *
      * @param srcImageFile 源图像文件
@@ -1618,21 +1633,6 @@ public class ImgUtil {
      */
     public static BufferedImage toImage(byte[] imageBytes) throws IORuntimeException {
         return read(new ByteArrayInputStream(imageBytes));
-    }
-
-    /**
-     * 从流中读取图片
-     *
-     * @param imageStream 图片文件
-     * @return 图片
-     * @since 3.2.2
-     */
-    public static BufferedImage read(InputStream imageStream) {
-        try {
-            return ImageIO.read(imageStream);
-        } catch (IOException e) {
-            throw new IORuntimeException(e);
-        }
     }
 
     /**

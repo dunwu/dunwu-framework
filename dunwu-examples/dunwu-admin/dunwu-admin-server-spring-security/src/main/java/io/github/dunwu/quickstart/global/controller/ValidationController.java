@@ -1,7 +1,6 @@
 package io.github.dunwu.quickstart.global.controller;
 
 import io.github.dunwu.common.BaseResult;
-import io.github.dunwu.common.ResultUtils;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +22,7 @@ public class ValidationController {
     @PostMapping("test")
     @ApiOperation(value = "测试校验器")
     public BaseResult method(@Validated @RequestBody UserDTO userInfoDTO) {
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
 }

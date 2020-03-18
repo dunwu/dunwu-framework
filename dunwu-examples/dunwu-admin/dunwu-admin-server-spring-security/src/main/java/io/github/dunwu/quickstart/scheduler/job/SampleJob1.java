@@ -1,8 +1,7 @@
 package io.github.dunwu.quickstart.scheduler.job;
 
-import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.common.BaseResult;
-import io.github.dunwu.common.ResultUtils;
+import io.github.dunwu.common.annotation.JobHandler;
 import io.github.dunwu.quickstart.scheduler.handler.IJobHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ public class SampleJob1 implements IJobHandler {
     @Override
     public BaseResult execute(String params) {
         log.info("params = {}", params);
-        return ResultUtils.successBaseResult();
+        return BaseResult.success();
     }
 
 }

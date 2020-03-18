@@ -2,8 +2,7 @@ package io.github.dunwu.quickstart.user.config;
 
 import com.alibaba.fastjson.JSON;
 import io.github.dunwu.common.BaseResult;
-import io.github.dunwu.common.ResultUtils;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -27,7 +26,7 @@ public class DunwuAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
-        BaseResult result = ResultUtils.failBaseResult(AppCode.ERROR_AUTHENTICATION);
+        BaseResult result = BaseResult.fail(AppResulstStatus.ERROR_AUTHENTICATION);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());

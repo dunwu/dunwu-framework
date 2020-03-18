@@ -36,17 +36,6 @@ public class EnumUtil {
     }
 
     /**
-     * 忽略大小检查某个枚举值是否匹配指定值
-     *
-     * @param e   枚举值
-     * @param val 需要判断的值
-     * @return 是非匹配
-     */
-    public static boolean equalsIgnoreCase(final Enum<?> e, String val) {
-        return StringUtil.equalsIgnoreCase(toString(e), val);
-    }
-
-    /**
      * Enum对象转String，调用{@link Enum#name()} 方法
      *
      * @param e Enum
@@ -55,6 +44,17 @@ public class EnumUtil {
      */
     public static String toString(Enum<?> e) {
         return null != e ? e.name() : null;
+    }
+
+    /**
+     * 忽略大小检查某个枚举值是否匹配指定值
+     *
+     * @param e   枚举值
+     * @param val 需要判断的值
+     * @return 是非匹配
+     */
+    public static boolean equalsIgnoreCase(final Enum<?> e, String val) {
+        return StringUtil.equalsIgnoreCase(toString(e), val);
     }
 
     /**
@@ -103,6 +103,23 @@ public class EnumUtil {
      */
     public static <E extends Enum<E>> E fromString(Class<E> enumClass, String value) {
         return Enum.valueOf(enumClass, value);
+    }
+
+    /**
+     * <p>Gets the {@code List} of enums.</p>
+     *
+     * <p>This method is useful when you need a list of enums rather than an array.</p>
+     *
+     * @param <E>       the type of the enumeration
+     * @param enumClass the class of the enum to query, not null
+     * @return the modifiable list of enums, never null
+     */
+    public static <E extends Enum<E>> List<E> getEnumList(final Class<E> enumClass) {
+        return new ArrayList<>(Arrays.asList(enumClass.getEnumConstants()));
+    }
+
+    public static <E extends Enum<E>> EnumSet<E> getEnumSet(final Class<E> enumClass) {
+        return EnumSet.allOf(enumClass);
     }
 
     /**
@@ -264,23 +281,6 @@ public class EnumUtil {
      */
     public static <E extends Enum<E>> boolean contains(final Class<E> enumClass, String val) {
         return EnumUtil.getEnumMap(enumClass).containsKey(val);
-    }
-
-    public static <E extends Enum<E>> EnumSet<E> getEnumSet(final Class<E> enumClass) {
-        return EnumSet.allOf(enumClass);
-    }
-
-    /**
-     * <p>Gets the {@code List} of enums.</p>
-     *
-     * <p>This method is useful when you need a list of enums rather than an array.</p>
-     *
-     * @param <E>       the type of the enumeration
-     * @param enumClass the class of the enum to query, not null
-     * @return the modifiable list of enums, never null
-     */
-    public static <E extends Enum<E>> List<E> getEnumList(final Class<E> enumClass) {
-        return new ArrayList<>(Arrays.asList(enumClass.getEnumConstants()));
     }
 
     /**

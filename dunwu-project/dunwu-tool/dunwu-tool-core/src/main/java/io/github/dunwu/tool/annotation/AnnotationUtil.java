@@ -71,6 +71,19 @@ public class AnnotationUtil {
     }
 
     /**
+     * 将指定的被注解的元素转换为组合注解元素
+     *
+     * @param annotationEle 注解元素
+     * @return 组合注解元素
+     */
+    public static CombinationAnnotationElement toCombination(AnnotatedElement annotationEle) {
+        if (annotationEle instanceof CombinationAnnotationElement) {
+            return (CombinationAnnotationElement) annotationEle;
+        }
+        return new CombinationAnnotationElement(annotationEle);
+    }
+
+    /**
      * 获取指定注解中所有属性值<br> 如果无指定的属性方法返回null
      *
      * @param annotationEle  {@link AnnotatedElement}，可以是Class、Method、Field、Constructor、ReflectPermission
@@ -117,19 +130,6 @@ public class AnnotationUtil {
     public static Annotation[] getAnnotations(AnnotatedElement annotationEle, boolean isToCombination) {
         return (null == annotationEle) ? null
             : (isToCombination ? toCombination(annotationEle) : annotationEle).getAnnotations();
-    }
-
-    /**
-     * 将指定的被注解的元素转换为组合注解元素
-     *
-     * @param annotationEle 注解元素
-     * @return 组合注解元素
-     */
-    public static CombinationAnnotationElement toCombination(AnnotatedElement annotationEle) {
-        if (annotationEle instanceof CombinationAnnotationElement) {
-            return (CombinationAnnotationElement) annotationEle;
-        }
-        return new CombinationAnnotationElement(annotationEle);
     }
 
     /**

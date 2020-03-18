@@ -1,8 +1,7 @@
 package io.github.dunwu.core;
 
 import com.alibaba.fastjson.JSON;
-import io.github.dunwu.common.Pagination;
-import io.github.dunwu.common.ResultUtils;
+import io.github.dunwu.common.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -16,11 +15,11 @@ public class ResultUtilsTest {
     @Test
     void test() {
         String[] array = new String[] { "1", "2", "3" };
-        System.out.println(JSON.toJSONString(ResultUtils.successBaseResult()));
-        System.out.println(JSON.toJSONString(ResultUtils.successDataResult("Data")));
-        System.out.println(JSON.toJSONString(ResultUtils.successDataListResult(Arrays.asList(array))));
+        System.out.println(JSON.toJSONString(BaseResult.success()));
+        System.out.println(JSON.toJSONString(DataResult.success("Data")));
+        System.out.println(JSON.toJSONString(DataListResult.success(Arrays.asList(array))));
         Pagination<String> pagination = new Pagination<>(1, 5, 3, Arrays.asList(array));
-        System.out.println(JSON.toJSONString(ResultUtils.successPageResult(pagination)));
+        System.out.println(JSON.toJSONString(PageResult.success(pagination)));
     }
 
 }

@@ -25,69 +25,6 @@ public class ArrayUtil {
     // ---------------------------------------------------------------------- 添加元素
 
     /**
-     * 将多个数组合并在一起<br> 忽略null的数组
-     *
-     * @param <T>    数组元素类型
-     * @param arrays 数组集合
-     * @return 合并后的数组
-     */
-    @SafeVarargs
-    public static <T> T[] merge(T[]... arrays) {
-        if (arrays.length == 1) {
-            return arrays[0];
-        }
-
-        int length = 0;
-        for (T[] array : arrays) {
-            if (null != array) {
-                length += array.length;
-            }
-        }
-        T[] result = newArray(arrays.getClass().getComponentType().getComponentType(), length);
-
-        length = 0;
-        for (T[] array : arrays) {
-            if (null != array) {
-                System.arraycopy(array, 0, result, length, array.length);
-                length += array.length;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 将新元素添加到已有数组中<br> 添加新元素会生成一个新的数组，不影响原数组
-     *
-     * @param <T>         数组元素类型
-     * @param buffer      已有数组
-     * @param newElements 新元素
-     * @return 新数组
-     */
-    @SafeVarargs
-    public static <T> T[] addAll(T[] buffer, T... newElements) {
-        if (isEmpty(buffer)) {
-            return newElements;
-        }
-        return insert(buffer, buffer.length, newElements);
-    }
-
-    /**
-     * 将新元素添加到已有数组中<br> 添加新元素会生成一个新的数组，不影响原数组
-     *
-     * @param <T>         数组元素类型
-     * @param array       已有数组
-     * @param newElements 新元素
-     * @return 新数组
-     */
-    @SafeVarargs
-    public static <T> Object addAll(Object array, T... newElements) {
-        if (isEmpty(array)) {
-            return newElements;
-        }
-        return insert(array, length(array), newElements);
-    }
-
-    /**
      * 添加元素到数组末尾.
      */
     public static <T> T[] addHead(T[] array, T element) {
@@ -106,7 +43,16 @@ public class ArrayUtil {
         return result;
     }
 
-    // ---------------------------------------------------------------------- newArray
+    /**
+     * Returns a new array of the given length with the same type as a reference array.
+     *
+     * @param reference any array of the desired type
+     * @param length    the length of the new array
+     */
+    public static <T> T[] newArray(T[] reference, int length) {
+        Class<?> type = reference.getClass().getComponentType();
+        return newArray(type, length);
+    }
 
     /**
      * 新建一个空数组
@@ -122,25 +68,222 @@ public class ArrayUtil {
     }
 
     /**
-     * Returns a new array of the given length with the same type as a reference array.
+     * 将原始类型数组包装为包装类型
      *
-     * @param reference any array of the desired type
-     * @param length    the length of the new array
+     * @param values 原始类型数组
+     * @return 包装类型数组
      */
-    public static <T> T[] newArray(T[] reference, int length) {
-        Class<?> type = reference.getClass().getComponentType();
-        return newArray(type, length);
+    public static Integer[] boxing(int... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Integer[0];
+        }
+
+        final Integer[] array = new Integer[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    // ---------------------------------------------------------------------- newArray
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Long[] boxing(long... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Long[0];
+        }
+
+        final Long[] array = new Long[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
     }
 
     /**
-     * 新建一个空数组
+     * 将原始类型数组包装为包装类型
      *
-     * @param length 大小
-     * @return 空数组
-     * @since 3.3.0
+     * @param values 原始类型数组
+     * @return 包装类型数组
      */
-    public static Object[] newArray(int length) {
-        return new Object[length];
+    public static Character[] boxing(char... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Character[0];
+        }
+
+        final Character[] array = new Character[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Byte[] boxing(byte... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Byte[0];
+        }
+
+        final Byte[] array = new Byte[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Short[] boxing(short... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Short[0];
+        }
+
+        final Short[] array = new Short[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Float[] boxing(float... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Float[0];
+        }
+
+        final Float[] array = new Float[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Double[] boxing(double... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Double[0];
+        }
+
+        final Double[] array = new Double[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Boolean[] boxing(boolean... values) {
+        if (null == values) {
+            return null;
+        }
+        final int length = values.length;
+        if (0 == length) {
+            return new Boolean[0];
+        }
+
+        final Boolean[] array = new Boolean[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i];
+        }
+        return array;
+    }
+
+    /**
+     * 包装数组对象
+     *
+     * @param obj 对象，可以是对象数组或者基本类型数组
+     * @return 包装类型数组或对象数组
+     * @throws UtilException 对象为非数组
+     */
+    public static Object[] boxing(Object obj) {
+        if (null == obj) {
+            return null;
+        }
+        if (isArray(obj)) {
+            try {
+                return (Object[]) obj;
+            } catch (Exception e) {
+                final String className = obj.getClass().getComponentType().getName();
+                switch (className) {
+                    case "long":
+                        return boxing((long[]) obj);
+                    case "int":
+                        return boxing((int[]) obj);
+                    case "short":
+                        return boxing((short[]) obj);
+                    case "char":
+                        return boxing((char[]) obj);
+                    case "byte":
+                        return boxing((byte[]) obj);
+                    case "boolean":
+                        return boxing((boolean[]) obj);
+                    case "float":
+                        return boxing((float[]) obj);
+                    case "double":
+                        return boxing((double[]) obj);
+                    default:
+                        throw new UtilException(e);
+                }
+            }
+        }
+        throw new UtilException(StringUtil.format("[{}] is not Array!", obj.getClass()));
     }
 
     /**
@@ -558,6 +701,8 @@ public class ArrayUtil {
         return INDEX_NOT_FOUND;
     }
 
+    // ---------------------------------------------------------------------- contains
+
     /**
      * 包装 {@link System#arraycopy(Object, int, Object, int, int)}<br> 数组复制
      *
@@ -631,8 +776,6 @@ public class ArrayUtil {
         Collections.addAll(set, array);
         return toArray(set, (Class<T>) getComponentType(array));
     }
-
-    // ---------------------------------------------------------------------- contains
 
     /**
      * 获取数组对象的元素类型
@@ -735,6 +878,8 @@ public class ArrayUtil {
         }
     }
 
+    // ---------------------------------------------------------------------- indexOf
+
     /**
      * 根据数组元素类型，获取数组的类型<br> 方法是通过创建一个空数组从而获取其类型
      *
@@ -806,8 +951,6 @@ public class ArrayUtil {
         }
         return count;
     }
-
-    // ---------------------------------------------------------------------- indexOf
 
     /**
      * 是否存都不为{@code null}或空对象，通过{@link ObjectUtil#isEmpty(Object)} 判断元素
@@ -888,37 +1031,6 @@ public class ArrayUtil {
     }
 
     /**
-     * 将数组下标为 [begin, end] 范围内的元素拼接为字符串
-     *
-     * @param array     数组
-     * @param separator 分隔符
-     * @param begin     起始元素
-     * @param end       结束元素
-     * @param <T>       数组元素类型
-     * @return 拼接后的字符串
-     */
-    public static <T> String joinInRange(final T[] array, final CharSequence separator, final int begin,
-        final int end) {
-        if (array == null) {
-            return null;
-        }
-        final int length = end - begin;
-        if (length <= 0) {
-            return StringUtil.EMPTY;
-        }
-        final StringBuilder sb = new StringBuilder(length);
-        for (int i = begin; i < end; i++) {
-            if (i > begin) {
-                sb.append(separator);
-            }
-            if (array[i] != null) {
-                sb.append(array[i]);
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
      * @param conjunction 分隔符
@@ -967,6 +1079,8 @@ public class ArrayUtil {
         }
         return sb.toString();
     }
+
+    // ------------------------------------------------------------------- lastIndexOf
 
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
@@ -1068,8 +1182,6 @@ public class ArrayUtil {
         return sb.toString();
     }
 
-    // ------------------------------------------------------------------- lastIndexOf
-
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
@@ -1160,6 +1272,37 @@ public class ArrayUtil {
     }
 
     /**
+     * 将数组下标为 [begin, end] 范围内的元素拼接为字符串
+     *
+     * @param array     数组
+     * @param separator 分隔符
+     * @param begin     起始元素
+     * @param end       结束元素
+     * @param <T>       数组元素类型
+     * @return 拼接后的字符串
+     */
+    public static <T> String joinInRange(final T[] array, final CharSequence separator, final int begin,
+        final int end) {
+        if (array == null) {
+            return null;
+        }
+        final int length = end - begin;
+        if (length <= 0) {
+            return StringUtil.EMPTY;
+        }
+        final StringBuilder sb = new StringBuilder(length);
+        for (int i = begin; i < end; i++) {
+            if (i > begin) {
+                sb.append(separator);
+            }
+            if (array[i] != null) {
+                sb.append(array[i]);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
      *
      * @param <T>   数组类型
@@ -1178,6 +1321,8 @@ public class ArrayUtil {
         }
         return INDEX_NOT_FOUND;
     }
+
+    // ------------------------------------------------------------------- join
 
     /**
      * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
@@ -1273,8 +1418,6 @@ public class ArrayUtil {
         }
         return INDEX_NOT_FOUND;
     }
-
-    // ------------------------------------------------------------------- join
 
     /**
      * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
@@ -1373,6 +1516,24 @@ public class ArrayUtil {
         }
         return max;
     }
+
+    /**
+     * 数组是否为空<br> 此方法会匹配单一对象，如果此对象为{@code null}则返回true<br> 如果此对象为非数组，理解为此对象为数组的第一个元素，则返回false<br>
+     * 如果此对象为数组对象，数组长度大于0情况下返回false，否则返回true
+     *
+     * @param array 数组
+     * @return 是否为空
+     */
+    public static boolean isEmpty(Object array) {
+        if (null == array) {
+            return true;
+        } else if (isArray(array)) {
+            return 0 == Array.getLength(array);
+        }
+        throw new UtilException("Object to provide is not a Array !");
+    }
+
+    // ------------------------------------------------------------------- max
 
     /**
      * 取最大值
@@ -1494,7 +1655,36 @@ public class ArrayUtil {
         return max;
     }
 
-    // ------------------------------------------------------------------- max
+    /**
+     * 将多个数组合并在一起<br> 忽略null的数组
+     *
+     * @param <T>    数组元素类型
+     * @param arrays 数组集合
+     * @return 合并后的数组
+     */
+    @SafeVarargs
+    public static <T> T[] merge(T[]... arrays) {
+        if (arrays.length == 1) {
+            return arrays[0];
+        }
+
+        int length = 0;
+        for (T[] array : arrays) {
+            if (null != array) {
+                length += array.length;
+            }
+        }
+        T[] result = newArray(arrays.getClass().getComponentType().getComponentType(), length);
+
+        length = 0;
+        for (T[] array : arrays) {
+            if (null != array) {
+                System.arraycopy(array, 0, result, length, array.length);
+                length += array.length;
+            }
+        }
+        return result;
+    }
 
     /**
      * 取最小值
@@ -1516,6 +1706,8 @@ public class ArrayUtil {
         }
         return min;
     }
+
+    // ------------------------------------------------------------------- min
 
     /**
      * 取最小值
@@ -1657,7 +1849,18 @@ public class ArrayUtil {
         return min;
     }
 
-    // ------------------------------------------------------------------- min
+    // ---------------------------------------------------------------------- remove
+
+    /**
+     * 新建一个空数组
+     *
+     * @param length 大小
+     * @return 空数组
+     * @since 3.3.0
+     */
+    public static Object[] newArray(int length) {
+        return new Object[length];
+    }
 
     /**
      * 数组元素中的null转换为""
@@ -1788,8 +1991,6 @@ public class ArrayUtil {
         return list.toArray(result);
     }
 
-    // ---------------------------------------------------------------------- remove
-
     /**
      * 移除数组中指定的元素<br> 只会移除匹配到的第一个元素 copy from commons-lang
      *
@@ -1847,6 +2048,33 @@ public class ArrayUtil {
 
         return result;
     }
+
+    /**
+     * 获取数组长度<br> 如果参数为{@code null}，返回0
+     *
+     * <pre>
+     * ArrayUtil.length(null)            = 0
+     * ArrayUtil.length([])              = 0
+     * ArrayUtil.length([null])          = 1
+     * ArrayUtil.length([true, false])   = 2
+     * ArrayUtil.length([1, 2, 3])       = 3
+     * ArrayUtil.length(["a", "b", "c"]) = 3
+     * </pre>
+     *
+     * @param array 数组对象
+     * @return 数组长度
+     * @throws IllegalArgumentException 如果参数不为数组，抛出此异常
+     * @see Array#getLength(Object)
+     * @since 3.0.8
+     */
+    public static int length(Object array) throws IllegalArgumentException {
+        if (null == array) {
+            return 0;
+        }
+        return Array.getLength(array);
+    }
+
+    // ---------------------------------------------------------------------- removeEle
 
     /**
      * 移除数组中指定的元素<br> 只会移除匹配到的第一个元素 copy from commons-lang
@@ -1965,7 +2193,7 @@ public class ArrayUtil {
         return remove(array, indexOf(array, element));
     }
 
-    // ---------------------------------------------------------------------- removeEle
+    // ---------------------------------------------------------------------- resize
 
     /**
      * 移除数组中对应位置的元素<br> copy from commons-lang
@@ -2018,6 +2246,8 @@ public class ArrayUtil {
     public static float[] removeEle(float[] array, float element) throws IllegalArgumentException {
         return remove(array, indexOf(array, element));
     }
+
+    // ---------------------------------------------------------------------- reverse
 
     /**
      * 移除数组中对应位置的元素<br> copy from commons-lang
@@ -2085,8 +2315,6 @@ public class ArrayUtil {
         });
     }
 
-    // ---------------------------------------------------------------------- resize
-
     /**
      * 生成一个新的重新设置大小的数组<br> 调整大小后拷贝原数组到新数组下。扩大则占位前N个位置，其它位置补充0，缩小则截断
      *
@@ -2152,8 +2380,6 @@ public class ArrayUtil {
     public static <T> T[] resize(T[] buffer, int newSize) {
         return resize(buffer, newSize, buffer.getClass().getComponentType());
     }
-
-    // ---------------------------------------------------------------------- reverse
 
     /**
      * 生成一个新的重新设置大小的数组<br> 调整大小后拷贝原数组到新数组下。扩大则占位前N个位置，缩小则截断
@@ -2326,6 +2552,8 @@ public class ArrayUtil {
         return array;
     }
 
+    // ---------------------------------------------------------------------- sub
+
     /**
      * 反转数组，会变更原数组
      *
@@ -2485,7 +2713,7 @@ public class ArrayUtil {
         return reverse(array, 0, array.length);
     }
 
-    // ---------------------------------------------------------------------- sub
+    // ---------------------------------------------------------------------- swap
 
     /**
      * 反转数组，会变更原数组
@@ -2530,6 +2758,22 @@ public class ArrayUtil {
         } else {
             return addAll(buffer, value);
         }
+    }
+
+    /**
+     * 将新元素添加到已有数组中<br> 添加新元素会生成一个新的数组，不影响原数组
+     *
+     * @param <T>         数组元素类型
+     * @param buffer      已有数组
+     * @param newElements 新元素
+     * @return 新数组
+     */
+    @SafeVarargs
+    public static <T> T[] addAll(T[] buffer, T... newElements) {
+        if (isEmpty(buffer)) {
+            return newElements;
+        }
+        return insert(buffer, buffer.length, newElements);
     }
 
     /**
@@ -2581,47 +2825,6 @@ public class ArrayUtil {
     }
 
     /**
-     * 数组是否为空<br> 此方法会匹配单一对象，如果此对象为{@code null}则返回true<br> 如果此对象为非数组，理解为此对象为数组的第一个元素，则返回false<br>
-     * 如果此对象为数组对象，数组长度大于0情况下返回false，否则返回true
-     *
-     * @param array 数组
-     * @return 是否为空
-     */
-    public static boolean isEmpty(Object array) {
-        if (null == array) {
-            return true;
-        } else if (isArray(array)) {
-            return 0 == Array.getLength(array);
-        }
-        throw new UtilException("Object to provide is not a Array !");
-    }
-
-    /**
-     * 获取数组长度<br> 如果参数为{@code null}，返回0
-     *
-     * <pre>
-     * ArrayUtil.length(null)            = 0
-     * ArrayUtil.length([])              = 0
-     * ArrayUtil.length([null])          = 1
-     * ArrayUtil.length([true, false])   = 2
-     * ArrayUtil.length([1, 2, 3])       = 3
-     * ArrayUtil.length(["a", "b", "c"]) = 3
-     * </pre>
-     *
-     * @param array 数组对象
-     * @return 数组长度
-     * @throws IllegalArgumentException 如果参数不为数组，抛出此异常
-     * @see Array#getLength(Object)
-     * @since 3.0.8
-     */
-    public static int length(Object array) throws IllegalArgumentException {
-        if (null == array) {
-            return 0;
-        }
-        return Array.getLength(array);
-    }
-
-    /**
      * 将元素值设置为数组的某个位置，当给定的index大于数组长度，则追加
      *
      * @param array 已有数组
@@ -2637,6 +2840,22 @@ public class ArrayUtil {
         } else {
             return addAll(array, value);
         }
+    }
+
+    /**
+     * 将新元素添加到已有数组中<br> 添加新元素会生成一个新的数组，不影响原数组
+     *
+     * @param <T>         数组元素类型
+     * @param array       已有数组
+     * @param newElements 新元素
+     * @return 新数组
+     */
+    @SafeVarargs
+    public static <T> Object addAll(Object array, T... newElements) {
+        if (isEmpty(array)) {
+            return newElements;
+        }
+        return insert(array, length(array), newElements);
     }
 
     /**
@@ -2703,8 +2922,6 @@ public class ArrayUtil {
         return Arrays.copyOfRange(array, start, end);
     }
 
-    // ---------------------------------------------------------------------- swap
-
     /**
      * 获取子数组
      *
@@ -2739,6 +2956,8 @@ public class ArrayUtil {
         }
         return Arrays.copyOfRange(array, start, end);
     }
+
+    // ---------------------------------------------------------------------- boxing
 
     /**
      * 获取子数组
@@ -3043,8 +3262,6 @@ public class ArrayUtil {
         return list.toArray();
     }
 
-    // ---------------------------------------------------------------------- boxing
-
     /**
      * 交换数组中两个位置的值
      *
@@ -3063,6 +3280,8 @@ public class ArrayUtil {
         array[index2] = tmp;
         return array;
     }
+
+    // ---------------------------------------------------------------------- toArray
 
     /**
      * 交换数组中两个位置的值
@@ -3178,6 +3397,8 @@ public class ArrayUtil {
         return array;
     }
 
+    // ---------------------------------------------------------------------- boxing
+
     /**
      * 交换数组中两个位置的值
      *
@@ -3235,8 +3456,6 @@ public class ArrayUtil {
         Array.set(array, index2, tmp);
         return array;
     }
-
-    // ---------------------------------------------------------------------- toArray
 
     /**
      * {@link ByteBuffer} 转byte数组
@@ -3325,267 +3544,6 @@ public class ArrayUtil {
     }
 
     /**
-     * 映射键值（参考Python的zip()函数），返回Map无序<br> 例如：<br> keys = [a,b,c,d]<br> values = [1,2,3,4]<br> 则得到的Map是 {a=1, b=2, c=3,
-     * d=4}<br> 如果两个数组长度不同，则只对应最短部分
-     *
-     * @param <K>    Key类型
-     * @param <V>    Value类型
-     * @param keys   键列表
-     * @param values 值列表
-     * @return Map
-     */
-    public static <K, V> Map<K, V> zip(K[] keys, V[] values) {
-        return zip(keys, values, false);
-    }
-
-    /**
-     * 映射键值（参考Python的zip()函数）<br> 例如：<br> keys = [a,b,c,d]<br> values = [1,2,3,4]<br> 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
-     * 如果两个数组长度不同，则只对应最短部分
-     *
-     * @param <K>     Key类型
-     * @param <V>     Value类型
-     * @param keys    键列表
-     * @param values  值列表
-     * @param isOrder 是否有序
-     * @return Map
-     * @since 3.0.4
-     */
-    public static <K, V> Map<K, V> zip(K[] keys, V[] values, boolean isOrder) {
-        if (isEmpty(keys) || isEmpty(values)) {
-            return null;
-        }
-
-        final int size = Math.min(keys.length, values.length);
-        final Map<K, V> map = new LinkedHashMap<>(size);
-        for (int i = 0; i < size; i++) {
-            map.put(keys[i], values[i]);
-        }
-
-        return map;
-    }
-
-    // ---------------------------------------------------------------------- boxing
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Integer[] boxing(int... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Integer[0];
-        }
-
-        final Integer[] array = new Integer[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Long[] boxing(long... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Long[0];
-        }
-
-        final Long[] array = new Long[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Character[] boxing(char... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Character[0];
-        }
-
-        final Character[] array = new Character[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Byte[] boxing(byte... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Byte[0];
-        }
-
-        final Byte[] array = new Byte[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Short[] boxing(short... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Short[0];
-        }
-
-        final Short[] array = new Short[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Float[] boxing(float... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Float[0];
-        }
-
-        final Float[] array = new Float[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Double[] boxing(double... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Double[0];
-        }
-
-        final Double[] array = new Double[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 将原始类型数组包装为包装类型
-     *
-     * @param values 原始类型数组
-     * @return 包装类型数组
-     */
-    public static Boolean[] boxing(boolean... values) {
-        if (null == values) {
-            return null;
-        }
-        final int length = values.length;
-        if (0 == length) {
-            return new Boolean[0];
-        }
-
-        final Boolean[] array = new Boolean[length];
-        for (int i = 0; i < length; i++) {
-            array[i] = values[i];
-        }
-        return array;
-    }
-
-    /**
-     * 包装数组对象
-     *
-     * @param obj 对象，可以是对象数组或者基本类型数组
-     * @return 包装类型数组或对象数组
-     * @throws UtilException 对象为非数组
-     */
-    public static Object[] boxing(Object obj) {
-        if (null == obj) {
-            return null;
-        }
-        if (isArray(obj)) {
-            try {
-                return (Object[]) obj;
-            } catch (Exception e) {
-                final String className = obj.getClass().getComponentType().getName();
-                switch (className) {
-                    case "long":
-                        return boxing((long[]) obj);
-                    case "int":
-                        return boxing((int[]) obj);
-                    case "short":
-                        return boxing((short[]) obj);
-                    case "char":
-                        return boxing((char[]) obj);
-                    case "byte":
-                        return boxing((byte[]) obj);
-                    case "boolean":
-                        return boxing((boolean[]) obj);
-                    case "float":
-                        return boxing((float[]) obj);
-                    case "double":
-                        return boxing((double[]) obj);
-                    default:
-                        throw new UtilException(e);
-                }
-            }
-        }
-        throw new UtilException(StringUtil.format("[{}] is not Array!", obj.getClass()));
-    }
-
-    // ---------------------------------------------------------------------- unboxing
-
-    /**
      * 包装类数组转为原始类型数组
      *
      * @param values 包装类型数组
@@ -3628,6 +3586,8 @@ public class ArrayUtil {
         }
         return array;
     }
+
+    // ---------------------------------------------------------------------- unboxing
 
     /**
      * 包装类数组转为原始类型数组
@@ -3759,6 +3719,46 @@ public class ArrayUtil {
             array[i] = ObjectUtil.defaultIfNull(values[i], false);
         }
         return array;
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数），返回Map无序<br> 例如：<br> keys = [a,b,c,d]<br> values = [1,2,3,4]<br> 则得到的Map是 {a=1, b=2, c=3,
+     * d=4}<br> 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K>    Key类型
+     * @param <V>    Value类型
+     * @param keys   键列表
+     * @param values 值列表
+     * @return Map
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values) {
+        return zip(keys, values, false);
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数）<br> 例如：<br> keys = [a,b,c,d]<br> values = [1,2,3,4]<br> 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K>     Key类型
+     * @param <V>     Value类型
+     * @param keys    键列表
+     * @param values  值列表
+     * @param isOrder 是否有序
+     * @return Map
+     * @since 3.0.4
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values, boolean isOrder) {
+        if (isEmpty(keys) || isEmpty(values)) {
+            return null;
+        }
+
+        final int size = Math.min(keys.length, values.length);
+        final Map<K, V> map = new LinkedHashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            map.put(keys[i], values[i]);
+        }
+
+        return map;
     }
 
 }

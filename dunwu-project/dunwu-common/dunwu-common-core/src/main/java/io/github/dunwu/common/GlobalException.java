@@ -1,6 +1,6 @@
 package io.github.dunwu.common;
 
-import io.github.dunwu.common.constant.ErrorCode;
+import io.github.dunwu.common.constant.Status;
 
 /**
  * 系统应答状态码
@@ -8,24 +8,27 @@ import io.github.dunwu.common.constant.ErrorCode;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-11
  */
-public class AppException extends RuntimeException {
+public class GlobalException extends RuntimeException {
 
     private static final long serialVersionUID = -7027578114976830416L;
 
     private BaseResult result;
 
-    public AppException(BaseResult result) {
-        this.result = new BaseResult(result.getSuccess(), result.getCode(),
-            result.getMessage());
+    public GlobalException(String message) {
+        super(message);
     }
 
-    public AppException(ErrorCode appCode) {
-        this.result = ResultUtils.failBaseResult(appCode);
+    public GlobalException(BaseResult result) {
+        this.result = new BaseResult(result.getCode(), result.message());
+    }
+
+    public GlobalException(Status status) {
+        this.result = BaseResult.fail(status);
     }
 
     @Override
     public String toString() {
-        return "AppException{" + "result=" + result + '}';
+        return "GlobalException{" + "result=" + result + '}';
     }
 
     /**
@@ -38,10 +41,6 @@ public class AppException extends RuntimeException {
 
     public BaseResult getResult() {
         return result;
-    }
-
-    public void setResult(BaseResult result) {
-        this.result = result;
     }
 
 }

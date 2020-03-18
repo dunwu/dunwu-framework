@@ -30,12 +30,6 @@ public abstract class AnsiOutput {
 
     private static final String ENCODE_JOIN = ";";
 
-    private static Enabled enabled = Enabled.DETECT;
-
-    private static Boolean consoleAvailable;
-
-    private static Boolean ansiCapable;
-
     private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
 
     private static final String ENCODE_START = "\033[";
@@ -44,33 +38,11 @@ public abstract class AnsiOutput {
 
     private static final String RESET = "0;" + AnsiColor.DEFAULT;
 
-    /**
-     * Sets if ANSI output is enabled.
-     *
-     * @param enabled if ANSI is enabled, disabled or detected
-     */
-    public static void setEnabled(Enabled enabled) {
-        Assert.notNull(enabled, "Enabled must not be null");
-        AnsiOutput.enabled = enabled;
-    }
+    private static Enabled enabled = Enabled.DETECT;
 
-    /**
-     * Returns if ANSI output is enabled
-     *
-     * @return if ANSI enabled, disabled or detected
-     */
-    public static Enabled getEnabled() {
-        return AnsiOutput.enabled;
-    }
+    private static Boolean consoleAvailable;
 
-    /**
-     * Sets if the System.console() is known to be available.
-     *
-     * @param consoleAvailable if the console is known to be available or {@code null} to use standard detection logic.
-     */
-    public static void setConsoleAvailable(Boolean consoleAvailable) {
-        AnsiOutput.consoleAvailable = consoleAvailable;
-    }
+    private static Boolean ansiCapable;
 
     /**
      * Encode a single {@link AnsiElement} if output is enabled.
@@ -83,6 +55,58 @@ public abstract class AnsiOutput {
             return ENCODE_START + element + ENCODE_END;
         }
         return "";
+    }
+
+    private static boolean isEnabled() {
+        if (enabled == Enabled.DETECT) {
+            if (ansiCapable == null) {
+                ansiCapable = detectIfAnsiCapable();
+            }
+            return ansiCapable;
+        }
+        return enabled == Enabled.ALWAYS;
+    }
+
+    private static boolean detectIfAnsiCapable() {
+        try {
+            if (Boolean.FALSE.equals(consoleAvailable)) {
+                return false;
+            }
+            if ((consoleAvailable == null) && (System.console() == null)) {
+                return false;
+            }
+            return !(OPERATING_SYSTEM_NAME.contains("win"));
+        } catch (Throwable ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Returns if ANSI output is enabled
+     *
+     * @return if ANSI enabled, disabled or detected
+     */
+    public static Enabled getEnabled() {
+        return AnsiOutput.enabled;
+    }
+
+    /**
+     * Sets if ANSI output is enabled.
+     *
+     * @param enabled if ANSI is enabled, disabled or detected
+     */
+    public static void setEnabled(Enabled enabled) {
+        Assert.notNull(enabled, "Enabled must not be null");
+        AnsiOutput.enabled = enabled;
+    }
+
+    /**
+     * Sets if the System.console() is known to be available.
+     *
+     * @param consoleAvailable if the console is known to be available or {@code null} to use standard detection logic.
+     */
+    public static void setConsoleAvailable(Boolean consoleAvailable) {
+        AnsiOutput.consoleAvailable = consoleAvailable;
     }
 
     /**
@@ -133,30 +157,6 @@ public abstract class AnsiOutput {
             if (!(element instanceof AnsiElement) && element != null) {
                 sb.append(element);
             }
-        }
-    }
-
-    private static boolean isEnabled() {
-        if (enabled == Enabled.DETECT) {
-            if (ansiCapable == null) {
-                ansiCapable = detectIfAnsiCapable();
-            }
-            return ansiCapable;
-        }
-        return enabled == Enabled.ALWAYS;
-    }
-
-    private static boolean detectIfAnsiCapable() {
-        try {
-            if (Boolean.FALSE.equals(consoleAvailable)) {
-                return false;
-            }
-            if ((consoleAvailable == null) && (System.console() == null)) {
-                return false;
-            }
-            return !(OPERATING_SYSTEM_NAME.contains("win"));
-        } catch (Throwable ex) {
-            return false;
         }
     }
 

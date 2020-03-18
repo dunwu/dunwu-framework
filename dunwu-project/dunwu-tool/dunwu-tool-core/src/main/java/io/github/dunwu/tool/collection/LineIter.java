@@ -76,7 +76,9 @@ public class LineIter implements Iterator<String>, Iterable<String>, Closeable, 
     @Override
     public Iterator<String> iterator() {
         return this;
-    }    /**
+    }
+
+    /**
      * 判断{@link Reader}是否可以存在下一行。 If there is an <code>IOException</code> then {@link #close()} will be called on this
      * instance.
      *
@@ -163,7 +165,5 @@ public class LineIter implements Iterator<String>, Iterable<String>, Closeable, 
     protected boolean isValidLine(String line) {
         return true;
     }
-
-
 
 }

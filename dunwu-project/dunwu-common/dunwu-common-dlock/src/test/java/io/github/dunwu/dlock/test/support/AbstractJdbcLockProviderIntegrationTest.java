@@ -12,8 +12,8 @@
  */
 package io.github.dunwu.dlock.test.support;
 
-import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.DistributedLock;
+import io.github.dunwu.dlock.core.LockConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +31,24 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
 
     protected JdbcTestUtils testUtils;
 
+    @Override
+    protected void assertUnlocked(String lockName) {
+        Instant lockedUntil = getLockedUntil(lockName);
+        assertThat(lockedUntil).isBeforeOrEqualTo(Instant.now().truncatedTo(ChronoUnit.MILLIS).plusMillis(1));
+    }
+
+    private Instant getLockedUntil(String lockName) {
+        return testUtils.getJdbcTemplate()
+            .queryForObject("SELECT lock_until FROM dunwulock WHERE name = ?", new Object[] { lockName },
+                Instant.class);
+    }
+
+    @Override
+    protected void assertLocked(String lockName) {
+        Instant lockedUntil = getLockedUntil(lockName);
+        assertThat(lockedUntil).isAfter(Instant.now());
+    }
+
     @BeforeEach
     public void initTestUtils() {
         testUtils = new JdbcTestUtils(getDbConfig());
@@ -43,23 +61,6 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
         testUtils.clean();
     }
 
-    @Override
-    protected void assertUnlocked(String lockName) {
-        Instant lockedUntil = getLockedUntil(lockName);
-        assertThat(lockedUntil).isBeforeOrEqualTo(Instant.now().truncatedTo(ChronoUnit.MILLIS).plusMillis(1));
-    }
-
-    private Instant getLockedUntil(String lockName) {
-        return testUtils.getJdbcTemplate()
-            .queryForObject("SELECT lock_until FROM dunwulock WHERE name = ?", new Object[] { lockName }, Instant.class);
-    }
-
-    @Override
-    protected void assertLocked(String lockName) {
-        Instant lockedUntil = getLockedUntil(lockName);
-        assertThat(lockedUntil).isAfter(Instant.now());
-    }
-
     @Test
     public void shouldCreateLockIfRecordAlreadyExists() {
         Calendar now = now();
@@ -69,9 +70,17 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
         shouldCreateLock();
     }
 
+    protected Calendar now() {
+        return Calendar.getInstance();
+    }
+
     @Test
     public void fuzzTestShouldWorkWithTransaction() throws ExecutionException, InterruptedException {
         TransactionalFuzzTester.fuzzTestShouldWorkWithTransaction(getLockProvider(), getDatasource());
+    }
+
+    protected DataSource getDatasource() {
+        return testUtils.getDatasource();
     }
 
     @Test
@@ -80,14 +89,6 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
             "lock name that is too long Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
         Optional<DistributedLock> lock = getLockProvider().lock(configuration);
         assertThat(lock).isEmpty();
-    }
-
-    protected Calendar now() {
-        return Calendar.getInstance();
-    }
-
-    protected DataSource getDatasource() {
-        return testUtils.getDatasource();
     }
 
 }

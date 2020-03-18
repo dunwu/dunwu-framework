@@ -12,8 +12,8 @@
  */
 package io.github.dunwu.dlock.test.support;
 
-import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.DistributedLock;
+import io.github.dunwu.dlock.core.LockConfiguration;
 import io.github.dunwu.dlock.core.StorageBasedLockProvider;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractStorageBasedLockProviderIntegrationTest
     extends AbstractExtensibleLockProviderIntegrationTest {
-
-    @Override
-    protected abstract StorageBasedLockProvider getLockProvider();
 
     @Test
     public void lockShouldSurviveCacheClearingInTheMiddle() {
@@ -42,5 +39,8 @@ public abstract class AbstractStorageBasedLockProviderIntegrationTest
 
         lock.get().unlock();
     }
+
+    @Override
+    protected abstract StorageBasedLockProvider getLockProvider();
 
 }

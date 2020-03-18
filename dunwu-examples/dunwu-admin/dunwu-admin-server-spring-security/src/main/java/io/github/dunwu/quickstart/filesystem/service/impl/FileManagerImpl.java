@@ -2,8 +2,11 @@ package io.github.dunwu.quickstart.filesystem.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.dunwu.common.*;
-import io.github.dunwu.common.constant.AppCode;
+import io.github.dunwu.common.BaseResult;
+import io.github.dunwu.common.DataResult;
+import io.github.dunwu.common.PageResult;
+import io.github.dunwu.common.Pagination;
+import io.github.dunwu.common.constant.AppResulstStatus;
 import io.github.dunwu.data.mybatis.support.MybatisPlusUtil;
 import io.github.dunwu.quickstart.filesystem.config.FileSystemProperties;
 import io.github.dunwu.quickstart.filesystem.constant.FileStoreTypeEnum;
@@ -75,7 +78,7 @@ public class FileManagerImpl implements FileManager {
             } else if (now.getTime() - first.getTime() < uploadTimeLimit.getStatTimeRange()
                 && accessDTO.getCount() + 1 > uploadTimeLimit.getStatTimeRange()) {
                 // 首次请求时间在时间间隔内，且访问次数超过限制，拒绝访问
-                return ResultUtils.successDataResult(true);
+                return DataResult.success(true);
             } else {
                 accessDTO.setCount(accessDTO.getCount() + 1);
             }
@@ -86,7 +89,7 @@ public class FileManagerImpl implements FileManager {
         synchronized (map) {
             map.put(ip, accessDTO);
         }
-        return ResultUtils.successDataResult(false);
+        return DataResult.success(false);
     }
 
     @Override
@@ -98,19 +101,19 @@ public class FileManagerImpl implements FileManager {
         FileDTO fileDTO = convert(uploadFileDTO);
         String storeUrl = fileStorageService.create(uploadFileDTO);
         if (StringUtils.isBlank(storeUrl)) {
-            return ResultUtils.failDataResult(AppCode.ERROR_IO);
+            return DataResult.failData(AppResulstStatus.ERROR_IO);
         }
         File file = BeanUtil.toBean(fileDTO, File.class);
         file.setStoreUrl(storeUrl);
         fileInfoMapper.insert(file);
-        return ResultUtils.successDataResult(fileDTO);
+        return DataResult.success(fileDTO);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResult delete(FileQuery fileQuery) throws IOException {
         if (fileQuery == null) {
-            return ResultUtils.failBaseResult(AppCode.ERROR_PARAMETER);
+            return BaseResult.fail(AppResulstStatus.ERROR_PARAMETER);
         }
 
         File query = BeanUtil.toBean(fileQuery, File.class);
@@ -122,23 +125,23 @@ public class FileManagerImpl implements FileManager {
         if (fileService.delete(fileDTO)) {
             int num = fileInfoMapper.deleteById(file.getId());
             if (num > 0) {
-                return ResultUtils.successBaseResult();
+                return BaseResult.success();
             }
         }
 
-        return ResultUtils.failBaseResult(AppCode.ERROR_DB);
+        return BaseResult.fail(AppResulstStatus.ERROR_DB);
     }
 
     @Override
     public DataResult<FileDTO> getOne(FileQuery fileQuery) throws IOException {
         if (fileQuery == null) {
-            return ResultUtils.failDataResult(AppCode.ERROR_PARAMETER);
+            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
         }
 
         File fileInfoQuery = BeanUtil.toBean(fileQuery, File.class);
         File file = fileInfoMapper.selectOne(new QueryWrapper<>(fileInfoQuery));
         if (file == null) {
-            return ResultUtils.successDataResult(null);
+            return DataResult.success(null);
         }
 
         FileStoreTypeEnum storeType = file.getStoreType();
@@ -146,7 +149,7 @@ public class FileManagerImpl implements FileManager {
             FileStorageService.class);
         FileDTO query = BeanUtil.toBean(file, FileDTO.class);
         FileDTO fileDTO = fileService.getContent(query);
-        return ResultUtils.successDataResult(fileDTO);
+        return DataResult.success(fileDTO);
     }
 
     @Override
@@ -157,7 +160,7 @@ public class FileManagerImpl implements FileManager {
         List<FileDTO> list = BeanUtil.toBeanList(result.getRecords(), FileDTO.class);
         pagination.setTotal(result.getTotal());
         pagination.setList(list);
-        return ResultUtils.successPageResult(pagination);
+        return PageResult.success(pagination);
     }
 
     /**

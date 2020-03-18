@@ -56,18 +56,6 @@ public class DunwuWebExtConfiguration implements WebMvcConfigurer {
         }
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-            .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
-    // ------------------------------------------------------------------------------------
-    // 注册过滤器、拦截器
-    // ------------------------------------------------------------------------------------
-
     /**
      * 根据配置，选择性注入应用所需的拦截器 {@link HandlerInterceptorAdapter}
      *
@@ -79,6 +67,18 @@ public class DunwuWebExtConfiguration implements WebMvcConfigurer {
             // 使用日志 DEBUG 级别打印 HTTP 请求、应答信息的拦截器
             registry.addInterceptor(new HttpDebugInterceptor()).addPathPatterns("/**").order(2);
         }
+    }
+
+    // ------------------------------------------------------------------------------------
+    // 注册过滤器、拦截器
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+            .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     /**

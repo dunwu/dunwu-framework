@@ -78,6 +78,18 @@ public class Zodiac {
     /**
      * 通过生日计算星座
      *
+     * @param month 月，从0开始计数，见{@link Month#getValue()}
+     * @param day   天
+     * @return 星座名
+     */
+    public static String getZodiac(int month, int day) {
+        // 在分隔日前为前一个星座，否则为后一个星座
+        return day < dayArr[month] ? ZODIACS[month] : ZODIACS[month + 1];
+    }
+
+    /**
+     * 通过生日计算星座
+     *
      * @param date 出生日期
      * @return 星座名
      */
@@ -96,18 +108,6 @@ public class Zodiac {
             return null;
         }
         return getZodiac(calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    }
-
-    /**
-     * 通过生日计算星座
-     *
-     * @param month 月，从0开始计数，见{@link Month#getValue()}
-     * @param day   天
-     * @return 星座名
-     */
-    public static String getZodiac(int month, int day) {
-        // 在分隔日前为前一个星座，否则为后一个星座
-        return day < dayArr[month] ? ZODIACS[month] : ZODIACS[month + 1];
     }
 
 }

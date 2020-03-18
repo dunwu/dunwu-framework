@@ -22,6 +22,13 @@ public interface LockProvider {
     }
 
     /**
+     * @param lockConfiguration 锁的配置信息，{@link LockConfiguration}
+     * @return 如果获取成功，返回持有的锁；失败则返回空。其中，{@link DistributedLock} 包含了释放锁的方法
+     */
+    @NotNull
+    Optional<DistributedLock> lock(@NotNull LockConfiguration lockConfiguration);
+
+    /**
      * @param name        锁名称
      * @param lockMaxTime 锁定最长时间
      * @param unit        时间单位
@@ -32,12 +39,5 @@ public interface LockProvider {
         LockConfiguration lockConfiguration = new LockConfiguration(name, maxTime, Instant.now());
         return lock(lockConfiguration);
     }
-
-    /**
-     * @param lockConfiguration 锁的配置信息，{@link LockConfiguration}
-     * @return 如果获取成功，返回持有的锁；失败则返回空。其中，{@link DistributedLock} 包含了释放锁的方法
-     */
-    @NotNull
-    Optional<DistributedLock> lock(@NotNull LockConfiguration lockConfiguration);
 
 }

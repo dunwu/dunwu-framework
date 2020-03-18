@@ -9,9 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "dunwu.dlock")
 public class DistributedLockProperties {
 
-    private LockType type = LockType.jdbc;
-
     private final Jdbc jdbc = new Jdbc();
+
+    private LockType type = LockType.jdbc;
 
     public LockType getType() {
         return type;
@@ -23,6 +23,12 @@ public class DistributedLockProperties {
 
     public Jdbc getJdbc() {
         return jdbc;
+    }
+
+    enum LockType {
+        jdbc,
+        redis,
+        zookeeper
     }
 
     public static class Jdbc {
@@ -38,12 +44,6 @@ public class DistributedLockProperties {
             return this;
         }
 
-    }
-
-    enum LockType {
-        jdbc,
-        redis,
-        zookeeper
     }
 
 }

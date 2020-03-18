@@ -101,6 +101,30 @@ public class Assert {
     }
 
     /**
+     * 断言对象是否不为{@code null} ，如果为{@code null} 抛出{@link IllegalArgumentException} 异常 Assert that an object is not {@code
+     * null} .
+     *
+     * <pre class="code">
+     * Assert.notNull(clazz, "The class must not be null");
+     * </pre>
+     *
+     * @param <T>              被检查对象泛型类型
+     * @param object           被检查对象
+     * @param errorMsgTemplate 错误消息模板，变量使用{}表示
+     * @param params           参数
+     * @return 被检查后的对象
+     * @throws IllegalArgumentException if the object is {@code null}
+     */
+    public static <T> T notNull(T object, String errorMsgTemplate, Object... params) throws IllegalArgumentException {
+        if (object == null) {
+            throw new IllegalArgumentException(StringUtil.format(errorMsgTemplate, params));
+        }
+        return object;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------- Check not null
+
+    /**
      * 检查下标（数组、集合、字符串）是否符合要求，下标必须满足：
      *
      * <pre>
@@ -117,8 +141,6 @@ public class Assert {
     public static int checkIndex(int index, int size) throws IllegalArgumentException, IndexOutOfBoundsException {
         return checkIndex(index, size, "[Assertion failed]");
     }
-
-    // ----------------------------------------------------------------------------------------------------------- Check not null
 
     /**
      * 检查下标（数组、集合、字符串）是否符合要求，下标必须满足：
@@ -144,6 +166,8 @@ public class Assert {
         return index;
     }
 
+    // ----------------------------------------------------------------------------------------------------------- Check empty
+
     /**
      * 错误的下标时显示的消息
      *
@@ -163,8 +187,6 @@ public class Assert {
                 size);
         }
     }
-
-    // ----------------------------------------------------------------------------------------------------------- Check empty
 
     /**
      * 断言 {@code superType.isAssignableFrom(subType)} 是否为 {@code true}.
@@ -276,28 +298,6 @@ public class Assert {
             throw new IllegalArgumentException(StringUtil.format(errorMsgTemplate, params));
         }
         return obj;
-    }
-
-    /**
-     * 断言对象是否不为{@code null} ，如果为{@code null} 抛出{@link IllegalArgumentException} 异常 Assert that an object is not {@code
-     * null} .
-     *
-     * <pre class="code">
-     * Assert.notNull(clazz, "The class must not be null");
-     * </pre>
-     *
-     * @param <T>              被检查对象泛型类型
-     * @param object           被检查对象
-     * @param errorMsgTemplate 错误消息模板，变量使用{}表示
-     * @param params           参数
-     * @return 被检查后的对象
-     * @throws IllegalArgumentException if the object is {@code null}
-     */
-    public static <T> T notNull(T object, String errorMsgTemplate, Object... params) throws IllegalArgumentException {
-        if (object == null) {
-            throw new IllegalArgumentException(StringUtil.format(errorMsgTemplate, params));
-        }
-        return object;
     }
 
     /**

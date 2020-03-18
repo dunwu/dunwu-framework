@@ -9,7 +9,7 @@ public enum FlowLimitType {
      */
     CUSTOMER,
     /**
-     *  根据 IP地址限制
+     * 根据 IP地址限制
      */
     IP
 }

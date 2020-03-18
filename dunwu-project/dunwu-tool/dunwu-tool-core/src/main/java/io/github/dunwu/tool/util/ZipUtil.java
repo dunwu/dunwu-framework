@@ -794,36 +794,6 @@ public class ZipUtil {
     }
 
     /**
-     * 对流中的数据加入到压缩文件<br> 使用默认编码UTF-8
-     *
-     * @param zipFile 生成的Zip文件，包括文件名。注意：zipPath不能是srcPath路径下的子文件夹
-     * @param path    流数据在压缩文件中的路径或文件名
-     * @param in      要压缩的源
-     * @return 压缩文件
-     * @throws UtilException IO异常
-     * @since 3.0.6
-     */
-    public static File zip(File zipFile, String path, InputStream in) throws UtilException {
-        return zip(zipFile, path, in, DEFAULT_CHARSET);
-    }
-
-    /**
-     * 对流中的数据加入到压缩文件<br> 路径列表和流列表长度必须一致
-     *
-     * @param zipFile 生成的Zip文件，包括文件名。注意：zipPath不能是srcPath路径下的子文件夹
-     * @param paths   流数据在压缩文件中的路径或文件名
-     * @param ins     要压缩的源
-     * @return 压缩文件
-     * @throws UtilException IO异常
-     * @since 3.0.9
-     */
-    public static File zip(File zipFile, String[] paths, InputStream[] ins) throws UtilException {
-        return zip(zipFile, paths, ins, DEFAULT_CHARSET);
-    }
-
-    // ----------------------------------------------------------------------------- Zlib
-
-    /**
      * 获得 {@link ZipOutputStream}
      *
      * @param zipFile 压缩文件
@@ -844,6 +814,8 @@ public class ZipUtil {
     private static ZipOutputStream getZipOutputStream(OutputStream out, Charset charset) {
         return new ZipOutputStream(out, ObjectUtil.defaultIfNull(charset, DEFAULT_CHARSET));
     }
+
+    // ----------------------------------------------------------------------------- Zlib
 
     /**
      * 添加文件流到压缩包，添加后关闭流
@@ -879,6 +851,34 @@ public class ZipUtil {
         } catch (IOException e) {
             // ignore
         }
+    }
+
+    /**
+     * 对流中的数据加入到压缩文件<br> 使用默认编码UTF-8
+     *
+     * @param zipFile 生成的Zip文件，包括文件名。注意：zipPath不能是srcPath路径下的子文件夹
+     * @param path    流数据在压缩文件中的路径或文件名
+     * @param in      要压缩的源
+     * @return 压缩文件
+     * @throws UtilException IO异常
+     * @since 3.0.6
+     */
+    public static File zip(File zipFile, String path, InputStream in) throws UtilException {
+        return zip(zipFile, path, in, DEFAULT_CHARSET);
+    }
+
+    /**
+     * 对流中的数据加入到压缩文件<br> 路径列表和流列表长度必须一致
+     *
+     * @param zipFile 生成的Zip文件，包括文件名。注意：zipPath不能是srcPath路径下的子文件夹
+     * @param paths   流数据在压缩文件中的路径或文件名
+     * @param ins     要压缩的源
+     * @return 压缩文件
+     * @throws UtilException IO异常
+     * @since 3.0.9
+     */
+    public static File zip(File zipFile, String[] paths, InputStream[] ins) throws UtilException {
+        return zip(zipFile, paths, ins, DEFAULT_CHARSET);
     }
 
     // ---------------------------------------------------------------------------------------------- Private method start

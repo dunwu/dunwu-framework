@@ -120,6 +120,77 @@ public class XmlUtil {
     }
 
     /**
+     * 创建 DocumentBuilder
+     *
+     * @return DocumentBuilder
+     * @since 4.1.2
+     */
+    public static DocumentBuilder createDocumentBuilder() {
+        DocumentBuilder builder;
+        try {
+            builder = createDocumentBuilderFactory().newDocumentBuilder();
+        } catch (Exception e) {
+            throw new UtilException(e, "Create xml document error!");
+        }
+        return builder;
+    }
+
+    /**
+     * 创建{@link DocumentBuilderFactory}
+     * <p>
+     * 默认使用"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"<br> 如果使用第三方实现，请调用{@link
+     * #disableDefaultDocumentBuilderFactory()}
+     * </p>
+     *
+     * @return {@link DocumentBuilderFactory}
+     */
+    public static DocumentBuilderFactory createDocumentBuilderFactory() {
+        final DocumentBuilderFactory factory;
+        if (StringUtil.isNotEmpty(defaultDocumentBuilderFactory)) {
+            factory = DocumentBuilderFactory.newInstance(defaultDocumentBuilderFactory, null);
+        } else {
+            factory = DocumentBuilderFactory.newInstance();
+        }
+        return disableXXE(factory);
+    }
+
+    /**
+     * 关闭XXE，避免漏洞攻击<br> see: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#JAXP_DocumentBuilderFactory.2C_SAXParserFactory_and_DOM4J
+     *
+     * @param dbf DocumentBuilderFactory
+     * @return DocumentBuilderFactory
+     */
+    private static DocumentBuilderFactory disableXXE(DocumentBuilderFactory dbf) {
+        String feature;
+        try {
+            // This is the PRIMARY defense. If DTDs (doctypes) are disallowed, almost all XML entity attacks are prevented
+            // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
+            feature = "http://apache.org/xml/features/disallow-doctype-decl";
+            dbf.setFeature(feature, true);
+            // If you can't completely disable DTDs, then at least do the following:
+            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
+            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
+            // JDK7+ - http://xml.org/sax/features/external-general-entities
+            feature = "http://xml.org/sax/features/external-general-entities";
+            dbf.setFeature(feature, false);
+            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-parameter-entities
+            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-parameter-entities
+            // JDK7+ - http://xml.org/sax/features/external-parameter-entities
+            feature = "http://xml.org/sax/features/external-parameter-entities";
+            dbf.setFeature(feature, false);
+            // Disable external DTDs as well
+            feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+            dbf.setFeature(feature, false);
+            // and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
+            dbf.setXIncludeAware(false);
+            dbf.setExpandEntityReferences(false);
+        } catch (ParserConfigurationException e) {
+            // ignore
+        }
+        return dbf;
+    }
+
+    /**
      * 禁用默认的DocumentBuilderFactory，禁用后如果有第三方的实现（如oracle的xdb包中的xmlparse），将会自动加载实现。
      */
     synchronized public static void disableDefaultDocumentBuilderFactory() {
@@ -137,6 +208,8 @@ public class XmlUtil {
         Element child = getElement(element, tagName);
         return child == null ? null : child.getTextContent();
     }
+
+    // -------------------------------------------------------------------------------------- Write
 
     /**
      * 根据节点名获得第一个子节点
@@ -191,8 +264,6 @@ public class XmlUtil {
         return EscapeUtil.escape(string);
     }
 
-    // -------------------------------------------------------------------------------------- Write
-
     /**
      * 格式化XML输出
      *
@@ -229,6 +300,22 @@ public class XmlUtil {
             return null;
         }
         return xmlContent.replaceAll(INVALID_REGEX, "");
+    }
+
+    /**
+     * 读取解析XML文件<br> 编码在XML中定义
+     *
+     * @param source {@link InputSource}
+     * @return XML文档对象
+     * @since 3.0.9
+     */
+    public static Document readXML(InputSource source) {
+        final DocumentBuilder builder = createDocumentBuilder();
+        try {
+            return builder.parse(source);
+        } catch (Exception e) {
+            throw new UtilException(e, "Parse XML from stream error!");
+        }
     }
 
     /**
@@ -272,6 +359,8 @@ public class XmlUtil {
         }
         return writer.toString();
     }
+
+    // -------------------------------------------------------------------------------------- Create
 
     /**
      * 将XML文档写出
@@ -336,8 +425,6 @@ public class XmlUtil {
         return (Node) getByXPath(expression, source, XPathConstants.NODE);
     }
 
-    // -------------------------------------------------------------------------------------- Create
-
     /**
      * 通过XPath方式读取XML节点等信息<br> Xpath相关文章：https://www.ibm.com/developerworks/cn/xml/x-javaxpathapi.html
      *
@@ -359,6 +446,8 @@ public class XmlUtil {
             throw new UtilException(e);
         }
     }
+
+    // -------------------------------------------------------------------------------------- Function
 
     /**
      * 创建XPath<br> Xpath相关文章：https://www.ibm.com/developerworks/cn/xml/x-javaxpathapi.html
@@ -419,8 +508,6 @@ public class XmlUtil {
     public static NodeList getNodeListByXPath(String expression, Object source) {
         return (NodeList) getByXPath(expression, source, XPathConstants.NODESET);
     }
-
-    // -------------------------------------------------------------------------------------- Function
 
     /**
      * 将Map转换为XML
@@ -587,93 +674,6 @@ public class XmlUtil {
      */
     public static Document readXML(Reader reader) throws UtilException {
         return readXML(new InputSource(reader));
-    }
-
-    /**
-     * 读取解析XML文件<br> 编码在XML中定义
-     *
-     * @param source {@link InputSource}
-     * @return XML文档对象
-     * @since 3.0.9
-     */
-    public static Document readXML(InputSource source) {
-        final DocumentBuilder builder = createDocumentBuilder();
-        try {
-            return builder.parse(source);
-        } catch (Exception e) {
-            throw new UtilException(e, "Parse XML from stream error!");
-        }
-    }
-
-    /**
-     * 创建 DocumentBuilder
-     *
-     * @return DocumentBuilder
-     * @since 4.1.2
-     */
-    public static DocumentBuilder createDocumentBuilder() {
-        DocumentBuilder builder;
-        try {
-            builder = createDocumentBuilderFactory().newDocumentBuilder();
-        } catch (Exception e) {
-            throw new UtilException(e, "Create xml document error!");
-        }
-        return builder;
-    }
-
-    /**
-     * 创建{@link DocumentBuilderFactory}
-     * <p>
-     * 默认使用"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"<br> 如果使用第三方实现，请调用{@link
-     * #disableDefaultDocumentBuilderFactory()}
-     * </p>
-     *
-     * @return {@link DocumentBuilderFactory}
-     */
-    public static DocumentBuilderFactory createDocumentBuilderFactory() {
-        final DocumentBuilderFactory factory;
-        if (StringUtil.isNotEmpty(defaultDocumentBuilderFactory)) {
-            factory = DocumentBuilderFactory.newInstance(defaultDocumentBuilderFactory, null);
-        } else {
-            factory = DocumentBuilderFactory.newInstance();
-        }
-        return disableXXE(factory);
-    }
-
-    /**
-     * 关闭XXE，避免漏洞攻击<br> see: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#JAXP_DocumentBuilderFactory.2C_SAXParserFactory_and_DOM4J
-     *
-     * @param dbf DocumentBuilderFactory
-     * @return DocumentBuilderFactory
-     */
-    private static DocumentBuilderFactory disableXXE(DocumentBuilderFactory dbf) {
-        String feature;
-        try {
-            // This is the PRIMARY defense. If DTDs (doctypes) are disallowed, almost all XML entity attacks are prevented
-            // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
-            feature = "http://apache.org/xml/features/disallow-doctype-decl";
-            dbf.setFeature(feature, true);
-            // If you can't completely disable DTDs, then at least do the following:
-            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-general-entities
-            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-general-entities
-            // JDK7+ - http://xml.org/sax/features/external-general-entities
-            feature = "http://xml.org/sax/features/external-general-entities";
-            dbf.setFeature(feature, false);
-            // Xerces 1 - http://xerces.apache.org/xerces-j/features.html#external-parameter-entities
-            // Xerces 2 - http://xerces.apache.org/xerces2-j/features.html#external-parameter-entities
-            // JDK7+ - http://xml.org/sax/features/external-parameter-entities
-            feature = "http://xml.org/sax/features/external-parameter-entities";
-            dbf.setFeature(feature, false);
-            // Disable external DTDs as well
-            feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-            dbf.setFeature(feature, false);
-            // and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
-            dbf.setXIncludeAware(false);
-            dbf.setExpandEntityReferences(false);
-        } catch (ParserConfigurationException e) {
-            // ignore
-        }
-        return dbf;
     }
 
     /**

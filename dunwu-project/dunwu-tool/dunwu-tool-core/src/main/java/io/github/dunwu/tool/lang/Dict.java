@@ -244,6 +244,20 @@ public class Dict extends LinkedHashMap<String, Object> implements BasicTypeGett
     }
 
     /**
+     * 获得特定类型值
+     *
+     * @param <T>          值类型
+     * @param attr         字段名
+     * @param defaultValue 默认值
+     * @return 字段值
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T get(String attr, T defaultValue) {
+        final Object result = get(attr);
+        return (T) (result != null ? result : defaultValue);
+    }
+
+    /**
      * 转换为Bean对象
      *
      * @param <T>  Bean类型
@@ -427,20 +441,6 @@ public class Dict extends LinkedHashMap<String, Object> implements BasicTypeGett
      */
     public <T> T getBean(String attr) {
         return get(attr, null);
-    }
-
-    /**
-     * 获得特定类型值
-     *
-     * @param <T>          值类型
-     * @param attr         字段名
-     * @param defaultValue 默认值
-     * @return 字段值
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T get(String attr, T defaultValue) {
-        final Object result = get(attr);
-        return (T) (result != null ? result : defaultValue);
     }
 
     /**

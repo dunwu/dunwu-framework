@@ -65,6 +65,20 @@ public class KafkaUtil {
     }
 
     /**
+     * 检查Topic是否存在
+     *
+     * @param topic Kafka Topic
+     * @return boolean
+     */
+    public boolean isExistTopic(String topic) {
+        Set<String> topics = showTopics();
+        if (topics.contains(topic)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 查看所有Topic
      *
      * @return Set<String>
@@ -78,20 +92,6 @@ public class KafkaUtil {
             log.error("show topics failed", e);
         }
         return topics;
-    }
-
-    /**
-     * 检查Topic是否存在
-     *
-     * @param topic Kafka Topic
-     * @return boolean
-     */
-    public boolean isExistTopic(String topic) {
-        Set<String> topics = showTopics();
-        if (topics.contains(topic)) {
-            return true;
-        }
-        return false;
     }
 
 }

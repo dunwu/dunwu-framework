@@ -93,6 +93,49 @@ public class CollectionUtil {
     }
 
     /**
+     * 新建一个ArrayList
+     *
+     * @param <T>    集合元素类型
+     * @param values 数组
+     * @return ArrayList对象
+     */
+    @SafeVarargs
+    public static <T> ArrayList<T> newArrayList(T... values) {
+        return (ArrayList<T>) list(false, values);
+    }
+
+    /**
+     * 新建一个List
+     *
+     * @param <T>      集合元素类型
+     * @param isLinked 是否新建LinkedList
+     * @param values   数组
+     * @return List对象
+     * @since 4.1.2
+     */
+    @SafeVarargs
+    public static <T> List<T> list(boolean isLinked, T... values) {
+        if (ArrayUtil.isEmpty(values)) {
+            return list(isLinked);
+        }
+        final List<T> arrayList = isLinked ? new LinkedList<>() : new ArrayList<>(values.length);
+        Collections.addAll(arrayList, values);
+        return arrayList;
+    }
+
+    /**
+     * 新建一个空List
+     *
+     * @param <T>      集合元素类型
+     * @param isLinked 是否新建LinkedList
+     * @return List对象
+     * @since 4.1.2
+     */
+    public static <T> List<T> list(boolean isLinked) {
+        return isLinked ? new LinkedList<>() : new ArrayList<>();
+    }
+
+    /**
      * 加入全部
      *
      * @param <T>        集合元素类型
@@ -223,6 +266,28 @@ public class CollectionUtil {
     }
 
     /**
+     * 集合是否为非空
+     *
+     * @param collection 集合
+     * @return 是否为非空
+     */
+    public static boolean isNotEmpty(Collection<?> collection) {
+        return false == isEmpty(collection);
+    }
+
+    // ----------------------------------------------------------------------------------------------- new HashMap
+
+    /**
+     * 集合是否为空
+     *
+     * @param collection 集合
+     * @return 是否为空
+     */
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+    /**
      * 集合1中是否包含集合2中所有的元素，即集合2是否为集合1的子集
      *
      * @param coll1 集合1
@@ -271,6 +336,8 @@ public class CollectionUtil {
         }
         return false;
     }
+
+    // ----------------------------------------------------------------------------------------------- new HashSet
 
     /**
      * 集合中匹配规则的数量
@@ -337,8 +404,6 @@ public class CollectionUtil {
         return list;
     }
 
-    // ----------------------------------------------------------------------------------------------- new HashMap
-
     /**
      * 创建Map<br> 传入抽象Map{@link AbstractMap}和{@link Map}类将默认创建{@link HashMap}
      *
@@ -398,7 +463,43 @@ public class CollectionUtil {
         return result;
     }
 
-    // ----------------------------------------------------------------------------------------------- new HashSet
+    /**
+     * 根据集合返回一个元素计数的 {@link Map}<br> 所谓元素计数就是假如这个集合中某个元素出现了n次，那将这个元素做为key，n做为value<br> 例如：[a,b,c,c,c] 得到：<br> a: 1<br>
+     * b: 1<br> c: 3<br>
+     *
+     * @param <T>        集合元素类型
+     * @param collection 集合
+     * @return {@link Map}
+     * @see IterUtil#countMap(Iterable)
+     */
+    public static <T> Map<T, Integer> countMap(Iterable<T> collection) {
+        return IterUtil.countMap(collection);
+    }
+
+    /**
+     * 新建一个HashSet
+     *
+     * @param <T>        集合元素类型
+     * @param collection 集合
+     * @return HashSet对象
+     */
+    public static <T> HashSet<T> newHashSet(Collection<T> collection) {
+        return newHashSet(false, collection);
+    }
+
+    // ----------------------------------------------------------------------------------------------- List
+
+    /**
+     * 新建一个HashSet
+     *
+     * @param <T>        集合元素类型
+     * @param isSorted   是否有序，有序返回 {@link LinkedHashSet}，否则返回{@link HashSet}
+     * @param collection 集合，用于初始化Set
+     * @return HashSet对象
+     */
+    public static <T> HashSet<T> newHashSet(boolean isSorted, Collection<T> collection) {
+        return isSorted ? new LinkedHashSet<>(collection) : new HashSet<>(collection);
+    }
 
     /**
      * 去重集合
@@ -544,8 +645,6 @@ public class CollectionUtil {
         return list2;
     }
 
-    // ----------------------------------------------------------------------------------------------- List
-
     /**
      * 过滤<br> 过滤过程通过传入的Editor实现来返回需要的元素内容，这个Editor实现可以实现以下功能：
      *
@@ -644,6 +743,8 @@ public class CollectionUtil {
         }
         return list2;
     }
+
+    // ----------------------------------------------------------------------new LinkedList
 
     /**
      * 查找第一个匹配元素对象<br> 如果集合元素是Map，则比对键和值是否相同，相同则返回<br> 如果为普通Bean，则通过反射比对元素字段名对应的字段值是否相同，相同则返回<br> 如果给定字段值参数是{@code null}
@@ -792,8 +893,6 @@ public class CollectionUtil {
     public static Class<?> getElementType(Iterator<?> iterator) {
         return IterUtil.getElementType(iterator);
     }
-
-    // ----------------------------------------------------------------------new LinkedList
 
     /**
      * 获取给定Bean列表中指定字段名对应字段值的列表<br> 列表元素支持Bean与Map
@@ -1059,16 +1158,6 @@ public class CollectionUtil {
     }
 
     /**
-     * 集合是否为非空
-     *
-     * @param collection 集合
-     * @return 是否为非空
-     */
-    public static boolean isNotEmpty(Collection<?> collection) {
-        return false == isEmpty(collection);
-    }
-
-    /**
      * Map是否为空
      *
      * @param map 集合
@@ -1180,6 +1269,8 @@ public class CollectionUtil {
         return IterUtil.join(iterator, conjunction);
     }
 
+    // ---------------------------------------------------------------------- isEmpty
+
     /**
      * 获取指定Map列表中所有的Key
      *
@@ -1253,6 +1344,8 @@ public class CollectionUtil {
         return isLinked ? new LinkedList<>(collection) : new ArrayList<>(collection);
     }
 
+    // ---------------------------------------------------------------------- isNotEmpty
+
     /**
      * 新建一个ArrayList<br> 提供的参数为null时返回空{@link ArrayList}
      *
@@ -1280,8 +1373,6 @@ public class CollectionUtil {
         }
         return list(isLinked, iterable.iterator());
     }
-
-    // ---------------------------------------------------------------------- isEmpty
 
     /**
      * 新建一个ArrayList<br> 提供的参数为null时返回空{@link ArrayList}
@@ -1333,6 +1424,8 @@ public class CollectionUtil {
         return list;
     }
 
+    // ---------------------------------------------------------------------- zip
+
     /**
      * 新建{@link BlockingQueue}<br> 在队列为空时，获取元素的线程会等待队列变为非空。当队列满时，存储元素的线程会等待队列可用。
      *
@@ -1363,8 +1456,6 @@ public class CollectionUtil {
         return (null == collection) ? (new CopyOnWriteArrayList<>()) : (new CopyOnWriteArrayList<>(collection));
     }
 
-    // ---------------------------------------------------------------------- isNotEmpty
-
     /**
      * 新建一个HashSet
      *
@@ -1382,6 +1473,25 @@ public class CollectionUtil {
         while (iter.hasNext()) {
             set.add(iter.next());
         }
+        return set;
+    }
+
+    /**
+     * 新建一个HashSet
+     *
+     * @param <T>      集合元素类型
+     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回 {@link HashSet}
+     * @param ts       元素数组
+     * @return HashSet对象
+     */
+    @SafeVarargs
+    public static <T> HashSet<T> newHashSet(boolean isSorted, T... ts) {
+        if (null == ts) {
+            return isSorted ? new LinkedHashSet<>() : new HashSet<>();
+        }
+        int initialCapacity = Math.max((int) (ts.length / .75f) + 1, 16);
+        final HashSet<T> set = isSorted ? new LinkedHashSet<>(initialCapacity) : new HashSet<>(initialCapacity);
+        Collections.addAll(set, ts);
         return set;
     }
 
@@ -1419,25 +1529,6 @@ public class CollectionUtil {
     }
 
     /**
-     * 新建一个HashSet
-     *
-     * @param <T>      集合元素类型
-     * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回 {@link HashSet}
-     * @param ts       元素数组
-     * @return HashSet对象
-     */
-    @SafeVarargs
-    public static <T> HashSet<T> newHashSet(boolean isSorted, T... ts) {
-        if (null == ts) {
-            return isSorted ? new LinkedHashSet<>() : new HashSet<>();
-        }
-        int initialCapacity = Math.max((int) (ts.length / .75f) + 1, 16);
-        final HashSet<T> set = isSorted ? new LinkedHashSet<>(initialCapacity) : new HashSet<>(initialCapacity);
-        Collections.addAll(set, ts);
-        return set;
-    }
-
-    /**
      * 新建LinkedList
      *
      * @param values 数组
@@ -1449,8 +1540,6 @@ public class CollectionUtil {
     public static <T> LinkedList<T> newLinkedList(T... values) {
         return (LinkedList<T>) list(true, values);
     }
-
-    // ---------------------------------------------------------------------- zip
 
     /**
      * 切取部分数据<br> 切取后的栈将减少这些元素
@@ -1550,6 +1639,20 @@ public class CollectionUtil {
     }
 
     /**
+     * 去除指定元素，此方法直接修改原集合
+     *
+     * @param <T>        集合类型
+     * @param <E>        集合元素类型
+     * @param collection 集合
+     * @param filter     过滤器
+     * @return 处理后的集合
+     * @since 4.6.5
+     */
+    public static <T extends Collection<E>, E> T filter(T collection, final Filter<E> filter) {
+        return IterUtil.filter(collection, filter);
+    }
+
+    /**
      * 去除{@code null}或者"" 元素，此方法直接修改原集合
      *
      * @param <T>        集合类型
@@ -1573,20 +1676,6 @@ public class CollectionUtil {
      */
     public static <T extends Collection<E>, E> T removeNull(T collection) {
         return filter(collection, Objects::nonNull);
-    }
-
-    /**
-     * 去除指定元素，此方法直接修改原集合
-     *
-     * @param <T>        集合类型
-     * @param <E>        集合元素类型
-     * @param collection 集合
-     * @param filter     过滤器
-     * @return 处理后的集合
-     * @since 4.6.5
-     */
-    public static <T extends Collection<E>, E> T filter(T collection, final Filter<E> filter) {
-        return IterUtil.filter(collection, filter);
     }
 
     /**
@@ -1698,6 +1787,20 @@ public class CollectionUtil {
     }
 
     /**
+     * 排序集合，排序不会修改原集合
+     *
+     * @param <T>        集合元素类型
+     * @param collection 集合
+     * @param comparator 比较器
+     * @return treeSet
+     */
+    public static <T> List<T> sort(Collection<T> collection, Comparator<? super T> comparator) {
+        List<T> list = new ArrayList<>(collection);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    /**
      * 根据汉字的拼音顺序排序
      *
      * @param list List
@@ -1706,6 +1809,20 @@ public class CollectionUtil {
      */
     public static List<String> sortByPinyin(List<String> list) {
         return sort(list, new PinyinComparator());
+    }
+
+    /**
+     * 针对List排序，排序会修改原List
+     *
+     * @param <T>  元素类型
+     * @param list 被排序的List
+     * @param c    {@link Comparator}
+     * @return 原list
+     * @see Collections#sort(List, Comparator)
+     */
+    public static <T> List<T> sort(List<T> list, Comparator<? super T> c) {
+        Collections.sort(list, c);
+        return list;
     }
 
     /**
@@ -1722,20 +1839,6 @@ public class CollectionUtil {
     }
 
     /**
-     * 排序集合，排序不会修改原集合
-     *
-     * @param <T>        集合元素类型
-     * @param collection 集合
-     * @param comparator 比较器
-     * @return treeSet
-     */
-    public static <T> List<T> sort(Collection<T> collection, Comparator<? super T> comparator) {
-        List<T> list = new ArrayList<>(collection);
-        Collections.sort(list, comparator);
-        return list;
-    }
-
-    /**
      * 根据Bean的属性排序
      *
      * @param <T>      元素类型
@@ -1746,20 +1849,6 @@ public class CollectionUtil {
      */
     public static <T> List<T> sortByProperty(List<T> list, String property) {
         return sort(list, new PropertyComparator<>(property));
-    }
-
-    /**
-     * 针对List排序，排序会修改原List
-     *
-     * @param <T>  元素类型
-     * @param list 被排序的List
-     * @param c    {@link Comparator}
-     * @return 原list
-     * @see Collections#sort(List, Comparator)
-     */
-    public static <T> List<T> sort(List<T> list, Comparator<? super T> c) {
-        Collections.sort(list, c);
-        return list;
     }
 
     /**
@@ -1808,6 +1897,8 @@ public class CollectionUtil {
 
         return page(pageNo, pageSize, list);
     }
+
+    // ------------------------------------------------------------------------------------------------- sort
 
     /**
      * 对指定List分页取值
@@ -1974,8 +2065,6 @@ public class CollectionUtil {
         return (iterable instanceof Collection) ? (Collection<E>) iterable : newArrayList(iterable.iterator());
     }
 
-    // ------------------------------------------------------------------------------------------------- sort
-
     /**
      * 新建一个ArrayList<br> 提供的参数为null时返回空{@link ArrayList}
      *
@@ -1999,49 +2088,6 @@ public class CollectionUtil {
     @SafeVarargs
     public static <T> ArrayList<T> toList(T... values) {
         return newArrayList(values);
-    }
-
-    /**
-     * 新建一个ArrayList
-     *
-     * @param <T>    集合元素类型
-     * @param values 数组
-     * @return ArrayList对象
-     */
-    @SafeVarargs
-    public static <T> ArrayList<T> newArrayList(T... values) {
-        return (ArrayList<T>) list(false, values);
-    }
-
-    /**
-     * 新建一个List
-     *
-     * @param <T>      集合元素类型
-     * @param isLinked 是否新建LinkedList
-     * @param values   数组
-     * @return List对象
-     * @since 4.1.2
-     */
-    @SafeVarargs
-    public static <T> List<T> list(boolean isLinked, T... values) {
-        if (ArrayUtil.isEmpty(values)) {
-            return list(isLinked);
-        }
-        final List<T> arrayList = isLinked ? new LinkedList<>() : new ArrayList<>(values.length);
-        Collections.addAll(arrayList, values);
-        return arrayList;
-    }
-
-    /**
-     * 新建一个空List
-     *
-     * @param <T>      集合元素类型
-     * @param isLinked 是否新建LinkedList
-     * @return List对象
-     * @since 4.1.2
-     */
-    public static <T> List<T> list(boolean isLinked) {
-        return isLinked ? new LinkedList<>() : new ArrayList<>();
     }
 
     /**
@@ -2116,6 +2162,8 @@ public class CollectionUtil {
     public static HashMap<Object, Object> toMap(Object[] array) {
         return MapUtil.of(array);
     }
+
+    // ------------------------------------------------------------------------------------------------- forEach
 
     /**
      * 列转行。将Map中值列表分别按照其位置与key组成新的map。<br> 是{@link #toListMap(Iterable)}的逆方法<br> 比如传入数据：
@@ -2211,54 +2259,6 @@ public class CollectionUtil {
             }
         }
         return list;
-    }
-
-    // ------------------------------------------------------------------------------------------------- forEach
-
-    /**
-     * 根据集合返回一个元素计数的 {@link Map}<br> 所谓元素计数就是假如这个集合中某个元素出现了n次，那将这个元素做为key，n做为value<br> 例如：[a,b,c,c,c] 得到：<br> a: 1<br>
-     * b: 1<br> c: 3<br>
-     *
-     * @param <T>        集合元素类型
-     * @param collection 集合
-     * @return {@link Map}
-     * @see IterUtil#countMap(Iterable)
-     */
-    public static <T> Map<T, Integer> countMap(Iterable<T> collection) {
-        return IterUtil.countMap(collection);
-    }
-
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T>        集合元素类型
-     * @param collection 集合
-     * @return HashSet对象
-     */
-    public static <T> HashSet<T> newHashSet(Collection<T> collection) {
-        return newHashSet(false, collection);
-    }
-
-    /**
-     * 新建一个HashSet
-     *
-     * @param <T>        集合元素类型
-     * @param isSorted   是否有序，有序返回 {@link LinkedHashSet}，否则返回{@link HashSet}
-     * @param collection 集合，用于初始化Set
-     * @return HashSet对象
-     */
-    public static <T> HashSet<T> newHashSet(boolean isSorted, Collection<T> collection) {
-        return isSorted ? new LinkedHashSet<>(collection) : new HashSet<>(collection);
-    }
-
-    /**
-     * 集合是否为空
-     *
-     * @param collection 集合
-     * @return 是否为空
-     */
-    public static boolean isEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
     }
 
     /**

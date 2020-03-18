@@ -11,6 +11,10 @@ public class MessageDigestUtil {
 
     private MessageDigestUtil() {}
 
+    public static String encodeWithBase64(String type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
+        return Base64.encodeUrlSafe(encode(type, input, salt));
+    }
+
     public static byte[] encode(String type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
         // 根据类型，初始化消息摘要对象
         MessageDigest digest = MessageDigest.getInstance(type);
@@ -25,16 +29,12 @@ public class MessageDigestUtil {
         return digest.digest(input);
     }
 
-    public static byte[] encode(Type type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
-        return encode(type.name, input, salt);
-    }
-
-    public static String encodeWithBase64(String type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
-        return Base64.encodeUrlSafe(encode(type, input, salt));
-    }
-
     public static String encodeWithBase64(Type type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
         return Base64.encodeUrlSafe(encode(type, input, salt));
+    }
+
+    public static byte[] encode(Type type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
+        return encode(type.name, input, salt);
     }
 
     enum Type {

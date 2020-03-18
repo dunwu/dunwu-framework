@@ -136,6 +136,66 @@ public class DateUtil {
     }
 
     /**
+     * 标准化日期，默认处理以空格区分的日期时间格式，空格前为日期，空格后为时间：<br> 将以下字符替换为"-"
+     *
+     * <pre>
+     * "."
+     * "/"
+     * "年"
+     * "月"
+     * </pre>
+     * <p>
+     * 将以下字符去除
+     *
+     * <pre>
+     * "日"
+     * </pre>
+     * <p>
+     * 将以下字符替换为":"
+     *
+     * <pre>
+     * "时"
+     * "分"
+     * "秒"
+     * </pre>
+     * <p>
+     * 当末位是":"时去除之（不存在毫秒时）
+     *
+     * @param dateStr 日期时间字符串
+     * @return 格式化后的日期字符串
+     */
+    private static String normalize(CharSequence dateStr) {
+        if (StringUtil.isBlank(dateStr)) {
+            return StringUtil.str(dateStr);
+        }
+
+        // 日期时间分开处理
+        final List<String> dateAndTime = StringUtil.splitTrim(dateStr, ' ');
+        final int size = dateAndTime.size();
+        if (size < 1 || size > 2) {
+            // 非可被标准处理的格式
+            return StringUtil.str(dateStr);
+        }
+
+        final StringBuilder builder = StringUtil.getStringBuilder();
+
+        // 日期部分（"\"、"/"、"."、"年"、"月"都替换为"-"）
+        String datePart = dateAndTime.get(0).replaceAll("[/.年月]", "-");
+        datePart = StringUtil.removeSuffix(datePart, "日");
+        builder.append(datePart);
+
+        // 时间部分
+        if (size == 2) {
+            builder.append(' ');
+            String timePart = dateAndTime.get(1).replaceAll("[时分秒]", ":");
+            timePart = StringUtil.removeSuffix(timePart, ":");
+            builder.append(timePart);
+        }
+
+        return builder.toString();
+    }
+
+    /**
      * 解析格式为yyyy-MM-dd的日期，忽略时分秒
      *
      * @param dateString 标准形式的日期字符串
@@ -244,6 +304,17 @@ public class DateUtil {
     }
 
     /**
+     * 构建DateTime对象
+     *
+     * @param dateStr Date字符串
+     * @param parser  格式化器,{@link FastDateFormat}
+     * @return DateTime对象
+     */
+    public static DateTime parse(CharSequence dateStr, DateParser parser) {
+        return new DateTime(dateStr, parser);
+    }
+
+    /**
      * 生日转为年龄，计算法定年龄
      *
      * @param birthDay 生日
@@ -307,6 +378,17 @@ public class DateUtil {
         return DatePattern.NORM_DATE_FORMAT.format(date);
     }
 
+    // -------------------------------------------------------------- Part of Date start
+
+    /**
+     * 当前时间，转换为{@link DateTime}对象
+     *
+     * @return 当前时间
+     */
+    public static DateTime toDateTime() {
+        return new DateTime();
+    }
+
     /**
      * 获取某月的开始时间
      *
@@ -327,7 +409,43 @@ public class DateUtil {
         return truncate(calendar, DateField.MONTH);
     }
 
-    // -------------------------------------------------------------- Part of Date start
+    /**
+     * 修改日期为某个时间字段起始时间
+     *
+     * @param calendar  {@link Calendar}
+     * @param dateField 时间字段
+     * @return 原{@link Calendar}
+     * @since 4.5.7
+     */
+    public static Calendar truncate(Calendar calendar, DateField dateField) {
+        return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.TRUNCATE);
+    }
+
+    /**
+     * 转换为Calendar对象
+     *
+     * @param date 日期对象
+     * @return Calendar对象
+     */
+    public static Calendar toCalendar(Date date) {
+        if (date instanceof DateTime) {
+            return ((DateTime) date).toCalendar();
+        } else {
+            return toCalendar(date.getTime());
+        }
+    }
+
+    /**
+     * 转换为Calendar对象
+     *
+     * @param millis 时间戳
+     * @return Calendar对象
+     */
+    public static Calendar toCalendar(long millis) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(millis);
+        return cal;
+    }
 
     /**
      * 获取某季度的开始时间
@@ -516,6 +634,8 @@ public class DateUtil {
         return new DateBetween(beginDate, endDate).betweenYear(isReset);
     }
 
+    // -------------------------------------------------------------- toDateTime
+
     /**
      * 修改日期为某个时间字段结束时间
      *
@@ -584,47 +704,7 @@ public class DateUtil {
         return System.currentTimeMillis() / 1000;
     }
 
-    // -------------------------------------------------------------- toDateTime
-
-    /**
-     * 当前时间，转换为{@link DateTime}对象
-     *
-     * @return 当前时间
-     */
-    public static DateTime toDateTime() {
-        return new DateTime();
-    }
-
-    /**
-     * Long类型时间转为{@link DateTime}<br> 只支持毫秒级别时间戳，如果需要秒级别时间戳，请自行×1000
-     *
-     * @param millis Long类型Date（Unix时间戳）
-     * @return 时间对象
-     */
-    public static DateTime toDateTime(long millis) {
-        return new DateTime(millis);
-    }
-
-    /**
-     * {@link Calendar}类型时间转为{@link DateTime}<br> 始终根据已有{@link Calendar} 产生新的{@link DateTime}对象
-     *
-     * @param calendar {@link Calendar}
-     * @return 时间对象
-     */
-    public static DateTime toDateTime(Calendar calendar) {
-        return new DateTime(calendar);
-    }
-
-    /**
-     * {@link TemporalAccessor}类型时间转为{@link DateTime}<br> 始终根据已有{@link TemporalAccessor} 产生新的{@link DateTime}对象
-     *
-     * @param temporalAccessor {@link TemporalAccessor}
-     * @return 时间对象
-     * @since 5.0.0
-     */
-    public static DateTime toDateTime(TemporalAccessor temporalAccessor) {
-        return new DateTime(temporalAccessor);
-    }
+    // -------------------------------------------------------------- toCalendar
 
     /**
      * 当前时间，转换为{@link DateTime}对象，忽略毫秒部分
@@ -647,44 +727,6 @@ public class DateUtil {
         return new DateTime(beginOfSecond(toCalendar(date)));
     }
 
-    // -------------------------------------------------------------- toCalendar
-
-    /**
-     * 创建Calendar对象，时间为默认时区的当前时间
-     *
-     * @return Calendar对象
-     * @since 4.6.6
-     */
-    public static Calendar toCalendar() {
-        return Calendar.getInstance();
-    }
-
-    /**
-     * 转换为Calendar对象
-     *
-     * @param date 日期对象
-     * @return Calendar对象
-     */
-    public static Calendar toCalendar(Date date) {
-        if (date instanceof DateTime) {
-            return ((DateTime) date).toCalendar();
-        } else {
-            return toCalendar(date.getTime());
-        }
-    }
-
-    /**
-     * 转换为Calendar对象
-     *
-     * @param millis 时间戳
-     * @return Calendar对象
-     */
-    public static Calendar toCalendar(long millis) {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(millis);
-        return cal;
-    }
-
     /**
      * 获取秒级别的开始时间，即忽略毫秒部分
      *
@@ -695,20 +737,6 @@ public class DateUtil {
     public static Calendar beginOfSecond(Calendar calendar) {
         return truncate(calendar, DateField.SECOND);
     }
-
-    /**
-     * 修改日期为某个时间字段起始时间
-     *
-     * @param calendar  {@link Calendar}
-     * @param dateField 时间字段
-     * @return 原{@link Calendar}
-     * @since 4.5.7
-     */
-    public static Calendar truncate(Calendar calendar, DateField dateField) {
-        return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.TRUNCATE);
-    }
-
-    // ------------------------------------ Format start ----------------------------------------------
 
     /**
      * 获取某天的结束时间
@@ -729,6 +757,8 @@ public class DateUtil {
     public static Calendar endOfDay(Calendar calendar) {
         return ceiling(calendar, DateField.DAY_OF_MONTH);
     }
+
+    // ------------------------------------ Format start ----------------------------------------------
 
     /**
      * 获取某月的结束时间
@@ -804,9 +834,6 @@ public class DateUtil {
     public static DateTime endOfWeek(Date date) {
         return new DateTime(endOfWeek(toCalendar(date)));
     }
-    // ------------------------------------ Format end ----------------------------------------------
-
-    // ------------------------------------ Parse start ----------------------------------------------
 
     /**
      * 获取某周的结束时间，周日定为一周的结束
@@ -833,6 +860,9 @@ public class DateUtil {
         // WEEK_OF_MONTH为上限的字段（不包括），实际调整的为DAY_OF_MONTH
         return ceiling(calendar, DateField.WEEK_OF_MONTH);
     }
+    // ------------------------------------ Format end ----------------------------------------------
+
+    // ------------------------------------ Parse start ----------------------------------------------
 
     /**
      * 获取某年的结束时间
@@ -972,10 +1002,6 @@ public class DateUtil {
         return DatePattern.HTTP_DATETIME_FORMAT.format(date);
     }
 
-    // ------------------------------------ Parse end ----------------------------------------------
-
-    // ------------------------------------ Offset start ----------------------------------------------
-
     /**
      * 格式化时间<br> 格式 HH:mm:ss
      *
@@ -1005,6 +1031,10 @@ public class DateUtil {
         }
         return calendar.getActualMinimum(dateField);
     }
+
+    // ------------------------------------ Parse end ----------------------------------------------
+
+    // ------------------------------------ Offset start ----------------------------------------------
 
     /**
      * 计算生肖，只计算1900年后出生的人
@@ -1082,6 +1112,29 @@ public class DateUtil {
     }
 
     /**
+     * 获取指定日期偏移指定时间后的时间，生成的偏移日期不影响原日期
+     *
+     * @param date      基准日期
+     * @param dateField 偏移的粒度大小（小时、天、月等）{@link DateField}
+     * @param offset    偏移量，正数为向后偏移，负数为向前偏移
+     * @return 偏移后的日期
+     */
+    public static DateTime offset(Date date, DateField dateField, int offset) {
+        return dateNew(date).offset(dateField, offset);
+    }
+
+    /**
+     * 根据已有{@link Date} 产生新的{@link DateTime}对象
+     *
+     * @param date Date对象
+     * @return {@link DateTime}对象
+     * @since 4.3.1
+     */
+    public static DateTime dateNew(Date date) {
+        return new DateTime(date);
+    }
+
+    /**
      * 当前日期是否在日期指定范围内<br> 起始日期和结束日期可以互换
      *
      * @param date      被检查的日期
@@ -1101,16 +1154,6 @@ public class DateUtil {
     /**
      * 是否闰年
      *
-     * @param year 年
-     * @return 是否闰年
-     */
-    public static boolean isLeapYear(final int year) {
-        return new GregorianCalendar().isLeapYear(year);
-    }
-
-    /**
-     * 是否闰年
-     *
      * @param date {@link Date}
      * @return 是否闰年
      */
@@ -1119,6 +1162,16 @@ public class DateUtil {
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
         return isLeapYear(year);
+    }
+
+    /**
+     * 是否闰年
+     *
+     * @param year 年
+     * @return 是否闰年
+     */
+    public static boolean isLeapYear(final int year) {
+        return new GregorianCalendar().isLeapYear(year);
     }
 
     /**
@@ -1387,77 +1440,6 @@ public class DateUtil {
     }
 
     /**
-     * 构建DateTime对象
-     *
-     * @param dateStr Date字符串
-     * @param parser  格式化器,{@link FastDateFormat}
-     * @return DateTime对象
-     */
-    public static DateTime parse(CharSequence dateStr, DateParser parser) {
-        return new DateTime(dateStr, parser);
-    }
-
-    /**
-     * 标准化日期，默认处理以空格区分的日期时间格式，空格前为日期，空格后为时间：<br> 将以下字符替换为"-"
-     *
-     * <pre>
-     * "."
-     * "/"
-     * "年"
-     * "月"
-     * </pre>
-     * <p>
-     * 将以下字符去除
-     *
-     * <pre>
-     * "日"
-     * </pre>
-     * <p>
-     * 将以下字符替换为":"
-     *
-     * <pre>
-     * "时"
-     * "分"
-     * "秒"
-     * </pre>
-     * <p>
-     * 当末位是":"时去除之（不存在毫秒时）
-     *
-     * @param dateStr 日期时间字符串
-     * @return 格式化后的日期字符串
-     */
-    private static String normalize(CharSequence dateStr) {
-        if (StringUtil.isBlank(dateStr)) {
-            return StringUtil.str(dateStr);
-        }
-
-        // 日期时间分开处理
-        final List<String> dateAndTime = StringUtil.splitTrim(dateStr, ' ');
-        final int size = dateAndTime.size();
-        if (size < 1 || size > 2) {
-            // 非可被标准处理的格式
-            return StringUtil.str(dateStr);
-        }
-
-        final StringBuilder builder = StringUtil.getStringBuilder();
-
-        // 日期部分（"\"、"/"、"."、"年"、"月"都替换为"-"）
-        String datePart = dateAndTime.get(0).replaceAll("[/.年月]", "-");
-        datePart = StringUtil.removeSuffix(datePart, "日");
-        builder.append(datePart);
-
-        // 时间部分
-        if (size == 2) {
-            builder.append(' ');
-            String timePart = dateAndTime.get(1).replaceAll("[时分秒]", ":");
-            timePart = StringUtil.removeSuffix(timePart, ":");
-            builder.append(timePart);
-        }
-
-        return builder.toString();
-    }
-
-    /**
      * 获得指定日期所属季度，从1开始计数
      *
      * @param date 日期
@@ -1604,7 +1586,6 @@ public class DateUtil {
     public static int thisDayOfWeek() {
         return dayOfWeek(toDateTime());
     }
-    // ------------------------------------ Offset end ----------------------------------------------
 
     /**
      * 获得指定日期是星期几，1表示周日，2表示周一
@@ -1622,6 +1603,7 @@ public class DateUtil {
     public static Week thisDayOfWeekEnum() {
         return dayOfWeekEnum(toDateTime());
     }
+    // ------------------------------------ Offset end ----------------------------------------------
 
     /**
      * 获得指定日期是星期几
@@ -1820,6 +1802,69 @@ public class DateUtil {
     }
 
     /**
+     * 创建Calendar对象，时间为默认时区的当前时间
+     *
+     * @return Calendar对象
+     * @since 4.6.6
+     */
+    public static Calendar toCalendar() {
+        return Calendar.getInstance();
+    }
+
+    /**
+     * 将 {@link Calendar} 转化为 {@link Date}
+     *
+     * @param calendar {@link Calendar}
+     * @return {@link Date}
+     */
+    public static Date toDate(final Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    /**
+     * 将 {@link LocalDateTime} 转化为 {@link Date}
+     *
+     * @param localDateTime {@link LocalDateTime}
+     * @return {@link Date}
+     */
+    public static Date toDate(final LocalDateTime localDateTime) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zdt = localDateTime.atZone(zoneId);
+        return Date.from(zdt.toInstant());
+    }
+
+    /**
+     * Long类型时间转为{@link DateTime}<br> 只支持毫秒级别时间戳，如果需要秒级别时间戳，请自行×1000
+     *
+     * @param millis Long类型Date（Unix时间戳）
+     * @return 时间对象
+     */
+    public static DateTime toDateTime(long millis) {
+        return new DateTime(millis);
+    }
+
+    /**
+     * {@link Calendar}类型时间转为{@link DateTime}<br> 始终根据已有{@link Calendar} 产生新的{@link DateTime}对象
+     *
+     * @param calendar {@link Calendar}
+     * @return 时间对象
+     */
+    public static DateTime toDateTime(Calendar calendar) {
+        return new DateTime(calendar);
+    }
+
+    /**
+     * {@link TemporalAccessor}类型时间转为{@link DateTime}<br> 始终根据已有{@link TemporalAccessor} 产生新的{@link DateTime}对象
+     *
+     * @param temporalAccessor {@link TemporalAccessor}
+     * @return 时间对象
+     * @since 5.0.0
+     */
+    public static DateTime toDateTime(TemporalAccessor temporalAccessor) {
+        return new DateTime(temporalAccessor);
+    }
+
+    /**
      * Date对象转换为{@link Instant}对象
      *
      * @param date Date对象
@@ -1924,28 +1969,6 @@ public class DateUtil {
     }
 
     /**
-     * 将 {@link Calendar} 转化为 {@link Date}
-     *
-     * @param calendar {@link Calendar}
-     * @return {@link Date}
-     */
-    public static Date toDate(final Calendar calendar) {
-        return calendar.getTime();
-    }
-
-    /**
-     * 将 {@link LocalDateTime} 转化为 {@link Date}
-     *
-     * @param localDateTime {@link LocalDateTime}
-     * @return {@link Date}
-     */
-    public static Date toDate(final LocalDateTime localDateTime) {
-        ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zdt = localDateTime.atZone(zoneId);
-        return Date.from(zdt.toInstant());
-    }
-
-    /**
      * {@link Instant} 转换为 {@link LocalDateTime}，使用系统默认时区
      *
      * @param instant {@link Instant}
@@ -2001,6 +2024,17 @@ public class DateUtil {
      */
     public static DateTime tomorrow() {
         return offsetDay(new DateTime(), 1);
+    }
+
+    /**
+     * 偏移天
+     *
+     * @param date   日期
+     * @param offset 偏移天数，正数向未来偏移，负数向历史偏移
+     * @return 偏移后的日期
+     */
+    public static DateTime offsetDay(Date date, int offset) {
+        return offset(date, DateField.DAY_OF_YEAR, offset);
     }
 
     /**
@@ -2076,6 +2110,8 @@ public class DateUtil {
         return yearAndQuarter(startDate.getTime(), endDate.getTime());
     }
 
+    // ------------------------------------------------------------------------ Private method start
+
     /**
      * 获得指定日期区间内的年份和季节<br>
      *
@@ -2105,42 +2141,6 @@ public class DateUtil {
      */
     public static DateTime yesterday() {
         return offsetDay(new DateTime(), -1);
-    }
-
-    /**
-     * 偏移天
-     *
-     * @param date   日期
-     * @param offset 偏移天数，正数向未来偏移，负数向历史偏移
-     * @return 偏移后的日期
-     */
-    public static DateTime offsetDay(Date date, int offset) {
-        return offset(date, DateField.DAY_OF_YEAR, offset);
-    }
-
-    // ------------------------------------------------------------------------ Private method start
-
-    /**
-     * 获取指定日期偏移指定时间后的时间，生成的偏移日期不影响原日期
-     *
-     * @param date      基准日期
-     * @param dateField 偏移的粒度大小（小时、天、月等）{@link DateField}
-     * @param offset    偏移量，正数为向后偏移，负数为向前偏移
-     * @return 偏移后的日期
-     */
-    public static DateTime offset(Date date, DateField dateField, int offset) {
-        return dateNew(date).offset(dateField, offset);
-    }
-
-    /**
-     * 根据已有{@link Date} 产生新的{@link DateTime}对象
-     *
-     * @param date Date对象
-     * @return {@link DateTime}对象
-     * @since 4.3.1
-     */
-    public static DateTime dateNew(Date date) {
-        return new DateTime(date);
     }
     // ------------------------------------------------------------------------ Private method end
 }

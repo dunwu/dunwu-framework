@@ -119,6 +119,38 @@ public class StopWatch {
     }
 
     /**
+     * 获取所有任务的总花费时间（纳秒）
+     *
+     * @return 所有任务的总花费时间（纳秒）
+     * @see #getTotalTimeMillis()
+     * @see #getTotalTimeSeconds()
+     */
+    public long getTotalTimeNanos() {
+        return this.totalTimeNanos;
+    }
+
+    /**
+     * 获取任务列表
+     *
+     * @return 任务列表
+     */
+    public TaskInfo[] getTaskInfo() {
+        if (null == this.taskList) {
+            throw new UnsupportedOperationException("Task info is not being kept!");
+        }
+        return this.taskList.toArray(new TaskInfo[0]);
+    }
+
+    /**
+     * 获取任务信息
+     *
+     * @return 任务信息
+     */
+    public String shortSummary() {
+        return StringUtil.format("StopWatch '{}': running time = {} ns", this.id, this.totalTimeNanos);
+    }
+
+    /**
      * 获取{@link StopWatch} 的ID，用于多个秒表对象的区分
      *
      * @return the ID 空字符串为
@@ -318,38 +350,6 @@ public class StopWatch {
             }
         }
         return sb.toString();
-    }
-
-    /**
-     * 获取所有任务的总花费时间（纳秒）
-     *
-     * @return 所有任务的总花费时间（纳秒）
-     * @see #getTotalTimeMillis()
-     * @see #getTotalTimeSeconds()
-     */
-    public long getTotalTimeNanos() {
-        return this.totalTimeNanos;
-    }
-
-    /**
-     * 获取任务列表
-     *
-     * @return 任务列表
-     */
-    public TaskInfo[] getTaskInfo() {
-        if (null == this.taskList) {
-            throw new UnsupportedOperationException("Task info is not being kept!");
-        }
-        return this.taskList.toArray(new TaskInfo[0]);
-    }
-
-    /**
-     * 获取任务信息
-     *
-     * @return 任务信息
-     */
-    public String shortSummary() {
-        return StringUtil.format("StopWatch '{}': running time = {} ns", this.id, this.totalTimeNanos);
     }
 
     /**

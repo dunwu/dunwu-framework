@@ -42,30 +42,19 @@ public class ResourceUtil {
     }
 
     /**
-     * 获得资源的URL<br> 路径用/分隔，例如:
+     * 获取{@link Resource} 资源对象<br> 如果提供路径为绝对路径或路径以file:开头，返回{@link FileResource}，否则返回{@link ClassPathResource}
      *
-     * <pre>
-     * config/a/db.config
-     * spring/xml/test.xml
-     * </pre>
-     *
-     * @param resource 资源（相对Classpath的路径）
-     * @return 资源URL
+     * @param path 路径，可以是绝对路径，也可以是相对路径（相对ClassPath）
+     * @return {@link Resource} 资源对象
+     * @since 3.2.1
      */
-    public static URL getResource(String resource) throws IORuntimeException {
-        return getResource(resource, null);
-    }
-
-    /**
-     * 获得资源相对路径对应的URL
-     *
-     * @param resource  资源相对路径
-     * @param baseClass 基准Class，获得的相对路径相对于此Class所在路径，如果为{@code null}则相对ClassPath
-     * @return {@link URL}
-     */
-    public static URL getResource(String resource, Class<?> baseClass) {
-        return (null != baseClass) ? baseClass.getResource(resource)
-            : ClassLoaderUtil.getClassLoader().getResource(resource);
+    public static Resource getResourceObj(String path) {
+        if (StringUtil.isNotBlank(path)) {
+            if (path.startsWith(URLUtil.FILE_URL_PREFIX) || FileUtil.isAbsolutePath(path)) {
+                return new FileResource(path);
+            }
+        }
+        return new ClassPathResource(path);
     }
 
     /**
@@ -174,22 +163,6 @@ public class ResourceUtil {
     }
 
     /**
-     * 获取{@link Resource} 资源对象<br> 如果提供路径为绝对路径或路径以file:开头，返回{@link FileResource}，否则返回{@link ClassPathResource}
-     *
-     * @param path 路径，可以是绝对路径，也可以是相对路径（相对ClassPath）
-     * @return {@link Resource} 资源对象
-     * @since 3.2.1
-     */
-    public static Resource getResourceObj(String path) {
-        if (StringUtil.isNotBlank(path)) {
-            if (path.startsWith(URLUtil.FILE_URL_PREFIX) || FileUtil.isAbsolutePath(path)) {
-                return new FileResource(path);
-            }
-        }
-        return new ClassPathResource(path);
-    }
-
-    /**
      * 兼容无前缀, classpath://, file:// 的情况获取文件 如果以classpath:// 定义的文件不存在会抛出IllegalArgumentException异常，以file://定义的则不会
      */
     public static File toFile(String path) throws IOException {
@@ -205,6 +178,33 @@ public class ResourceUtil {
             // no URL -> treat as file path
             return new File(path);
         }
+    }
+
+    /**
+     * 获得资源的URL<br> 路径用/分隔，例如:
+     *
+     * <pre>
+     * config/a/db.config
+     * spring/xml/test.xml
+     * </pre>
+     *
+     * @param resource 资源（相对Classpath的路径）
+     * @return 资源URL
+     */
+    public static URL getResource(String resource) throws IORuntimeException {
+        return getResource(resource, null);
+    }
+
+    /**
+     * 获得资源相对路径对应的URL
+     *
+     * @param resource  资源相对路径
+     * @param baseClass 基准Class，获得的相对路径相对于此Class所在路径，如果为{@code null}则相对ClassPath
+     * @return {@link URL}
+     */
+    public static URL getResource(String resource, Class<?> baseClass) {
+        return (null != baseClass) ? baseClass.getResource(resource)
+            : ClassLoaderUtil.getClassLoader().getResource(resource);
     }
 
     public static File toFile(URL fileUrl) throws FileNotFoundException {

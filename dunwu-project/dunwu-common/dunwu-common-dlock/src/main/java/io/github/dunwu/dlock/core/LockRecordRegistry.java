@@ -32,12 +32,12 @@ class LockRecordRegistry {
         return lockRecords.contains(lockName);
     }
 
-    int getSize() {
-        return lockRecords.size();
-    }
-
     public void clear() {
         lockRecords.clear();
+    }
+
+    int getSize() {
+        return lockRecords.size();
     }
 
 }

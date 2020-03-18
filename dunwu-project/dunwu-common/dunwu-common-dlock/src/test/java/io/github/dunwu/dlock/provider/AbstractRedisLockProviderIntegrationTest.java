@@ -26,12 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractRedisLockProviderIntegrationTest extends AbstractLockProviderIntegrationTest {
 
-    private static RedisServer redisServer;
-
-    private RedisLockProvider lockProvider;
-
-    private StringRedisTemplate redisTemplate;
-
     protected final static int PORT = 6380;
 
     protected final static String HOST = "localhost";
@@ -39,6 +33,17 @@ public abstract class AbstractRedisLockProviderIntegrationTest extends AbstractL
     private final static String ENV = "test";
 
     private final static String KEY_PREFIX = "test-prefix";
+
+    private static RedisServer redisServer;
+
+    private RedisLockProvider lockProvider;
+
+    private StringRedisTemplate redisTemplate;
+
+    public AbstractRedisLockProviderIntegrationTest(RedisConnectionFactory connectionFactory) {
+        lockProvider = new RedisLockProvider(connectionFactory, ENV, KEY_PREFIX);
+        redisTemplate = new StringRedisTemplate(connectionFactory);
+    }
 
     @BeforeAll
     public static void startRedis() throws IOException {
@@ -49,11 +54,6 @@ public abstract class AbstractRedisLockProviderIntegrationTest extends AbstractL
     @AfterAll
     public static void stopRedis() {
         redisServer.stop();
-    }
-
-    public AbstractRedisLockProviderIntegrationTest(RedisConnectionFactory connectionFactory) {
-        lockProvider = new RedisLockProvider(connectionFactory, ENV, KEY_PREFIX);
-        redisTemplate = new StringRedisTemplate(connectionFactory);
     }
 
     @Override

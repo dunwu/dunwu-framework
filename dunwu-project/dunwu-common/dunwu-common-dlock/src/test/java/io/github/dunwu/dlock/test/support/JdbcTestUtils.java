@@ -40,17 +40,17 @@ public class JdbcTestUtils {
         jdbcTemplate.execute(sql);
     }
 
-    void clean() {
-        jdbcTemplate.execute("DROP TABLE dunwulock");
-        datasource.close();
-    }
-
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
 
     public DataSource getDatasource() {
         return datasource;
+    }
+
+    void clean() {
+        jdbcTemplate.execute("DROP TABLE dunwulock");
+        datasource.close();
     }
 
 }

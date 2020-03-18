@@ -26,14 +26,14 @@ public class MySqlJdbcTemplateLockProviderIntegrationTest extends AbstractJdbcLo
 
     private static final MySqlConfig dbConfig = new MySqlConfig();
 
-    @BeforeAll
-    public static void startMySql() {
-        dbConfig.startDb();
-    }
-
     @AfterAll
     public static void shutDownMysql() {
         dbConfig.shutdownDb();
+    }
+
+    @BeforeAll
+    public static void startMySql() {
+        dbConfig.startDb();
     }
 
     @Override

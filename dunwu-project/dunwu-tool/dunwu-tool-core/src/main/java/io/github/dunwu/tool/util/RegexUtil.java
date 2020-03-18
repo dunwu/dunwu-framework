@@ -408,6 +408,22 @@ public class RegexUtil {
     }
 
     /**
+     * 返回正则模式 {@link Pattern}
+     *
+     * @param regex 正则表达式
+     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
+     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
+     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
+     * @return 正则模式 {@link Pattern}
+     */
+    public static Pattern getPattern(final String regex, int flag) {
+        if (StringUtil.isBlank(regex)) {
+            return null;
+        }
+        return Pattern.compile(regex, flag);
+    }
+
+    /**
      * 从content中匹配出多个值并根据template生成新的字符串<br> 例如：<br> content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
      * @param regex         匹配正则字符串
@@ -424,6 +440,8 @@ public class RegexUtil {
         final Pattern pattern = getPattern(regex, Pattern.DOTALL);
         return extractMultiAndDelPre(pattern, contentHolder, template);
     }
+
+    // ----------------------------------------------------------------------------------------------- get
 
     /**
      * 从content中匹配出多个值并根据template生成新的字符串<br> 匹配结束后会删除匹配内容之前的内容（包括匹配内容）<br> 例如：<br> content 2013年5月 pattern (.*?)年(.*?)月
@@ -452,24 +470,6 @@ public class RegexUtil {
             return template;
         }
         return null;
-    }
-
-    // ----------------------------------------------------------------------------------------------- get
-
-    /**
-     * 返回正则模式 {@link Pattern}
-     *
-     * @param regex 正则表达式
-     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
-     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
-     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
-     * @return 正则模式 {@link Pattern}
-     */
-    public static Pattern getPattern(final String regex, int flag) {
-        if (StringUtil.isBlank(regex)) {
-            return null;
-        }
-        return Pattern.compile(regex, flag);
     }
 
     /**
@@ -705,6 +705,42 @@ public class RegexUtil {
     }
 
     /**
+     * 替换文本中所有匹配正则表达式的子字符串为目标字符串。
+     * <p>
+     * 搬迁自 apache-common
+     * <p>
+     * 允许传入 null 值
+     *
+     * <pre>
+     * RegexUtil.replaceAll(null, *, *)       = null
+     * RegexUtil.replaceAll("any", (Pattern) null, *)   = "any"
+     * RegexUtil.replaceAll("any", *, null)   = "any"
+     * RegexUtil.replaceAll("", Pattern.compile(""), "zzz")    = "zzz"
+     * RegexUtil.replaceAll("", Pattern.compile(".*"), "zzz")  = "zzz"
+     * RegexUtil.replaceAll("", Pattern.compile(".+"), "zzz")  = ""
+     * RegexUtil.replaceAll("abc", Pattern.compile(""), "ZZ")  = "ZZaZZbZZcZZ"
+     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;"), "z")                 = "z\nz"
+     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;", Pattern.DOTALL), "z") = "z"
+     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("(?s)&lt;.*&gt;"), "z")             = "z"
+     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[a-z]"), "_")       = "ABC___123"
+     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[^A-Z0-9]+"), "_")  = "ABC_123"
+     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[^A-Z0-9]+"), "")   = "ABC123"
+     * RegexUtil.replaceAll("Lorem ipsum  dolor   sit", Pattern.compile("( +)([a-z]+)"), "_$2")  = "Lorem_ipsum_dolor_sit"
+     * </pre>
+     *
+     * @param text        被替换的文本
+     * @param pattern     正则表达式
+     * @param replacement 目标字符串
+     * @return 替换后的字符串
+     */
+    public static String replaceAll(final CharSequence text, final Pattern pattern, final String replacement) {
+        if (StringUtil.isBlank(text) || pattern == null || replacement == null) {
+            return StringUtil.str(text);
+        }
+        return pattern.matcher(text).replaceAll(replacement);
+    }
+
+    /**
      * 移除文本中所有匹配正则表达式的子字符串
      * <p>
      * 搬迁自 apache-common
@@ -728,81 +764,6 @@ public class RegexUtil {
     public static String removeAll(final CharSequence text, final String regex) {
         return replaceAll(text, regex, StringUtil.EMPTY);
     }
-
-    /**
-     * 删除正则匹配到的文本之前的字符 如果没有找到，则返回原文
-     *
-     * @param text  被查找的文本
-     * @param regex 定位正则
-     * @return 删除前缀后的新内容
-     */
-    public static String removePre(final CharSequence text, final String regex) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
-            return StringUtil.str(text);
-        }
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
-            return StringUtil.sub(text, matcher.end(), text.length());
-        }
-        return StringUtil.str(text);
-    }
-
-    /**
-     * 移除文本中第一个匹配正则表达式的子字符串
-     * <p>
-     * 搬迁自 apache-common
-     *
-     * <pre>
-     * StringUtil.removeFirst(null, *)      = null
-     * StringUtil.removeFirst("any", (Pattern) null)  = "any"
-     * StringUtil.removeFirst("any", Pattern.compile(""))    = "any"
-     * StringUtil.removeFirst("any", Pattern.compile(".*"))  = ""
-     * StringUtil.removeFirst("any", Pattern.compile(".+"))  = ""
-     * StringUtil.removeFirst("abc", Pattern.compile(".?"))  = "bc"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\n&lt;__&gt;B"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
-     * StringUtil.removeFirst("ABCabc123", Pattern.compile("[a-z]"))          = "ABCbc123"
-     * StringUtil.removeFirst("ABCabc123abc", Pattern.compile("[a-z]+"))      = "ABC123abc"
-     * </pre>
-     *
-     * @param text    被替换的文本
-     * @param pattern 正则表达式
-     * @return 移除后的字符串
-     */
-    public static String removeFirst(final CharSequence text, final Pattern pattern) {
-        return replaceFirst(text, pattern, StringUtil.EMPTY);
-    }
-
-    /**
-     * 移除文本中第一个匹配正则表达式的子字符串
-     * <p>
-     * 搬迁自 apache-common
-     *
-     * <pre>
-     * StringUtil.removeFirst(null, *)      = null
-     * StringUtil.removeFirst("any", (String) null)  = "any"
-     * StringUtil.removeFirst("any", "")    = "any"
-     * StringUtil.removeFirst("any", ".*")  = ""
-     * StringUtil.removeFirst("any", ".+")  = ""
-     * StringUtil.removeFirst("abc", ".?")  = "bc"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\n&lt;__&gt;B"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
-     * StringUtil.removeFirst("ABCabc123", "[a-z]")          = "ABCbc123"
-     * StringUtil.removeFirst("ABCabc123abc", "[a-z]+")      = "ABC123abc"
-     * </pre>
-     *
-     * @param text  被替换的文本
-     * @param regex 正则表达式
-     * @return 移除后的字符串
-     */
-    public static String removeFirst(final CharSequence text, final String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return removeFirst(text, pattern);
-    }
-
-    // ----------------------------------------------------------------------------------------------- replace
 
     /**
      * 替换文本中所有匹配正则表达式的子字符串为目标字符串。
@@ -841,39 +802,109 @@ public class RegexUtil {
     }
 
     /**
-     * 替换文本中所有匹配正则表达式的子字符串为目标字符串。
+     * 移除文本中第一个匹配正则表达式的子字符串
      * <p>
      * 搬迁自 apache-common
-     * <p>
-     * 允许传入 null 值
      *
      * <pre>
-     * RegexUtil.replaceAll(null, *, *)       = null
-     * RegexUtil.replaceAll("any", (Pattern) null, *)   = "any"
-     * RegexUtil.replaceAll("any", *, null)   = "any"
-     * RegexUtil.replaceAll("", Pattern.compile(""), "zzz")    = "zzz"
-     * RegexUtil.replaceAll("", Pattern.compile(".*"), "zzz")  = "zzz"
-     * RegexUtil.replaceAll("", Pattern.compile(".+"), "zzz")  = ""
-     * RegexUtil.replaceAll("abc", Pattern.compile(""), "ZZ")  = "ZZaZZbZZcZZ"
-     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;"), "z")                 = "z\nz"
-     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;", Pattern.DOTALL), "z") = "z"
-     * RegexUtil.replaceAll("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("(?s)&lt;.*&gt;"), "z")             = "z"
-     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[a-z]"), "_")       = "ABC___123"
-     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[^A-Z0-9]+"), "_")  = "ABC_123"
-     * RegexUtil.replaceAll("ABCabc123", Pattern.compile("[^A-Z0-9]+"), "")   = "ABC123"
-     * RegexUtil.replaceAll("Lorem ipsum  dolor   sit", Pattern.compile("( +)([a-z]+)"), "_$2")  = "Lorem_ipsum_dolor_sit"
+     * StringUtil.removeFirst(null, *)      = null
+     * StringUtil.removeFirst("any", (String) null)  = "any"
+     * StringUtil.removeFirst("any", "")    = "any"
+     * StringUtil.removeFirst("any", ".*")  = ""
+     * StringUtil.removeFirst("any", ".+")  = ""
+     * StringUtil.removeFirst("abc", ".?")  = "bc"
+     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\n&lt;__&gt;B"
+     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
+     * StringUtil.removeFirst("ABCabc123", "[a-z]")          = "ABCbc123"
+     * StringUtil.removeFirst("ABCabc123abc", "[a-z]+")      = "ABC123abc"
+     * </pre>
+     *
+     * @param text  被替换的文本
+     * @param regex 正则表达式
+     * @return 移除后的字符串
+     */
+    public static String removeFirst(final CharSequence text, final String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return removeFirst(text, pattern);
+    }
+
+    // ----------------------------------------------------------------------------------------------- replace
+
+    /**
+     * 移除文本中第一个匹配正则表达式的子字符串
+     * <p>
+     * 搬迁自 apache-common
+     *
+     * <pre>
+     * StringUtil.removeFirst(null, *)      = null
+     * StringUtil.removeFirst("any", (Pattern) null)  = "any"
+     * StringUtil.removeFirst("any", Pattern.compile(""))    = "any"
+     * StringUtil.removeFirst("any", Pattern.compile(".*"))  = ""
+     * StringUtil.removeFirst("any", Pattern.compile(".+"))  = ""
+     * StringUtil.removeFirst("abc", Pattern.compile(".?"))  = "bc"
+     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\n&lt;__&gt;B"
+     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
+     * StringUtil.removeFirst("ABCabc123", Pattern.compile("[a-z]"))          = "ABCbc123"
+     * StringUtil.removeFirst("ABCabc123abc", Pattern.compile("[a-z]+"))      = "ABC123abc"
+     * </pre>
+     *
+     * @param text    被替换的文本
+     * @param pattern 正则表达式
+     * @return 移除后的字符串
+     */
+    public static String removeFirst(final CharSequence text, final Pattern pattern) {
+        return replaceFirst(text, pattern, StringUtil.EMPTY);
+    }
+
+    /**
+     * 替换文本中第一个匹配正则表达式的子字符串为目标字符串
+     *
+     * <pre>
+     * RegexUtil.replaceFirst(null, *, *)       = null
+     * RegexUtil.replaceFirst("any", (Pattern) null, *)   = "any"
+     * RegexUtil.replaceFirst("any", *, null)   = "any"
+     * RegexUtil.replaceFirst("", Pattern.compile(""), "zzz")    = "zzz"
+     * RegexUtil.replaceFirst("", Pattern.compile(".*"), "zzz")  = "zzz"
+     * RegexUtil.replaceFirst("", Pattern.compile(".+"), "zzz")  = ""
+     * RegexUtil.replaceFirst("abc", Pattern.compile(""), "ZZ")  = "ZZabc"
+     * RegexUtil.replaceFirst("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;"), "z")      = "z\n&lt;__&gt;"
+     * RegexUtil.replaceFirst("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("(?s)&lt;.*&gt;"), "z")  = "z"
+     * RegexUtil.replaceFirst("ABCabc123", Pattern.compile("[a-z]"), "_")          = "ABC_bc123"
+     * RegexUtil.replaceFirst("ABCabc123abc", Pattern.compile("[^A-Z0-9]+"), "_")  = "ABC_123abc"
+     * RegexUtil.replaceFirst("ABCabc123abc", Pattern.compile("[^A-Z0-9]+"), "")   = "ABC123abc"
+     * RegexUtil.replaceFirst("Lorem ipsum  dolor   sit", Pattern.compile("( +)([a-z]+)"), "_$2")  = "Lorem_ipsum  dolor   sit"
      * </pre>
      *
      * @param text        被替换的文本
      * @param pattern     正则表达式
      * @param replacement 目标字符串
-     * @return 替换后的字符串
+     * @return 替换后的文本
      */
-    public static String replaceAll(final CharSequence text, final Pattern pattern, final String replacement) {
+    public static String replaceFirst(final CharSequence text, final Pattern pattern, final String replacement) {
         if (StringUtil.isBlank(text) || pattern == null || replacement == null) {
             return StringUtil.str(text);
         }
-        return pattern.matcher(text).replaceAll(replacement);
+        return pattern.matcher(text).replaceFirst(replacement);
+    }
+
+    /**
+     * 删除正则匹配到的文本之前的字符 如果没有找到，则返回原文
+     *
+     * @param text  被查找的文本
+     * @param regex 定位正则
+     * @return 删除前缀后的新内容
+     */
+    public static String removePre(final CharSequence text, final String regex) {
+        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
+            return StringUtil.str(text);
+        }
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return StringUtil.sub(text, matcher.end(), text.length());
+        }
+        return StringUtil.str(text);
     }
 
     /**
@@ -934,37 +965,6 @@ public class RegexUtil {
         }
         matcher.appendTail(buffer);
         return buffer.toString();
-    }
-
-    /**
-     * 替换文本中第一个匹配正则表达式的子字符串为目标字符串
-     *
-     * <pre>
-     * RegexUtil.replaceFirst(null, *, *)       = null
-     * RegexUtil.replaceFirst("any", (Pattern) null, *)   = "any"
-     * RegexUtil.replaceFirst("any", *, null)   = "any"
-     * RegexUtil.replaceFirst("", Pattern.compile(""), "zzz")    = "zzz"
-     * RegexUtil.replaceFirst("", Pattern.compile(".*"), "zzz")  = "zzz"
-     * RegexUtil.replaceFirst("", Pattern.compile(".+"), "zzz")  = ""
-     * RegexUtil.replaceFirst("abc", Pattern.compile(""), "ZZ")  = "ZZabc"
-     * RegexUtil.replaceFirst("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("&lt;.*&gt;"), "z")      = "z\n&lt;__&gt;"
-     * RegexUtil.replaceFirst("&lt;__&gt;\n&lt;__&gt;", Pattern.compile("(?s)&lt;.*&gt;"), "z")  = "z"
-     * RegexUtil.replaceFirst("ABCabc123", Pattern.compile("[a-z]"), "_")          = "ABC_bc123"
-     * RegexUtil.replaceFirst("ABCabc123abc", Pattern.compile("[^A-Z0-9]+"), "_")  = "ABC_123abc"
-     * RegexUtil.replaceFirst("ABCabc123abc", Pattern.compile("[^A-Z0-9]+"), "")   = "ABC123abc"
-     * RegexUtil.replaceFirst("Lorem ipsum  dolor   sit", Pattern.compile("( +)([a-z]+)"), "_$2")  = "Lorem_ipsum  dolor   sit"
-     * </pre>
-     *
-     * @param text        被替换的文本
-     * @param pattern     正则表达式
-     * @param replacement 目标字符串
-     * @return 替换后的文本
-     */
-    public static String replaceFirst(final CharSequence text, final Pattern pattern, final String replacement) {
-        if (StringUtil.isBlank(text) || pattern == null || replacement == null) {
-            return StringUtil.str(text);
-        }
-        return pattern.matcher(text).replaceFirst(replacement);
     }
 
     /**

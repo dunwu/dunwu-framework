@@ -157,21 +157,6 @@ public class RegexUtilTest {
         }
     }
 
-    @Nested
-    @DisplayName("校验Markdonw")
-    class CheckMarkdown {
-
-        @Test
-        @DisplayName("校验含有 Markdonw ![]() ")
-        void replaceAll() {
-            String str = RegexUtil.replaceAll(
-                "![asgad](http://www.baidu.com/test.png)",
-                RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![](");
-            System.out.println(str);
-        }
-
-    }
-
     @Test
     public void getKeys() {
         String text = "select * from t_user where name=#{name} and date > #{date}";
@@ -190,6 +175,21 @@ public class RegexUtilTest {
         List<String> values = CollectionUtil.toList("zhangsan", "2019");
         final String newText = RegexUtil.replaceAll(text, "#\\{\\w*\\}", values);
         System.out.println(newText);
+    }
+
+    @Nested
+    @DisplayName("校验Markdonw")
+    class CheckMarkdown {
+
+        @Test
+        @DisplayName("校验含有 Markdonw ![]() ")
+        void replaceAll() {
+            String str = RegexUtil.replaceAll(
+                "![asgad](http://www.baidu.com/test.png)",
+                RegexUtil.REGEX_MARKDOWN_IMAGE_TAG, "![](");
+            System.out.println(str);
+        }
+
     }
 
 }

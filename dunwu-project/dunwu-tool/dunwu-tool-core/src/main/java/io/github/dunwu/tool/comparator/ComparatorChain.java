@@ -123,6 +123,18 @@ public class ComparatorChain<E> implements Chain<Comparator<E>, ComparatorChain<
     }
 
     /**
+     * 被锁定时抛出异常
+     *
+     * @throws UnsupportedOperationException 被锁定抛出此异常
+     */
+    private void checkLocked() {
+        if (lock == true) {
+            throw new UnsupportedOperationException(
+                "Comparator ordering cannot be changed after the first comparison is performed");
+        }
+    }
+
+    /**
      * 执行比较<br> 按照比较器链的顺序分别比较，如果比较出相等则转向下一个比较器，否则直接返回
      *
      * @param o1 第一个对象
@@ -226,18 +238,6 @@ public class ComparatorChain<E> implements Chain<Comparator<E>, ComparatorChain<
             orderingBits.clear(index);
         }
         return this;
-    }
-
-    /**
-     * 被锁定时抛出异常
-     *
-     * @throws UnsupportedOperationException 被锁定抛出此异常
-     */
-    private void checkLocked() {
-        if (lock == true) {
-            throw new UnsupportedOperationException(
-                "Comparator ordering cannot be changed after the first comparison is performed");
-        }
     }
 
     /**

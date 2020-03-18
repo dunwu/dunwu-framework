@@ -117,6 +117,50 @@ public class ReflectUtil {
     }
 
     /**
+     * 获得一个类中所有字段列表，包括其父类中的字段
+     *
+     * @param beanClass 类
+     * @return 字段列表
+     * @throws SecurityException 安全检查异常
+     */
+    public static Field[] getFields(Class<?> beanClass) throws SecurityException {
+        Field[] allFields = FIELDS_CACHE.get(beanClass);
+        if (null != allFields) {
+            return allFields;
+        }
+
+        allFields = getFieldsDirectly(beanClass, true);
+        return FIELDS_CACHE.put(beanClass, allFields);
+    }
+
+    /**
+     * 获得一个类中所有字段列表，直接反射获取，无缓存
+     *
+     * @param beanClass           类
+     * @param withSuperClassFieds 是否包括父类的字段列表
+     * @return 字段列表
+     * @throws SecurityException 安全检查异常
+     */
+    public static Field[] getFieldsDirectly(Class<?> beanClass, boolean withSuperClassFieds) throws SecurityException {
+        Assert.notNull(beanClass);
+
+        Field[] allFields = null;
+        Class<?> searchType = beanClass;
+        Field[] declaredFields;
+        while (searchType != null) {
+            declaredFields = searchType.getDeclaredFields();
+            if (null == allFields) {
+                allFields = declaredFields;
+            } else {
+                allFields = ArrayUtil.addAll(allFields, declaredFields);
+            }
+            searchType = withSuperClassFieds ? searchType.getSuperclass() : null;
+        }
+
+        return allFields;
+    }
+
+    /**
      * 获取字段值
      *
      * @param obj       对象
@@ -166,6 +210,26 @@ public class ReflectUtil {
             accessibleObject.setAccessible(true);
         }
         return accessibleObject;
+    }
+
+    /**
+     * 查找指定类中的所有字段（包括非public字段），也包括父类和Object类的字段， 字段不存在则返回<code>null</code>
+     *
+     * @param beanClass 被查找字段的类,不能为null
+     * @param name      字段名
+     * @return 字段
+     * @throws SecurityException 安全异常
+     */
+    public static Field getField(Class<?> beanClass, String name) throws SecurityException {
+        final Field[] fields = getFields(beanClass);
+        if (ArrayUtil.isNotEmpty(fields)) {
+            for (Field field : fields) {
+                if ((name.equals(field.getName()))) {
+                    return field;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -237,6 +301,53 @@ public class ReflectUtil {
         return null;
     }
 
+    // --------------------------------------------------------------------------------------------------------- method
+
+    /**
+     * 获得一个类中所有方法列表，包括其父类中的方法
+     *
+     * @param beanClass 类
+     * @return 方法列表
+     * @throws SecurityException 安全检查异常
+     */
+    public static Method[] getMethods(Class<?> beanClass) throws SecurityException {
+        Method[] allMethods = METHODS_CACHE.get(beanClass);
+        if (null != allMethods) {
+            return allMethods;
+        }
+
+        allMethods = getMethodsDirectly(beanClass, true);
+        return METHODS_CACHE.put(beanClass, allMethods);
+    }
+
+    /**
+     * 获得一个类中所有方法列表，直接反射获取，无缓存
+     *
+     * @param beanClass             类
+     * @param withSuperClassMethods 是否包括父类的方法列表
+     * @return 方法列表
+     * @throws SecurityException 安全检查异常
+     */
+    public static Method[] getMethodsDirectly(Class<?> beanClass, boolean withSuperClassMethods)
+        throws SecurityException {
+        Assert.notNull(beanClass);
+
+        Method[] allMethods = null;
+        Class<?> searchType = beanClass;
+        Method[] declaredMethods;
+        while (searchType != null) {
+            declaredMethods = searchType.getDeclaredMethods();
+            if (null == allMethods) {
+                allMethods = declaredMethods;
+            } else {
+                allMethods = ArrayUtil.addAll(allMethods, declaredMethods);
+            }
+            searchType = withSuperClassMethods ? searchType.getSuperclass() : null;
+        }
+
+        return allMethods;
+    }
+
     /**
      * 按照方法名查找指定方法名的方法，只返回匹配到的第一个方法，如果找不到对应的方法则返回<code>null</code>
      *
@@ -305,53 +416,6 @@ public class ReflectUtil {
             }
         }
         return null;
-    }
-
-    // --------------------------------------------------------------------------------------------------------- method
-
-    /**
-     * 获得一个类中所有方法列表，包括其父类中的方法
-     *
-     * @param beanClass 类
-     * @return 方法列表
-     * @throws SecurityException 安全检查异常
-     */
-    public static Method[] getMethods(Class<?> beanClass) throws SecurityException {
-        Method[] allMethods = METHODS_CACHE.get(beanClass);
-        if (null != allMethods) {
-            return allMethods;
-        }
-
-        allMethods = getMethodsDirectly(beanClass, true);
-        return METHODS_CACHE.put(beanClass, allMethods);
-    }
-
-    /**
-     * 获得一个类中所有方法列表，直接反射获取，无缓存
-     *
-     * @param beanClass             类
-     * @param withSuperClassMethods 是否包括父类的方法列表
-     * @return 方法列表
-     * @throws SecurityException 安全检查异常
-     */
-    public static Method[] getMethodsDirectly(Class<?> beanClass, boolean withSuperClassMethods)
-        throws SecurityException {
-        Assert.notNull(beanClass);
-
-        Method[] allMethods = null;
-        Class<?> searchType = beanClass;
-        Method[] declaredMethods;
-        while (searchType != null) {
-            declaredMethods = searchType.getDeclaredMethods();
-            if (null == allMethods) {
-                allMethods = declaredMethods;
-            } else {
-                allMethods = ArrayUtil.addAll(allMethods, declaredMethods);
-            }
-            searchType = withSuperClassMethods ? searchType.getSuperclass() : null;
-        }
-
-        return allMethods;
     }
 
     /**
@@ -495,70 +559,6 @@ public class ReflectUtil {
     }
 
     /**
-     * 查找指定类中的所有字段（包括非public字段），也包括父类和Object类的字段， 字段不存在则返回<code>null</code>
-     *
-     * @param beanClass 被查找字段的类,不能为null
-     * @param name      字段名
-     * @return 字段
-     * @throws SecurityException 安全异常
-     */
-    public static Field getField(Class<?> beanClass, String name) throws SecurityException {
-        final Field[] fields = getFields(beanClass);
-        if (ArrayUtil.isNotEmpty(fields)) {
-            for (Field field : fields) {
-                if ((name.equals(field.getName()))) {
-                    return field;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获得一个类中所有字段列表，包括其父类中的字段
-     *
-     * @param beanClass 类
-     * @return 字段列表
-     * @throws SecurityException 安全检查异常
-     */
-    public static Field[] getFields(Class<?> beanClass) throws SecurityException {
-        Field[] allFields = FIELDS_CACHE.get(beanClass);
-        if (null != allFields) {
-            return allFields;
-        }
-
-        allFields = getFieldsDirectly(beanClass, true);
-        return FIELDS_CACHE.put(beanClass, allFields);
-    }
-
-    /**
-     * 获得一个类中所有字段列表，直接反射获取，无缓存
-     *
-     * @param beanClass           类
-     * @param withSuperClassFieds 是否包括父类的字段列表
-     * @return 字段列表
-     * @throws SecurityException 安全检查异常
-     */
-    public static Field[] getFieldsDirectly(Class<?> beanClass, boolean withSuperClassFieds) throws SecurityException {
-        Assert.notNull(beanClass);
-
-        Field[] allFields = null;
-        Class<?> searchType = beanClass;
-        Field[] declaredFields;
-        while (searchType != null) {
-            declaredFields = searchType.getDeclaredFields();
-            if (null == allFields) {
-                allFields = declaredFields;
-            } else {
-                allFields = ArrayUtil.addAll(allFields, declaredFields);
-            }
-            searchType = withSuperClassFieds ? searchType.getSuperclass() : null;
-        }
-
-        return allFields;
-    }
-
-    /**
      * 执行对象中指定方法
      *
      * @param <T>        返回对象类型
@@ -615,19 +615,6 @@ public class ReflectUtil {
     }
 
     /**
-     * 执行静态方法
-     *
-     * @param <T>    对象类型
-     * @param method 方法（对象方法或static方法都可）
-     * @param args   参数对象
-     * @return 结果
-     * @throws UtilException 多种异常包装
-     */
-    public static <T> T invokeStatic(Method method, Object... args) throws UtilException {
-        return invoke(null, method, args);
-    }
-
-    /**
      * 执行方法
      *
      * @param <T>    返回对象类型
@@ -646,6 +633,19 @@ public class ReflectUtil {
         } catch (Exception e) {
             throw new UtilException(e);
         }
+    }
+
+    /**
+     * 执行静态方法
+     *
+     * @param <T>    对象类型
+     * @param method 方法（对象方法或static方法都可）
+     * @param args   参数对象
+     * @return 结果
+     * @throws UtilException 多种异常包装
+     */
+    public static <T> T invokeStatic(Method method, Object... args) throws UtilException {
+        return invoke(null, method, args);
     }
 
     /**

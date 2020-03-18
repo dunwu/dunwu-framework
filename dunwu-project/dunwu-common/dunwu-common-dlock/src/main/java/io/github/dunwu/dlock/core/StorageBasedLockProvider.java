@@ -46,13 +46,6 @@ public class StorageBasedLockProvider implements LockProvider {
         this.storageAccessor = storageAccessor;
     }
 
-    /**
-     * Clears cache of existing lock records.
-     */
-    public void clearCache() {
-        lockRecordRegistry.clear();
-    }
-
     @Override
     @NotNull
     public Optional<DistributedLock> lock(@NotNull LockConfiguration lockConfiguration) {
@@ -83,6 +76,13 @@ public class StorageBasedLockProvider implements LockProvider {
 
         // let's try to update the record, if successful, we have the lock
         return storageAccessor.updateRecord(lockConfiguration);
+    }
+
+    /**
+     * Clears cache of existing lock records.
+     */
+    public void clearCache() {
+        lockRecordRegistry.clear();
     }
 
     private static class StorageLock extends AbstractDistributedLock {

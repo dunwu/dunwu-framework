@@ -128,22 +128,6 @@ public class Range<T> implements Iterable<T>, Iterator<T>, Serializable {
     @Override
     public Iterator<T> iterator() {
         return this;
-    }    @Override
-    public boolean hasNext() {
-        lock.lock();
-        try {
-            if (0 == this.index && this.includeStart) {
-                return true;
-            }
-            if (null == this.next) {
-                return false;
-            } else if (false == includeEnd && this.next.equals(this.end)) {
-                return false;
-            }
-        } finally {
-            lock.unlock();
-        }
-        return true;
     }
 
     /**
@@ -155,17 +139,6 @@ public class Range<T> implements Iterable<T>, Iterator<T>, Serializable {
     public Range<T> disableLock() {
         this.lock = new NoLock();
         return this;
-    }    @Override
-    public T next() {
-        lock.lock();
-        try {
-            if (false == this.hasNext()) {
-                throw new NoSuchElementException("Has no next range!");
-            }
-            return nextUncheck();
-        } finally {
-            lock.unlock();
-        }
     }
 
     /**
@@ -182,19 +155,22 @@ public class Range<T> implements Iterable<T>, Iterator<T>, Serializable {
             lock.unlock();
         }
         return this;
-    }    /**
-     * 获取下一个元素，并将下下个元素准备好
-     */
-    private T nextUncheck() {
-        if (0 != this.index || false == this.includeStart) {
-            // 非第一个元素或不包含第一个元素增加步进
-            this.current = this.next;
-            if (null != this.current) {
-                this.next = safeStep(this.next);
+    }    @Override
+    public boolean hasNext() {
+        lock.lock();
+        try {
+            if (0 == this.index && this.includeStart) {
+                return true;
             }
+            if (null == this.next) {
+                return false;
+            } else if (false == includeEnd && this.next.equals(this.end)) {
+                return false;
+            }
+        } finally {
+            lock.unlock();
         }
-        index++;
-        return this.current;
+        return true;
     }
 
     /**
@@ -223,15 +199,39 @@ public class Range<T> implements Iterable<T>, Iterator<T>, Serializable {
 
     }
 
+
+
+    @Override
+    public T next() {
+        lock.lock();
+        try {
+            if (false == this.hasNext()) {
+                throw new NoSuchElementException("Has no next range!");
+            }
+            return nextUncheck();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     * 获取下一个元素，并将下下个元素准备好
+     */
+    private T nextUncheck() {
+        if (0 != this.index || false == this.includeStart) {
+            // 非第一个元素或不包含第一个元素增加步进
+            this.current = this.next;
+            if (null != this.current) {
+                this.next = safeStep(this.next);
+            }
+        }
+        index++;
+        return this.current;
+    }
+
     @Override
     public void remove() {
         throw new UnsupportedOperationException("Can not remove ranged element!");
     }
-
-
-
-
-
-
 
 }
