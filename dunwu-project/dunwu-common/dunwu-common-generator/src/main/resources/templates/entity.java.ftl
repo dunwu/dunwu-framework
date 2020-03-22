@@ -2,18 +2,18 @@ package ${package.Entity};
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 <#if swagger2>
-  import io.swagger.annotations.ApiModel;
-  import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
-  import lombok.Data;
-  <#if superEntityClass??>
-    import lombok.EqualsAndHashCode;
-  </#if>
-  import lombok.ToString;
-  <#if superEntityClass??>
-    import lombok.experimental.Accessors;
-  </#if>
+import lombok.Data;
+<#if superEntityClass??>
+import lombok.EqualsAndHashCode;
+</#if>
+import lombok.ToString;
+<#if superEntityClass??>
+import lombok.experimental.Accessors;
+</#if>
 </#if>
 
 <#list table.importPackages?sort as pkg>
