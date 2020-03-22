@@ -9,6 +9,8 @@ import org.apache.hadoop.fs.FileSystem;
 import java.io.Serializable;
 
 /**
+ * Hdfs 配置选项
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-21
  */
@@ -29,7 +31,7 @@ public class HdfsConfig implements Serializable {
 
     protected String url = HDFS_DEFAULT_URL;
 
-    protected String user;
+    protected String user = HDFS_DEFAULT_USER_NAME;
 
     public static class Pool extends GenericObjectPoolConfig<FileSystem> {}
 

@@ -97,7 +97,7 @@ public class HdfsUtilTest {
         @Test
         @Order(2)
         public void readFileTest() throws Exception {
-            String content = hdfsUtil.readFile(TARGET_PATH);
+            String content = hdfsUtil.readFile(SOURCE_PATH);
             System.out.println(content);
         }
 
