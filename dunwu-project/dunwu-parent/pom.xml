@@ -351,11 +351,6 @@
           <version>${flatten-maven-plugin.version}</version>
         </plugin>
         <plugin>
-          <groupId>org.flywaydb</groupId>
-          <artifactId>flyway-maven-plugin</artifactId>
-          <version>${flyway.version}</version>
-        </plugin>
-        <plugin>
           <groupId>org.basepom.maven</groupId>
           <artifactId>duplicate-finder-maven-plugin</artifactId>
           <version>${duplicate-finder-maven-plugin.version}</version>

@@ -50,6 +50,12 @@
       <artifactId>wix-embedded-mysql</artifactId>
       <version>4.1.2</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-compress</artifactId>
+          <groupId>org.apache.commons</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!--Zookeeper-->

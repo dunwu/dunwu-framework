@@ -30,7 +30,8 @@ public class DunwuHdfsConfiguration {
 
     @Bean
     public HdfsPool hdfsPool(HdfsFactory hdfsFactory, HdfsProperties properties) {
-        return new HdfsPool(hdfsFactory, properties.getPool());
+        return
+            new HdfsPool(hdfsFactory, properties.getPool());
     }
 
     @Bean

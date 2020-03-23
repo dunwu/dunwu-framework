@@ -35,15 +35,6 @@ public class HdfsUtil {
         this.hdfsPool = hdfsPool;
     }
 
-    /**
-     * 返回 HDFS Client API 原生实例 {@link FileSystem}
-     *
-     * @return {@link FileSystem} 返回 HDFS 原生
-     */
-    public FileSystem getFileSystem() throws Exception {
-        return this.hdfsPool.borrowObject();
-    }
-
     // ------------------------------------------------------
     // 文件操作
     // ------------------------------------------------------

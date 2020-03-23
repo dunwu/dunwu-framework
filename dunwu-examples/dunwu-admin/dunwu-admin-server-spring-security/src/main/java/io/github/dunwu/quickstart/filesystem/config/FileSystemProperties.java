@@ -3,7 +3,6 @@ package io.github.dunwu.quickstart.filesystem.config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
@@ -21,13 +20,13 @@ public class FileSystemProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UploadTimeLimit limit;
+    private final UploadLimit limit = new UploadLimit();
 
-    private Db db;
+    private final Jdbc jdbc = new Jdbc();
 
-    private Temp temp;
+    private final Temp temp = new Temp();
 
-    private Fdfs fdfs;
+    private final Fdfs fdfs = new Fdfs();
 
     /**
      * 基本配置
@@ -58,9 +57,8 @@ public class FileSystemProperties implements Serializable {
      */
     @Data
     @ToString
-    @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
-    public static class Db extends BaseFileProperites {
+    public static class Jdbc extends BaseFileProperites {
 
     }
 
@@ -69,7 +67,6 @@ public class FileSystemProperties implements Serializable {
      */
     @Data
     @ToString
-    @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
     public static class Temp extends BaseFileProperites {
 
@@ -85,9 +82,20 @@ public class FileSystemProperties implements Serializable {
      */
     @Data
     @ToString
-    @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
     public static class Fdfs extends BaseFileProperites {
+
+        /**
+         * 文件存储的 FastDFS Group
+         */
+        private String group = "group1";
+
+    }
+
+    @Data
+    @ToString
+    @EqualsAndHashCode(callSuper = true)
+    public static class Hdfs extends BaseFileProperites {
 
         /**
          * 文件存储的 FastDFS Group
@@ -101,7 +109,7 @@ public class FileSystemProperties implements Serializable {
      */
     @Data
     @ToString
-    public static class UploadTimeLimit {
+    public static class UploadLimit {
 
         /**
          * 上传文件次数统计时间间隔。单位：豪秒
@@ -111,7 +119,7 @@ public class FileSystemProperties implements Serializable {
         /**
          * 上传文件间隔时间内允许上传的次数
          */
-        private Integer maxUploadTimeInInterval = 10;
+        private Integer maxUploadTime = 10;
 
         /**
          * 解封时间。单位：秒

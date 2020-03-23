@@ -70,13 +70,13 @@ public class FileManagerImpl implements FileManager {
             Date first = accessDTO.getDate();
 
             // 首次请求时间已经超出时间间隔，刷新时间和次数
-            FileSystemProperties.UploadTimeLimit uploadTimeLimit = fileSystemProperties
+            FileSystemProperties.UploadLimit uploadLimit = fileSystemProperties
                 .getLimit();
-            if (now.getTime() - first.getTime() > uploadTimeLimit.getStatTimeRange()) {
+            if (now.getTime() - first.getTime() > uploadLimit.getStatTimeRange()) {
                 accessDTO.setCount(1);
                 accessDTO.setDate(new Date());
-            } else if (now.getTime() - first.getTime() < uploadTimeLimit.getStatTimeRange()
-                && accessDTO.getCount() + 1 > uploadTimeLimit.getStatTimeRange()) {
+            } else if (now.getTime() - first.getTime() < uploadLimit.getStatTimeRange()
+                && accessDTO.getCount() + 1 > uploadLimit.getStatTimeRange()) {
                 // 首次请求时间在时间间隔内，且访问次数超过限制，拒绝访问
                 return DataResult.success(true);
             } else {

@@ -12,6 +12,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 文件信息表数据实体
@@ -28,6 +29,7 @@ public class File extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @NotBlank
     @ApiModelProperty(value = "实际文件名")
     private String fileName;
 

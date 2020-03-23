@@ -21,21 +21,7 @@
       <artifactId>dunwu-common-core</artifactId>
     </dependency>
 
-    <!--ORM-->
-    <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <!--API-->
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <!--validator-->
+    <!--数据校验-->
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
@@ -51,7 +37,21 @@
       </exclusions>
     </dependency>
 
-    <!--data-->
+    <!--连接池-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+    </dependency>
+
+    <!--ORM-->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!--数据源客户端-->
+    <!--可选包，根据上层业务实际所需的数据源，引入相应的客户端包-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
@@ -70,43 +70,21 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>curator-client</artifactId>
-          <groupId>org.apache.curator</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>nimbus-jose-jwt</artifactId>
-          <groupId>com.nimbusds</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-      </exclusions>
       <optional>true</optional>
     </dependency>
 
-    <!--连接池-->
+    <!--API-->
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-pool2</artifactId>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
       <optional>true</optional>
     </dependency>
 
-    <!--sql monitor-->
+    <!--SQL监控-->
     <dependency>
       <groupId>p6spy</groupId>
       <artifactId>p6spy</artifactId>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-pool2</artifactId>
     </dependency>
   </dependencies>
 </project>
