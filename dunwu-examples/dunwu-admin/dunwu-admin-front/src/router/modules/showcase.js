@@ -4,6 +4,23 @@ const mailRouter = {
   path: 'email', component: () => import('@/views/showcase/email'), name: 'email', meta: { title: '发送邮件' }
 }
 
+const userRouter = {
+  path: 'user',
+  component: () => import('@/views/showcase/user'),
+  name: 'user',
+  meta: { title: '用户服务' },
+  children: [{
+    path: 'list',
+    component: () => import('@/views/showcase/user/list'),
+    name: 'UserList',
+    meta: { title: '用户列表' }
+  }, {
+    path: 'create', component: () => import('@/views/showcase/user/detail'), hidden: true
+  }, {
+    path: 'update', component: () => import('@/views/showcase/user/detail'), hidden: true
+  }]
+}
+
 const filesystemRouter = {
   path: 'filesystem',
   component: () => import('@/views/showcase/filesystem'),
@@ -60,7 +77,7 @@ const showcaseRouter = {
   component: Layout,
   name: 'showcase',
   meta: { title: '功能示例', icon: 'experiment' },
-  children: [filesystemRouter, schedulerRouter, templateRouter, mailRouter, generateIdRouter, ipRegionRouter]
+  children: [userRouter, filesystemRouter, schedulerRouter, templateRouter, mailRouter, generateIdRouter, ipRegionRouter]
 }
 
 export default showcaseRouter

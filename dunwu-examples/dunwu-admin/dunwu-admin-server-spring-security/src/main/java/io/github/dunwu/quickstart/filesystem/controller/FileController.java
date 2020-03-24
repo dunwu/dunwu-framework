@@ -4,7 +4,7 @@ import io.github.dunwu.common.BaseResult;
 import io.github.dunwu.common.DataResult;
 import io.github.dunwu.common.PageResult;
 import io.github.dunwu.common.Pagination;
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.quickstart.filesystem.dto.FileDTO;
 import io.github.dunwu.quickstart.filesystem.dto.FileQuery;
 import io.github.dunwu.quickstart.filesystem.dto.UploadFileDTO;
@@ -57,7 +57,7 @@ public class FileController {
         fileQuery.setTag(tag);
         fileQuery.setOriginName(originName);
         DataResult<FileDTO> dataResult = fileManager.getOne(fileQuery);
-        if (dataResult == null || dataResult.isNotOk()) {
+        if (dataResult == null || !dataResult.isOk()) {
             response.setStatus(404);
             return;
         }
@@ -103,12 +103,12 @@ public class FileController {
         String ip = ServletUtil.getRealRemoteAddr(request);
         DataResult<Boolean> dataResult = fileManager.allowAccess(ip);
         if (dataResult.getData()) {
-            return DataResult.failData(AppResulstStatus.ERROR_AUTHENTICATION.getCode(),
+            return DataResult.failData(ResultStatus.AUTH_ERROR.getCode(),
                 "上传请求过于频繁，请稍后再尝试");
         }
 
         if (uploadFileDTO == null) {
-            return DataResult.failData(AppResulstStatus.ERROR_PARAMETER);
+            return DataResult.failData(ResultStatus.SYSTEM_ERROR_PARAM);
         }
 
         return fileManager.create(uploadFileDTO);

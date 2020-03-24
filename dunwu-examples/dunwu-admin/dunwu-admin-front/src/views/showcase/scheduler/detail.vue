@@ -194,7 +194,6 @@ export default {
   created() {},
 
   mounted() {
-    this.fetchBeans()
     this.id = this.$route.query.id
     if (this.id) {
       this.fetchSchedulerInfo(this.id)
@@ -235,7 +234,7 @@ export default {
           if (this.id) {
             updateJob(this.schedulerForm)
               .then(response => {
-                if (response.success) {
+                if (response.ok) {
                   this.$message({
                     message: '更新调度任务成功',
                     type: 'success'
@@ -249,7 +248,7 @@ export default {
           } else {
             createJob(this.schedulerForm)
               .then(response => {
-                if (response.success) {
+                if (response.ok) {
                   this.$message({
                     message: '创建调度任务成功',
                     type: 'success'
@@ -267,21 +266,10 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    async fetchBeans() {
-      await getJobBeans()
-        .then(response => {
-          if (response.data) {
-            this.beans = response.data
-          }
-        })
-        .catch(error => {
-          console.info('error', error)
-        })
-    },
     async fetchSchedulerInfo(id) {
       await getById({ id: id })
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             this.schedulerForm = response.data
             this.timeRange = []
             this.timeRange.push(this.schedulerForm.beginTime)

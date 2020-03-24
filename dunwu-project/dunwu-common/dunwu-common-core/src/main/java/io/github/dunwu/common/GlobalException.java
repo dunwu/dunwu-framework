@@ -19,7 +19,7 @@ public class GlobalException extends RuntimeException {
     }
 
     public GlobalException(BaseResult result) {
-        this.result = new BaseResult(result.getCode(), result.message());
+        this.result = new BaseResult(result.getCode(), result.getMessage());
     }
 
     public GlobalException(Status status) {

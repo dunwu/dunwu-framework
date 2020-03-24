@@ -1,6 +1,6 @@
 package io.github.dunwu.common;
 
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.common.constant.Status;
 import io.github.dunwu.tool.util.StringUtil;
 import lombok.Data;
@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 应答消息实体
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-21
  */
@@ -29,97 +31,129 @@ public class BaseResult implements Status, Serializable {
      */
     protected String message;
 
-    public BaseResult() {}
-
-    public BaseResult(Status status) {
+    /**
+     * 根据 {@link Status} 构造 {@link BaseResult}
+     *
+     * @param status {@link Status}（应答状态）
+     */
+    public BaseResult(final Status status) {
         this.code = status.getCode();
         this.message = status.getMessage();
     }
 
-    public BaseResult(BaseResult result) {
+    /**
+     * 根据另一个 {@link BaseResult} 构造 {@link BaseResult}
+     *
+     * @param result {@link BaseResult}
+     */
+    public BaseResult(final BaseResult result) {
         this.code = result.getCode();
-        this.message = result.message();
+        this.message = result.getMessage();
     }
 
-    public int code() {
-        return code;
-    }
-
-    public String message() {
-        return message;
-    }
-
-    public BaseResult(int code, String message) {
+    /**
+     * 构造 {@link BaseResult}
+     *
+     * @param code    状态码 {@link Status}
+     * @param message 响应状态消息
+     */
+    public BaseResult(final int code, final String message) {
         this.code = code;
         this.message = message;
     }
 
-    public BaseResult(int code, String message, Object... params) {
+    /**
+     * 根据模板字符串以及参数，组装响应消息，构造 {@link BaseResult}
+     *
+     * @param code     响应状态错误码
+     * @param template 响应状态消息模板
+     * @param params   响应状态消息参数
+     */
+    public BaseResult(final int code, final String template, final Object... params) {
         this.code = code;
-        this.message = String.format(message, params);
+        this.message = String.format(template, params);
     }
 
-    public BaseResult(int code, List<String> messages) {
+    /**
+     * 构造 {@link BaseResult}
+     *
+     * @param code     响应状态错误码
+     * @param messages 响应状态消息列表
+     */
+    public BaseResult(final int code, final List<String> messages) {
         this.code = code;
         this.message = StringUtil.join("\n", messages.toArray());
     }
 
     /**
-     * 返回失败 Result 的默认应答
+     * 结果是成功或失败
      *
-     * @return 成功的 Result
+     * @return true / false
      */
-    public static BaseResult fail() {
-        return new BaseResult(AppResulstStatus.FAIL);
+    public boolean isOk() {
+        return this.code == ResultStatus.OK.getCode();
     }
 
     /**
-     * 根据枚举返回应答
+     * 返回失败的 {@link BaseResult}（默认应答）
      *
-     * @param status ErrorCode（系统应答状态码）
-     * @return Result
+     * @return {@link BaseResult}
+     */
+    public static BaseResult fail() {
+        return new BaseResult(ResultStatus.FAIL);
+    }
+
+    /**
+     * 根据 {@link Status} 返回失败的 {@link BaseResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @return {@link BaseResult}
      */
     public static BaseResult fail(final Status status) {
         return new BaseResult(status);
     }
 
     /**
-     * 返回 BaseResult
-     *
-     * @param code     状态码 {@link Status}
-     * @param messages 状态信息 List<String>
-     * @return BaseResult
-     */
-    public static BaseResult fail(int code, List<String> messages) {
-        return new BaseResult(code, messages);
-    }
-
-    /**
-     * 根据参数返回失败 Result
+     * 根据参数返回失败的 {@link BaseResult}
      *
      * @param code    状态码 {@link Status}
-     * @param message 状态信息
-     * @return Result
+     * @param message 响应状态消息
+     * @return {@link BaseResult}
      */
-    public static BaseResult fail(int code, String message) {
+    public static BaseResult fail(final int code, final String message) {
         return new BaseResult(code, message);
     }
 
     /**
-     * 返回成功 Result 的默认应答
+     * 返回失败的 {@link BaseResult}
      *
-     * @return Result
+     * @param code     响应状态错误码
+     * @param messages 响应状态消息列表
+     * @return {@link BaseResult}
+     */
+    public static BaseResult fail(final int code, final List<String> messages) {
+        return new BaseResult(code, messages);
+    }
+
+    /**
+     * 根据模板字符串以及参数，组装响应消息，返回失败的 {@link BaseResult}
+     *
+     * @param code     响应状态错误码
+     * @param template 响应状态消息模板
+     * @param params   响应状态消息参数
+     * @return {@link BaseResult}
+     */
+    public static BaseResult fail(final int code, final String template, final Object... params) {
+        return new BaseResult(code, template, params);
+    }
+
+    /**
+     * 返回成功的 {@link BaseResult}
+     *
+     * @return {@link BaseResult}
      */
     public static BaseResult success() {
-        return new BaseResult(AppResulstStatus.OK);
-    }
-
-    public boolean isNotOk() {
-        return !isOk();
-    }
-
-    public boolean isOk() {
-        return this.code == AppResulstStatus.OK.getCode();
+        return new BaseResult(ResultStatus.OK);
     }
 
 }

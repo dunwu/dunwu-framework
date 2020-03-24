@@ -1,4 +1,4 @@
-package io.github.dunwu.data.constant;
+package io.github.dunwu.data;
 
 import java.util.Locale;
 import java.util.Optional;

@@ -69,8 +69,7 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
             CodeGeneratorKey.MYBATIS_GENERATOR_GC_AUTHOR_NAME.value());
         Boolean enableSwagger = PropertiesUtil.getBoolean(properties,
             CodeGeneratorKey.MYBATIS_GENERATOR_GC_ENABLE_SWAGGER.key(),
-            Boolean.valueOf(
-                CodeGeneratorKey.MYBATIS_GENERATOR_GC_ENABLE_SWAGGER.value()));
+            Boolean.valueOf(CodeGeneratorKey.MYBATIS_GENERATOR_GC_ENABLE_SWAGGER.value()));
         String mapperName = PropertiesUtil.getString(properties,
             CodeGeneratorKey.MYBATIS_GENERATOR_GC_MAPPER_NAME.key(),
             CodeGeneratorKey.MYBATIS_GENERATOR_GC_MAPPER_NAME.value());
@@ -110,8 +109,7 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
             CodeGeneratorKey.SPRING_DATASOURCE_PASSWORD.key(),
             CodeGeneratorKey.SPRING_DATASOURCE_PASSWORD.value());
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl(url).setDriverName(driverName).setUsername(username)
-            .setPassword(password);
+        dsc.setUrl(url).setDriverName(driverName).setUsername(username).setPassword(password);
         return dsc;
     }
 
@@ -165,10 +163,13 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
             CodeGeneratorKey.MYBATIS_GENERATOR_SC_SUPER_SERVICE_IMPL.value());
         StrategyConfig sc = new StrategyConfig();
         sc.setEntityLombokModel(true).setControllerMappingHyphenStyle(true)
-            .setRestControllerStyle(true).setNaming(NamingStrategy.underline_to_camel)
-            .setColumnNaming(NamingStrategy.underline_to_camel).setTablePrefix("t_")
-            .setTablePrefix(pc.getModuleName() + "_").setSuperEntityClass(superEntity)
-            .setSuperEntityColumns("id").setSuperServiceClass(superService)
+            .setRestControllerStyle(true)
+            .setNaming(NamingStrategy.underline_to_camel)
+            .setColumnNaming(NamingStrategy.underline_to_camel)
+            .setTablePrefix("t_")
+            .setSuperEntityColumns("id")
+            .setSuperEntityClass(superEntity)
+            .setSuperServiceClass(superService)
             .setSuperServiceImplClass(superServiceImpl);
         if (StringUtil.isNotEmpty(tableName)) {
             tableName = tableName.replaceAll(" ", "");

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -54,11 +55,6 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
 
-        // http.authorizeRequests()
-        // 	.antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
-        // 	.antMatchers(properties.getRegisterUrl(), properties.getLoginUrl(), properties.getLogoutUrl())
-        // 	.permitAll();
-
         http.authorizeRequests().antMatchers("/user/**").permitAll()
             .anyRequest().authenticated();
 
@@ -76,7 +72,8 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
      * 自定义认证过滤器
      */
     private DunwuLoginFilter customLoginFilter() {
-        DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(properties.getLoginUrl(), userManager);
+        DunwuLoginFilter customLoginFilter = new DunwuLoginFilter(properties.getLoginUrl(), userManager,
+            new BCryptPasswordEncoder());
         customLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
         customLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         return customLoginFilter;

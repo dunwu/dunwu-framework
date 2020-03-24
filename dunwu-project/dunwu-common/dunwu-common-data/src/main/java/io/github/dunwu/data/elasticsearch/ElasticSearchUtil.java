@@ -1,6 +1,6 @@
 package io.github.dunwu.data.elasticsearch;
 
-import io.github.dunwu.data.constant.QueryJudgeType;
+import io.github.dunwu.data.QueryJudgeType;
 import io.github.dunwu.tool.bean.support.NamingStrategy;
 import io.github.dunwu.tool.util.ArrayUtil;
 import io.github.dunwu.tool.util.CharUtil;

@@ -1,6 +1,6 @@
 package io.github.dunwu.common;
 
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.common.constant.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 含有响应数据列表的应答消息实体
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-06-06
  */
@@ -23,105 +25,136 @@ public class DataListResult<T> extends BaseResult {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 当前查询页的数据列表
+     * 应答数据实体
      */
     protected Collection<T> data;
 
-    public DataListResult() {
+    /**
+     * 构造成功的 {@link DataListResult}
+     *
+     * @param data 应答数据实体
+     */
+    public DataListResult(Collection<T> data) {
+        super(ResultStatus.OK);
+        this.data = data;
     }
 
-    public DataListResult(Status status) {
+    /**
+     * 根据 {@link Status} 构造 {@link DataListResult}
+     *
+     * @param status {@link Status}（应答状态）
+     */
+    public DataListResult(final Status status) {
         super(status);
     }
 
-    public DataListResult(BaseResult result) {
+    /**
+     * 根据另一个 {@link DataListResult} 构造 {@link DataListResult}
+     *
+     * @param result {@link DataListResult}
+     */
+    public DataListResult(final DataListResult<T> result) {
         super(result);
-        this.data = null;
-    }
-
-    public DataListResult(Collection<T> data, int code, String message) {
-        super(code, message);
-        this.data = data;
-    }
-
-    public DataListResult(Collection<T> data, int code, String message, Object... params) {
-        super(code, message, params);
-        this.data = data;
-    }
-
-    public DataListResult(Collection<T> data, int code, List<String> messages) {
-        super(code, messages);
-        this.data = data;
     }
 
     /**
-     * 返回失败 DataListResult 的默认应答
+     * 构造 {@link DataListResult}
+     *
+     * @param code    状态码 {@link Status}
+     * @param message 响应状态消息
+     */
+    public DataListResult(final int code, final String message) {
+        super(code, message);
+    }
+
+    /**
+     * 根据模板字符串以及参数，组装响应消息，构造 {@link DataListResult}
+     *
+     * @param code     响应状态错误码
+     * @param template 响应状态消息模板
+     * @param params   响应状态消息参数
+     */
+    public DataListResult(final int code, final String template, Object... params) {
+        super(code, template, params);
+    }
+
+    /**
+     * 构造 {@link DataListResult}
+     *
+     * @param code     响应状态错误码
+     * @param messages 响应状态消息列表
+     */
+    public DataListResult(final int code, final List<String> messages) {
+        super(code, messages);
+    }
+
+    /**
+     * 返回失败的 {@link DataListResult} （默认应答）
      *
      * @param <T> 数据类型
-     * @return DataListResult
+     * @return {@link DataListResult}
      */
     public static <T> DataListResult<T> failDataList() {
-        return failDataList(AppResulstStatus.FAIL);
+        return failDataList(ResultStatus.FAIL);
     }
 
     /**
-     * 根据枚举返回失败 DataListResult
+     * 根据 {@link Status} 返回失败的 {@link DataListResult}
      *
-     * @param status ErrorCode（系统应答状态码）
-     * @param <T>          数据类型
-     * @return BaseResult
+     * @param status {@link Status} 响应状态
+     * @param <T>    数据类型
+     * @return {@link DataListResult}
      */
-    public static <T> DataListResult<T> failDataList(Status status) {
+    public static <T> DataListResult<T> failDataList(final Status status) {
         return new DataListResult<>(status);
     }
 
     /**
-     * 根据枚举返回失败 DataResult
+     * 返回失败的 {@link DataListResult}
      *
-     * @param code    错误码 {@link Status}
-     * @param message 信息数组
+     * @param code    响应状态错误码
+     * @param message 响应状态消息
      * @param <T>     数据类型
-     * @return DataResult
+     * @return {@link DataListResult}
      */
-    public static <T> DataListResult<T> failDataList(int code, String message) {
-        return new DataListResult<>(null, code, message);
+    public static <T> DataListResult<T> failDataList(final int code, final String message) {
+        return new DataListResult<>(code, message);
     }
 
     /**
-     * 根据参数返回失败 DataListResult
+     * 返回失败的 {@link DataListResult}
      *
-     * @param code     错误码 {@link Status}
-     * @param messages 错误信息
+     * @param code     响应状态错误码
+     * @param messages 响应状态消息列表
      * @param <T>      数据类型
-     * @return DataListResult
+     * @return {@link DataListResult}
      */
-    public static <T> DataListResult<T> failDataList(int code, List<String> messages) {
-        return new DataListResult<>(null, code, messages);
+    public static <T> DataListResult<T> failDataList(final int code, final List<String> messages) {
+        return new DataListResult<>(code, messages);
     }
 
     /**
-     * 根据枚举返回失败 DataListResult
+     * 根据模板字符串以及参数，组装响应消息，返回失败的 {@link DataListResult}
      *
-     * @param code     错误码 {@link Status}
-     * @param template 信息模板
-     * @param params   信息参数
+     * @param code     响应状态错误码
+     * @param template 响应状态消息模板
+     * @param params   响应状态消息参数
      * @param <T>      数据类型
-     * @return DataListResult
+     * @return {@link DataListResult}
      */
-    public static <T> DataListResult<T> failDataList(int code, String template, Object... params) {
-        return new DataListResult<>(null, code, template, params);
+    public static <T> DataListResult<T> failDataList(final int code, final String template, final Object... params) {
+        return new DataListResult<>(code, template, params);
     }
 
     /**
-     * 返回成功 Result 的默认应答
+     * 根据模板字符串以及参数，组装响应消息，返回成功的 {@link DataListResult}
      *
-     * @param list 数据对象列表
+     * @param data 数据对象列表
      * @param <T>  数据类型
-     * @return Result
+     * @return {@link DataListResult}
      */
-    public static <T> DataListResult<T> success(Collection<T> list) {
-        return new DataListResult<>(list, AppResulstStatus.OK.getCode(),
-            AppResulstStatus.OK.getMessage());
+    public static <T> DataListResult<T> success(final Collection<T> data) {
+        return new DataListResult<>(data);
     }
 
 }

@@ -2,7 +2,7 @@ package io.github.dunwu.quickstart.tool.controller;
 
 import io.github.dunwu.common.DataListResult;
 import io.github.dunwu.common.DataResult;
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.tool.lang.Snowflake;
 import io.github.dunwu.tool.util.ArrayUtil;
 import io.github.dunwu.tool.util.IdUtil;
@@ -67,7 +67,7 @@ public class ToolController {
         String[] regions = IpUtils.getFullRegionName(ip);
         if (ArrayUtil.isEmpty(regions)) {
             String message = String.format("未找到 %s", ip);
-            return DataListResult.failDataList(AppResulstStatus.ERROR_NOT_FOUND.getCode(), message);
+            return DataListResult.failDataList(ResultStatus.HTTP_NOT_FOUND.getCode(), message);
         }
         return DataListResult.success(Arrays.asList(regions));
     }

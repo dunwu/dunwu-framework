@@ -1,6 +1,6 @@
 package io.github.dunwu.quickstart.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.dunwu.data.mybatis.BaseEntity;
 import io.github.dunwu.quickstart.user.constant.GenderEnum;
 import io.swagger.annotations.ApiModel;
@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.time.LocalDate;
 
 /**
  * 用户表数据实体
@@ -22,6 +20,7 @@ import java.time.LocalDate;
 @ToString
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@TableName("t_user")
 @ApiModel(value = "User", description = "用户表")
 public class User extends BaseEntity {
 
@@ -33,14 +32,7 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "姓名")
-    private String name;
-
-    @ApiModelProperty(value = "生日")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private LocalDate birthday;
-
-    @ApiModelProperty(value = "性别", example = "0")
+    @ApiModelProperty(value = "性别", example = "MALE")
     private GenderEnum sex;
 
     @ApiModelProperty(value = "头像")
@@ -55,7 +47,7 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "地址")
     private String address;
 
-    @ApiModelProperty(value = "逻辑删除标记")
-    private Boolean deleted;
+    @ApiModelProperty(value = "状态，0 为有效，1 为无效", example = "0")
+    private Integer status;
 
 }

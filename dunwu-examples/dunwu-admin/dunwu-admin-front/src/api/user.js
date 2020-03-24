@@ -1,30 +1,60 @@
 import request from '@/utils/request'
 
-export function isUserExists(params) {
+export function getUserPage(params) {
   return request({
-    url: 'user/isUserExists', method: 'get', params
+    url: '/user/page', method: 'get', params
   })
 }
 
-export function register(data) {
+export function getUserById(params) {
+  return request({
+    url: '/user/getById', method: 'get', params
+  })
+}
+
+export function insertUser(data) {
+  return request({
+    url: '/user/insert', method: 'post', data
+  })
+}
+
+export function updateUserById(data) {
+  return request({
+    url: '/user/updateById', method: 'post', data
+  })
+}
+
+export function deleteUserById(data) {
+  return request({
+    url: '/user/deleteById', method: 'post', data
+  })
+}
+
+export function isUserExists(params) {
+  return request({
+    url: 'user/exists', method: 'get', params
+  })
+}
+
+export function userRegister(data) {
   return request({
     url: 'user/register', method: 'post', data
   })
 }
 
-export function login(data) {
+export function userLogin(data) {
   return request({
     url: '/user/login', method: 'post', data
   })
 }
 
-export function getInfo() {
+export function getUserInfo() {
   return request({
-    url: '/user/getInfo', method: 'get'
+    url: '/user/info', method: 'get'
   })
 }
 
-export function logout() {
+export function userLogout() {
   return request({
     url: '/user/logout', method: 'post'
   })

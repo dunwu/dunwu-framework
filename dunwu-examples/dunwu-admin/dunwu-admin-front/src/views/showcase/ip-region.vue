@@ -63,7 +63,7 @@ export default {
     getIpRegion() {
       getIpRegion(this.query)
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             this.regions = response.data
           }
         })
@@ -74,7 +74,7 @@ export default {
     getlocalRegion() {
       getlocalRegion()
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             this.localAddress = response.data.address
             this.localRegion = response.data.regions.join(' ')
           }

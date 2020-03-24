@@ -3,7 +3,7 @@ package io.github.dunwu.quickstart.global.handler;
 import com.google.common.net.HttpHeaders;
 import io.github.dunwu.common.BaseResult;
 import io.github.dunwu.common.GlobalException;
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.web.constant.WebConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,9 +65,9 @@ public class RequestGlobalHandler {
             baseResult = resolveMethodArgumentNotValidException(
                 (MethodArgumentNotValidException) e);
         } else if (e instanceof GlobalException) {
-            baseResult = BaseResult.fail(AppResulstStatus.ERROR_SYSTEM);
+            baseResult = BaseResult.fail(ResultStatus.SYSTEM_ERROR);
         } else {
-            baseResult = BaseResult.fail(AppResulstStatus.ERROR_SYSTEM.getCode(), e.getMessage());
+            baseResult = BaseResult.fail(ResultStatus.SYSTEM_ERROR.getCode(), e.getMessage());
         }
 
         WebConstant.ResponseType responseType = getResponseMode(request);
@@ -98,7 +98,7 @@ public class RequestGlobalHandler {
             sb.append(error.getDefaultMessage());
             sb.append("\n");
         }
-        return BaseResult.fail(AppResulstStatus.ERROR_PARAMETER.getCode(),
+        return BaseResult.fail(ResultStatus.SYSTEM_ERROR_PARAM.getCode(),
             sb.toString());
     }
 

@@ -1,17 +1,14 @@
 package io.github.dunwu.autoconfigure.mybatis;
 
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.MybatisMapWrapperFactory;
 import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.sql.DataSource;
 
 /**
  * Spring Boot 集成 MyBatis-Plus 配置
@@ -29,9 +25,7 @@ import javax.sql.DataSource;
  * @since 2019-04-27
  */
 @Configuration
-@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class, MybatisMapWrapperFactory.class })
-@ConditionalOnSingleCandidate(DataSource.class)
-@AutoConfigureAfter(MybatisPlusAutoConfiguration.class)
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
 @EnableTransactionManagement
 @EnableConfigurationProperties(DunwuMybatisProperties.class)
 public class DunwuMybatisPlusConfiguration {
@@ -63,6 +57,13 @@ public class DunwuMybatisPlusConfiguration {
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+
+        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
+        paginationInterceptor.setOverflow(false);
+        // 设置最大单页限制数量，默认 500 条，-1 不受限制
+        paginationInterceptor.setLimit(500);
+        // 开启 count 的 join 优化,只针对部分 left join
+        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
 
         // 攻击 SQL 阻断解析器、加入解析链
         if (properties.isBlockAttackEnabled()) {

@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
@@ -38,16 +39,17 @@ import javax.servlet.http.HttpServletResponse;
 public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private final UserManager userManager;
+    private final BCryptPasswordEncoder cryptPasswordEncoder;
 
-    DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager) {
-        super(new AntPathRequestMatcher(defaultFilterProcessesUrl,
-            HttpMethod.POST.name()));
+    DunwuLoginFilter(String defaultFilterProcessesUrl, UserManager userManager,
+        BCryptPasswordEncoder cryptPasswordEncoder) {
+        super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
         this.userManager = userManager;
+        this.cryptPasswordEncoder = cryptPasswordEncoder;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-        HttpServletResponse response)
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
         throws AuthenticationException, IOException, ServletException {
 
         ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
@@ -67,7 +69,11 @@ public class DunwuLoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new UsernameNotFoundException("用户名不存在");
         }
 
-        if (!userDTO.getPassword().equals(password)) {
+        // if (!userDTO.getPassword().equals(password)) {
+        //     throw new AuthenticationServiceException("密码错误");
+        // }
+
+        if (!cryptPasswordEncoder.matches(password, userDTO.getPassword())) {
             throw new AuthenticationServiceException("密码错误");
         }
 

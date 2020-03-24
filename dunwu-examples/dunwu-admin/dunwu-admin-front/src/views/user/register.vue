@@ -106,7 +106,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { isUserExists, register } from '@/api/user'
+import { isUserExists, userRegister } from '@/api/user'
 import SocialSign from './components/SocialSignin'
 
 export default {
@@ -232,10 +232,10 @@ export default {
     handleRegister() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          register(this.registerForm)
+          userRegister(this.registerForm)
             .then(response => {
               console.log('handleRegister', response)
-              if (response.success) {
+              if (response.ok) {
                 this.$message({
                   message: '注册成功',
                   type: 'success'

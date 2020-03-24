@@ -1,6 +1,5 @@
 package io.github.dunwu.quickstart.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.dunwu.quickstart.user.constant.GenderEnum;
 import io.github.dunwu.tool.util.RegexUtil;
 import io.swagger.annotations.ApiModel;
@@ -11,12 +10,10 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -43,16 +40,6 @@ public class UserDTO implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @NotNull
-    @Length(min = 6, max = 10)
-    @ApiModelProperty(value = "姓名")
-    private String name;
-
-    @Past
-    @ApiModelProperty(value = "生日")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private LocalDate birthday;
-
     @Range(min = 1, max = 2)
     @ApiModelProperty(value = "性别", example = "0")
     private GenderEnum sex;
@@ -71,8 +58,8 @@ public class UserDTO implements Serializable {
     @ApiModelProperty(value = "地址")
     private String address;
 
-    @ApiModelProperty(value = "逻辑删除标记", example = "0")
-    private Boolean deleted;
+    @ApiModelProperty(value = "状态，0 为有效，1 为无效", example = "0")
+    private Integer status;
 
     @ApiModelProperty(value = "角色列表")
     private List<RoleDTO> roles;

@@ -1,6 +1,6 @@
 package io.github.dunwu.data.elasticsearch;
 
-import io.github.dunwu.data.constant.OrderType;
+import io.github.dunwu.data.OrderType;
 import io.github.dunwu.tool.bean.support.NamingStrategy;
 import org.springframework.data.annotation.Persistent;
 

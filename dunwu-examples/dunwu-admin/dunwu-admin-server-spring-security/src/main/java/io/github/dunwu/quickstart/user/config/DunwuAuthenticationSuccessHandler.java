@@ -2,6 +2,7 @@ package io.github.dunwu.quickstart.user.config;
 
 import com.alibaba.fastjson.JSON;
 import io.github.dunwu.common.DataListResult;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +33,7 @@ public class DunwuAuthenticationSuccessHandler implements AuthenticationSuccessH
         List<String> roles = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         DataListResult<String> result = DataListResult.success(roles);
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         response.getWriter().write(JSON.toJSONString(result));

@@ -1,6 +1,6 @@
 package io.github.dunwu.data.elasticsearch;
 
-import io.github.dunwu.data.constant.QueryJudgeType;
+import io.github.dunwu.data.QueryJudgeType;
 
 import java.lang.annotation.*;
 

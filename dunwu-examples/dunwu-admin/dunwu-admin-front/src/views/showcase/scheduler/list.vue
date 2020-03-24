@@ -335,7 +335,7 @@ export default {
       await deleteJob({ id: row.id })
         .then(response => {
           console.log('deleteJob', response)
-          if (response.success) {
+          if (response.ok) {
             this.fetchData()
             this.$message({
               message: '删除任务 ' + row.jobName + ' 成功',
@@ -350,7 +350,7 @@ export default {
     async handlePause(row) {
       await pauseJob({ id: row.id })
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             row.status = 1
             this.$message({
               message: '暂停任务 ' + row.jobName + ' 成功',
@@ -367,7 +367,7 @@ export default {
     async handleResume(row) {
       await resumeJob({ id: row.id })
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             row.status = 0
             this.$message({
               message: '恢复任务 ' + row.jobName + ' 成功',
@@ -384,7 +384,7 @@ export default {
     async handleExecute(row) {
       await executeJob({ ...row })
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             this.$message({
               message: '执行任务 ' + row.jobName + ' 成功',
               type: 'success'

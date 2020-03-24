@@ -1,3 +1,6 @@
+SET NAMES utf8;
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- 用户表
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
@@ -19,8 +22,9 @@ CREATE TABLE user (
     KEY idx_name(name)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='用户表'
+    ROW_FORMAT = DYNAMIC;
 
 -- 角色表
 DROP TABLE IF EXISTS role;
@@ -35,11 +39,11 @@ CREATE TABLE role (
     UNIQUE KEY uk_name(name)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='角色表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='角色表';
 
-DROP TABLE IF EXISTS user_role;
-CREATE TABLE user_role (
+DROP TABLE IF EXISTS t_user_role;
+CREATE TABLE t_user_role (
     id      INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     user_id INT(20) NOT NULL COMMENT '用户ID',
     role_id INT(20) NOT NULL COMMENT '角色ID',
@@ -47,8 +51,8 @@ CREATE TABLE user_role (
     UNIQUE KEY uk_user_role(user_id, role_id)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户角色表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='用户角色表';
 
 -- 权限表
 DROP TABLE IF EXISTS permission;
@@ -64,8 +68,8 @@ CREATE TABLE permission (
     UNIQUE KEY uk_name(name)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='权限表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='权限表';
 
 -- 菜单表
 DROP TABLE IF EXISTS menu;
@@ -86,8 +90,8 @@ CREATE TABLE menu (
     UNIQUE KEY uk_key(`key`)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='菜单表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='菜单表';
 
 DROP TABLE IF EXISTS file;
 CREATE TABLE file (
@@ -109,8 +113,8 @@ CREATE TABLE file (
     UNIQUE KEY uk_keys(origin_name, tag, namespace)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='文件信息表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='文件信息表';
 
 DROP TABLE IF EXISTS file_content;
 CREATE TABLE file_content (
@@ -121,8 +125,8 @@ CREATE TABLE file_content (
     UNIQUE KEY uk_file_name(file_name)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='文件内容表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='文件内容表';
 
 -- 调度信息表
 DROP TABLE IF EXISTS scheduler;
@@ -154,8 +158,8 @@ CREATE TABLE scheduler (
     UNIQUE KEY uk_trigger_group_name(trigger_group, trigger_name)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='调度信息表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='调度信息表';
 
 DROP TABLE IF EXISTS template;
 CREATE TABLE template (
@@ -173,6 +177,6 @@ CREATE TABLE template (
     KEY idx_tag(tag)
 )
     ENGINE = INNODB
-    DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci COMMENT ='模板表';
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='模板表';
 

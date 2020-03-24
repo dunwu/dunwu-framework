@@ -1,6 +1,10 @@
 package io.github.dunwu.quickstart.scheduler.controller;
 
-import io.github.dunwu.common.*;
+import io.github.dunwu.common.BaseResult;
+import io.github.dunwu.common.DataListResult;
+import io.github.dunwu.common.DataResult;
+import io.github.dunwu.common.PageResult;
+import io.github.dunwu.data.QueryRequest;
 import io.github.dunwu.quickstart.scheduler.dto.BeanDTO;
 import io.github.dunwu.quickstart.scheduler.entity.Scheduler;
 import io.github.dunwu.quickstart.scheduler.service.SchedulerService;
@@ -96,15 +100,14 @@ public class SchedulerController {
 
     @GetMapping("page")
     @ApiOperation(value = "根据 entity 条件，翻页查询 SchedulerInfo 记录")
-    public PageResult<Scheduler> page(Pagination<Scheduler> pagination,
-        Scheduler entity) {
-        return service.page(pagination, entity);
+    public PageResult<Scheduler> page(QueryRequest<Scheduler> query) {
+        return service.page(query);
     }
 
     @GetMapping("pageAll")
     @ApiOperation(value = "翻页查询所有 SchedulerInfo 记录")
-    public PageResult<Scheduler> pageAll(Pagination<Scheduler> pagination) {
-        return service.page(pagination);
+    public PageResult<Scheduler> pageAll(QueryRequest<Scheduler> query) {
+        return service.page(query);
     }
 
     @PostMapping("pauseJob")
@@ -116,25 +119,25 @@ public class SchedulerController {
     @PostMapping("remove")
     @ApiOperation(value = "根据 entity 条件，删除 Scheduler 记录")
     public BaseResult remove(@RequestBody Scheduler entity) {
-        return service.remove(entity);
+        return service.delete(entity);
     }
 
     @PostMapping("removeById")
     @ApiOperation(value = "根据 ID 删除一条 Scheduler 记录")
     public BaseResult removeById(@RequestBody String id) {
-        return service.removeById(id);
+        return service.deleteById(id);
     }
 
     @PostMapping("removeByIds")
     @ApiOperation(value = "根据 ID 批量删除 Scheduler 记录")
     public BaseResult removeByIds(@RequestBody Collection<String> idList) {
-        return service.removeByIds(idList);
+        return service.deleteBatchIds(idList);
     }
 
     @PostMapping("removeByMap")
     @ApiOperation(value = "根据 columnMap 条件，删除 Scheduler 记录")
     public BaseResult removeByMap(@RequestBody Map<String, Object> columnMap) {
-        return service.removeByMap(columnMap);
+        return service.deleteByMap(columnMap);
     }
 
     @PostMapping("resumeJob")
@@ -146,25 +149,25 @@ public class SchedulerController {
     @PostMapping("save")
     @ApiOperation(value = "插入一条 Scheduler 记录，插入成功返回 ID（选择字段，策略插入）")
     public DataResult<Integer> save(@RequestBody Scheduler entity) {
-        return service.save(entity);
+        return service.insert(entity);
     }
 
     @PostMapping("saveBatch")
     @ApiOperation(value = "批量添加 Scheduler 记录（选择字段，策略插入）")
     public BaseResult saveBatch(@RequestBody Collection<Scheduler> entityList) {
-        return service.saveBatch(entityList);
+        return service.insertBatch(entityList);
     }
 
     @PostMapping("saveOrUpdate")
     @ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
     public BaseResult saveOrUpdate(@RequestBody Scheduler entity) {
-        return service.saveOrUpdate(entity);
+        return service.save(entity);
     }
 
     @PostMapping("saveOrUpdateBatch")
     @ApiOperation(value = "批量添加或更新 Scheduler 记录")
     public BaseResult saveOrUpdateBatch(@RequestBody Collection<Scheduler> entityList) {
-        return service.saveOrUpdateBatch(entityList);
+        return service.saveBatch(entityList);
     }
 
     @PostMapping("update")

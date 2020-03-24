@@ -137,7 +137,7 @@ export default {
           if (this.id) {
             updateTemplate(this.templateConfig)
               .then(response => {
-                if (response.success) {
+                if (response.ok) {
                   this.$message({
                     message: '更新模板配置成功',
                     type: 'success'
@@ -151,7 +151,7 @@ export default {
           } else {
             createTemplate(this.templateConfig)
               .then(response => {
-                if (response.success) {
+                if (response.ok) {
                   this.$message({
                     message: '添加模板配置成功',
                     type: 'success'
@@ -174,7 +174,7 @@ export default {
     async fetchTemplateInfo(id) {
       await getTemplateById({ id: id })
         .then(response => {
-          if (response.success) {
+          if (response.ok) {
             this.templateConfig = response.data
           }
         })

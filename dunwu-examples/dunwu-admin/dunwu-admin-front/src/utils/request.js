@@ -57,7 +57,7 @@ service.interceptors.response.use(/**
     console.info('[response info]', response.data)
     console.groupEnd()
     // if the custom code is not 0, it is judged as an error.
-    if (res.success) {
+    if (res.ok) {
       return res
     } else {
       Message({

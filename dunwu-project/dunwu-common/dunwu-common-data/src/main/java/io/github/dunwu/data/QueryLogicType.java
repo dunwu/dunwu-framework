@@ -1,4 +1,4 @@
-package io.github.dunwu.data.constant;
+package io.github.dunwu.data;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>

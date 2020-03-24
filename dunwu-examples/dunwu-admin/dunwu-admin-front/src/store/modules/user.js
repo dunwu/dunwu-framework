@@ -1,33 +1,43 @@
-import { getInfo, login, logout } from '@/api/user'
+import { getUserInfo, userLogin, userLogout } from '@/api/user'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
-  token: getToken(), name: '', avatar: '', email: '', introduction: '', roles: []
+  token: getToken(),
+  name: '',
+  avatar: '',
+  email: '',
+  introduction: '',
+  roles: []
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
-  }, SET_INTRODUCTION: (state, introduction) => {
+  },
+  SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
-  }, SET_NAME: (state, name) => {
+  },
+  SET_NAME: (state, name) => {
     state.name = name
-  }, SET_AVATAR: (state, avatar) => {
+  },
+  SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }, SET_EMAIL: (state, email) => {
+  },
+  SET_EMAIL: (state, email) => {
     state.email = email
-  }, SET_ROLES: (state, roles) => {
+  },
+  SET_ROLES: (state, roles) => {
     state.roles = roles
   }
 }
 
 const actions = {
-  // user login
+  // user userLogin
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
+      userLogin({ username: username.trim(), password: password })
         .then(response => {
           const { data } = response
           commit('SET_TOKEN', data.token)
@@ -43,7 +53,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo()
+      getUserInfo()
         .then(response => {
           const { data } = response
 
@@ -74,7 +84,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
+      userLogout(state.token)
         .then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
@@ -127,5 +137,8 @@ const actions = {
 }
 
 export default {
-  namespaced: true, state, mutations, actions
+  namespaced: true,
+  state,
+  mutations,
+  actions
 }

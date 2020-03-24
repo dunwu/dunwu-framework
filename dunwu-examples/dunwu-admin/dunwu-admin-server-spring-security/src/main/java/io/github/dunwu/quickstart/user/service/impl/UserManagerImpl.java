@@ -1,10 +1,11 @@
 package io.github.dunwu.quickstart.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.dunwu.common.BaseResult;
 import io.github.dunwu.common.DataResult;
 import io.github.dunwu.common.annotation.Manager;
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
 import io.github.dunwu.quickstart.user.dto.RoleDTO;
 import io.github.dunwu.quickstart.user.dto.UserDTO;
 import io.github.dunwu.quickstart.user.entity.Role;
@@ -43,7 +44,7 @@ public class UserManagerImpl implements UserManager {
     public UserDTO getByUsername(String username) {
         User query = new User();
         query.setUsername(username);
-        User user = userMapper.selectOne(new QueryWrapper<>(query));
+        User user = userMapper.selectOne(Wrappers.query(query));
         UserDTO userDTO = BeanUtil.toBean(user, UserDTO.class);
 
         // 查询用户角色列表
@@ -74,7 +75,7 @@ public class UserManagerImpl implements UserManager {
     public BaseResult register(UserDTO userDTO) {
         DataResult<Boolean> dataResult = isUserExists(userDTO);
         if (dataResult.getData()) {
-            return BaseResult.fail(AppResulstStatus.ERROR_DB.getCode(), "用户已存在");
+            return BaseResult.fail(ResultStatus.DATA_ERROR.getCode(), "用户已存在");
         }
 
         User user = BeanUtil.toBean(userDTO, User.class);
@@ -85,7 +86,7 @@ public class UserManagerImpl implements UserManager {
             userRoleMapper.insert(userRole);
             return BaseResult.success();
         } else {
-            return BaseResult.fail(AppResulstStatus.ERROR_DB);
+            return BaseResult.fail(ResultStatus.DATA_ERROR);
         }
     }
 

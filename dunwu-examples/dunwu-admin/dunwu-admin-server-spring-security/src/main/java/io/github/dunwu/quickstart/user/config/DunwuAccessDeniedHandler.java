@@ -2,7 +2,8 @@ package io.github.dunwu.quickstart.user.config;
 
 import com.alibaba.fastjson.JSON;
 import io.github.dunwu.common.BaseResult;
-import io.github.dunwu.common.constant.AppResulstStatus;
+import io.github.dunwu.common.constant.ResultStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -26,8 +27,8 @@ public class DunwuAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
         AccessDeniedException e) throws IOException, ServletException {
-        BaseResult result = BaseResult.fail(AppResulstStatus.UNAUTHORIZED);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        BaseResult result = BaseResult.fail(ResultStatus.HTTP_UNAUTHORIZED);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         response.getWriter().write(JSON.toJSONString(result));

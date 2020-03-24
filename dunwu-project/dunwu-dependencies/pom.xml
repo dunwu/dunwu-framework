@@ -41,7 +41,7 @@
     <fastdfs.version>1.26.6</fastdfs.version>
     <mybatis.version>3.5.2</mybatis.version>
     <mybatis-generator.version>1.3.5</mybatis-generator.version>
-    <mybatis-plus.version>3.3.0</mybatis-plus.version>
+    <mybatis-plus.version>3.3.1</mybatis-plus.version>
     <mybatis-spring.version>2.0.2</mybatis-spring.version>
     <mybatis.mapper.version>4.0.4</mybatis.mapper.version>
     <mybatis.pagehelper.version>5.1.8</mybatis.pagehelper.version>
