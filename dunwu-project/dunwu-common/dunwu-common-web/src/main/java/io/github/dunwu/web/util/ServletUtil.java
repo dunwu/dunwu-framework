@@ -220,6 +220,17 @@ public class ServletUtil {
         response.setContentType("image/jpeg");
     }
 
+    /**
+     * 判断是否为 ajax请求
+     *
+     * @param request HttpServletRequest
+     * @return boolean
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        return (request.getHeader("X-Requested-With") != null
+            && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
+    }
+
     public static class RequestIdentityInfo {
 
         /**

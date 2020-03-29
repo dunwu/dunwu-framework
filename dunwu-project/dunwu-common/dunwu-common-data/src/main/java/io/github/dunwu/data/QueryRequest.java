@@ -5,6 +5,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,6 +35,14 @@ public class QueryRequest<T> implements Serializable {
      * 数据实体
      */
     private T entity;
+
+    public static <T> QueryRequest<T> build(T entity, PageQuery page) {
+        QueryRequest<T> request = new QueryRequest<T>();
+        request.setEntity(entity);
+        request.setPage(page);
+        request.setOrders(Collections.emptyList());
+        return request;
+    }
 
     public static <T> QueryRequest<T> build(T entity, PageQuery page, List<DataOrderItem> orders) {
         QueryRequest<T> request = new QueryRequest<T>();

@@ -31,7 +31,7 @@ public class DunwuJsonProperties {
         // Include.NON_DEFAULT 属性为默认值不序列化
         // Include.NON_EMPTY 属性为 空（""） 或者为 NULL 都不序列化，则返回的json是没有这个字段的。这样对移动端会更省流量
         // Include.NON_NULL 属性为NULL 不序列化
-        private JsonInclude.Include include = JsonInclude.Include.NON_EMPTY;
+        private JsonInclude.Include include = JsonInclude.Include.ALWAYS;
 
         /**
          * 是否允许出现单引号

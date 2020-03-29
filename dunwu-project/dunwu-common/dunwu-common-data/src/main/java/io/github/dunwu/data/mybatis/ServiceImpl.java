@@ -106,7 +106,12 @@ public class ServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
 
     @Override
     public PageResult<T> page(QueryRequest<T> query) {
-        QueryWrapper<T> queryWrapper = Wrappers.query(query.getEntity());
+        QueryWrapper<T> queryWrapper;
+        if (query.getEntity() != null) {
+            queryWrapper = Wrappers.query(query.getEntity());
+        } else {
+            queryWrapper = Wrappers.emptyWrapper();
+        }
         Page<T> page = MybatisPlusUtil.transToMybatisPlusPage(query);
         Page<T> resultPage = baseMapper.selectPage(page, queryWrapper);
         return PageResult.success(MybatisPlusUtil.transToPagination(resultPage));

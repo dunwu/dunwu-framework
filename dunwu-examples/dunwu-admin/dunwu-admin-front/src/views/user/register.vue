@@ -106,7 +106,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { isUserExists, userRegister } from '@/api/user'
+import { isUserExists, userRegister } from '@/api/system/user'
 import SocialSign from './components/SocialSignin'
 
 export default {

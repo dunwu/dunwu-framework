@@ -1,47 +1,61 @@
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 用户表
-DROP TABLE IF EXISTS user;
-CREATE TABLE user (
-    id       INT(20)             NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    username VARCHAR(30)         NOT NULL COMMENT '用户名',
-    password VARCHAR(32)         NOT NULL COMMENT '密码',
-    name     VARCHAR(30)                  DEFAULT '' COMMENT '姓名',
-    birthday DATE                         DEFAULT NULL COMMENT '生日',
+-- 用户信息
+DROP TABLE IF EXISTS t_user;
+CREATE TABLE t_user (
+    id       INT(20)         NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    username VARCHAR(30)     NOT NULL COMMENT '用户名',
+    password VARCHAR(60)     NOT NULL COMMENT '密码',
     sex      INT(1) UNSIGNED COMMENT '性别',
-    avatar   VARCHAR(100)                 DEFAULT '' COMMENT '头像',
-    email    VARCHAR(100)                 DEFAULT '' COMMENT '邮箱',
-    mobile   VARCHAR(20)                  DEFAULT '' COMMENT '手机号',
-    address  VARCHAR(100)                 DEFAULT '' COMMENT '地址',
-    deleted  TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
+    avatar   VARCHAR(100) DEFAULT '' COMMENT '头像',
+    email    VARCHAR(100) DEFAULT '' COMMENT '邮箱',
+    mobile   VARCHAR(20)  DEFAULT '' COMMENT '手机号',
+    status   INT(1) UNSIGNED NOT NULL COMMENT '状态，0 为有效，1 为无效',
     PRIMARY KEY (id),
     UNIQUE KEY uk_username(username),
-    UNIQUE KEY uk_email(email),
-    UNIQUE KEY uk_mobile(mobile),
-    KEY idx_name(name)
+    KEY key_email(email),
+    KEY key_mobile(mobile)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = utf8
-    COLLATE = utf8_general_ci COMMENT ='用户表'
+    COLLATE = utf8_general_ci COMMENT ='用户信息'
     ROW_FORMAT = DYNAMIC;
 
--- 角色表
-DROP TABLE IF EXISTS role;
-CREATE TABLE role (
-    id     INT(20)     NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    name   VARCHAR(32) NOT NULL COMMENT '角色名',
-    type   VARCHAR(32) NOT NULL COMMENT '角色类型',
-    code   VARCHAR(32) NOT NULL COMMENT '角色code',
-    status INT(1) UNSIGNED COMMENT '状态',
+-- 角色信息
+DROP TABLE IF EXISTS t_role;
+CREATE TABLE t_role (
+    id     INT(20)         NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    code   VARCHAR(30)     NOT NULL COMMENT '角色编码',
+    name   VARCHAR(30)     NOT NULL COMMENT '角色名',
+    status INT(1) UNSIGNED NOT NULL COMMENT '状态，0 为有效，1 为无效',
     notes  TEXT COMMENT '备注',
     PRIMARY KEY (id),
-    UNIQUE KEY uk_name(name)
+    UNIQUE KEY uk_role_code(code)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = utf8
-    COLLATE = utf8_general_ci COMMENT ='角色表';
+    COLLATE = utf8_general_ci COMMENT ='角色信息'
+    ROW_FORMAT = DYNAMIC;
 
+-- 权限信息
+DROP TABLE IF EXISTS t_permission;
+CREATE TABLE t_permission (
+    id         INT(20)         NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+    name       VARCHAR(30)     NOT NULL COMMENT '权限名称',
+    expression VARCHAR(100)    NOT NULL COMMENT '权限表达式',
+    type       VARCHAR(30)     NOT NULL COMMENT '权限类型',
+    status     INT(1) UNSIGNED NOT NULL COMMENT '状态，0 为有效，1 为无效',
+    notes      TEXT COMMENT '备注',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_permission_expression(expression)
+)
+    ENGINE = INNODB
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='权限信息'
+    ROW_FORMAT = DYNAMIC;
+
+-- 用户和角色关联信息
 DROP TABLE IF EXISTS t_user_role;
 CREATE TABLE t_user_role (
     id      INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -52,46 +66,44 @@ CREATE TABLE t_user_role (
 )
     ENGINE = INNODB
     DEFAULT CHARSET = utf8
-    COLLATE = utf8_general_ci COMMENT ='用户角色表';
+    COLLATE = utf8_general_ci COMMENT ='用户和角色关联信息'
+    ROW_FORMAT = DYNAMIC;
 
--- 权限表
-DROP TABLE IF EXISTS permission;
-CREATE TABLE permission (
-    id         INT(20)     NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    module     VARCHAR(32) NOT NULL COMMENT '模块',
-    name       VARCHAR(32) NOT NULL COMMENT '权限名',
-    type       VARCHAR(32) NOT NULL COMMENT '权限类型',
-    expression VARCHAR(32) NOT NULL COMMENT '表达式',
-    status     INT(1) UNSIGNED COMMENT '状态',
-    notes      TEXT COMMENT '备注',
+-- 角色和权限关联信息
+DROP TABLE IF EXISTS t_role_permission;
+CREATE TABLE t_role_permission (
+    id            INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    role_id       INT(20) NOT NULL COMMENT '角色ID',
+    permission_id INT(20) NOT NULL COMMENT '权限ID',
     PRIMARY KEY (id),
-    UNIQUE KEY uk_name(name)
+    UNIQUE KEY uk_role_permission(role_id, permission_id)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = utf8
-    COLLATE = utf8_general_ci COMMENT ='权限表';
+    COLLATE = utf8_general_ci COMMENT ='角色和权限关联信息'
+    ROW_FORMAT = DYNAMIC;
 
--- 菜单表
-DROP TABLE IF EXISTS menu;
-CREATE TABLE menu (
-    id         INT(20)     NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    parent_id  INT(20)      DEFAULT NULL COMMENT '父菜单项ID',
-    `key`      VARCHAR(32) NOT NULL COMMENT '菜单KEY',
-    `group`    VARCHAR(32) NOT NULL COMMENT '菜单组',
-    title      VARCHAR(32) NOT NULL COMMENT '菜单标题',
-    icon       VARCHAR(128) DEFAULT NULL COMMENT '菜单图标',
-    url        VARCHAR(256) DEFAULT NULL COMMENT '菜单URL',
-    type       VARCHAR(32) NOT NULL COMMENT '菜单类型',
-    power      INT(3)       DEFAULT 1 COMMENT '菜单权重',
-    expression VARCHAR(32) NOT NULL COMMENT '表达式',
-    status     INT(1) UNSIGNED COMMENT '状态',
-    notes      TEXT COMMENT '备注',
+-- 菜单信息
+DROP TABLE IF EXISTS t_menu;
+CREATE TABLE t_menu (
+    id        INT(20)         NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+    parent_id INT(20)      DEFAULT 0 COMMENT '父菜单ID',
+    url       VARCHAR(200) DEFAULT NULL COMMENT '菜单URL',
+    name      VARCHAR(30)     NOT NULL COMMENT '菜单名称',
+    perms     VARCHAR(100)    NOT NULL COMMENT '权限表达式',
+    type      VARCHAR(30)     NOT NULL COMMENT '菜单类型',
+    icon      VARCHAR(50)  DEFAULT NULL COMMENT '菜单图标',
+    power     INT(3)       DEFAULT 0 COMMENT '菜单权重',
+    status    INT(1) UNSIGNED NOT NULL COMMENT '状态，0 为有效，1 为无效',
+    notes     TEXT COMMENT '备注',
     PRIMARY KEY (id),
-    UNIQUE KEY uk_key(`key`)
+    UNIQUE KEY uk_menu_url(url)
 )
     ENGINE = INNODB
     DEFAULT CHARSET = utf8
-    COLLATE = utf8_general_ci COMMENT ='菜单表';
+    COLLATE = utf8_general_ci COMMENT ='菜单信息'
+    ROW_FORMAT = DYNAMIC;
+
 
 DROP TABLE IF EXISTS file;
 CREATE TABLE file (

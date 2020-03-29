@@ -1,6 +1,7 @@
 package ${package.Controller};
 
 import io.github.dunwu.common.*;
+import io.github.dunwu.data.*;
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
 <#if superControllerClassPackage??>
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 </#if>
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -116,18 +118,20 @@ public class ${table.controllerName} {
 
     @GetMapping("page")
     <#if swagger2>
-    @ApiOperation(value = "根据 entity 条件，翻页查询 ${entity} 记录")
+    @ApiOperation(value = "根据 entity 和 page 条件，翻页查询 ${entity} 记录")
     </#if>
-    public PageResult<${entity}> page(Pagination<${entity}> pagination, ${entity} entity) {
-        return service.page(pagination, entity);
+    public PageResult<${entity}> page(PageQuery page, ${entity} entity) {
+        QueryRequest<${entity}> request = QueryRequest.build(entity, page, Collections.emptyList());
+        return service.page(request);
     }
 
     @GetMapping("pageAll")
     <#if swagger2>
     @ApiOperation(value = "翻页查询所有 ${entity} 记录")
     </#if>
-    public PageResult<${entity}> pageAll(Pagination<${entity}> pagination) {
-        return service.page(pagination);
+    public PageResult<${entity}> pageAll(PageQuery page) {
+        QueryRequest<${entity}> request = QueryRequest.build(null, page, Collections.emptyList());
+        return service.page(request);
     }
 
     @PostMapping("insert")

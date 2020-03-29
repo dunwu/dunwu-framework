@@ -24,8 +24,8 @@ public enum ResultStatus implements Status {
 
     HTTP_REDIRECTION(300, "HTTP 重定向"),
 
-    HTTP_CLIENT_ERROR(400, "HTTP 客户端错误"),
-    HTTP_UNAUTHORIZED(401, "没有权限"),
+    HTTP_BAD_REQUEST(400, "错误的请求"),
+    HTTP_UNAUTHORIZED(401, "未授权访问资源"),
     HTTP_FORBIDDEN(403, "禁止访问"),
     HTTP_NOT_FOUND(404, "要访问的资源不存在"),
 

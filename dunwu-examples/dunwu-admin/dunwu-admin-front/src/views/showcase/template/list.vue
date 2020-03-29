@@ -3,10 +3,7 @@
     <h3>过滤查询</h3>
     <el-form :inline="true" :model="templateQuery">
       <el-form-item label="模板名称">
-        <el-input
-          v-model="templateQuery.name"
-          placeholder="输入关键字搜索"
-        />
+        <el-input v-model="templateQuery.name" placeholder="输入关键字搜索" />
       </el-form-item>
       <el-form-item label="命名空间">
         <el-input
@@ -15,10 +12,7 @@
         />
       </el-form-item>
       <el-form-item label="标签">
-        <el-input
-          v-model="templateQuery.tag"
-          placeholder="输入关键字搜索"
-        />
+        <el-input v-model="templateQuery.tag" placeholder="输入关键字搜索" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" @click="fetchData">
@@ -184,7 +178,23 @@ export default {
           console.info('error', error)
         })
     },
-    async handleDelete(row) {
+    handleDelete(row) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.doHandleDelete(row)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    async doHandleDelete(row) {
       await deleteTemplate({ id: row.id })
         .then(response => {
           console.log('deleteTemplate', response)

@@ -34,6 +34,7 @@ public class HttpDebugInterceptor extends HandlerInterceptorAdapter {
                 request.getRemoteHost(), ServletUtil.getRealRemoteAddr(request),
                 request.getRemotePort());
         }
+        String requestURI = request.getRequestURI();
         request.setAttribute(BEGIN_TIME, System.nanoTime());
         return true;
     }
