@@ -1,5 +1,5 @@
 /* eslint-disable */
-require('script-loader!file-saver')
+import { saveAs } from 'file-saver'
 import XLSX from 'xlsx'
 
 function generateArray(table) {
@@ -18,7 +18,7 @@ function generateArray(table) {
       if (cellValue !== '' && cellValue == +cellValue) cellValue = +cellValue
 
       //Skip ranges
-      ranges.forEach(function (range) {
+      ranges.forEach(function(range) {
         if (R >= range.s.r && R <= range.e.r && outRow.length >= range.s.c && outRow.length <= range.e.c) {
           for (var i = 0; i <= range.e.c - range.s.c; ++i) outRow.push(null)
         }
@@ -30,9 +30,12 @@ function generateArray(table) {
         colspan = colspan || 1
         ranges.push({
           s: {
-            r: R, c: outRow.length
-          }, e: {
-            r: R + rowspan - 1, c: outRow.length + colspan - 1
+            r: R,
+            c: outRow.length
+          },
+          e: {
+            r: R + rowspan - 1,
+            c: outRow.length + colspan - 1
           }
         })
       }
@@ -58,9 +61,12 @@ function sheet_from_array_of_arrays(data, opts) {
   var ws = {}
   var range = {
     s: {
-      c: 10000000, r: 10000000
-    }, e: {
-      c: 0, r: 0
+      c: 10000000,
+      r: 10000000
+    },
+    e: {
+      c: 0,
+      r: 0
     }
   }
   for (var R = 0; R != data.length; ++R) {
@@ -74,20 +80,17 @@ function sheet_from_array_of_arrays(data, opts) {
       }
       if (cell.v == null) continue
       var cell_ref = XLSX.utils.encode_cell({
-        c: C, r: R
+        c: C,
+        r: R
       })
 
-      if (typeof cell.v === 'number') {
-        cell.t = 'n'
-      } else if (typeof cell.v === 'boolean') {
-        cell.t = 'b'
-      } else if (cell.v instanceof Date) {
+      if (typeof cell.v === 'number') cell.t = 'n'
+      else if (typeof cell.v === 'boolean') cell.t = 'b'
+      else if (cell.v instanceof Date) {
         cell.t = 'n'
         cell.z = XLSX.SSF._table[14]
         cell.v = datenum(cell.v)
-      } else {
-        cell.t = 's'
-      }
+      } else cell.t = 's'
 
       ws[cell_ref] = cell
     }
@@ -105,7 +108,7 @@ function Workbook() {
 function s2ab(s) {
   var buf = new ArrayBuffer(s.length)
   var view = new Uint8Array(buf)
-  for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF
+  for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
   return buf
 }
 
@@ -118,7 +121,8 @@ export function export_table_to_excel(id) {
   var data = oo[0]
   var ws_name = 'SheetJS'
 
-  var wb = new Workbook(), ws = sheet_from_array_of_arrays(data)
+  var wb = new Workbook(),
+    ws = sheet_from_array_of_arrays(data)
 
   /* add ranges to worksheet */
   // ws['!cols'] = ['apple', 'banan'];
@@ -129,16 +133,27 @@ export function export_table_to_excel(id) {
   wb.Sheets[ws_name] = ws
 
   var wbout = XLSX.write(wb, {
-    bookType: 'xlsx', bookSST: false, type: 'binary'
+    bookType: 'xlsx',
+    bookSST: false,
+    type: 'binary'
   })
 
-  saveAs(new Blob([s2ab(wbout)], {
-    type: 'application/octet-stream'
-  }), 'test.xlsx')
+  saveAs(
+    new Blob([s2ab(wbout)], {
+      type: 'application/octet-stream'
+    }),
+    'test.xlsx'
+  )
 }
 
 export function export_json_to_excel({
-  multiHeader = [], header, data, filename, merges = [], autoWidth = true, bookType = 'xlsx'
+  multiHeader = [],
+  header,
+  data,
+  filename,
+  merges = [],
+  autoWidth = true,
+  bookType = 'xlsx'
 } = {}) {
   /* original data */
   filename = filename || 'excel-list'
@@ -150,7 +165,8 @@ export function export_json_to_excel({
   }
 
   var ws_name = 'SheetJS'
-  var wb = new Workbook(), ws = sheet_from_array_of_arrays(data)
+  var wb = new Workbook(),
+    ws = sheet_from_array_of_arrays(data)
 
   if (merges.length > 0) {
     if (!ws['!merges']) ws['!merges'] = []
@@ -161,23 +177,25 @@ export function export_json_to_excel({
 
   if (autoWidth) {
     /*设置worksheet每列的最大宽度*/
-    const colWidth = data.map(row => row.map(val => {
-      /*先判断是否为null/undefined*/
-      if (val == null) {
-        return {
-          'wch': 10
+    const colWidth = data.map(row =>
+      row.map(val => {
+        /*先判断是否为null/undefined*/
+        if (val == null) {
+          return {
+            wch: 10
+          }
+        } else if (val.toString().charCodeAt(0) > 255) {
+          /*再判断是否为中文*/
+          return {
+            wch: val.toString().length * 2
+          }
+        } else {
+          return {
+            wch: val.toString().length
+          }
         }
-      }
-      /*再判断是否为中文*/ else if (val.toString().charCodeAt(0) > 255) {
-        return {
-          'wch': val.toString().length * 2
-        }
-      } else {
-        return {
-          'wch': val.toString().length
-        }
-      }
-    }))
+      })
+    )
     /*以第一行为初始值*/
     let result = colWidth[0]
     for (let i = 1; i < colWidth.length; i++) {
@@ -195,9 +213,14 @@ export function export_json_to_excel({
   wb.Sheets[ws_name] = ws
 
   var wbout = XLSX.write(wb, {
-    bookType: bookType, bookSST: false, type: 'binary'
+    bookType: bookType,
+    bookSST: false,
+    type: 'binary'
   })
-  saveAs(new Blob([s2ab(wbout)], {
-    type: 'application/octet-stream'
-  }), `${filename}.${bookType}`)
+  saveAs(
+    new Blob([s2ab(wbout)], {
+      type: 'application/octet-stream'
+    }),
+    `${filename}.${bookType}`
+  )
 }

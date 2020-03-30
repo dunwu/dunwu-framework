@@ -104,6 +104,19 @@ CREATE TABLE t_menu (
     COLLATE = utf8_general_ci COMMENT ='菜单信息'
     ROW_FORMAT = DYNAMIC;
 
+DROP TABLE IF EXISTS persistent_logins;
+CREATE TABLE persistent_logins (
+    username  VARCHAR(64) NOT NULL,
+    series    VARCHAR(64) NOT NULL,
+    token     VARCHAR(64) NOT NULL,
+    last_used TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (series)
+)
+    ENGINE = INNODB
+    DEFAULT CHARSET = utf8
+    COLLATE = utf8_general_ci COMMENT ='持久化登录'
+    ROW_FORMAT = DYNAMIC;
+
 
 DROP TABLE IF EXISTS file;
 CREATE TABLE file (

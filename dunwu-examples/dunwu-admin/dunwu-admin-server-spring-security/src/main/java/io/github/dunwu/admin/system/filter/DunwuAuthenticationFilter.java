@@ -1,9 +1,12 @@
-package io.github.dunwu.admin.system.config;
+package io.github.dunwu.admin.system.filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.dunwu.admin.exception.CheckCodeException;
 import io.github.dunwu.admin.system.dto.UserDTO;
 import io.github.dunwu.admin.system.service.UserManager;
+import io.github.dunwu.tool.util.StringUtil;
+import io.github.dunwu.web.util.ServletUtil;
 import io.github.dunwu.web.util.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,17 +17,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Map;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * 自定义认证处理器
@@ -32,30 +34,36 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-09-23
  */
-public class DunwuAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
+public class DunwuAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final transient Logger log = LoggerFactory.getLogger(this.getClass());
     private final UserManager userManager;
-    private final BCryptPasswordEncoder cryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    DunwuAuthenticationProcessingFilter(String defaultFilterProcessesUrl, UserManager userManager,
-        BCryptPasswordEncoder cryptPasswordEncoder) {
-        super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
+    public DunwuAuthenticationFilter(String processesUrl, UserManager userManager,
+        PasswordEncoder passwordEncoder) {
+        super(new AntPathRequestMatcher(processesUrl, HttpMethod.POST.name()));
         this.userManager = userManager;
-        this.cryptPasswordEncoder = cryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-        throws AuthenticationException, IOException, ServletException {
+        throws AuthenticationException, IOException {
 
         ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
-        String requestBody = getRequestBody(request);
+        String requestBody = ServletUtil.getRequestBody(request);
         Map<String, String> map = objectMapper.readValue(requestBody,
             new TypeReference<Map<String, String>>() {
             });
         String username = map.get("username");
         String password = map.get("password");
+        String checkCode = map.get("checkCode");
+
+        HttpSession session = request.getSession();
+        String code = (String) session.getAttribute("code");
+        LocalDateTime expireTime = (LocalDateTime) session.getAttribute("expireTime");
+        validateCheckCode(checkCode, code, expireTime);
 
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             log.error("认证失败，用户名或密码为空");
@@ -69,32 +77,32 @@ public class DunwuAuthenticationProcessingFilter extends AbstractAuthenticationP
             throw new UsernameNotFoundException("用户名不存在");
         }
 
-        if (!cryptPasswordEncoder.matches(password, userDTO.getPassword())) {
+        if (!passwordEncoder.matches(password, userDTO.getPassword())) {
             log.error("认证失败，密码不匹配用户 {} ", username);
             throw new AuthenticationServiceException("密码不匹配");
         }
 
         return new UsernamePasswordAuthenticationToken(username, password, userDTO.getAuthorities());
     }
-    
-    /**
-     * 获取请求体
-     */
-    private String getRequestBody(HttpServletRequest request)
-        throws AuthenticationException {
-        try {
-            StringBuilder stringBuilder = new StringBuilder();
-            InputStream inputStream = request.getInputStream();
-            byte[] bs = new byte[StreamUtils.BUFFER_SIZE];
-            int len;
-            while ((len = inputStream.read(bs)) != -1) {
-                stringBuilder.append(new String(bs, 0, len));
-            }
-            return stringBuilder.toString();
-        } catch (IOException e) {
-            log.error("get request body error.");
+
+    private void validateCheckCode(String checkCode, String actualCheckCode, LocalDateTime expireTime)
+        throws CheckCodeException {
+
+        if (StringUtil.isBlank(checkCode)) {
+            throw new CheckCodeException("验证码不能为空！");
         }
-        throw new AuthenticationServiceException("invalid request body");
+
+        if (StringUtil.isBlank(actualCheckCode)) {
+            throw new CheckCodeException("验证码不存在！");
+        }
+
+        if (expireTime == null || expireTime.isBefore(LocalDateTime.now())) {
+            throw new CheckCodeException("验证码已过期！");
+        }
+
+        if (!actualCheckCode.equalsIgnoreCase(checkCode)) {
+            throw new CheckCodeException("验证码不正确！");
+        }
     }
 
 }

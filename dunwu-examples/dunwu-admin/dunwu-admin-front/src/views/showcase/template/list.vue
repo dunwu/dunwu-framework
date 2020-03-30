@@ -198,7 +198,7 @@ export default {
       await deleteTemplate({ id: row.id })
         .then(response => {
           console.log('deleteTemplate', response)
-          if (response.ok) {
+          if (response.code === 0) {
             this.fetchData()
             this.$message({
               message: '删除任务 ' + row.jobName + ' 成功',

@@ -39,14 +39,14 @@ const articleRouter = {
 }
 
 const chartsRouter = {
-  path: '/demos/charts',
+  path: '/charts',
   component: () => import('@/views/demos/charts/index'),
+  redirect: 'noRedirect',
   name: 'Charts',
   meta: {
     title: 'Charts',
     icon: 'chart'
   },
-  redirect: '/demos/charts/keyboard',
   children: [
     {
       path: 'keyboard',
@@ -77,7 +77,7 @@ const dashboardRouter = {
 }
 
 const excelRouter = {
-  path: '/demos/excel',
+  path: '/excel',
   component: () => import('@/views/demos/excel/index'),
   redirect: '/excel/export-excel',
   name: 'Excel',
@@ -135,17 +135,18 @@ const iconRouter = {
 }
 
 const pdfRouter = {
-  path: '/demos/pdf',
+  path: '/pdf',
   component: () => import('@/views/demos/pdf/index'),
+  redirect: '/pdf/index',
   children: [
     {
-      path: 'test',
-      component: () => import('@/views/demos/pdf/test'),
+      path: 'index',
+      component: () => import('@/views/demos/pdf/index'),
       name: 'PDF',
       meta: { title: 'PDF', icon: 'pdf' }
     },
     {
-      path: '/download',
+      path: 'download',
       component: () => import('@/views/demos/pdf/download'),
       hidden: true
     }
@@ -161,7 +162,7 @@ const permissionRouter = {
   meta: {
     title: 'Permission',
     icon: 'lock',
-    roles: ['admin', 'editor'] // you can set roles in root nav
+    roles: ['admin', 'user'] // you can set roles in root nav
   },
   children: [
     {
@@ -266,8 +267,8 @@ const demosRouter = {
   path: '/demos',
   component: Layout,
   redirect: '/demos/article/list',
-  name: 'Demos',
-  meta: { title: 'Demos', icon: 'example' },
+  name: 'demos',
+  meta: { title: '前端示例', icon: 'example' },
   children: [
     componentsRouter,
     articleRouter,

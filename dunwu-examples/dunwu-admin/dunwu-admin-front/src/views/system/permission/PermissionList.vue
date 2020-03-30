@@ -191,7 +191,6 @@ export default {
       await getPermissionPage(params)
         .then(response => {
           if (response.data) {
-            console.log('fetch', response.data)
             this.tableData = response.data.list
             this.page.current = response.data.current
             this.page.size = response.data.size
@@ -224,7 +223,7 @@ export default {
       await deletePermissionById(row.id)
         .then(response => {
           console.log('deleteUser', response)
-          if (response.ok) {
+          if (response.code === 0) {
             console.log('tableData', this.tableData)
             console.log('length', this.tableData.length)
             if (this.tableData.length <= 1 && this.page.current > 1) {

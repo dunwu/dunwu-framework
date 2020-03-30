@@ -106,7 +106,7 @@ export default {
           if (this.id) {
             updateRoleById(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '更新角色成功',
                     type: 'success'
@@ -120,7 +120,7 @@ export default {
           } else {
             insertRole(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '新建角色成功',
                     type: 'success'
@@ -141,7 +141,7 @@ export default {
     async handleSearchRoleById(id) {
       await getRoleById({ id: id })
         .then(response => {
-          if (response.ok) {
+          if (response.code === 0) {
             this.form = response.data
             this.form.password2 = this.form.password
             console.log('form', this.form)

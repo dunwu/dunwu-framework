@@ -2,19 +2,24 @@ const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
+const Mock = require('mockjs')
 
 const mockDir = path.join(process.cwd(), 'mock')
 
 function registerRoutes(app) {
   let mockLastIndex
-  const {default: mocks} = require('./index.js')
-  for (const mock of mocks) {
+  const { default: mocks } = require('./index.js')
+  const mocksForServer = mocks.map(route => {
+    return responseFake(route.url, route.type, route.response)
+  })
+  for (const mock of mocksForServer) {
     app[mock.type](mock.url, mock.response)
     mockLastIndex = app._router.stack.length
   }
-  const mockRoutesLength = Object.keys(mocks).length
+  const mockRoutesLength = Object.keys(mocksForServer).length
   return {
-    mockRoutesLength: mockRoutesLength, mockStartIndex: mockLastIndex - mockRoutesLength
+    mockRoutesLength: mockRoutesLength,
+    mockStartIndex: mockLastIndex - mockRoutesLength
   }
 }
 
@@ -26,6 +31,18 @@ function unregisterRoutes() {
   })
 }
 
+// for mock server
+const responseFake = (url, type, respond) => {
+  return {
+    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    type: type || 'get',
+    response(req, res) {
+      console.log('request invoke:' + req.path)
+      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+    }
+  }
+}
+
 module.exports = app => {
   // es6 polyfill
   require('@babel/register')
@@ -33,9 +50,11 @@ module.exports = app => {
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }))
+  app.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  )
 
   const mockRoutes = registerRoutes(app)
   var mockRoutesLength = mockRoutes.mockRoutesLength
@@ -44,7 +63,8 @@ module.exports = app => {
   // watch files, hot reload mock server
   chokidar
     .watch(mockDir, {
-      ignored: /mock-server/, ignoreInitial: true
+      ignored: /mock-server/,
+      ignoreInitial: true
     })
     .on('all', (event, path) => {
       if (event === 'change' || event === 'add') {

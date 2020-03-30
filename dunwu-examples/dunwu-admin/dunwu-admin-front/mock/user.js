@@ -1,8 +1,9 @@
 const tokens = {
   admin: {
     token: 'admin-token'
-  }, user: {
-    token: 'user-token'
+  },
+  editor: {
+    token: 'editor-token'
   }
 }
 
@@ -10,61 +11,73 @@ const users = {
   'admin-token': {
     roles: ['admin'],
     introduction: 'I am a super administrator',
-    email: 'ooo@xxx.com',
-    avatar: 'http://dunwu.test.upcdn.net/common/logo/zp.png',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
-  }, 'user-token': {
-    roles: ['user'],
-    introduction: 'I am an user',
-    email: 'ooo@xxx.com',
-    avatar: 'http://dunwu.test.upcdn.net/common/logo/zp.png',
-    name: 'Normal User'
+  },
+  'editor-token': {
+    roles: ['editor'],
+    introduction: 'I am an editor',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Editor'
   }
 }
 
-export default [// user login
+export default [
+  // user login
   {
-    url: '/user/login', type: 'post', response: config => {
-      const {username} = config.body
+    url: '/vue-element-admin/user/login',
+    type: 'post',
+    response: config => {
+      const { username } = config.body
       const token = tokens[username]
 
       // mock error
       if (!token) {
         return {
-          success: false, code: '60204', message: 'Account and password are incorrect.'
+          code: 60204,
+          message: 'Account and password are incorrect.'
         }
       }
 
       return {
-        success: true, code: '0', message: 'success', data: token
+        code: 20000,
+        data: token
       }
     }
   },
 
   // get user info
   {
-    url: '/user/getInfo', type: 'get', response: config => {
-      const {token} = config.query
+    url: '/vue-element-admin/user/info.*',
+    type: 'get',
+    response: config => {
+      const { token } = config.query
       const info = users[token]
 
       // mock error
       if (!info) {
         return {
-          success: false, code: '50008', message: 'Login failed, unable to get user details.'
+          code: 50008,
+          message: 'Login failed, unable to get user details.'
         }
       }
 
       return {
-        success: true, code: '0', message: 'success', data: info
+        code: 20000,
+        data: info
       }
     }
   },
 
   // user logout
   {
-    url: '/user/logout', type: 'post', response: _ => {
+    url: '/vue-element-admin/user/logout',
+    type: 'post',
+    response: _ => {
       return {
-        success: true, code: '0', message: 'success', data: 'success'
+        code: 20000,
+        data: 'success'
       }
     }
-  }]
+  }
+]

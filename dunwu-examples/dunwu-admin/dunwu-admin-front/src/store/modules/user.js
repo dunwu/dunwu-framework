@@ -1,5 +1,5 @@
 import { getUserInfo, userLogin, userLogout } from '@/api/system/user'
-import { getToken, removeToken, setToken } from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -33,11 +33,11 @@ const mutations = {
 }
 
 const actions = {
-  // user userLogin
+  // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, checkCode } = userInfo
     return new Promise((resolve, reject) => {
-      userLogin({ username: username.trim(), password: password })
+      userLogin({ username: username.trim(), password: password, checkCode: checkCode, rememberme: true })
         .then(response => {
           const { data } = response
           commit('SET_TOKEN', data.token)
@@ -67,7 +67,7 @@ const actions = {
           if (!roles || roles.length <= 0) {
             reject('getInfo: roles must be a non-null array!')
           }
-
+          // const filterRoles = roles.map(v => v.code)
           commit('SET_ROLES', roles)
           commit('SET_NAME', name)
           commit('SET_AVATAR', avatar)
@@ -82,7 +82,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       userLogout(state.token)
         .then(() => {
@@ -90,6 +90,11 @@ const actions = {
           commit('SET_ROLES', [])
           removeToken()
           resetRouter()
+
+          // reset visited views and cached views
+          // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+          dispatch('tagsView/delAllViews', null, { root: true })
+
           resolve()
         })
         .catch(error => {

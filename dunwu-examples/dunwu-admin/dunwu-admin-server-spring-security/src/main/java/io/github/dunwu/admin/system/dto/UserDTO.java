@@ -75,6 +75,8 @@ public class UserDTO implements UserDetails, Serializable {
     @ApiModelProperty(value = "用户拥有的角色")
     private Collection<RoleDTO> roles;
 
+    private String token;
+
     public UserDTO() {
         this.roles = Collections.emptyList();
     }

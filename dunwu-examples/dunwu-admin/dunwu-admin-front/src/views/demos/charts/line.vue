@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <chart width="100%" height="100%" />
+    <chart height="100%" width="100%" />
   </div>
 </template>
 

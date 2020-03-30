@@ -8,9 +8,12 @@ import io.github.dunwu.web.constant.HttpHeaders;
 import io.github.dunwu.web.constant.WebConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -52,6 +55,24 @@ public class ServletUtil {
             requestIdentityInfo.setBrowser("");
         }
         return requestIdentityInfo;
+    }
+
+    /**
+     * 从 HttpServletRequest 中获取 HTTP 请求 Body 体
+     *
+     * @param request {@link HttpServletRequest}
+     * @return String
+     * @throws IOException
+     */
+    public static String getRequestBody(HttpServletRequest request) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        InputStream inputStream = request.getInputStream();
+        byte[] bs = new byte[StreamUtils.BUFFER_SIZE];
+        int len;
+        while ((len = inputStream.read(bs)) != -1) {
+            sb.append(new String(bs, 0, len));
+        }
+        return sb.toString();
     }
 
     /**

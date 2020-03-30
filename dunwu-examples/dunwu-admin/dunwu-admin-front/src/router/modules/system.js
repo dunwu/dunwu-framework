@@ -99,11 +99,18 @@ const menuRouter = {
   ]
 }
 
+/**
+ * 系统管理路由，只有角色为 admin 才能访问
+ */
 const systemRouter = {
   path: '/system',
   component: Layout,
   name: 'system',
-  meta: { title: '系统管理', icon: 'setting' },
+  meta: {
+    title: '系统管理',
+    icon: 'setting',
+    roles: ['admin']
+  },
   children: [userRouter, roleRouter, permissionRouter, menuRouter]
 }
 

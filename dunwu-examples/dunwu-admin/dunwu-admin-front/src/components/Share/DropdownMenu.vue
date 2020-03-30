@@ -1,8 +1,8 @@
 <template>
-  <div :class="{active:isActive}" class="share-dropdown-menu">
+  <div :class="{ active: isActive }" class="share-dropdown-menu">
     <div class="share-dropdown-menu-wrapper">
       <span class="share-dropdown-menu-title" @click.self="clickTitle">{{ title }}</span>
-      <div v-for="(item,index) of items" :key="index" class="share-dropdown-menu-item">
+      <div v-for="(item, index) of items" :key="index" class="share-dropdown-menu-item">
         <a v-if="item.href" :href="item.href" target="_blank">{{ item.title }}</a>
         <span v-else>{{ item.title }}</span>
       </div>
@@ -37,13 +37,14 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 $n: 9; //和items.length 相同
-$t: .1s;
+$t: 0.1s;
 .share-dropdown-menu {
   width: 250px;
   position: relative;
   z-index: 1;
+  height: auto !important;
   &-title {
     width: 100%;
     display: block;
@@ -55,7 +56,7 @@ $t: .1s;
     font-size: 20px;
     text-align: center;
     z-index: 2;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
   }
   &-wrapper {
     position: relative;
@@ -65,10 +66,12 @@ $t: .1s;
     position: absolute;
     width: 100%;
     background: #e0e0e0;
+    color: #000;
     line-height: 60px;
     height: 60px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
+    overflow: hidden;
     opacity: 1;
     transition: transform 0.28s ease;
     &:hover {
@@ -78,7 +81,7 @@ $t: .1s;
     @for $i from 1 through $n {
       &:nth-of-type(#{$i}) {
         z-index: -1;
-        transition-delay: $i*$t;
+        transition-delay: $i * $t;
         transform: translate3d(0, -60px, 0);
       }
     }
@@ -90,8 +93,8 @@ $t: .1s;
     .share-dropdown-menu-item {
       @for $i from 1 through $n {
         &:nth-of-type(#{$i}) {
-         transition-delay: ($n - $i)*$t;
-          transform: translate3d(0, ($i - 1)*60px, 0);
+          transition-delay: ($n - $i) * $t;
+          transform: translate3d(0, ($i - 1) * 60px, 0);
         }
       }
     }

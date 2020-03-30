@@ -110,7 +110,7 @@ export default {
           if (this.id) {
             updatePermissionById(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '更新权限成功',
                     type: 'success'
@@ -124,7 +124,7 @@ export default {
           } else {
             insertPermission(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '新建权限成功',
                     type: 'success'
@@ -145,7 +145,7 @@ export default {
     async handleSearchPermissionById(id) {
       await getPermissionById({ id: id })
         .then(response => {
-          if (response.ok) {
+          if (response.code === 0) {
             this.form = response.data
             console.log('form', this.form)
           }

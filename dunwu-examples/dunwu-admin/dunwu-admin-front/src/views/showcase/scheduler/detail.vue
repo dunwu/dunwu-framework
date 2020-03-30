@@ -234,7 +234,7 @@ export default {
           if (this.id) {
             updateJob(this.schedulerForm)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '更新调度任务成功',
                     type: 'success'
@@ -248,7 +248,7 @@ export default {
           } else {
             createJob(this.schedulerForm)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '创建调度任务成功',
                     type: 'success'
@@ -269,7 +269,7 @@ export default {
     async fetchSchedulerInfo(id) {
       await getById({ id: id })
         .then(response => {
-          if (response.ok) {
+          if (response.code === 0) {
             this.schedulerForm = response.data
             this.timeRange = []
             this.timeRange.push(this.schedulerForm.beginTime)

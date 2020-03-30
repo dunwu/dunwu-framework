@@ -64,7 +64,7 @@ export default {
         if (valid) {
           sendMail(this.form)
             .then(response => {
-              if (response.ok) {
+              if (response.code === 0) {
                 this.$message({
                   message: '发送邮件成功',
                   type: 'success'

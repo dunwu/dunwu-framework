@@ -29,6 +29,10 @@
     </dependency>
     <dependency>
       <groupId>io.github.dunwu</groupId>
+      <artifactId>dunwu-tool-image</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-common-generator</artifactId>
       <scope>test</scope>
     </dependency>

@@ -3,13 +3,16 @@ import Clipboard from 'clipboard'
 
 function clipboardSuccess() {
   Vue.prototype.$message({
-    message: 'Copy successfully', type: 'success', duration: 1500
+    message: 'Copy successfully',
+    type: 'success',
+    duration: 1500
   })
 }
 
 function clipboardError() {
   Vue.prototype.$message({
-    message: 'Copy failed', type: 'error'
+    message: 'Copy failed',
+    type: 'error'
   })
 }
 

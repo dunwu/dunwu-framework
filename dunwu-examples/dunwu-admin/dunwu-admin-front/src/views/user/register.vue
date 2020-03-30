@@ -235,7 +235,7 @@ export default {
           userRegister(this.registerForm)
             .then(response => {
               console.log('handleRegister', response)
-              if (response.ok) {
+              if (response.code === 0) {
                 this.$message({
                   message: '注册成功',
                   type: 'success'

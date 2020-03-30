@@ -128,7 +128,7 @@ export default {
     handleUploadFileSuccess(response, fileList) {
       this.fileList = []
       if (response) {
-        if (response.ok) {
+        if (response.code === 0) {
           if (response.data && response.data.size > 0) {
             this.uploadForm.file = response.data[0]
           }

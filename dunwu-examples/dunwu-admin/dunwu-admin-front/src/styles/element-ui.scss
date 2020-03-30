@@ -1,4 +1,5 @@
 // cover some element-ui styles
+// cover some element-ui styles
 
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
@@ -6,7 +7,7 @@
 }
 
 .el-upload {
-  input[type="file"] {
+  input[type='file'] {
     display: none !important;
   }
 }
@@ -69,11 +70,16 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block
+    display: block;
   }
 }
 
 // fix date-picker ui bug in filter-item
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
 }

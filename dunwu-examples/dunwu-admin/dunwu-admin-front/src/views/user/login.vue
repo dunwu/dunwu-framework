@@ -17,7 +17,7 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container"> <svg-icon icon-class="user" /> </span>
+        <span class="svg-container"><svg-icon icon-class="user" /></span>
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -29,12 +29,7 @@
         />
       </el-form-item>
 
-      <el-tooltip
-        v-model="capsTooltip"
-        content="Caps lock is On"
-        placement="right"
-        manual
-      >
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -53,36 +48,50 @@
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
-            <svg-icon
-              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-            />
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
       </el-tooltip>
 
+      <el-col :span="12">
+        <el-form-item prop="checkCode">
+          <span class="svg-container"><svg-icon icon-class="user" /></span>
+          <el-input
+            ref="checkCode"
+            v-model="loginForm.checkCode"
+            placeholder="checkCode"
+            name="checkCode"
+            type="text"
+            tabindex="3"
+            autocomplete="on"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <div class="block" style="padding-left: 10px">
+          <el-image :src="checkcodeUrl"></el-image>
+        </div>
+      </el-col>
       <el-button
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
-      >Login</el-button>
+        @click.native.prevent="handleLogin">
+        Login
+      </el-button>
 
       <div style="position:relative">
-        <el-button
-          class="thirdparty-button"
-          type="primary"
-          @click="showDialog = true"
-        >
+        <el-button class="thirdparty-button" type="primary" @click="showDialog = true">
           Or connect with
         </el-button>
       </div>
     </el-form>
 
     <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business
-      simulation! ! ! <br>
-      <br>
-      <br>
+      Can not be simulated on local, so please combine you own business simulation! ! !
+      <br />
+      <br />
+      <br />
       <social-sign />
     </el-dialog>
   </div>
@@ -111,22 +120,20 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'dunwu',
+        password: '123456',
+        checkCode: ''
       },
       loginRules: {
-        username: [
-          { required: true, trigger: 'blur', validator: validateUsername }
-        ],
-        password: [
-          { required: true, trigger: 'blur', validator: validatePassword }
-        ]
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
+      checkcodeUrl: 'http://localhost:9527/checkcode/image',
       otherQuery: {}
     }
   },
@@ -158,10 +165,7 @@ export default {
   methods: {
     checkCapslock({ shiftKey, key } = {}) {
       if (key && key.length === 1) {
-        if (
-          (shiftKey && (key >= 'a' && key <= 'z')) ||
-          (!shiftKey && (key >= 'A' && key <= 'Z'))
-        ) {
+        if ((shiftKey && (key >= 'a' && key <= 'z')) || (!shiftKey && (key >= 'A' && key <= 'Z'))) {
           this.capsTooltip = true
         } else {
           this.capsTooltip = false
@@ -239,8 +243,8 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
-$light_gray: #fff;
-$cursor: #fff;
+$light_gray: #ffffff;
+$cursor: #ffffff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -284,7 +288,7 @@ $cursor: #fff;
 <style lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$light_gray: #eeeeee;
 
 .login-container {
   min-height: 100%;
@@ -303,7 +307,7 @@ $light_gray: #eee;
 
   .tips {
     font-size: 14px;
-    color: #fff;
+    color: #ffffff;
     margin-bottom: 10px;
 
     span {
@@ -330,14 +334,7 @@ $light_gray: #eee;
       margin: 0px auto 20px auto;
       text-align: center;
       font-weight: bold;
-      background-image: -webkit-linear-gradient(
-        left,
-        #ffdcb4,
-        #b96972 25%,
-        #e88a57 50%,
-        #804170 75%,
-        #a596cd
-      );
+      background-image: -webkit-linear-gradient(left, #ffdcb4, #b96972 25%, #e88a57 50%, #804170 75%, #a596cd);
       -webkit-text-fill-color: transparent;
       -webkit-background-clip: text;
       -webkit-background-size: 200% 100%;

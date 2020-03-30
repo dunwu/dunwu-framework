@@ -137,7 +137,7 @@ export default {
           if (this.id) {
             updateUserById(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '更新用户成功',
                     type: 'success'
@@ -151,7 +151,7 @@ export default {
           } else {
             insertUser(this.form)
               .then(response => {
-                if (response.ok) {
+                if (response.code === 0) {
                   this.$message({
                     message: '创建用户成功',
                     type: 'success'
@@ -172,7 +172,7 @@ export default {
     async handleSearchUserById(id) {
       await getUserById({ id: id })
         .then(response => {
-          if (response.ok) {
+          if (response.code === 0) {
             this.form = response.data
             this.form.password2 = this.form.password
             console.log('form', this.form)

@@ -242,7 +242,7 @@ export default {
       this.$refs[formName].validate(frontValid => {
         if (frontValid) {
           checkMenu(this.form).then(response => {
-            if (response.ok) {
+            if (response.code === 0) {
               if (this.form.id !== null) {
                 this.dohandleUpdateRecord()
               } else {
@@ -283,7 +283,7 @@ export default {
      */
     async doHandleInsertRecord() {
       await insertMenu(this.form).then(response => {
-        if (response.ok) {
+        if (response.code === 0) {
           this.$message({ message: '添加成功', type: 'success' })
           this.showForm = false
           this.handleSearchMenuTree()
@@ -295,7 +295,7 @@ export default {
      */
     async dohandleUpdateRecord() {
       await updateMenuById(this.form).then(response => {
-        if (response.ok) {
+        if (response.code === 0) {
           this.$message({ message: '更新成功', type: 'success' })
           this.showForm = false
           this.handleSearchMenuTree()
@@ -312,7 +312,7 @@ export default {
       // 获取 ID 列表
       const idList = this.checkedData.map(v => v.id)
       await deleteBatchIds(idList).then(response => {
-        if (response.ok) {
+        if (response.code === 0) {
           this.handleSearchMenuTree()
           this.$message({ message: '删除成功', type: 'success' })
         }
@@ -324,7 +324,7 @@ export default {
     async handleSearchMenuById(id) {
       await getMenuById({ id: id })
         .then(response => {
-          if (response.ok) {
+          if (response.code === 0) {
             this.form = response.data
             this.form.password2 = this.form.password
             console.log('form', this.form)
@@ -341,7 +341,7 @@ export default {
       this.loading = true
       this.handleInit()
       await treeList().then(response => {
-        if (response.ok) {
+        if (response.code === 0) {
           console.log('menuTree', response.data)
           this.data = response.data
         }

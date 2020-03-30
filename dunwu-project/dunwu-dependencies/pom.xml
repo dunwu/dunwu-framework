@@ -146,12 +146,12 @@
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-tool-net</artifactId>
+        <artifactId>dunwu-tool-image</artifactId>
         <version>${dunwu.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.dunwu</groupId>
-        <artifactId>dunwu-tool-all</artifactId>
+        <artifactId>dunwu-tool-net</artifactId>
         <version>${dunwu.version}</version>
       </dependency>
       <dependency>
