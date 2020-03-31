@@ -2,8 +2,8 @@ SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 用户信息
-DROP TABLE IF EXISTS t_user;
-CREATE TABLE t_user (
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
     id       INT(20)         NOT NULL AUTO_INCREMENT COMMENT 'ID',
     username VARCHAR(30)     NOT NULL COMMENT '用户名',
     password VARCHAR(60)     NOT NULL COMMENT '密码',
@@ -23,8 +23,8 @@ CREATE TABLE t_user (
     ROW_FORMAT = DYNAMIC;
 
 -- 角色信息
-DROP TABLE IF EXISTS t_role;
-CREATE TABLE t_role (
+DROP TABLE IF EXISTS role;
+CREATE TABLE role (
     id     INT(20)         NOT NULL AUTO_INCREMENT COMMENT 'ID',
     code   VARCHAR(30)     NOT NULL COMMENT '角色编码',
     name   VARCHAR(30)     NOT NULL COMMENT '角色名',
@@ -39,8 +39,8 @@ CREATE TABLE t_role (
     ROW_FORMAT = DYNAMIC;
 
 -- 权限信息
-DROP TABLE IF EXISTS t_permission;
-CREATE TABLE t_permission (
+DROP TABLE IF EXISTS permission;
+CREATE TABLE permission (
     id         INT(20)         NOT NULL AUTO_INCREMENT COMMENT '权限ID',
     name       VARCHAR(30)     NOT NULL COMMENT '权限名称',
     expression VARCHAR(100)    NOT NULL COMMENT '权限表达式',
@@ -56,8 +56,8 @@ CREATE TABLE t_permission (
     ROW_FORMAT = DYNAMIC;
 
 -- 用户和角色关联信息
-DROP TABLE IF EXISTS t_user_role;
-CREATE TABLE t_user_role (
+DROP TABLE IF EXISTS user_role;
+CREATE TABLE user_role (
     id      INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     user_id INT(20) NOT NULL COMMENT '用户ID',
     role_id INT(20) NOT NULL COMMENT '角色ID',
@@ -70,8 +70,8 @@ CREATE TABLE t_user_role (
     ROW_FORMAT = DYNAMIC;
 
 -- 角色和权限关联信息
-DROP TABLE IF EXISTS t_role_permission;
-CREATE TABLE t_role_permission (
+DROP TABLE IF EXISTS role_permission;
+CREATE TABLE role_permission (
     id            INT(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
     role_id       INT(20) NOT NULL COMMENT '角色ID',
     permission_id INT(20) NOT NULL COMMENT '权限ID',
@@ -84,8 +84,8 @@ CREATE TABLE t_role_permission (
     ROW_FORMAT = DYNAMIC;
 
 -- 菜单信息
-DROP TABLE IF EXISTS t_menu;
-CREATE TABLE t_menu (
+DROP TABLE IF EXISTS menu;
+CREATE TABLE menu (
     id        INT(20)         NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
     parent_id INT(20)      DEFAULT 0 COMMENT '父菜单ID',
     url       VARCHAR(200) DEFAULT NULL COMMENT '菜单URL',

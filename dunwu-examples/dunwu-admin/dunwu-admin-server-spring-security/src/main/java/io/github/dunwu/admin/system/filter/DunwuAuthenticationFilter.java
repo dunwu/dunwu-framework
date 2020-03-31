@@ -1,13 +1,10 @@
 package io.github.dunwu.admin.system.filter;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.dunwu.admin.exception.CheckCodeException;
 import io.github.dunwu.admin.system.dto.UserDTO;
 import io.github.dunwu.admin.system.service.UserManager;
 import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.web.util.ServletUtil;
-import io.github.dunwu.web.util.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,12 +47,12 @@ public class DunwuAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
         throws AuthenticationException, IOException {
+        if (!request.getMethod().equals("POST")) {
+            throw new AuthenticationServiceException(
+                "Authentication method not supported: " + request.getMethod());
+        }
 
-        ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
-        String requestBody = ServletUtil.getRequestBody(request);
-        Map<String, String> map = objectMapper.readValue(requestBody,
-            new TypeReference<Map<String, String>>() {
-            });
+        Map<String, String> map = ServletUtil.getReqParam(request);
         String username = map.get("username");
         String password = map.get("password");
         String checkCode = map.get("checkCode");
@@ -69,6 +66,12 @@ public class DunwuAuthenticationFilter extends AbstractAuthenticationProcessingF
             log.error("认证失败，用户名或密码为空");
             throw new AuthenticationServiceException("用户名或密码为空");
         }
+
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+            username, password);
+
+        // Allow subclasses to set the "details" property
+        setDetails(request, authRequest);
 
         username = username.trim();
         UserDTO userDTO = userManager.loadUserByUniqueKey(username);
@@ -103,6 +106,11 @@ public class DunwuAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (!actualCheckCode.equalsIgnoreCase(checkCode)) {
             throw new CheckCodeException("验证码不正确！");
         }
+    }
+
+    protected void setDetails(HttpServletRequest request,
+        UsernamePasswordAuthenticationToken authRequest) {
+        authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
     }
 
 }

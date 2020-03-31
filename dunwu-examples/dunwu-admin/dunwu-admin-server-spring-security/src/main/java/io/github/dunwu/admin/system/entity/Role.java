@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @ToString
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_role")
+@TableName("role")
 @ApiModel(value = "Role", description = "角色信息")
 public class Role extends BaseEntity {
 

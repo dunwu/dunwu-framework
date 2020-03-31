@@ -17,11 +17,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisHelper {
 
-    private final RedisTemplate<Object, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    public RedisHelper(RedisTemplate<Object, Object> redisTemplate,
+    public RedisHelper(RedisTemplate<String, Object> redisTemplate,
         StringRedisTemplate stringRedisTemplate) {
         this.redisTemplate = redisTemplate;
         this.stringRedisTemplate = stringRedisTemplate;

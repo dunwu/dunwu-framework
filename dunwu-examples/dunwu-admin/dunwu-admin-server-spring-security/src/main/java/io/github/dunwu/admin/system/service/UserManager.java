@@ -13,6 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface UserManager extends UserService, UserDetailsService {
 
+    /**
+     * 根据关键字快速查找用户信息
+     *
+     * @param key 查找关键字：username/email/mobile
+     * @return 返回用户信息 DTO {@link UserDTO}。注意：其中的 roles 为空
+     */
+    UserDTO fastLoadUserInfoByKey(String key);
+
     UserDTO loadUserByUniqueKey(String key) throws AccountException;
 
     @Transactional(rollbackFor = Exception.class)

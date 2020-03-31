@@ -1,15 +1,13 @@
 package io.github.dunwu.admin.system.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.github.dunwu.data.mybatis.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-  import com.baomidou.mybatisplus.annotation.TableName;
-  import io.github.dunwu.data.mybatis.BaseEntity;
 
 /**
 * 角色和权限关联信息数据实体
@@ -21,7 +19,7 @@ import lombok.experimental.Accessors;
 @ToString
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_role_permission")
+@TableName("role_permission")
 @ApiModel(value = "RolePermission", description = "角色和权限关联信息")
 public class RolePermission extends BaseEntity {
 

@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/utils/http'
 
 export function getRolePage(params) {
   return request({

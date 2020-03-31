@@ -5,32 +5,29 @@
  * @see http://www.jianshu.com/p/df464b26ae58
  */
 import axios from 'axios'
-import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
+import { Message, MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
+axios.defaults.timeout = 5000 // timeout
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API // url = base url + request url
 axios.defaults.withCredentials = true
-axios.defaults.headers['Content-Type'] = 'application/json'
-// axios.defaults.headers.get['Content-Type'] = 'application/json'
-// axios.defaults.headers.post['Content-Type'] =
-//   'application/x-www-form-urlencoded'
-const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  withCredentials: true, // send cookies when cross-domain requests
-  timeout: 1000 * 60
-})
+// Content-Type 一般无需设置
+// @see https://juejin.im/post/5d64f919f265da0390053da4
+// axios.defaults.headers['Content-Type'] = 'application/json'
 
 // request interceptor
-service.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     // do something before request is sent
     console.group('%c%s', 'color:blue', '[Http Request]')
     console.debug('[request info]', config)
     if (store.getters.token) {
       // let each request carry token
-      // ['X-Token'] is a custom headers key
+      // ['Authorization'] is a custom headers key
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
+      console.log('token', getToken())
     }
     return config
   },
@@ -42,7 +39,7 @@ service.interceptors.request.use(
 )
 
 // response interceptor
-service.interceptors.response.use(
+axios.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
@@ -100,4 +97,4 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default axios

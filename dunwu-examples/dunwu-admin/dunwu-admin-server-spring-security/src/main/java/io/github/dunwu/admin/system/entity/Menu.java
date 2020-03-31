@@ -23,7 +23,7 @@ import javax.validation.Valid;
 @ToString
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_menu")
+@TableName("menu")
 @ApiModel(value = "Menu", description = "菜单信息")
 public class Menu extends BaseEntity {
 

@@ -1,7 +1,6 @@
 package io.github.dunwu.admin.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.dunwu.admin.exception.AccountException;
 import io.github.dunwu.admin.system.dto.RoleDTO;
 import io.github.dunwu.admin.system.dto.UserDTO;
@@ -21,6 +20,7 @@ import io.github.dunwu.tool.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +38,35 @@ public class UserManagerImpl extends UserServiceImpl implements UserManager {
     private final RoleMapper roleMapper;
     private final UserRoleMapper userRoleMapper;
 
+    /**
+     * 根据用户名获取用户完整信息（包含用户相关的角色、权限信息）
+     * <p>
+     * Spring Security 会根据此方法获取用户信息
+     *
+     * @param username 用户名
+     * @return {@link UserDTO}
+     * @throws UsernameNotFoundException
+     */
     @Override
-    public UserDTO loadUserByUsername(String username) throws AccountException {
-        User query = new User();
-        query.setUsername(username);
-        User user = userMapper.selectOne(Wrappers.query(query));
-        return loadUserInfo(user);
+    public UserDTO loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userMapper.selectOne(new QueryWrapper<User>().lambda()
+            .nested(i -> i.eq(User::getUsername, username)));
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("用户名 %s 不存在", username));
+        }
+
+        return fullLoadUserInfoByKey(user);
     }
 
+    /**
+     * 根据用户名获取用户完整信息（包含用户相关的角色、权限信息）
+     * <p>
+     * Spring Security 会根据此方法获取用户信息
+     *
+     * @param key 找关键字：username/email/mobile（这些关键字在用户表中必须保证是惟一的）
+     * @return {@link UserDTO}
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDTO loadUserByUniqueKey(String key) throws AccountException {
 
@@ -57,10 +78,37 @@ public class UserManagerImpl extends UserServiceImpl implements UserManager {
             .nested(i -> i.eq(User::getUsername, key)
                 .or().eq(User::getEmail, key)
                 .or().eq(User::getMobile, key)));
-        return loadUserInfo(user);
+
+        return fullLoadUserInfoByKey(user);
     }
 
-    private UserDTO loadUserInfo(User user) throws AccountException {
+    /**
+     * 根据关键字快速查找用户信息（不含用户相关的角色、权限信息）
+     *
+     * @param key 查找关键字：username/email/mobile（这些关键字在用户表中必须保证是惟一的）
+     * @return 返回用户信息 DTO {@link UserDTO}。注意：其中的 roles 为空
+     */
+    @Override
+    public UserDTO fastLoadUserInfoByKey(String key) {
+        User user = userMapper.selectOne(new QueryWrapper<User>().lambda()
+            .nested(i -> i.eq(User::getUsername, key)
+                .or().eq(User::getEmail, key)
+                .or().eq(User::getMobile, key)));
+        if (user == null) {
+            return null;
+        } else {
+            return BeanUtil.toBean(user, UserDTO.class);
+        }
+    }
+
+    /**
+     * 查询用户完整信息，包含用户关联的角色、权限信息
+     *
+     * @param user 要查询的用户实体
+     * @return {@link UserDTO}
+     * @throws AccountException
+     */
+    public UserDTO fullLoadUserInfoByKey(User user) throws AccountException {
         if (user == null) {
             throw new AccountException("账户不存在");
         }
@@ -87,7 +135,6 @@ public class UserManagerImpl extends UserServiceImpl implements UserManager {
         }
 
         userDTO.setRoles(roles);
-
         return userDTO;
     }
 

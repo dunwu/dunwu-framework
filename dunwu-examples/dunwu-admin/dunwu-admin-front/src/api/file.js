@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/utils/http'
 
 export async function uploadFile(data) {
   return request({

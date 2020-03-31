@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @ToString
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_permission")
+@TableName("permission")
 @ApiModel(value = "Permission", description = "权限信息")
 public class Permission extends BaseEntity {
 

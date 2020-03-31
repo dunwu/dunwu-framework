@@ -166,7 +166,6 @@ public class DefaultCodeGenerator extends BaseCodeGenerator {
             .setRestControllerStyle(true)
             .setNaming(NamingStrategy.underline_to_camel)
             .setColumnNaming(NamingStrategy.underline_to_camel)
-            .setTablePrefix("t_")
             .setSuperEntityColumns("id")
             .setSuperEntityClass(superEntity)
             .setSuperServiceClass(superService)

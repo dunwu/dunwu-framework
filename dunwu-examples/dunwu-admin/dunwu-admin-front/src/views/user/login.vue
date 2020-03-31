@@ -21,7 +21,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="用户名/邮箱/手机号"
           name="username"
           type="text"
           tabindex="1"
@@ -39,7 +39,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="Password"
+            placeholder="密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -53,31 +53,36 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-col :span="12">
-        <el-form-item prop="checkCode">
-          <span class="svg-container"><svg-icon icon-class="user" /></span>
-          <el-input
-            ref="checkCode"
-            v-model="loginForm.checkCode"
-            placeholder="checkCode"
-            name="checkCode"
-            type="text"
-            tabindex="3"
-            autocomplete="on"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <div class="block" style="padding-left: 10px">
-          <el-image :src="checkcodeUrl"></el-image>
-        </div>
-      </el-col>
+      <el-row>
+        <el-col :span="16">
+          <el-form-item prop="checkCode">
+            <el-input
+              ref="checkCode"
+              v-model="loginForm.checkCode"
+              placeholder="校验码"
+              name="checkCode"
+              type="text"
+              tabindex="3"
+              autocomplete="on"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <div class="block" style="padding-left: 10px">
+            <el-image :src="checkcodeUrl" class="code-image" @click="handleRefreshCheckCode" />
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-checkbox v-model="loginForm.rememberme">勿忘我</el-checkbox>
+
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin">
-        Login
+        style="width:100%; margin-top: 10px; margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >
+        登录
       </el-button>
 
       <div style="position:relative">
@@ -89,9 +94,9 @@
 
     <el-dialog title="Or connect with" :visible.sync="showDialog">
       Can not be simulated on local, so please combine you own business simulation! ! !
-      <br />
-      <br />
-      <br />
+      <br>
+      <br>
+      <br>
       <social-sign />
     </el-dialog>
   </div>
@@ -104,16 +109,20 @@ export default {
   name: 'Login',
   components: { SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
+    const validatePassword = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入密码'))
+      } else if (value.length < 6) {
+        callback(new Error('密码错误'))
       } else {
         callback()
       }
     }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+    const validateCode = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入校验码'))
+      } else if (value.length !== 4) {
+        callback(new Error('校验码错误'))
       } else {
         callback()
       }
@@ -122,18 +131,20 @@ export default {
       loginForm: {
         username: 'dunwu',
         password: '123456',
-        checkCode: ''
+        checkCode: '',
+        rememberme: false
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, message: '请输入用户名/邮箱/手机号', trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        checkCode: [{ required: true, trigger: 'blur', validator: validateCode }]
       },
       passwordType: 'password',
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
-      checkcodeUrl: 'http://localhost:9527/checkcode/image',
+      checkcodeUrl: '',
       otherQuery: {}
     }
   },
@@ -150,7 +161,7 @@ export default {
     }
   },
   created() {
-    // window.addEventListener('storage', this.afterQRScan)
+    this.handleRefreshCheckCode()
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -196,13 +207,19 @@ export default {
               this.loading = false
             })
             .catch(() => {
+              this.handleRefreshCheckCode()
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
+    },
+    /**
+     * 刷新校验码
+     */
+    handleRefreshCheckCode() {
+      this.checkcodeUrl = `${process.env.VUE_APP_BASE_API}/checkcode/image?random=` + Math.random()
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
@@ -250,6 +267,11 @@ $cursor: #ffffff;
   .login-container .el-input input {
     color: $cursor;
   }
+}
+
+.code-image {
+  transform: translate(0, 10%);
+  padding-left: 10px;
 }
 
 /* reset element-ui css */

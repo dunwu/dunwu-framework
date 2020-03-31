@@ -1,23 +1,29 @@
 package io.github.dunwu.web.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
+import io.github.dunwu.tool.io.IoUtil;
+import io.github.dunwu.tool.util.StringUtil;
 import io.github.dunwu.tool.util.SystemUtil;
 import io.github.dunwu.util.net.IpUtils;
 import io.github.dunwu.web.constant.HttpHeaders;
 import io.github.dunwu.web.constant.WebConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.WebContentGenerator;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -58,21 +64,95 @@ public class ServletUtil {
     }
 
     /**
+     * 获取请求参数
+     *
+     * @param request
+     * @return 请求参数格式key-value
+     */
+    public static Map<String, String> getReqParam(HttpServletRequest request) throws IOException {
+        String method = request.getMethod();
+        Map<String, String> reqMap;
+        if (WebContentGenerator.METHOD_GET.equals(method)) {
+            reqMap = doGet(request);
+        } else if (WebContentGenerator.METHOD_POST.equals(method)) {
+            reqMap = doPost(request);
+        } else {
+            throw new UnsupportedOperationException("http method not support");
+        }
+        return reqMap;
+    }
+
+    private static Map<String, String> doGet(HttpServletRequest request) {
+        String param = request.getQueryString();
+        return paramsToMap(param);
+    }
+
+    /**
      * 从 HttpServletRequest 中获取 HTTP 请求 Body 体
      *
      * @param request {@link HttpServletRequest}
      * @return String
      * @throws IOException
      */
-    public static String getRequestBody(HttpServletRequest request) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        InputStream inputStream = request.getInputStream();
-        byte[] bs = new byte[StreamUtils.BUFFER_SIZE];
-        int len;
-        while ((len = inputStream.read(bs)) != -1) {
-            sb.append(new String(bs, 0, len));
+    public static Map<String, String> doPost(HttpServletRequest request) throws IOException {
+        String contentType = request.getContentType();
+        Map<String, String> map = new HashMap<>();
+        InputStream inputStream = null;
+        try {
+            if (contentType.contains(MediaType.APPLICATION_JSON_VALUE)) {
+                StringBuilder sb = new StringBuilder();
+                inputStream = request.getInputStream();
+                int len;
+                byte[] bytes = new byte[StreamUtils.BUFFER_SIZE];
+                while ((len = inputStream.read(bytes)) != -1) {
+                    sb.append(new String(bytes, 0, len));
+                }
+                String str = sb.toString();
+                ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
+                map = objectMapper.readValue(str, new TypeReference<Map<String, String>>() {});
+            } else {
+                throw new UnsupportedOperationException("http media type not support");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) { IoUtil.close(inputStream); }
         }
-        return sb.toString();
+        return map;
+    }
+
+    public static Map<String, String> paramsToMap(String params) {
+        Map<String, String> map = new LinkedHashMap<>();
+        if (StringUtil.isNotBlank(params)) {
+            String[] array = params.split("&");
+            for (String pair : array) {
+                if ("=".equals(pair.trim())) {
+                    continue;
+                }
+                String[] entity = pair.split("=");
+                if (entity.length == 1) {
+                    map.put(decode(entity[0]), null);
+                } else {
+                    map.put(decode(entity[0]), decode(entity[1]));
+                }
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 编码格式转换
+     *
+     * @param content
+     * @return
+     */
+    public static String decode(String content) {
+        try {
+            return URLDecoder.decode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**
