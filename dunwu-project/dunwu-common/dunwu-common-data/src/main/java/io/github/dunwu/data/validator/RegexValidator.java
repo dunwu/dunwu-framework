@@ -2,7 +2,7 @@ package io.github.dunwu.data.validator;
 
 import io.github.dunwu.data.validator.annotation.RegexValid;
 import io.github.dunwu.tool.util.RegexUtil;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.util.StrUtil;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -25,10 +25,10 @@ public class RegexValidator implements ConstraintValidator<RegexValid, String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (StringUtil.isBlank(s)) {
+        if (StrUtil.isBlank(s)) {
             return false;
         }
-        if (StringUtil.isBlank(regexp)) {
+        if (StrUtil.isBlank(regexp)) {
             throw new IllegalArgumentException("regexp in @RegexValid must not be blank");
         }
 

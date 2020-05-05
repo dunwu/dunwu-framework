@@ -1,9 +1,11 @@
 package io.github.dunwu.tool.util;
 
-import io.github.dunwu.tool.collection.CollectionUtil;
-import io.github.dunwu.tool.exceptions.UtilException;
-import io.github.dunwu.tool.lang.Holder;
-import io.github.dunwu.tool.lang.func.Func1;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.exceptions.UtilException;
+import cn.hutool.core.lang.Holder;
+import cn.hutool.core.lang.func.Func1;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -247,7 +249,7 @@ public class RegexUtil {
      * @since 3.3.1
      */
     public static boolean contains(final CharSequence text, final String regex) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex)) {
             return false;
         }
 
@@ -264,7 +266,7 @@ public class RegexUtil {
      * @since 3.3.1
      */
     public static boolean contains(final CharSequence text, final Pattern pattern) {
-        if (StringUtil.isBlank(text) || pattern == null) {
+        if (StrUtil.isBlank(text) || pattern == null) {
             return false;
         }
         return pattern.matcher(text).find();
@@ -280,7 +282,7 @@ public class RegexUtil {
      * @return 匹配个数
      */
     public static int count(final CharSequence text, final String regex) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex)) {
             return 0;
         }
 
@@ -296,7 +298,7 @@ public class RegexUtil {
      * @return 匹配个数
      */
     public static int count(final CharSequence text, final Pattern pattern) {
-        if (StringUtil.isBlank(text) || pattern == null) {
+        if (StrUtil.isBlank(text) || pattern == null) {
             return 0;
         }
 
@@ -318,8 +320,8 @@ public class RegexUtil {
      * @return 转义后的文本
      */
     public static String escape(CharSequence text) {
-        if (StringUtil.isBlank(text)) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text)) {
+            return StrUtil.str(text);
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -417,7 +419,7 @@ public class RegexUtil {
      * @return 正则模式 {@link Pattern}
      */
     public static Pattern getPattern(final String regex, int flag) {
-        if (StringUtil.isBlank(regex)) {
+        if (StrUtil.isBlank(regex)) {
             return null;
         }
         return Pattern.compile(regex, flag);
@@ -466,7 +468,7 @@ public class RegexUtil {
                 int group = Integer.parseInt(var);
                 template = template.replace("$" + var, matcher.group(group));
             }
-            contentHolder.set(StringUtil.sub(content, matcher.end(), content.length()));
+            contentHolder.set(StrUtil.sub(content, matcher.end(), content.length()));
             return template;
         }
         return null;
@@ -602,7 +604,7 @@ public class RegexUtil {
      * @return 匹配后得到的字符串，未匹配返回null
      */
     public static String get(final CharSequence text, final String regex, final int group) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex)) {
             return null;
         }
 
@@ -619,7 +621,7 @@ public class RegexUtil {
      * @return 匹配后得到的字符串，未匹配返回null
      */
     public static String get(final CharSequence text, final Pattern pattern, final int group) {
-        if (StringUtil.isBlank(text) || pattern == null) {
+        if (StrUtil.isBlank(text) || pattern == null) {
             return null;
         }
 
@@ -654,7 +656,7 @@ public class RegexUtil {
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final String regex, final int flag) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex)) {
             return false;
         }
         Pattern pattern = Pattern.compile(regex, flag);
@@ -669,7 +671,7 @@ public class RegexUtil {
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final Pattern pattern) {
-        if (StringUtil.isBlank(text) || pattern == null) {
+        if (StrUtil.isBlank(text) || pattern == null) {
             // 提供null的字符串为不匹配
             return false;
         }
@@ -684,16 +686,16 @@ public class RegexUtil {
      * 搬迁自 apache-common
      *
      * <pre>
-     * StringUtil.removeAll(null, *)      = null
-     * StringUtil.removeAll("any", (Pattern) null)  = "any"
-     * StringUtil.removeAll("any", Pattern.compile(""))    = "any"
-     * StringUtil.removeAll("any", Pattern.compile(".*"))  = ""
-     * StringUtil.removeAll("any", Pattern.compile(".+"))  = ""
-     * StringUtil.removeAll("abc", Pattern.compile(".?"))  = ""
-     * StringUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\nB"
-     * StringUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
-     * StringUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;", Pattern.DOTALL))  = "AB"
-     * StringUtil.removeAll("ABCabc123abc", Pattern.compile("[a-z]"))     = "ABC123"
+     * StrUtil.removeAll(null, *)      = null
+     * StrUtil.removeAll("any", (Pattern) null)  = "any"
+     * StrUtil.removeAll("any", Pattern.compile(""))    = "any"
+     * StrUtil.removeAll("any", Pattern.compile(".*"))  = ""
+     * StrUtil.removeAll("any", Pattern.compile(".+"))  = ""
+     * StrUtil.removeAll("abc", Pattern.compile(".?"))  = ""
+     * StrUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\nB"
+     * StrUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
+     * StrUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;", Pattern.DOTALL))  = "AB"
+     * StrUtil.removeAll("ABCabc123abc", Pattern.compile("[a-z]"))     = "ABC123"
      * </pre>
      *
      * @param text    被替换的文本
@@ -701,7 +703,7 @@ public class RegexUtil {
      * @return 移除后的字符串
      */
     public static String removeAll(final CharSequence text, final Pattern pattern) {
-        return replaceAll(text, pattern, StringUtil.EMPTY);
+        return replaceAll(text, pattern, StrUtil.EMPTY);
     }
 
     /**
@@ -734,8 +736,8 @@ public class RegexUtil {
      * @return 替换后的字符串
      */
     public static String replaceAll(final CharSequence text, final Pattern pattern, final String replacement) {
-        if (StringUtil.isBlank(text) || pattern == null || replacement == null) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || pattern == null || replacement == null) {
+            return StrUtil.str(text);
         }
         return pattern.matcher(text).replaceAll(replacement);
     }
@@ -746,15 +748,15 @@ public class RegexUtil {
      * 搬迁自 apache-common
      *
      * <pre>
-     * StringUtil.removeAll(null, *)      = null
-     * StringUtil.removeAll("any", (String) null)  = "any"
-     * StringUtil.removeAll("any", "")    = "any"
-     * StringUtil.removeAll("any", ".*")  = ""
-     * StringUtil.removeAll("any", ".+")  = ""
-     * StringUtil.removeAll("abc", ".?")  = ""
-     * StringUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\nB"
-     * StringUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
-     * StringUtil.removeAll("ABCabc123abc", "[a-z]")     = "ABC123"
+     * StrUtil.removeAll(null, *)      = null
+     * StrUtil.removeAll("any", (String) null)  = "any"
+     * StrUtil.removeAll("any", "")    = "any"
+     * StrUtil.removeAll("any", ".*")  = ""
+     * StrUtil.removeAll("any", ".+")  = ""
+     * StrUtil.removeAll("abc", ".?")  = ""
+     * StrUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\nB"
+     * StrUtil.removeAll("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
+     * StrUtil.removeAll("ABCabc123abc", "[a-z]")     = "ABC123"
      * </pre>
      *
      * @param text  被替换的文本
@@ -762,7 +764,7 @@ public class RegexUtil {
      * @return 移除后的字符串
      */
     public static String removeAll(final CharSequence text, final String regex) {
-        return replaceAll(text, regex, StringUtil.EMPTY);
+        return replaceAll(text, regex, StrUtil.EMPTY);
     }
 
     /**
@@ -794,8 +796,8 @@ public class RegexUtil {
      * @return 替换后的字符串
      */
     public static String replaceAll(final CharSequence text, final String regex, final String replacement) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex) || replacement == null) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex) || replacement == null) {
+            return StrUtil.str(text);
         }
         Pattern pattern = Pattern.compile(regex);
         return replaceAll(text, pattern, replacement);
@@ -807,16 +809,16 @@ public class RegexUtil {
      * 搬迁自 apache-common
      *
      * <pre>
-     * StringUtil.removeFirst(null, *)      = null
-     * StringUtil.removeFirst("any", (String) null)  = "any"
-     * StringUtil.removeFirst("any", "")    = "any"
-     * StringUtil.removeFirst("any", ".*")  = ""
-     * StringUtil.removeFirst("any", ".+")  = ""
-     * StringUtil.removeFirst("abc", ".?")  = "bc"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\n&lt;__&gt;B"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
-     * StringUtil.removeFirst("ABCabc123", "[a-z]")          = "ABCbc123"
-     * StringUtil.removeFirst("ABCabc123abc", "[a-z]+")      = "ABC123abc"
+     * StrUtil.removeFirst(null, *)      = null
+     * StrUtil.removeFirst("any", (String) null)  = "any"
+     * StrUtil.removeFirst("any", "")    = "any"
+     * StrUtil.removeFirst("any", ".*")  = ""
+     * StrUtil.removeFirst("any", ".+")  = ""
+     * StrUtil.removeFirst("abc", ".?")  = "bc"
+     * StrUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "&lt;.*&gt;")      = "A\n&lt;__&gt;B"
+     * StrUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", "(?s)&lt;.*&gt;")  = "AB"
+     * StrUtil.removeFirst("ABCabc123", "[a-z]")          = "ABCbc123"
+     * StrUtil.removeFirst("ABCabc123abc", "[a-z]+")      = "ABC123abc"
      * </pre>
      *
      * @param text  被替换的文本
@@ -836,16 +838,16 @@ public class RegexUtil {
      * 搬迁自 apache-common
      *
      * <pre>
-     * StringUtil.removeFirst(null, *)      = null
-     * StringUtil.removeFirst("any", (Pattern) null)  = "any"
-     * StringUtil.removeFirst("any", Pattern.compile(""))    = "any"
-     * StringUtil.removeFirst("any", Pattern.compile(".*"))  = ""
-     * StringUtil.removeFirst("any", Pattern.compile(".+"))  = ""
-     * StringUtil.removeFirst("abc", Pattern.compile(".?"))  = "bc"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\n&lt;__&gt;B"
-     * StringUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
-     * StringUtil.removeFirst("ABCabc123", Pattern.compile("[a-z]"))          = "ABCbc123"
-     * StringUtil.removeFirst("ABCabc123abc", Pattern.compile("[a-z]+"))      = "ABC123abc"
+     * StrUtil.removeFirst(null, *)      = null
+     * StrUtil.removeFirst("any", (Pattern) null)  = "any"
+     * StrUtil.removeFirst("any", Pattern.compile(""))    = "any"
+     * StrUtil.removeFirst("any", Pattern.compile(".*"))  = ""
+     * StrUtil.removeFirst("any", Pattern.compile(".+"))  = ""
+     * StrUtil.removeFirst("abc", Pattern.compile(".?"))  = "bc"
+     * StrUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("&lt;.*&gt;"))      = "A\n&lt;__&gt;B"
+     * StrUtil.removeFirst("A&lt;__&gt;\n&lt;__&gt;B", Pattern.compile("(?s)&lt;.*&gt;"))  = "AB"
+     * StrUtil.removeFirst("ABCabc123", Pattern.compile("[a-z]"))          = "ABCbc123"
+     * StrUtil.removeFirst("ABCabc123abc", Pattern.compile("[a-z]+"))      = "ABC123abc"
      * </pre>
      *
      * @param text    被替换的文本
@@ -853,7 +855,7 @@ public class RegexUtil {
      * @return 移除后的字符串
      */
     public static String removeFirst(final CharSequence text, final Pattern pattern) {
-        return replaceFirst(text, pattern, StringUtil.EMPTY);
+        return replaceFirst(text, pattern, StrUtil.EMPTY);
     }
 
     /**
@@ -881,8 +883,8 @@ public class RegexUtil {
      * @return 替换后的文本
      */
     public static String replaceFirst(final CharSequence text, final Pattern pattern, final String replacement) {
-        if (StringUtil.isBlank(text) || pattern == null || replacement == null) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || pattern == null || replacement == null) {
+            return StrUtil.str(text);
         }
         return pattern.matcher(text).replaceFirst(replacement);
     }
@@ -895,16 +897,16 @@ public class RegexUtil {
      * @return 删除前缀后的新内容
      */
     public static String removePre(final CharSequence text, final String regex) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex)) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex)) {
+            return StrUtil.str(text);
         }
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
-            return StringUtil.sub(text, matcher.end(), text.length());
+            return StrUtil.sub(text, matcher.end(), text.length());
         }
-        return StringUtil.str(text);
+        return StrUtil.str(text);
     }
 
     /**
@@ -930,8 +932,8 @@ public class RegexUtil {
      * @since 4.2.2
      */
     public static String replaceAll(final CharSequence text, final Pattern pattern, Func1<Matcher, String> callback) {
-        if (StringUtil.isBlank(text) || pattern == null || callback == null) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || pattern == null || callback == null) {
+            return StrUtil.str(text);
         }
 
         final Matcher matcher = pattern.matcher(text);
@@ -992,8 +994,8 @@ public class RegexUtil {
      * @return 替换后的文本
      */
     public static String replaceFirst(final CharSequence text, final String regex, final String replacement) {
-        if (StringUtil.isBlank(text) || StringUtil.isBlank(regex) || replacement == null) {
-            return StringUtil.str(text);
+        if (StrUtil.isBlank(text) || StrUtil.isBlank(regex) || replacement == null) {
+            return StrUtil.str(text);
         }
         Pattern pattern = Pattern.compile(regex);
         return replaceFirst(text, pattern, replacement);

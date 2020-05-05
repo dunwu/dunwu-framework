@@ -1,7 +1,7 @@
 package io.github.dunwu.util.net;
 
+import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.AnsiSystem;
-import io.github.dunwu.tool.util.StringUtil;
 import org.junit.jupiter.api.Test;
 
 import java.net.UnknownHostException;
@@ -12,35 +12,35 @@ class IpUtilsTest {
 
     @Test
     void isValidIp() {
-        assertThat(IpUtils.isValidIpv4("127.0.0.1")).isTrue();
-        assertThat(IpUtils.isValidIpv4("192.168.0.1")).isTrue();
-        assertThat(IpUtils.isValidIpv4("192.168.0.2")).isTrue();
-        assertThat(IpUtils.isValidIpv4("")).isFalse();
-        assertThat(IpUtils.isValidIpv4("256.168.0.1")).isFalse();
+        assertThat(IpUtil.isValidIpv4("127.0.0.1")).isTrue();
+        assertThat(IpUtil.isValidIpv4("192.168.0.1")).isTrue();
+        assertThat(IpUtil.isValidIpv4("192.168.0.2")).isTrue();
+        assertThat(IpUtil.isValidIpv4("")).isFalse();
+        assertThat(IpUtil.isValidIpv4("256.168.0.1")).isFalse();
 
-        assertThat(IpUtils.isValidIpv6("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).isTrue();
-        assertThat(IpUtils.isValidIpv6("2001:db8:85a3:0:0:8A2E:0370:7334")).isTrue();
-        assertThat(IpUtils.isValidIpv6("0:0:0:0:0:0:0:0")).isTrue();
-        assertThat(IpUtils.isValidIpv6("02001:0db8:85a3:0000:0000:8a2e:0370:7334")).isFalse();
+        assertThat(IpUtil.isValidIpv6("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).isTrue();
+        assertThat(IpUtil.isValidIpv6("2001:db8:85a3:0:0:8A2E:0370:7334")).isTrue();
+        assertThat(IpUtil.isValidIpv6("0:0:0:0:0:0:0:0")).isTrue();
+        assertThat(IpUtil.isValidIpv6("02001:0db8:85a3:0000:0000:8a2e:0370:7334")).isFalse();
 
-        assertThat(IpUtils.isValidIp("192.168.0.1")).isTrue();
-        assertThat(IpUtils.isValidIp("192.168.0.2")).isTrue();
-        assertThat(IpUtils.isValidIp("")).isFalse();
-        assertThat(IpUtils.isValidIp("256.168.0.1")).isFalse();
-        assertThat(IpUtils.isValidIp("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).isTrue();
-        assertThat(IpUtils.isValidIp("2001:db8:85a3:0:0:8A2E:0370:7334")).isTrue();
-        assertThat(IpUtils.isValidIp("0:0:0:0:0:0:0:0")).isTrue();
-        assertThat(IpUtils.isValidIp("02001:0db8:85a3:0000:0000:8a2e:0370:7334")).isFalse();
+        assertThat(IpUtil.isValidIp("192.168.0.1")).isTrue();
+        assertThat(IpUtil.isValidIp("192.168.0.2")).isTrue();
+        assertThat(IpUtil.isValidIp("")).isFalse();
+        assertThat(IpUtil.isValidIp("256.168.0.1")).isFalse();
+        assertThat(IpUtil.isValidIp("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).isTrue();
+        assertThat(IpUtil.isValidIp("2001:db8:85a3:0:0:8A2E:0370:7334")).isTrue();
+        assertThat(IpUtil.isValidIp("0:0:0:0:0:0:0:0")).isTrue();
+        assertThat(IpUtil.isValidIp("02001:0db8:85a3:0000:0000:8a2e:0370:7334")).isFalse();
     }
 
     @Test
     void ipv4StringToInt() {
 
-        assertThat(IpUtils.ipv4StrToInt("192.168.0.1")).isEqualTo(-1062731775);
-        assertThat(IpUtils.ipv4StrToInt("192.168.0.2")).isEqualTo(-1062731774);
+        assertThat(IpUtil.ipv4StrToInt("192.168.0.1")).isEqualTo(-1062731775);
+        assertThat(IpUtil.ipv4StrToInt("192.168.0.2")).isEqualTo(-1062731774);
 
-        assertThat(IpUtils.intToIpv4Str(-1062731775)).isEqualTo("192.168.0.1");
-        assertThat(IpUtils.intToIpv4Str(-1062731774)).isEqualTo("192.168.0.2");
+        assertThat(IpUtil.intToIpv4Str(-1062731775)).isEqualTo("192.168.0.1");
+        assertThat(IpUtil.intToIpv4Str(-1062731774)).isEqualTo("192.168.0.2");
     }
 
     @Test
@@ -56,16 +56,16 @@ class IpUtilsTest {
 
         long time = 0L;
         for (String ip : ips) {
-            String[] regionNames = IpUtils.getFullRegionName(ip);
+            String[] regionNames = IpUtil.getFullRegionName(ip);
             long beginTime = System.nanoTime();
-            AnsiSystem.BLUE.println(ip + " 所属完整行政单位：" + StringUtil.join(",", regionNames));
-            AnsiSystem.BLUE.println(ip + " 最小行政单位：" + StringUtil.join(IpUtils.getRegionName(ip)));
+            AnsiSystem.BLUE.println(ip + " 所属完整行政单位：" + StrUtil.join(",", regionNames));
+            AnsiSystem.BLUE.println(ip + " 最小行政单位：" + StrUtil.join(IpUtil.getRegionName(ip)));
             long endTime = System.nanoTime();
             long value = (endTime - beginTime) / 1000000;
             time += value;
             System.out.println("耗时：" + value);
             String city;
-            city = IpUtils.getRegionCode(ip);
+            city = IpUtil.getRegionCode(ip);
             AnsiSystem.YELLOW.println("IP:" + ip + " City :" + city);
         }
 
@@ -74,11 +74,11 @@ class IpUtilsTest {
 
     @Test
     void test() throws UnknownHostException {
-        String ipv6Str = IpUtils.ipv4ToIpv6("127.0.0.1");
+        String ipv6Str = IpUtil.ipv4ToIpv6("127.0.0.1");
         assertThat(ipv6Str).isEqualTo("0:0:0:0:0:0:7f00:1");
         System.out.printf("127.0.0.1 对应的 IPv6 地址为：%s\n", ipv6Str);
 
-        String ipv6Str2 = IpUtils.ipv4ToIpv6("36.101.185.17");
+        String ipv6Str2 = IpUtil.ipv4ToIpv6("36.101.185.17");
         assertThat(ipv6Str2).isEqualTo("0:0:0:0:0:0:2465:b911");
         System.out.printf("36.101.185.17 对应的 IPv6 地址为：%s\n", ipv6Str2);
     }

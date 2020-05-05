@@ -39,11 +39,13 @@
     </dependency>
     <dependency>
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus</artifactId>
+      <artifactId>mybatis-plus-extension</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-generator</artifactId>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>

@@ -1,5 +1,7 @@
 package io.github.dunwu.tool.util;
 
+import cn.hutool.core.util.StrUtil;
+
 import java.io.File;
 
 /**
@@ -1640,7 +1642,7 @@ public class SystemUtil {
      * @return true if matches, or false if not or can't determine
      */
     private static boolean isOSVersionMatch(final String osVersion, final String osVersionPrefix) {
-        if (StringUtil.isEmpty(osVersion)) {
+        if (StrUtil.isEmpty(osVersion)) {
             return false;
         }
         // Compare parts of the version string instead of using String.startsWith(String) because otherwise

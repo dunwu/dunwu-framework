@@ -1,28 +1,32 @@
 package ${package.Controller};
 
-import io.github.dunwu.common.*;
-import io.github.dunwu.data.*;
+import ${package.Dao}.${table.daoName};
 import ${package.Entity}.${entity};
+import ${package.Dto}.${table.dtoName};
+import ${package.Query}.${table.queryName};
 import ${package.Service}.${table.serviceName};
-<#if superControllerClassPackage??>
-import ${superControllerClassPackage};
-</#if>
 <#if swagger2>
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 </#if>
-<#if restControllerStyle>
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-<#else>
+<#if !restControllerStyle>
 import org.springframework.stereotype.Controller;
 </#if>
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * ${table.comment!}
+ * ${table.comment!} Controller 类
  *
  * @author ${author}
  * @since ${date}
@@ -34,192 +38,114 @@ import java.util.Map;
 </#if>
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
 <#if swagger2>
-@Api(tags = "${table.entityPath}")
+@Api(tags = "${table.controllerName}")
 </#if>
+@RequiredArgsConstructor
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass}<${entity}> {
 <#else>
 public class ${table.controllerName} {
 </#if>
 
+    private final ${table.daoName} dao;
     private final ${table.serviceName} service;
 
-    public ${table.controllerName}(${table.serviceName} service) {
-        this.service = service;
+    <#if !swagger2>
+    public ${table.controllerName}(${table.daoName} dao) {
+        this.dao = dao;
+    }
+    </#if>
+
+    @PostMapping
+    <#if swagger2>
+    @ApiOperation("插入一条 ${entity} 记录")
+    </#if>
+    public ResponseEntity<Object> create(@Validated @RequestBody ${entity} entity) {
+        return new ResponseEntity<>(dao.save(entity), HttpStatus.CREATED);
     }
 
-    // ------------------------------------------------------------------------------
-    // 代码生成器生成的代码
-    // ------------------------------------------------------------------------------
+    @PutMapping
+    <#if swagger2>
+    @ApiOperation("根据 ID 修改一条 ${entity} 记录")
+    </#if>
+    public ResponseEntity<Object> update(@Validated @RequestBody ${entity} entity) {
+        return new ResponseEntity<>(dao.updateById(entity), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("{id}")
+    <#if swagger2>
+    @ApiOperation("根据 ID 删除一条 ${entity} 记录")
+    </#if>
+    public ResponseEntity<Object> delete(@PathVariable String id) {
+        return new ResponseEntity<>(dao.removeById(id), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping
+    <#if swagger2>
+    @ApiOperation("根据 ID 集合批量删除 ${entity} 记录")
+    </#if>
+    public ResponseEntity<Object> deleteByIds(@RequestBody Set<String> ids) {
+        return new ResponseEntity<>(dao.removeByIds(ids), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("{id}")
+    <#if swagger2>
+    @ApiOperation("根据 ID 查询 ${entity} 记录")
+    </#if>
+    public ResponseEntity<Object> getById(@PathVariable String id) {
+        return new ResponseEntity<>(dao.getDtoById(id, ${table.dtoName}.class), HttpStatus.OK);
+    }
 
     @GetMapping("count")
     <#if swagger2>
-    @ApiOperation(value = "根据 entity 条件，查询 ${entity} 总记录数")
+    @ApiOperation("根据 query 条件，查询匹配条件的总记录数")
     </#if>
-    public DataResult<Integer> count(${entity} entity) {
-        return service.count(entity);
+    public ResponseEntity<Object> count(${table.queryName} query) {
+        return new ResponseEntity<>(dao.countByQuery(query), HttpStatus.OK);
     }
 
-    @GetMapping("countAll")
-    <#if swagger2>
-    @ApiOperation(value = "查询 ${entity} 总记录数")
-    </#if>
-    public DataResult<Integer> countAll() {
-        return service.count();
-    }
-
-    @GetMapping("getById")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 查询 ${entity} 记录")
-    </#if>
-    public DataResult<${entity}> getById(String id) {
-        return service.getById(id);
-    }
-
-    @GetMapping("getOne")
-    <#if swagger2>
-    @ApiOperation(value = "根据 entity 查询一条 ${entity} 记录")
-    </#if>
-    public DataResult<${entity}> getOne(${entity} entity) {
-        return service.getOne(entity);
+    @GetMapping("get")
+    @ApiOperation("根据 query 条件，查询一条匹配条件的记录")
+    public ResponseEntity<Object> get(${table.queryName} query) {
+        return new ResponseEntity<>(dao.getByQuery(query), HttpStatus.OK);
     }
 
     @GetMapping("list")
     <#if swagger2>
-    @ApiOperation(value = "根据 entity 条件，查询匹配条件的 ${entity} 记录")
+    @ApiOperation("根据 query 条件，查询匹配条件的 ${table.dtoName} 列表")
     </#if>
-    public DataListResult<${entity}> list(${entity} entity) {
-        return service.list(entity);
-    }
-
-    @GetMapping("listAll")
-    <#if swagger2>
-    @ApiOperation(value = "查询所有 ${entity} 记录")
-    </#if>
-    public DataListResult<${entity}> listAll() {
-        return service.list();
-    }
-
-    @GetMapping("listByIds")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 批量查询 ${entity} 记录")
-    </#if>
-    public DataListResult<${entity}> listByIds(@RequestParam Collection<String> idList) {
-        return service.listByIds(idList);
-    }
-
-    @GetMapping("listByMap")
-    <#if swagger2>
-    @ApiOperation(value = "根据 columnMap 批量查询 ${entity} 记录")
-    </#if>
-    public DataListResult<${entity}> listByMap(Map<String, Object> columnMap) {
-        return service.listByMap(columnMap);
+    public ResponseEntity<Object> list(${table.queryName} query) {
+        return new ResponseEntity<>(dao.dtoListByQuery(query, ${table.dtoName}.class), HttpStatus.OK);
     }
 
     @GetMapping("page")
     <#if swagger2>
-    @ApiOperation(value = "根据 entity 和 page 条件，翻页查询 ${entity} 记录")
+    @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
     </#if>
-    public PageResult<${entity}> page(PageQuery page, ${entity} entity) {
-        QueryRequest<${entity}> request = QueryRequest.build(entity, page, Collections.emptyList());
-        return service.page(request);
+    public ResponseEntity<Object> page(${table.queryName} query, Pageable pageable) {
+        return new ResponseEntity<>(dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class), HttpStatus.OK);
     }
 
-    @GetMapping("pageAll")
-    <#if swagger2>
-    @ApiOperation(value = "翻页查询所有 ${entity} 记录")
-    </#if>
-    public PageResult<${entity}> pageAll(PageQuery page) {
-        QueryRequest<${entity}> request = QueryRequest.build(null, page, Collections.emptyList());
-        return service.page(request);
+    @GetMapping
+    @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
+    public ResponseEntity<Object> view(${table.queryName} query, Pageable pageable) {
+        return page(query, pageable);
     }
 
-    @PostMapping("insert")
-    <#if swagger2>
-    @ApiOperation(value = "插入一条 ${entity} 记录，插入成功返回 ID（选择字段，策略插入）")
-    </#if>
-    public DataResult<Integer> insert(@RequestBody ${entity} entity) {
-        return service.insert(entity);
+    @GetMapping("export")
+    @ApiOperation("根据 query 和 pageable 条件导出 ${table.dtoName} 列表数据")
+    public void exportByIds(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
+        Page<${table.dtoName}> page = dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class);
+        service.exportDtoList(page.getContent(), response);
     }
 
-    @PostMapping("insertBatch")
-    <#if swagger2>
-    @ApiOperation(value = "批量添加 ${entity} 记录（选择字段，策略插入）")
-    </#if>
-    public BaseResult insertBatch(@RequestBody Collection<${entity}> entityList) {
-        return service.insertBatch(entityList);
+    @GetMapping("export/page")
+    @ApiOperation("根据 query 和 pageable 条件导出 ${table.dtoName} 列表数据")
+    public void exportPageData(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
+        List<${table.dtoName}> list = dao.dtoListByIds(ids, ${table.dtoName}.class);
+        service.exportDtoList(list, response);
     }
 
-    @PostMapping("updateById")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 选择修改一条 ${entity} 记录")
-    </#if>
-    public BaseResult updateById(@RequestBody ${entity} entity) {
-        return service.updateById(entity);
-    }
 
-    @PostMapping("update")
-    <#if swagger2>
-    @ApiOperation(value = "根据 origin 条件，更新 ${entity} 记录")
-    </#if>
-    public BaseResult update(@RequestBody ${entity} target, @RequestParam ${entity} origin) {
-        return service.update(target, origin);
-    }
-
-    @PostMapping("updateBatchById")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 批量修改 ${entity} 记录")
-    </#if>
-    public BaseResult updateBatchById(@RequestBody Collection<${entity}> entityList) {
-        return service.updateBatchById(entityList);
-    }
-
-    @PostMapping("save")
-    <#if swagger2>
-    @ApiOperation(value = "ID 存在则更新记录，否则插入一条记录")
-    </#if>
-    public BaseResult save(@RequestBody ${entity} entity) {
-        return service.save(entity);
-    }
-
-    @PostMapping("saveBatch")
-    <#if swagger2>
-    @ApiOperation(value = "批量添加或更新 ${entity} 记录")
-    </#if>
-    public BaseResult saveBatch(@RequestBody Collection<${entity}> entityList) {
-        return service.saveBatch(entityList);
-    }
-
-    @PostMapping("deleteById")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 删除一条 ${entity} 记录")
-    </#if>
-    public BaseResult deleteById(@RequestBody String id) {
-        return service.deleteById(id);
-    }
-
-    @PostMapping("delete")
-    <#if swagger2>
-    @ApiOperation(value = "根据 entity 条件，删除 ${entity} 记录")
-    </#if>
-    public BaseResult delete(@RequestBody ${entity} entity) {
-        return service.delete(entity);
-    }
-
-    @PostMapping("deleteBatchIds")
-    <#if swagger2>
-    @ApiOperation(value = "根据 ID 批量删除 ${entity} 记录")
-    </#if>
-    public BaseResult deleteBatchIds(@RequestBody Collection<String> idList) {
-        return service.deleteBatchIds(idList);
-    }
-
-    @PostMapping("deleteByMap")
-    <#if swagger2>
-    @ApiOperation(value = "根据 columnMap 条件，删除 ${entity} 记录")
-    </#if>
-    public BaseResult deleteByMap(@RequestBody Map<String, Object> columnMap) {
-        return service.deleteByMap(columnMap);
-    }
 
 }

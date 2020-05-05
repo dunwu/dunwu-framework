@@ -1,18 +1,17 @@
 package io.github.dunwu.web.util;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-07-24
  */
-@Component
-public class SpringUtil implements ApplicationContextAware {
+public class SpringUtil implements ApplicationContextAware, DisposableBean {
 
-    private static ApplicationContext applicationContext;
+    private static ApplicationContext applicationContext = null;
 
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
@@ -24,6 +23,11 @@ public class SpringUtil implements ApplicationContextAware {
         if (null == SpringUtil.applicationContext) {
             SpringUtil.applicationContext = applicationContext;
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        applicationContext = null;
     }
 
     public static Object getBean(String name) {

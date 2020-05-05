@@ -1,5 +1,7 @@
 package io.github.dunwu.tool.util;
 
+import cn.hutool.core.util.StrUtil;
+
 import java.util.regex.Pattern;
 
 /**
@@ -24,7 +26,7 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean hasForbiddenChar(final String text, final CharSequence... forbiddenChars) {
-        if (forbiddenChars == null || StringUtil.isBlank(text)) {
+        if (forbiddenChars == null || StrUtil.isBlank(text)) {
             return false;
         }
         String forbidden = String.join("", forbiddenChars);

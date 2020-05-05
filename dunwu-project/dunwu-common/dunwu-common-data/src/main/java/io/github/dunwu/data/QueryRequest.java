@@ -3,6 +3,7 @@ package io.github.dunwu.data;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class QueryRequest<T> implements Serializable {
     /**
      * 分页查询条件
      */
-    private PageQuery page;
+    private Pageable page;
 
     /**
      * 排序字段
@@ -36,7 +37,7 @@ public class QueryRequest<T> implements Serializable {
      */
     private T entity;
 
-    public static <T> QueryRequest<T> build(T entity, PageQuery page) {
+    public static <T> QueryRequest<T> build(T entity, Pageable page) {
         QueryRequest<T> request = new QueryRequest<T>();
         request.setEntity(entity);
         request.setPage(page);
@@ -44,7 +45,7 @@ public class QueryRequest<T> implements Serializable {
         return request;
     }
 
-    public static <T> QueryRequest<T> build(T entity, PageQuery page, List<DataOrderItem> orders) {
+    public static <T> QueryRequest<T> build(T entity, Pageable page, List<DataOrderItem> orders) {
         QueryRequest<T> request = new QueryRequest<T>();
         request.setEntity(entity);
         request.setPage(page);

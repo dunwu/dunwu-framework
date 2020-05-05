@@ -1,7 +1,7 @@
 package io.github.dunwu.web.converter;
 
-import io.github.dunwu.tool.date.DatePattern;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.ParseException;
@@ -15,7 +15,7 @@ public class DateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String dateString) {
-        if (StringUtil.isBlank(dateString)) {
+        if (StrUtil.isBlank(dateString)) {
             return null;
         }
 

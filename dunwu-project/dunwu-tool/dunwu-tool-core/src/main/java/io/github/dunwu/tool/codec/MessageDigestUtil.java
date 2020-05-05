@@ -1,5 +1,7 @@
 package io.github.dunwu.tool.codec;
 
+import cn.hutool.core.codec.Base64;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

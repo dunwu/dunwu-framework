@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.io.ansi;
 
-import io.github.dunwu.tool.lang.Assert;
+import cn.hutool.core.lang.Assert;
 
 /**
  * {@link AnsiElement} implementation for ANSI 8-bit foreground or background color codes.

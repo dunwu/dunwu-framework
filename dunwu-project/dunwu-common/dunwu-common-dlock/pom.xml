@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-common-core</artifactId>
+      <artifactId>dunwu-common-data</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>

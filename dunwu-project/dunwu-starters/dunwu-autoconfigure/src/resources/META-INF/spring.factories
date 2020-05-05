@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-io.github.dunwu.autoconfigure.web.DunwuWebExtConfiguration,\
 io.github.dunwu.autoconfigure.mybatis.DunwuMybatisPlusConfiguration,\
+io.github.dunwu.autoconfigure.web.DunwuWebMvcConfiguration,\
 io.github.dunwu.autoconfigure.zookeeper.ZookeeperAutoConfiguration,\
 io.github.dunwu.autoconfigure.hdfs.DunwuHdfsConfiguration,\
 io.github.dunwu.autoconfigure.json.DunwuJsonConfiguration,\

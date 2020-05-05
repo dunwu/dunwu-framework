@@ -1,8 +1,8 @@
 package io.github.dunwu.web.filter;
 
-import io.github.dunwu.tool.collection.CollectionUtil;
-import io.github.dunwu.tool.util.BooleanUtil;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.web.filter.wrapper.XssHttpServletRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * XSS 防御过滤器
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-17
  */
@@ -37,7 +39,7 @@ public class XssFilter implements Filter {
             log.debug("开启 io.github.dunwu.web.filter.XssFilter");
         }
         String isIncludeRichText = filterConfig.getInitParameter("isIncludeRichText");
-        if (StringUtil.isNotBlank(isIncludeRichText)) {
+        if (StrUtil.isNotBlank(isIncludeRichText)) {
             flag = BooleanUtil.toBoolean(isIncludeRichText);
         }
         String temp = filterConfig.getInitParameter("excludes");

@@ -1,8 +1,8 @@
 package io.github.dunwu.app;
 
-import io.github.dunwu.common.constant.DunwuConstant;
+import io.github.dunwu.data.core.constant.DunwuConstant;
 import io.github.dunwu.tool.io.AnsiSystem;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +48,7 @@ public class DunwuCheckerRunner implements ApplicationRunner {
         StringBuilder url = new StringBuilder();
         url.append(String.format("http://%s:%s", address.getHostAddress(), port));
         if (context.isActive()) {
-            if (StringUtil.isNotBlank(contextPath)) {
+            if (StrUtil.isNotBlank(contextPath)) {
                 url.append(contextPath);
             }
         }
@@ -82,10 +82,10 @@ public class DunwuCheckerRunner implements ApplicationRunner {
             AnsiSystem.BOLD_GREEN.println("系统启动成功，首页地址：" + url);
             AnsiSystem.BOLD_GREEN.println("");
 
-            if (StringUtil.equalsIgnoreCase(profile, DunwuConstant.DEVELOP)) {
+            if (StrUtil.equalsIgnoreCase(profile, DunwuConstant.DEVELOP)) {
                 String os = System.getProperty("os.name");
                 // 默认为 windows时才自动打开页面
-                if (StringUtil.containsIgnoreCase(os, DunwuConstant.SYSTEM_WINDOWS)) {
+                if (StrUtil.containsIgnoreCase(os, DunwuConstant.SYSTEM_WINDOWS)) {
                     //使用默认浏览器打开系统登录页
                     Runtime.getRuntime().exec("cmd /c start " + url);
                 }

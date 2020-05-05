@@ -1,6 +1,6 @@
 package io.github.dunwu.data.hdfs;
 
-import io.github.dunwu.tool.util.ClassUtil;
+import cn.hutool.core.util.ClassUtil;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;

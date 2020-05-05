@@ -3,6 +3,7 @@ package io.github.dunwu.autoconfigure.redis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.dunwu.data.redis.RedisHelper;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -19,13 +20,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @since 2020-03-16
  */
 @Configuration
-@ConditionalOnClass({ RedisConnectionFactory.class })
+@ConditionalOnClass(RedisConnectionFactory.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class DunwuRedisExtConfiguration {
 
-    @Bean
+    @Bean("stringObjectRedisTemplate")
     @ConditionalOnClass(RedisOperations.class)
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+    public RedisTemplate<String, Object> stringObjectRedisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
 
@@ -48,6 +49,12 @@ public class DunwuRedisExtConfiguration {
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean
+    @ConditionalOnClass(RedisOperations.class)
+    public RedisHelper redisHelper(RedisTemplate<String, Object> redisTemplate) {
+        return new RedisHelper(redisTemplate);
     }
 
 }

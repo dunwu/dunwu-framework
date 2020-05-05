@@ -1,5 +1,6 @@
 package io.github.dunwu.app;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @since 2019-08-23
  */
 @SpringBootApplication(scanBasePackages = "io.github.dunwu")
+@MapperScan("io.github.dunwu.app.*.mapper")
 public class DunwuApplication {
 
     public static void main(String[] args) {

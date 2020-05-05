@@ -1,6 +1,6 @@
 package io.github.dunwu.util.image;
 
-import io.github.dunwu.tool.io.resource.ResourceUtil;
+import io.github.dunwu.tool.io.ResourceUtil;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

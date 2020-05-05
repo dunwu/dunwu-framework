@@ -1,12 +1,13 @@
 package io.github.dunwu.data.mybatis;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,20 +18,32 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-public abstract class BaseRecordEntity extends BaseEntity {
+public abstract class BaseRecordEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "ID")
+    @TableId(value = "id", type = IdType.AUTO)
+    protected Long id;
+
+    @ApiModelProperty(value = "状态，1为有效，0为无效")
+    protected Boolean enabled;
+
+    @ApiModelProperty(value = "备注")
+    protected String note;
+
+    @ApiModelProperty(value = "创建者ID")
+    protected Long creator;
+
+    @ApiModelProperty(value = "更新者ID")
+    protected Long updater;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
     protected LocalDateTime createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "更新时间")
     protected LocalDateTime updateTime;
-
-    @TableLogic
-    @TableField(select = false)
-    @ApiModelProperty(value = "逻辑删除标记。不需要用户填值。", example = "0")
-    protected Boolean deleted = false;
 
 }

@@ -1,7 +1,7 @@
 package io.github.dunwu.util.net;
 
 import io.github.dunwu.tool.io.AnsiSystem;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
@@ -29,7 +29,7 @@ class RegionUtilsTest {
 
     @Test
     void getAllProvinces() {
-        List<Province> provinces = RegionUtils.getAllProvinces();
+        List<Province> provinces = RegionUtil.getAllProvinces();
         assertThat(provinces.size()).isEqualTo(31);
         StringBuilder sb = new StringBuilder();
         provinces.forEach(item -> {
@@ -41,7 +41,7 @@ class RegionUtilsTest {
 
     @Test
     void getAllCities() {
-        List<City> cities = RegionUtils.getAllCities();
+        List<City> cities = RegionUtil.getAllCities();
         assertThat(cities.size()).isEqualTo(343);
         StringBuilder sb = new StringBuilder();
         cities.forEach(item -> {
@@ -53,7 +53,7 @@ class RegionUtilsTest {
 
     @Test
     void getAllCounties() {
-        List<County> counties = RegionUtils.getAllCounties();
+        List<County> counties = RegionUtil.getAllCounties();
         assertThat(counties.size()).isEqualTo(3088);
         StringBuilder sb = new StringBuilder();
         counties.forEach(item -> {
@@ -65,27 +65,27 @@ class RegionUtilsTest {
 
     @Test
     void getCityByName() {
-        String[] cityNames = StringUtil.split(CITY_STR, ",");
+        String[] cityNames = StrUtil.split(CITY_STR, ",");
         Arrays.stream(cityNames).forEach(item -> {
-            City city = RegionUtils.getCityByName(item);
+            City city = RegionUtil.getCityByName(item);
             assertThat(city).isNotNull();
         });
     }
 
     @Test
     void getCountyByName() {
-        String[] countyNames = StringUtil.split(COUNTY_STR, ",");
+        String[] countyNames = StrUtil.split(COUNTY_STR, ",");
         Arrays.stream(countyNames).forEach(item -> {
-            Set<County> counties = RegionUtils.getCountyByName(item);
+            Set<County> counties = RegionUtil.getCountyByName(item);
             assertThat(counties).isNotNull();
         });
     }
 
     @Test
     void getProvinceByName() {
-        String[] provinceNames = StringUtil.split(PROVINCE_STR, ",");
+        String[] provinceNames = StrUtil.split(PROVINCE_STR, ",");
         Arrays.stream(provinceNames).forEach(item -> {
-            Province province = RegionUtils.getProvinceByName(item);
+            Province province = RegionUtil.getProvinceByName(item);
             assertThat(province).isNotNull();
         });
     }

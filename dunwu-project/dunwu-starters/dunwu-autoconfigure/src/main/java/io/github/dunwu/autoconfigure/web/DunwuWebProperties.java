@@ -5,8 +5,10 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.*;
+
 /**
- * dunwu-web 配置属性
+ * Web Mvc 配置属性
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-06-16
@@ -17,49 +19,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "dunwu.web")
 public class DunwuWebProperties {
 
-    /**
-     * web 安全配置
-     */
-    private final Security security = new Security();
-
-    /**
-     * Dunwu Web 扩展配置开启
-     */
+    /** Web 定制配置开启 */
     private boolean enabled = true;
-
-    /**
-     * 打印 Http 请求应答 Debug 信息开关
-     */
+    /** 打印 Http 请求应答 Debug 信息开关 */
     private boolean httpDebugEnabled = true;
-
-    /**
-     * XSS 防御开关
-     */
-    private boolean xssEnabled = true;
-
-    /**
-     * http 数据自动格式化开关
-     */
+    /** debug 路径 */
+    private List<String> debugPath = Collections.singletonList("/**");
+    /** http 数据自动格式化开关 */
     private boolean formatEnabled = true;
-
-    @Data
-    @ToString
-    public static class Security {
-
-        private boolean enabled;
-
-        /**
-         * 放开跨域限制开关
-         */
-        private boolean corsEnabled = true;
-
-        /**
-         * 允许跨域的路径
-         */
-        private String corsPath;
-
-        private String authTokenKey = "token";
-
-    }
+    /** WebSocket 开关 */
+    private boolean websocketEnabled = false;
+    /** 资源路径配置，key:映射路径,value:实际路径 */
+    private Map<String, String> resources = new HashMap<>();
 
 }

@@ -1,8 +1,8 @@
 package io.github.dunwu.data.hdfs;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.io.StreamProgress;
 import io.github.dunwu.tool.io.FileUtil;
-import io.github.dunwu.tool.io.IoUtil;
-import io.github.dunwu.tool.io.StreamProgress;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.fs.permission.FsPermission;

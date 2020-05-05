@@ -1,12 +1,10 @@
 package io.github.dunwu.data.redis;
 
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,12 +17,8 @@ public class RedisHelper {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private final StringRedisTemplate stringRedisTemplate;
-
-    public RedisHelper(RedisTemplate<String, Object> redisTemplate,
-        StringRedisTemplate stringRedisTemplate) {
+    public RedisHelper(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
-        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     /**
@@ -86,9 +80,13 @@ public class RedisHelper {
      * @return true成功 false 失败
      */
     public Boolean set(String key, Object value, Long time) {
+        return set(key, value, time, TimeUnit.SECONDS);
+    }
+
+    public Boolean set(String key, Object value, Long time, TimeUnit unit) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(key, value, time, unit);
             } else {
                 set(key, value);
             }
@@ -313,7 +311,7 @@ public class RedisHelper {
      * @param key 键
      * @return Set
      */
-    public Set<Object> sGet(String key) {
+    public Set<Object> members(String key) {
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
@@ -563,6 +561,29 @@ public class RedisHelper {
             e.printStackTrace();
             return 0L;
         }
+    }
+
+    /**
+     * 查找匹配key
+     *
+     * @param pattern key
+     * @return /
+     */
+    public List<String> scan(String pattern) {
+        ScanOptions options = ScanOptions.scanOptions().match(pattern).build();
+        RedisConnectionFactory factory = redisTemplate.getConnectionFactory();
+        RedisConnection rc = Objects.requireNonNull(factory).getConnection();
+        Cursor<byte[]> cursor = rc.scan(options);
+        List<String> result = new ArrayList<>();
+        while (cursor.hasNext()) {
+            result.add(new String(cursor.next()));
+        }
+        try {
+            RedisConnectionUtils.releaseConnection(rc, factory, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

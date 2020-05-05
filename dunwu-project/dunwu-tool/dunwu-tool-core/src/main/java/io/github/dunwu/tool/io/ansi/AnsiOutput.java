@@ -16,7 +16,7 @@
 
 package io.github.dunwu.tool.io.ansi;
 
-import io.github.dunwu.tool.lang.Assert;
+import cn.hutool.core.lang.Assert;
 
 import java.util.Locale;
 

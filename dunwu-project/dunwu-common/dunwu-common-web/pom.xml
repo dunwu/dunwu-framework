@@ -16,10 +16,10 @@
   <description>Dunwu Web 脚手架</description>
 
   <dependencies>
-    <dependency>
-      <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-common-core</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>io.github.dunwu</groupId>-->
+<!--      <artifactId>dunwu-common-core</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-tool-net</artifactId>

@@ -1,7 +1,7 @@
 package io.github.dunwu.web.util;
 
-import io.github.dunwu.tool.util.ArrayUtil;
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class CookieUtil {
      */
     public static String getCookie(HttpServletRequest request, String key) {
         Cookie[] cookies = request.getCookies();
-        if (ArrayUtil.isEmpty(cookies) || StringUtil.isBlank(key)) {
+        if (ArrayUtil.isEmpty(cookies) || StrUtil.isBlank(key)) {
             return null;
         }
 
@@ -64,11 +64,11 @@ public class CookieUtil {
         String domain) {
         Cookie cookie = new Cookie(key, null);
 
-        if (StringUtil.isEmpty(path)) {
+        if (StrUtil.isEmpty(path)) {
             cookie.setPath(path);
         }
 
-        if (StringUtil.isEmpty(domain)) {
+        if (StrUtil.isEmpty(domain)) {
             cookie.setDomain(domain);
         }
 

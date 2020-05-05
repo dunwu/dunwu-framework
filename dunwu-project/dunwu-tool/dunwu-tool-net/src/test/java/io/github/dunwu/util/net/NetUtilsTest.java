@@ -15,24 +15,24 @@ public class NetUtilsTest {
 
     @Test
     public void localhost() {
-        assertThat(NetUtils.getLocalHost()).isNotEqualTo("127.0.0.1");
-        assertThat(NetUtils.getLocalAddress().getHostAddress()).isNotEqualTo("127.0.0.1");
+        assertThat(NetUtil.getLocalHost()).isNotEqualTo("127.0.0.1");
+        assertThat(NetUtil.getLocalAddress().getHostAddress()).isNotEqualTo("127.0.0.1");
     }
 
     @Test
     public void portDetect() throws IOException {
-        int port = NetUtils.findRandomAvailablePort(20000, 20100);
+        int port = NetUtil.findRandomAvailablePort(20000, 20100);
         assertThat(port).isBetween(20000, 20100);
         System.out.println("random port:" + port);
 
-        assertThat(NetUtils.isPortAvailable(port)).isTrue();
+        assertThat(NetUtil.isPortAvailable(port)).isTrue();
 
-        int port2 = NetUtils.findAvailablePortFrom(port);
+        int port2 = NetUtil.findAvailablePortFrom(port);
         assertThat(port2).isEqualTo(port);
 
-        int port3 = NetUtils.findRandomAvailablePort();
+        int port3 = NetUtil.findRandomAvailablePort();
 
-        assertThat(port3).isBetween(NetUtils.PORT_RANGE_MIN, NetUtils.PORT_RANGE_MAX);
+        assertThat(port3).isBetween(NetUtil.PORT_RANGE_MIN, NetUtil.PORT_RANGE_MAX);
         System.out.println("random port:" + port3);
 
         // 尝试占住一个端口
@@ -41,13 +41,13 @@ public class NetUtilsTest {
             serverSocket = ServerSocketFactory.getDefault().createServerSocket(port, 1,
                 InetAddress.getByName("localhost"));
 
-            assertThat(NetUtils.isPortAvailable(port)).isFalse();
+            assertThat(NetUtil.isPortAvailable(port)).isFalse();
 
-            int port4 = NetUtils.findAvailablePortFrom(port);
+            int port4 = NetUtil.findAvailablePortFrom(port);
             assertThat(port4).isEqualTo(port + 1);
 
             try {
-                int port5 = NetUtils.findRandomAvailablePort(port, port);
+                int port5 = NetUtil.findRandomAvailablePort(port, port);
                 fail("should fail before");
             } catch (Throwable t) {
                 assertThat(t).isInstanceOf(IllegalStateException.class);

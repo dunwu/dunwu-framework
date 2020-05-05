@@ -1,6 +1,6 @@
 package io.github.dunwu.web.filter.wrapper;
 
-import io.github.dunwu.tool.util.StringUtil;
+import cn.hutool.core.util.StrUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
@@ -45,7 +45,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
         name = clean(name);
         String value = super.getParameter(name);
-        if (StringUtil.isNotBlank(value)) {
+        if (StrUtil.isNotBlank(value)) {
             value = clean(value);
         }
         return value;
@@ -61,7 +61,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     }
 
     private String clean(String content) {
-        return Jsoup.clean(content, StringUtil.EMPTY, WHITE_LIST, OUTPUT_SETTING);
+        return Jsoup.clean(content, StrUtil.EMPTY, WHITE_LIST, OUTPUT_SETTING);
     }
 
     /**
@@ -71,7 +71,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public String getHeader(String name) {
         name = clean(name);
         String value = super.getHeader(name);
-        if (StringUtil.isNotBlank(value)) {
+        if (StrUtil.isNotBlank(value)) {
             value = clean(value);
         }
         return value;
