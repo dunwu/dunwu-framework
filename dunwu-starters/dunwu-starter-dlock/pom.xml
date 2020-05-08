@@ -6,12 +6,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-starters</artifactId>
-    <version>0.5.5</version>
+    <version>0.5.7-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>dunwu-starter-dlock</artifactId>
-  <version>0.5.5</version>
+  <version>0.5.7-SNAPSHOT</version>
   <description>Starter for using DLock</description>
 
   <dependencies>

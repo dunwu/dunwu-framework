@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-project</artifactId>
-    <version>0.5.5</version>
+    <artifactId>dunwu</artifactId>
+    <version>0.5.7-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.5.5</version>
+  <version>0.5.7-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>dunwu-dependencies</name>
   <description>作为所有项目的 maven 父工程（直接或间接），方便统一管理 maven 依赖版本</description>
   <url>https://github.com/dunwu/dunwu</url>
 
   <properties>
-
     <!-- ========================================================
          Core Versions
     ========================================================= -->
-    <dunwu.version>0.5.5</dunwu.version>
+    <dunwu.version>0.5.7-SNAPSHOT</dunwu.version>
     <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
     <hadoop.version>3.2.0</hadoop.version>
 
@@ -160,6 +160,11 @@
       <dependency>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-tool-net</artifactId>
+        <version>${dunwu.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-tool-all</artifactId>
         <version>${dunwu.version}</version>
       </dependency>
 
@@ -571,6 +576,14 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
+          <executions>
+            <execution>
+              <id>repackage</id>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <!-- ========================================================
              Apache Plugins
@@ -584,9 +597,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>${maven-assembly-plugin.version}</version>
-          <configuration>
-            <recompressZippedFiles>false</recompressZippedFiles>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -597,6 +607,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <parameters>true</parameters>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -724,196 +737,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <activation>
-        <property>
-          <name>release</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>flatten-maven-plugin</artifactId>
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <id>flatten-effective-pom</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>flatten</goal>
-                </goals>
-                <configuration>
-                  <updatePomFile>false</updatePomFile>
-                  <outputDirectory>${project.build.directory}/effective-pom</outputDirectory>
-                  <flattenedPomFilename>dunwu-dependencies.xml</flattenedPomFilename>
-                  <flattenMode>oss</flattenMode>
-                  <pomElements>
-                    <dependencyManagement>expand</dependencyManagement>
-                    <pluginManagement>expand</pluginManagement>
-                    <properties>expand</properties>
-                    <repositories>remove</repositories>
-                  </pomElements>
-                </configuration>
-              </execution>
-              <execution>
-                <!-- Flatten and simplify our own POM for install/deploy -->
-                <id>flatten</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>flatten</goal>
-                </goals>
-                <configuration>
-                  <updatePomFile>true</updatePomFile>
-                  <flattenMode>bom</flattenMode>
-                  <pomElements>
-                    <pluginManagement>keep</pluginManagement>
-                    <properties>keep</properties>
-                    <repositories>remove</repositories>
-                  </pomElements>
-                </configuration>
-              </execution>
-              <execution>
-                <id>flatten-clean</id>
-                <phase>clean</phase>
-                <goals>
-                  <goal>clean</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>xml-maven-plugin</artifactId>
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <!-- Cleanup the effective POM -->
-                <id>post-process-effective-pom</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <transformationSets>
-                    <transformationSet>
-                      <dir>${project.build.directory}/effective-pom</dir>
-                      <outputDir>${project.build.directory}/effective-pom</outputDir>
-                      <stylesheet>src/main/xslt/post-process-flattened-pom.xsl</stylesheet>
-                      <outputProperties>
-                        <outputProperty>
-                          <name>indent</name>
-                          <value>yes</value>
-                        </outputProperty>
-                      </outputProperties>
-                    </transformationSet>
-                  </transformationSets>
-                </configuration>
-              </execution>
-              <execution>
-                <!-- Cleanup the flattened project POM -->
-                <id>post-process-flattened-pom</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <transformationSets>
-                    <transformationSet>
-                      <dir>${project.basedir}</dir>
-                      <outputDir>${project.basedir}</outputDir>
-                      <includes>.flattened-pom.xml</includes>
-                      <stylesheet>src/main/xslt/post-process-flattened-pom.xsl</stylesheet>
-                      <outputProperties>
-                        <outputProperty>
-                          <name>indent</name>
-                          <value>yes</value>
-                        </outputProperty>
-                      </outputProperties>
-                    </transformationSet>
-                  </transformationSets>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <!-- Attach effective POM -->
-                <id>attach-artifacts</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>attach-artifact</goal>
-                </goals>
-                <configuration>
-                  <artifacts>
-                    <artifact>
-                      <file>${project.build.directory}/effective-pom/dunwu-dependencies.xml</file>
-                      <type>effective-pom</type>
-                    </artifact>
-                  </artifacts>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>oss</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-      <distributionManagement>
-        <snapshotRepository>
-          <id>oss</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-          <id>oss</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-      </distributionManagement>
-    </profile>
-  </profiles>
-
-  <inceptionYear>2018 - Now</inceptionYear>
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-      <comments>A business-friendly OSS license</comments>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://github.com/dunwu/dunwu</url>
-    <connection>git@github.com:dunwu/dunwu.git</connection>
-    <developerConnection>https://github.com/dunwu</developerConnection>
-  </scm>
-  <developers>
-    <developer>
-      <name>Zhang Peng</name>
-      <url>https://github.com/dunwu</url>
-      <email>forbreak@163.com</email>
-      <timezone>+8</timezone>
-    </developer>
-  </developers>
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/dunwu/dunwu/issues</url>
-  </issueManagement>
 </project>

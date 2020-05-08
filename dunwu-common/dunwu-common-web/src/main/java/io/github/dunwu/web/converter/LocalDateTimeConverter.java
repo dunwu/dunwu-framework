@@ -23,7 +23,7 @@ public class LocalDateTimeConverter implements Converter<String, LocalDateTime> 
 
         LocalDateTime localDateTime = null;
         try {
-            Date date = DatePattern.NORM_DATETIME_MS_FORMAT.parse(dateString);
+            Date date = DatePattern.NORM_DATETIME_FORMAT.parse(dateString);
             localDateTime = DateUtil.toLocalDateTime(date);
         } catch (ParseException e) {
             e.printStackTrace();

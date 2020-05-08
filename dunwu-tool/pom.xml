@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.5</version>
+    <version>0.5.7-SNAPSHOT</version>
     <relativePath>../dunwu-parent</relativePath>
   </parent>
 
@@ -19,5 +19,6 @@
     <module>dunwu-tool-core</module>
     <module>dunwu-tool-net</module>
     <module>dunwu-tool-image</module>
+    <module>dunwu-tool-all</module>
   </modules>
 </project>
