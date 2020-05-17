@@ -5,7 +5,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu</artifactId>
-  <version>0.5.7-SNAPSHOT</version>
+  <version>0.5.7</version>
   <packaging>pom</packaging>
   <name>dunwu</name>
   <description>Dunwu Project</description>

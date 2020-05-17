@@ -7,12 +7,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-dependencies</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
+    <version>0.5.7</version>
     <relativePath>../dunwu-dependencies</relativePath>
   </parent>
 
   <artifactId>dunwu-parent</artifactId>
-  <version>0.5.7-SNAPSHOT</version>
+  <version>0.5.7</version>
   <packaging>pom</packaging>
   <name>dunwu-parent</name>
   <description>普通工具包的父pom</description>
@@ -182,100 +182,47 @@
           </execution>
         </executions>
       </plugin>
+      <!--阿里巴巴规范检查，参考如下文档：-->
+      <!--https://github.com/alibaba/p3c-->
+      <!--https://github.com/alibaba/p3c/blob/master/p3c-pmd/pom.xml-->
+<!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-pmd-plugin</artifactId>-->
+      <!--        <configuration>-->
+      <!--          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>-->
+      <!--          <targetJdk>${java.version}</targetJdk>-->
+      <!--          <rulesets>-->
+      <!--            &lt;!&ndash;<ruleset>rulesets/java/ali-comment.xml</ruleset>&ndash;&gt;-->
+      <!--            <ruleset>rulesets/java/ali-concurrent.xml</ruleset>-->
+      <!--            &lt;!&ndash;<ruleset>rulesets/java/ali-constant.xml</ruleset>&ndash;&gt;-->
+      <!--            <ruleset>rulesets/java/ali-exception.xml</ruleset>-->
+      <!--            <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>-->
+      <!--            &lt;!&ndash;<ruleset>rulesets/java/ali-naming.xml</ruleset>&ndash;&gt;-->
+      <!--            <ruleset>rulesets/java/ali-oop.xml</ruleset>-->
+      <!--            <ruleset>rulesets/java/ali-orm.xml</ruleset>-->
+      <!--            <ruleset>rulesets/java/ali-other.xml</ruleset>-->
+      <!--            <ruleset>rulesets/java/ali-set.xml</ruleset>-->
+      <!--          </rulesets>-->
+      <!--          <printFailingErrors>true</printFailingErrors>-->
+      <!--          <skip>${disable.checks}</skip>-->
+      <!--        </configuration>-->
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <id>p3c-pmd-validation</id>-->
+      <!--            <phase>validate</phase>-->
+      <!--            <goals>-->
+      <!--              <goal>check</goal>-->
+      <!--            </goals>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--        <dependencies>-->
+      <!--          <dependency>-->
+      <!--            <groupId>com.alibaba.p3c</groupId>-->
+      <!--            <artifactId>p3c-pmd</artifactId>-->
+      <!--            <version>2.0.0</version>-->
+      <!--          </dependency>-->
+      <!--        </dependencies>-->
+      <!--      </plugin>-->
     </plugins>
   </build>
-
-<!--  <profiles>-->
-<!--    <profile>-->
-<!--      <id>fast</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>fast</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <properties>-->
-<!--        <disable.checks>true</disable.checks>-->
-<!--      </properties>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      <id>release</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>release</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          &lt;!&ndash;阿里巴巴规范检查，参考如下文档：&ndash;&gt;-->
-<!--          &lt;!&ndash;https://github.com/alibaba/p3c&ndash;&gt;-->
-<!--          &lt;!&ndash;https://github.com/alibaba/p3c/blob/master/p3c-pmd/pom.xml&ndash;&gt;-->
-<!--          &lt;!&ndash;          <plugin>&ndash;&gt;-->
-<!--          &lt;!&ndash;            <groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
-<!--          &lt;!&ndash;            <artifactId>maven-pmd-plugin</artifactId>&ndash;&gt;-->
-<!--          &lt;!&ndash;            <configuration>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <targetJdk>${java.version}</targetJdk>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <rulesets>&ndash;&gt;-->
-<!--          &lt;!&ndash;                &lt;!&ndash;<ruleset>rulesets/java/ali-comment.xml</ruleset>&ndash;&gt;&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-concurrent.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                &lt;!&ndash;<ruleset>rulesets/java/ali-constant.xml</ruleset>&ndash;&gt;&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-exception.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                &lt;!&ndash;<ruleset>rulesets/java/ali-naming.xml</ruleset>&ndash;&gt;&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-oop.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-orm.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-other.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <ruleset>rulesets/java/ali-set.xml</ruleset>&ndash;&gt;-->
-<!--          &lt;!&ndash;              </rulesets>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <printFailingErrors>true</printFailingErrors>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <skip>${disable.checks}</skip>&ndash;&gt;-->
-<!--          &lt;!&ndash;            </configuration>&ndash;&gt;-->
-<!--          &lt;!&ndash;            <executions>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <execution>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <id>p3c-pmd-validation</id>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <phase>validate</phase>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <goals>&ndash;&gt;-->
-<!--          &lt;!&ndash;                  <goal>check</goal>&ndash;&gt;-->
-<!--          &lt;!&ndash;                </goals>&ndash;&gt;-->
-<!--          &lt;!&ndash;              </execution>&ndash;&gt;-->
-<!--          &lt;!&ndash;            </executions>&ndash;&gt;-->
-<!--          &lt;!&ndash;            <dependencies>&ndash;&gt;-->
-<!--          &lt;!&ndash;              <dependency>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <groupId>com.alibaba.p3c</groupId>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <artifactId>p3c-pmd</artifactId>&ndash;&gt;-->
-<!--          &lt;!&ndash;                <version>2.0.0</version>&ndash;&gt;-->
-<!--          &lt;!&ndash;              </dependency>&ndash;&gt;-->
-<!--          &lt;!&ndash;            </dependencies>&ndash;&gt;-->
-<!--          &lt;!&ndash;          </plugin>&ndash;&gt;-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--            <configuration>-->
-<!--              <encoding>UTF-8</encoding>-->
-<!--              <charset>UTF-8</charset>-->
-<!--              <docencoding>UTF-8</docencoding>-->
-<!--              <additionalJOption>-Xdoclint:none</additionalJOption>-->
-<!--            </configuration>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>attach-javadocs</id>-->
-<!--                <goals>-->
-<!--                  <goal>jar</goal>-->
-<!--                </goals>-->
-<!--                <inherited>true</inherited>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--            <dependencies>-->
-<!--              <dependency>-->
-<!--                <groupId>org.apache.commons</groupId>-->
-<!--                <artifactId>commons-lang3</artifactId>-->
-<!--                <version>3.8.1</version>-->
-<!--              </dependency>-->
-<!--            </dependencies>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--  </profiles>-->
-
 </project>
