@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.7</version>
+    <version>0.5.7-SNAPSHOT</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
@@ -16,10 +16,6 @@
   <description>Dunwu Web 脚手架</description>
 
   <dependencies>
-<!--    <dependency>-->
-<!--      <groupId>io.github.dunwu</groupId>-->
-<!--      <artifactId>dunwu-common-core</artifactId>-->
-<!--    </dependency>-->
     <dependency>
       <groupId>io.github.dunwu</groupId>
       <artifactId>dunwu-tool-net</artifactId>

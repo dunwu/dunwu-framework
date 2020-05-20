@@ -16,6 +16,10 @@ public class Pagination<T> extends ListContent<T> implements Page<T> {
     @Getter
     private final Pageable pageable;
 
+    public Pagination() {
+        this.pageable = PageRequest.of(1, 10);
+    }
+
     public Pagination(List<T> content, Pageable pageable, long totalElements) {
         this.content.addAll(content);
         this.pageable = pageable;
