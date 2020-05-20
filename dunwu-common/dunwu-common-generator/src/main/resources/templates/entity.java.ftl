@@ -4,6 +4,7 @@ package ${package.Entity};
 import ${pkg};
 </#list>
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.dunwu.data.validator.annotation.UpdateValidate;
 <#if swagger2>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -63,6 +64,7 @@ public class ${entity} implements Serializable {
     </#if>
     <#if field.keyFlag>
         <#-- 主键 -->
+    @NotNull(groups = UpdateValidate.class)
         <#if field.keyIdentityFlag>
     @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif idType??>

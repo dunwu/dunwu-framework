@@ -1,10 +1,10 @@
 package ${package.Controller};
 
+import io.github.dunwu.data.validator.annotation.UpdateValidate;
 import ${package.Dao}.${table.daoName};
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
 import ${package.Query}.${table.queryName};
-import ${package.Service}.${table.serviceName};
 <#if swagger2>
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -127,16 +127,16 @@ public class ${table.controllerName} {
 
     @GetMapping("export")
     @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
-    public void exportPageData(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
-        List<${table.dtoName}> list = dao.dtoListByIds(ids, ${table.dtoName}.class);
-        service.exportDtoList(list, response);
+    public void exportByIds(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
+        List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
+        dao.exportDtoList(list, response);
     }
 
     @GetMapping("export/page")
     @ApiOperation("根据 query 和 pageable 条件批量导出 ${table.dtoName} 列表数据")
-    public void exportByIds(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
-        Page<${table.dtoName}> page = dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class);
-        service.exportDtoList(page.getContent(), response);
+    public void exportPageData(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
+        Page<${table.dtoName}> page = dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class);
+        dao.exportDtoList(page.getContent(), response);
     }
 
 }
