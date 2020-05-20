@@ -1,10 +1,10 @@
 package ${package.DaoImpl};
 
+import io.github.dunwu.data.core.annotation.Dao;
 import ${package.Dao}.${table.daoName};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Entity}.${entity};
 import ${superDaoImplClassPackage};
-import org.springframework.stereotype.Service;
 
 /**
  * ${table.comment!} Dao 类
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @author ${author}
  * @since ${date}
  */
-@Service
+@Dao
 <#if kotlin>
 open class ${table.daoImplName} : ${superDaoImplClass}<${table.mapperName}, ${entity}>(), ${table.daoName} {
 

@@ -45,25 +45,25 @@ public interface IExtDao<E> extends IDao<E> {
 
     E getByQuery(Object query);
 
-    default <T> T voById(Serializable id, Class<T> clazz) {
+    default <T> T pojoById(Serializable id, Class<T> clazz) {
         E entity = getById(id);
         if (entity == null) { return null; }
         return BeanUtil.toBean(entity, clazz);
     }
 
-    default <T> T voById(Serializable id, TypeConvert<E, T> callback) {
+    default <T> T pojoById(Serializable id, TypeConvert<E, T> callback) {
         E entity = getById(id);
         if (entity == null) { return null; }
         return callback.transform(entity);
     }
 
-    default <T> T voByQuery(Object query, Class<T> clazz) {
+    default <T> T pojoByQuery(Object query, Class<T> clazz) {
         E entity = getByQuery(query);
         if (entity == null) { return null; }
         return BeanUtil.toBean(entity, clazz);
     }
 
-    default <T> T voByQuery(Object query, TypeConvert<E, T> convert) {
+    default <T> T pojoByQuery(Object query, TypeConvert<E, T> convert) {
         E entity = getByQuery(query);
         if (entity == null) { return null; }
         return convert.transform(entity);
@@ -71,7 +71,7 @@ public interface IExtDao<E> extends IDao<E> {
 
     List<E> listByQuery(Object query);
 
-    default <T> List<T> voListByIds(Collection<? extends Serializable> idList, Class<T> clazz) {
+    default <T> List<T> pojoListByIds(Collection<? extends Serializable> idList, Class<T> clazz) {
         List<E> entities = listByIds(idList);
         if (CollectionUtil.isEmpty(entities)) {
             return new ArrayList<>();
@@ -79,7 +79,7 @@ public interface IExtDao<E> extends IDao<E> {
         return BeanUtil.toBeanList(entities, clazz);
     }
 
-    default <T> List<T> voListByIds(Collection<? extends Serializable> idList, TypeConvert<E, T> convert) {
+    default <T> List<T> pojoListByIds(Collection<? extends Serializable> idList, TypeConvert<E, T> convert) {
         List<E> entities = listByIds(idList);
         if (CollectionUtil.isEmpty(entities)) {
             return new ArrayList<>();
@@ -87,7 +87,7 @@ public interface IExtDao<E> extends IDao<E> {
         return entities.stream().map(convert::transform).collect(Collectors.toList());
     }
 
-    default <T> List<T> voListByQuery(Object query, Class<T> clazz) {
+    default <T> List<T> pojoListByQuery(Object query, Class<T> clazz) {
         List<E> entities = listByQuery(query);
         if (CollectionUtil.isEmpty(entities)) {
             return new ArrayList<>();
@@ -95,7 +95,7 @@ public interface IExtDao<E> extends IDao<E> {
         return BeanUtil.toBeanList(entities, clazz);
     }
 
-    default <T> List<T> voListByQuery(Object query, TypeConvert<E, T> convert) {
+    default <T> List<T> pojoListByQuery(Object query, TypeConvert<E, T> convert) {
         List<E> entities = listByQuery(query);
         if (CollectionUtil.isEmpty(entities)) {
             return new ArrayList<>();
@@ -105,7 +105,7 @@ public interface IExtDao<E> extends IDao<E> {
 
     Page<E> pageByQuery(Object query, Pageable pageable);
 
-    default <T> Page<T> voPageByQuery(Object query, Pageable pageable, Class<T> clazz) {
+    default <T> Page<T> pojoPageByQuery(Object query, Pageable pageable, Class<T> clazz) {
         Page<E> page = pageByQuery(query, pageable);
         List<T> list;
         if (CollectionUtil.isEmpty(page.getContent())) {
@@ -116,7 +116,7 @@ public interface IExtDao<E> extends IDao<E> {
         return new Pagination<>(list, pageable, page.getTotalElements());
     }
 
-    default <T> Page<T> voPageByQuery(Object query, Pageable pageable, TypeConvert<E, T> convert) {
+    default <T> Page<T> pojoPageByQuery(Object query, Pageable pageable, TypeConvert<E, T> convert) {
         Page<E> page = pageByQuery(query, pageable);
         List<T> list = new ArrayList<>();
         if (CollectionUtil.isEmpty(page.getContent())) {
