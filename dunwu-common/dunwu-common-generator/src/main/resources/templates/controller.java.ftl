@@ -48,7 +48,6 @@ public class ${table.controllerName} {
 </#if>
 
     private final ${table.daoName} dao;
-    private final ${table.serviceName} service;
 
     <#if !swagger2>
     public ${table.controllerName}(${table.daoName} dao) {
@@ -58,7 +57,7 @@ public class ${table.controllerName} {
 
     @PostMapping
     <#if swagger2>
-    @ApiOperation("插入一条 ${entity} 记录")
+    @ApiOperation("创建一条 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> create(@Validated @RequestBody ${entity} entity) {
         return new ResponseEntity<>(dao.save(entity), HttpStatus.CREATED);
@@ -66,17 +65,17 @@ public class ${table.controllerName} {
 
     @PutMapping
     <#if swagger2>
-    @ApiOperation("根据 ID 修改一条 ${entity} 记录")
+    @ApiOperation("更新一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> update(@Validated @RequestBody ${entity} entity) {
+    public ResponseEntity<Object> update(@Validated(UpdateValidate.class) @RequestBody ${entity} entity) {
         return new ResponseEntity<>(dao.updateById(entity), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("{id}")
     <#if swagger2>
-    @ApiOperation("根据 ID 删除一条 ${entity} 记录")
+    @ApiOperation("删除一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> delete(@PathVariable String id) {
+    public ResponseEntity<Object> deleteById(@PathVariable String id) {
         return new ResponseEntity<>(dao.removeById(id), HttpStatus.ACCEPTED);
     }
 
@@ -88,12 +87,26 @@ public class ${table.controllerName} {
         return new ResponseEntity<>(dao.removeByIds(ids), HttpStatus.ACCEPTED);
     }
 
+    @GetMapping
+    @ApiOperation("查询 ${table.dtoName} 记录")
+    public ResponseEntity<Object> view(${table.queryName} query, Pageable pageable) {
+        return page(query, pageable);
+    }
+
+    @GetMapping("page")
+    <#if swagger2>
+    @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
+    </#if>
+    public ResponseEntity<Object> page(${table.queryName} query, Pageable pageable) {
+        return new ResponseEntity<>(dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class), HttpStatus.OK);
+    }
+
     @GetMapping("{id}")
     <#if swagger2>
     @ApiOperation("根据 ID 查询 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> getById(@PathVariable String id) {
-        return new ResponseEntity<>(dao.getDtoById(id, ${table.dtoName}.class), HttpStatus.OK);
+        return new ResponseEntity<>(dao.pojoById(id, ${table.dtoName}.class), HttpStatus.OK);
     }
 
     @GetMapping("count")
@@ -104,48 +117,26 @@ public class ${table.controllerName} {
         return new ResponseEntity<>(dao.countByQuery(query), HttpStatus.OK);
     }
 
-    @GetMapping("get")
-    @ApiOperation("根据 query 条件，查询一条匹配条件的记录")
-    public ResponseEntity<Object> get(${table.queryName} query) {
-        return new ResponseEntity<>(dao.getByQuery(query), HttpStatus.OK);
-    }
-
     @GetMapping("list")
     <#if swagger2>
     @ApiOperation("根据 query 条件，查询匹配条件的 ${table.dtoName} 列表")
     </#if>
     public ResponseEntity<Object> list(${table.queryName} query) {
-        return new ResponseEntity<>(dao.dtoListByQuery(query, ${table.dtoName}.class), HttpStatus.OK);
-    }
-
-    @GetMapping("page")
-    <#if swagger2>
-    @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
-    </#if>
-    public ResponseEntity<Object> page(${table.queryName} query, Pageable pageable) {
-        return new ResponseEntity<>(dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class), HttpStatus.OK);
-    }
-
-    @GetMapping
-    @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
-    public ResponseEntity<Object> view(${table.queryName} query, Pageable pageable) {
-        return page(query, pageable);
+        return new ResponseEntity<>(dao.pojoListByQuery(query, ${table.dtoName}.class), HttpStatus.OK);
     }
 
     @GetMapping("export")
-    @ApiOperation("根据 query 和 pageable 条件导出 ${table.dtoName} 列表数据")
-    public void exportByIds(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
-        Page<${table.dtoName}> page = dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class);
-        service.exportDtoList(page.getContent(), response);
-    }
-
-    @GetMapping("export/page")
-    @ApiOperation("根据 query 和 pageable 条件导出 ${table.dtoName} 列表数据")
+    @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
     public void exportPageData(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
         List<${table.dtoName}> list = dao.dtoListByIds(ids, ${table.dtoName}.class);
         service.exportDtoList(list, response);
     }
 
-
+    @GetMapping("export/page")
+    @ApiOperation("根据 query 和 pageable 条件批量导出 ${table.dtoName} 列表数据")
+    public void exportByIds(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
+        Page<${table.dtoName}> page = dao.dtoPageByQuery(query, pageable, ${table.dtoName}.class);
+        service.exportDtoList(page.getContent(), response);
+    }
 
 }
