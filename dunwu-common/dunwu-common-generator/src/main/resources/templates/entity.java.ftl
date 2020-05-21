@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 
+import javax.validation.constraints.NotNull;
+
 /**
  * ${table.comment!}
  *

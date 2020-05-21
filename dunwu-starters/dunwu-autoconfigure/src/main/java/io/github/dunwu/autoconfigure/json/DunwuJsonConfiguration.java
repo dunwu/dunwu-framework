@@ -50,7 +50,6 @@ public class DunwuJsonConfiguration {
         objectMapper.findAndRegisterModules();
         objectMapper.setSerializationInclusion(jackson.getInclude());
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, jackson.isAllowSingleQuotes());
-
         setConfigForJdk8(objectMapper);
         return objectMapper;
     }
