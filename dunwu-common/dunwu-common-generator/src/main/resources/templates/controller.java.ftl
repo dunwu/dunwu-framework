@@ -1,16 +1,14 @@
 package ${package.Controller};
 
 import io.github.dunwu.data.validator.annotation.UpdateValidate;
-import ${package.Dao}.${table.daoName};
+import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
-import ${package.Dto}.${table.dtoName};
 import ${package.Query}.${table.queryName};
 <#if swagger2>
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 </#if>
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Controller;
 </#if>
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,11 +44,11 @@ public class ${table.controllerName} extends ${superControllerClass}<${entity}> 
 public class ${table.controllerName} {
 </#if>
 
-    private final ${table.daoName} dao;
+    private final ${table.serviceName} service;
 
     <#if !swagger2>
-    public ${table.controllerName}(${table.daoName} dao) {
-        this.dao = dao;
+    public ${table.controllerName}(${table.serviceName} service) {
+        this.service = service;
     }
     </#if>
 
@@ -60,7 +57,7 @@ public class ${table.controllerName} {
     @ApiOperation("创建一条 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> create(@Validated @RequestBody ${entity} entity) {
-        return new ResponseEntity<>(dao.save(entity), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(entity), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -68,7 +65,7 @@ public class ${table.controllerName} {
     @ApiOperation("更新一条 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> update(@Validated(UpdateValidate.class) @RequestBody ${entity} entity) {
-        return new ResponseEntity<>(dao.updateById(entity), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.updateById(entity), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("{id}")
@@ -76,7 +73,7 @@ public class ${table.controllerName} {
     @ApiOperation("删除一条 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> deleteById(@PathVariable String id) {
-        return new ResponseEntity<>(dao.removeById(id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.removeById(id), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping
@@ -84,7 +81,7 @@ public class ${table.controllerName} {
     @ApiOperation("根据 ID 集合批量删除 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> deleteByIds(@RequestBody Set<String> ids) {
-        return new ResponseEntity<>(dao.removeByIds(ids), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.removeByIds(ids), HttpStatus.ACCEPTED);
     }
 
     @GetMapping
@@ -98,7 +95,7 @@ public class ${table.controllerName} {
     @ApiOperation("根据 query 和 pageable 条件，分页查询 ${table.dtoName} 记录")
     </#if>
     public ResponseEntity<Object> page(${table.queryName} query, Pageable pageable) {
-        return new ResponseEntity<>(dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class), HttpStatus.OK);
+        return new ResponseEntity<>(service.pojoPageByQuery(query, pageable), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -106,7 +103,7 @@ public class ${table.controllerName} {
     @ApiOperation("根据 ID 查询 ${entity} 记录")
     </#if>
     public ResponseEntity<Object> getById(@PathVariable String id) {
-        return new ResponseEntity<>(dao.pojoById(id, ${table.dtoName}.class), HttpStatus.OK);
+        return new ResponseEntity<>(service.pojoById(id), HttpStatus.OK);
     }
 
     @GetMapping("count")
@@ -114,7 +111,7 @@ public class ${table.controllerName} {
     @ApiOperation("根据 query 条件，查询匹配条件的总记录数")
     </#if>
     public ResponseEntity<Object> count(${table.queryName} query) {
-        return new ResponseEntity<>(dao.countByQuery(query), HttpStatus.OK);
+        return new ResponseEntity<>(service.countByQuery(query), HttpStatus.OK);
     }
 
     @GetMapping("list")
@@ -122,21 +119,19 @@ public class ${table.controllerName} {
     @ApiOperation("根据 query 条件，查询匹配条件的 ${table.dtoName} 列表")
     </#if>
     public ResponseEntity<Object> list(${table.queryName} query) {
-        return new ResponseEntity<>(dao.pojoListByQuery(query, ${table.dtoName}.class), HttpStatus.OK);
+        return new ResponseEntity<>(service.pojoListByQuery(query), HttpStatus.OK);
     }
 
     @GetMapping("export")
     @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
     public void exportByIds(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
-        List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
-        dao.exportDtoList(list, response);
+        service.exportByIds(ids, response);
     }
 
     @GetMapping("export/page")
     @ApiOperation("根据 query 和 pageable 条件批量导出 ${table.dtoName} 列表数据")
     public void exportPageData(${table.queryName} query, Pageable pageable, HttpServletResponse response) throws IOException {
-        Page<${table.dtoName}> page = dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class);
-        dao.exportDtoList(page.getContent(), response);
+        service.exportPageData(query, pageable, response);
     }
 
 }

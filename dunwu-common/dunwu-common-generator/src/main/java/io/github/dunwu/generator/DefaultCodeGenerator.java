@@ -108,8 +108,8 @@ public class DefaultCodeGenerator implements ICodeGenerator {
             .setMapperName(mapperName)
             .setDaoName(daoName)
             .setDaoImplName(daoImplName)
-            // .setServiceName(serviceName)
-            // .setServiceImplName(serviceImplName)
+            .setServiceName(serviceName)
+            .setServiceImplName(serviceImplName)
             .setControllerName(controllerName)
             .setSwagger2(enableSwagger);
 

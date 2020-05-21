@@ -499,16 +499,14 @@ public class ConfigBuilder {
             }
             if (StringUtils.isNotBlank(globalConfig.getServiceName())) {
                 tableInfo.setServiceName(String.format(globalConfig.getServiceName(), entityName));
+            } else {
+                tableInfo.setServiceName("I" + entityName + ConstVal.SERVICE);
             }
-            // else {
-            //     tableInfo.setServiceName("I" + entityName + ConstVal.SERVICE);
-            // }
             if (StringUtils.isNotBlank(globalConfig.getServiceImplName())) {
                 tableInfo.setServiceImplName(String.format(globalConfig.getServiceImplName(), entityName));
+            } else {
+                tableInfo.setServiceImplName(entityName + ConstVal.SERVICE_IMPL);
             }
-            // else {
-            //     tableInfo.setServiceImplName(entityName + ConstVal.SERVICE_IMPL);
-            // }
             if (StringUtils.isNotBlank(globalConfig.getControllerName())) {
                 tableInfo.setControllerName(String.format(globalConfig.getControllerName(), entityName));
             } else {
