@@ -1,6 +1,7 @@
 package io.github.dunwu.tool.util.tree;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * 节点接口，提供节点相关的的方法定义
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * @author looly
  * @since 5.2.4
  */
-public interface Node extends Comparable<Node> {
+public interface Node<T> extends Comparable<Node> {
 
     /**
      * 获取ID
@@ -23,7 +24,7 @@ public interface Node extends Comparable<Node> {
      * @param id ID
      * @return this
      */
-    Node setId(Serializable id);
+    Node<T> setId(Serializable id);
 
     /**
      * 获取父节点ID
@@ -38,7 +39,7 @@ public interface Node extends Comparable<Node> {
      * @param pid 父节点ID
      * @return this
      */
-    Node setPid(Serializable pid);
+    Node<T> setPid(Serializable pid);
 
     /**
      * 获取节点标签名称
@@ -53,7 +54,7 @@ public interface Node extends Comparable<Node> {
      * @param name 节点标签名称
      * @return this
      */
-    Node setName(String name);
+    Node<T> setName(String name);
 
     /**
      * 获取权重
@@ -68,7 +69,11 @@ public interface Node extends Comparable<Node> {
      * @param level 级别
      * @return this
      */
-    Node setLevel(Integer level);
+    Node<T> setLevel(Integer level);
+
+    Collection<T> getChildren();
+
+    Node setChildren(Collection<T> children);
 
     @SuppressWarnings({ "unchecked", "rawtypes", "NullableProblems" })
     @Override

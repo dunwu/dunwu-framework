@@ -14,7 +14,7 @@ import java.util.List;
  * @author liangbaikai
  * @since 5.2.1
  */
-public class Tree extends LinkedHashMap<String, Object> implements Node {
+public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,8 +32,7 @@ public class Tree extends LinkedHashMap<String, Object> implements Node {
      */
     public Tree(TreeNodeConfig treeNodeConfig) {
         super();
-        this.treeNodeConfig = ObjectUtil.defaultIfNull(
-            treeNodeConfig, TreeNodeConfig.DEFAULT_CONFIG);
+        this.treeNodeConfig = ObjectUtil.defaultIfNull(treeNodeConfig, TreeNodeConfig.DEFAULT_CONFIG);
     }
 
     /**
@@ -147,11 +146,13 @@ public class Tree extends LinkedHashMap<String, Object> implements Node {
         return this;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<Tree> getChildren() {
-        return (List<Tree>) this.get(treeNodeConfig.getChildrenKey());
+        return (Collection<Tree>) this.get(treeNodeConfig.getChildrenKey());
     }
 
+    @Override
     public Tree setChildren(Collection<Tree> children) {
         this.put(treeNodeConfig.getChildrenKey(), children);
         return this;

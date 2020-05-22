@@ -10,7 +10,7 @@ import java.util.Map;
  * @author liangbaikai
  * @author Zhang Peng
  */
-public class TreeNode implements Node {
+public class TreeNode implements Node<TreeNode> {
 
     /**
      * ID
@@ -110,10 +110,12 @@ public class TreeNode implements Node {
         return this;
     }
 
+    @Override
     public Collection<TreeNode> getChildren() {
         return children;
     }
 
+    @Override
     public TreeNode setChildren(Collection<TreeNode> children) {
         this.children = children;
         return this;
