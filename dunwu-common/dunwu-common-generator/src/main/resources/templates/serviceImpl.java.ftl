@@ -30,7 +30,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     private final ${table.daoName} dao;
 
-    public SysDictServiceImpl(${table.daoName} dao) {
+    public ${table.serviceImplName}(${table.daoName} dao) {
         this.dao = dao;
     }
 
