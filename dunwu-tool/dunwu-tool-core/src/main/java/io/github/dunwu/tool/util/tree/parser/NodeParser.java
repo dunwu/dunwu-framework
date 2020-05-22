@@ -9,13 +9,13 @@ import io.github.dunwu.tool.util.tree.Tree;
  * @author liangbaikai
  */
 @FunctionalInterface
-public interface NodeParser<T, E> {
+public interface NodeParser<T> {
 
     /**
      * @param object   源数据实体
      * @param treeNode 树节点实体
      */
-    void parse(T object, Tree<E> treeNode);
+    void parse(T object, Tree treeNode);
 
 }
 

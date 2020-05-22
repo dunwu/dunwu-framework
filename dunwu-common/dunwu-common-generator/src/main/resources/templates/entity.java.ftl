@@ -66,7 +66,7 @@ public class ${entity} implements Serializable {
     </#if>
     <#if field.keyFlag>
         <#-- 主键 -->
-    @NotNull(groups = UpdateValidate.class)
+    @NotNull(groups = EditCheck.class)
         <#if field.keyIdentityFlag>
     @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif idType??>

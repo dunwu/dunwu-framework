@@ -20,7 +20,9 @@ import org.springframework.stereotype.Controller;
 </#if>
 
 import java.io.IOException;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -73,7 +75,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("删除一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteById(@PathVariable Serializable id) {
         return new ResponseEntity<>(service.removeById(id), HttpStatus.ACCEPTED);
     }
 
@@ -81,7 +83,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("根据 ID 集合批量删除 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> deleteByIds(@RequestBody Set<Long> ids) {
+    public ResponseEntity<Object> deleteByIds(@RequestBody Set<Serializable> ids) {
         return new ResponseEntity<>(service.removeByIds(ids), HttpStatus.ACCEPTED);
     }
 
@@ -103,7 +105,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("根据 ID 查询 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> getById(@PathVariable Long id) {
+    public ResponseEntity<Object> getById(@PathVariable Serializable id) {
         return new ResponseEntity<>(service.pojoById(id), HttpStatus.OK);
     }
 
@@ -125,7 +127,7 @@ public class ${table.controllerName} {
 
     @GetMapping("export")
     @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
-    public void exportByIds(@RequestBody Set<Long> ids, HttpServletResponse response) throws IOException {
+    public void exportByIds(@RequestBody Set<Serializable> ids, HttpServletResponse response) throws IOException {
         service.exportByIds(ids, response);
     }
 

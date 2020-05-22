@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import io.github.dunwu.tool.util.tree.parser.DefaultNodeParser;
 import io.github.dunwu.tool.util.tree.parser.NodeParser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,80 +25,74 @@ public class TreeUtil {
      * @param list 源数据集合
      * @return List
      */
-    public static List<Tree<Integer>> build(List<TreeNode<Integer>> list) {
+    public static List<Tree> build(List<TreeNode> list) {
         return build(list, 0);
     }
 
     /**
      * 树构建
      *
-     * @param <E>      ID类型
      * @param list     源数据集合
      * @param parentId 最顶层父id值 一般为 0 之类
      * @return List
      */
-    public static <E> List<Tree<E>> build(List<TreeNode<E>> list, E parentId) {
-        return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, new DefaultNodeParser<>());
+    public static List<Tree> build(List<TreeNode> list, Serializable parentId) {
+        return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, new DefaultNodeParser());
     }
 
     /**
      * 树构建
      *
-     * @param <E>            ID类型
      * @param list           源数据集合
      * @param parentId       最顶层父id值 一般为 0 之类
      * @param treeNodeConfig 配置
      * @return List
      */
-    public static <E> List<Tree<E>> build(List<TreeNode<E>> list, E parentId,
+    public static List<Tree> build(List<TreeNode> list, Serializable parentId,
         TreeNodeConfig treeNodeConfig) {
-        return build(list, parentId, treeNodeConfig, new DefaultNodeParser<>());
+        return build(list, parentId, treeNodeConfig, new DefaultNodeParser());
     }
 
     /**
      * 树构建
      *
-     * @param <T>        转换的实体 为数据源里的对象类型
-     * @param <E>        ID类型
      * @param list       源数据集合
      * @param parentId   最顶层父id值 一般为 0 之类
      * @param nodeParser 转换器
      * @return List
      */
-    public static <T, E> List<Tree<E>> build(List<T> list, E parentId, NodeParser<T, E> nodeParser) {
+    public static List<Tree> build(List<TreeNode> list, Serializable parentId, NodeParser<TreeNode> nodeParser) {
         return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
     }
 
     /**
      * 树构建
      *
-     * @param <T>            转换的实体 为数据源里的对象类型
-     * @param <E>            ID类型
      * @param list           源数据集合
      * @param rootId         最顶层父id值 一般为 0 之类
      * @param treeNodeConfig 配置
      * @param nodeParser     转换器
      * @return List
      */
-    public static <T, E> List<Tree<E>> build(List<T> list, E rootId, TreeNodeConfig treeNodeConfig,
-        NodeParser<T, E> nodeParser) {
-        final List<Tree<E>> treeList = CollUtil.newArrayList();
-        Tree<E> tree;
-        for (T obj : list) {
-            tree = new Tree<>(treeNodeConfig);
+    public static List<Tree> build(List<TreeNode> list, Serializable rootId, TreeNodeConfig treeNodeConfig,
+        NodeParser<TreeNode> nodeParser) {
+        final List<Tree> treeList = CollUtil.newArrayList();
+        Tree tree;
+        for (TreeNode obj : list) {
+            tree = new Tree(treeNodeConfig);
             nodeParser.parse(obj, tree);
             treeList.add(tree);
         }
 
-        List<Tree<E>> finalTreeList = new ArrayList<>();
-        Set<E> ids = new HashSet<>();
-        for (Tree<E> parentNode : treeList) {
+        List<Tree> finalTreeList = new ArrayList<>();
+        Set<Serializable> ids = new HashSet<>();
+        for (Tree parentNode : treeList) {
             // 如果是顶级节点（非根节点），直接加入树列表
             if (parentNode.getPid() == rootId) {
                 finalTreeList.add(parentNode);
             }
 
-            for (Tree<E> it : treeList) {
+            for (Tree it : treeList) {
                 if (it.getPid().equals(parentNode.getId())) {
                     if (parentNode.getChildren() == null) {
                         parentNode.setChildren(new ArrayList<>());
@@ -107,7 +102,7 @@ public class TreeUtil {
                 }
             }
             if (CollUtil.isNotEmpty(parentNode.getChildren())) {
-                List<Tree<E>> children = parentNode.getChildren().stream().sorted().collect(Collectors.toList());
+                List<Tree> children = parentNode.getChildren().stream().sorted().collect(Collectors.toList());
                 parentNode.setChildren(children);
             }
         }
@@ -125,20 +120,19 @@ public class TreeUtil {
     /**
      * 获取ID对应的节点，如果有多个ID相同的节点，只返回第一个。<br> 此方法只查找此节点及子节点，采用广度优先遍历。
      *
-     * @param <T>  ID类型
      * @param node 节点
      * @param id   ID
      * @return 节点
      * @since 5.2.4
      */
-    public static <T> Tree<T> getNode(Tree<T> node, T id) {
+    public static Tree getNode(Tree node, Serializable id) {
         if (ObjectUtil.equal(id, node.getId())) {
             return node;
         }
 
         // 查找子节点
-        Tree<T> childNode;
-        for (Tree<T> child : node.getChildren()) {
+        Tree childNode;
+        for (Tree child : node.getChildren()) {
             childNode = child.getNode(id);
             if (null != childNode) {
                 return childNode;
@@ -155,13 +149,12 @@ public class TreeUtil {
      * <p>
      * 比如有个人在研发1部，他上面有研发部，接着上面有技术中心<br> 返回结果就是：[研发一部, 研发中心, 技术中心]
      *
-     * @param <T>                节点ID类型
      * @param node               节点
      * @param includeCurrentNode 是否包含当前节点的名称
      * @return 所有父节点名称列表，node为null返回空List
      * @since 5.2.4
      */
-    public static <T> List<CharSequence> getParentsName(Tree<T> node, boolean includeCurrentNode) {
+    public static List<CharSequence> getParentsName(Tree node, boolean includeCurrentNode) {
         final List<CharSequence> result = new ArrayList<>();
         if (null == node) {
             return result;
@@ -171,7 +164,7 @@ public class TreeUtil {
             result.add(node.getName());
         }
 
-        Tree<T> parent = node.getParent();
+        Tree parent = node.getParent();
         while (null != parent) {
             result.add(parent.getName());
             parent = parent.getParent();

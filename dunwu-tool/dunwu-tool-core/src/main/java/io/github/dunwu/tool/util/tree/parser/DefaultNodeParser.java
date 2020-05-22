@@ -11,13 +11,13 @@ import java.util.Map;
 /**
  * 默认的简单转换器
  *
- * @param <T> ID类型
  * @author liangbaikai
+ * @author Zhang Peng
  */
-public class DefaultNodeParser<T> implements NodeParser<TreeNode<T>, T> {
+public class DefaultNodeParser implements NodeParser<TreeNode> {
 
     @Override
-    public void parse(TreeNode<T> treeNode, Tree<T> tree) {
+    public void parse(TreeNode treeNode, Tree tree) {
         if (MapUtil.isNotEmpty(treeNode.getFull())) {
             treeNode.getFull().forEach(tree::putExtra);
             if (CollUtil.isEmpty(tree.getChildren())) {

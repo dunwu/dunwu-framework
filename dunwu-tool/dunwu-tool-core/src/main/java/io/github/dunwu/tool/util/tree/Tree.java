@@ -3,22 +3,23 @@ package io.github.dunwu.tool.util.tree;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  * 通过转换器将你的实体转化为TreeNodeMap节点实体 属性都存在此处,属性有序，可支持排序
  *
- * @param <T> ID类型
  * @author liangbaikai
  * @since 5.2.1
  */
-public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
+public class Tree extends LinkedHashMap<String, Object> implements Node {
 
     private static final long serialVersionUID = 1L;
 
     private TreeNodeConfig treeNodeConfig;
-    private Tree<T> parent;
+    private Tree parent;
 
     public Tree() {
         this(null);
@@ -41,7 +42,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @return 父节点
      * @since 5.2.4
      */
-    public Tree<T> getParent() {
+    public Tree getParent() {
         return parent;
     }
 
@@ -52,7 +53,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @return 节点
      * @since 5.2.4
      */
-    public Tree<T> getNode(T id) {
+    public Tree getNode(Serializable id) {
         return TreeUtil.getNode(this, id);
     }
 
@@ -67,7 +68,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @return 所有父节点名称列表
      * @since 5.2.4
      */
-    public List<CharSequence> getParentsName(T id, boolean includeCurrentNode) {
+    public List<CharSequence> getParentsName(Serializable id, boolean includeCurrentNode) {
         return TreeUtil.getParentsName(getNode(id), includeCurrentNode);
     }
 
@@ -92,7 +93,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @return this
      * @since 5.2.4
      */
-    public Tree<T> setParent(Tree<T> parent) {
+    public Tree setParent(Tree parent) {
         this.parent = parent;
         if (null != parent) {
             this.setPid(parent.getId());
@@ -102,57 +103,58 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public T getId() {
-        return (T) this.get(treeNodeConfig.getIdKey());
+    public Serializable getId() {
+        return (Serializable) this.get(treeNodeConfig.getIdKey());
     }
 
     @Override
-    public Tree<T> setId(T id) {
+    public Tree setId(Serializable id) {
         this.put(treeNodeConfig.getIdKey(), id);
         return this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T getPid() {
-        return (T) this.get(treeNodeConfig.getPidKey());
+    public Serializable getPid() {
+        return (Serializable) this.get(treeNodeConfig.getPidKey());
     }
 
     @Override
-    public Tree<T> setPid(T pid) {
+    public Tree setPid(Serializable pid) {
         this.put(treeNodeConfig.getPidKey(), pid);
         return this;
     }
 
     @Override
-    public CharSequence getName() {
-        return (CharSequence) this.get(treeNodeConfig.getNameKey());
+    public String getName() {
+        return (String) this.get(treeNodeConfig.getNameKey());
     }
 
     @Override
-    public Tree<T> setName(CharSequence name) {
+    public Tree setName(String name) {
         this.put(treeNodeConfig.getNameKey(), name);
         return this;
     }
 
     @Override
-    public Comparable<?> getLevel() {
-        return (Comparable<?>) this.get(treeNodeConfig.getLevelKey());
+    public Integer getLevel() {
+        return (Integer) this.get(treeNodeConfig.getLevelKey());
     }
 
     @Override
-    public Tree<T> setLevel(Comparable<?> level) {
+    public Tree setLevel(Integer level) {
         this.put(treeNodeConfig.getLevelKey(), level);
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public List<Tree<T>> getChildren() {
-        return (List<Tree<T>>) this.get(treeNodeConfig.getChildrenKey());
+    public Collection<Tree> getChildren() {
+        return (List<Tree>) this.get(treeNodeConfig.getChildrenKey());
     }
 
-    public void setChildren(List<Tree<T>> children) {
+    public Tree setChildren(Collection<Tree> children) {
         this.put(treeNodeConfig.getChildrenKey(), children);
+        return this;
     }
 
     /**

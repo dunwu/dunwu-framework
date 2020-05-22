@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
@@ -45,12 +46,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public boolean removeById(String id) {
+    public boolean removeById(Serializable id) {
         return dao.removeById(id);
     }
 
     @Override
-    public boolean removeByIds(Set<String> ids) {
+    public boolean removeByIds(Set<Serializable> ids) {
         return dao.removeByIds(ids);
     }
 
@@ -65,7 +66,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public ${table.dtoName} pojoById(String id) {
+    public ${table.dtoName} pojoById(Serializable id) {
         return dao.pojoById(id, ${table.dtoName}.class);
     }
 
@@ -80,7 +81,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public void exportByIds(Set<String> ids, HttpServletResponse response) throws IOException {
+    public void exportByIds(Set<Serializable> ids, HttpServletResponse response) throws IOException {
     List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
         dao.exportDtoList(list, response);
     }

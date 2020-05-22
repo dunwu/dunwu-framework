@@ -1,34 +1,38 @@
 package io.github.dunwu.tool.util.tree;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 /**
  * 树节点 每个属性都可以在{@link TreeNodeConfig}中被重命名<br> 在你的项目里它可以是部门实体、地区实体等任意类树节点实体 类树节点实体: 包含key，父Key.不限于这些属性的可以构造成一颗树的实体对象
  *
- * @param <T> ID类型
  * @author liangbaikai
+ * @author Zhang Peng
  */
-public class TreeNode<T> implements Node<T> {
+public class TreeNode implements Node {
 
     /**
      * ID
      */
-    private T id;
+    private Serializable id;
 
     /**
      * 父节点ID
      */
-    private T pid;
+    private Serializable pid;
 
     /**
      * 名称
      */
-    private CharSequence name;
+    private String name;
 
     /**
      * 级别 越小优先级越高 默认0
      */
-    private Comparable<?> level = 0;
+    private Integer level = 0;
+
+    private Collection<TreeNode> children;
 
     /**
      * 扩展字段
@@ -53,7 +57,7 @@ public class TreeNode<T> implements Node<T> {
      * @param name  名称
      * @param level 级别
      */
-    public TreeNode(T id, T pid, String name, Comparable<?> level) {
+    public TreeNode(Serializable id, Serializable pid, String name, Integer level) {
         this.id = id;
         this.pid = pid;
         this.name = name;
@@ -63,46 +67,55 @@ public class TreeNode<T> implements Node<T> {
     }
 
     @Override
-    public T getId() {
+    public Serializable getId() {
         return id;
     }
 
     @Override
-    public TreeNode<T> setId(T id) {
+    public TreeNode setId(Serializable id) {
         this.id = id;
         return this;
     }
 
     @Override
-    public T getPid() {
+    public Serializable getPid() {
         return this.pid;
     }
 
     @Override
-    public TreeNode<T> setPid(T pid) {
+    public TreeNode setPid(Serializable pid) {
         this.pid = pid;
         return this;
     }
 
     @Override
-    public CharSequence getName() {
+    public String getName() {
         return name;
     }
 
     @Override
-    public TreeNode<T> setName(CharSequence name) {
+    public TreeNode setName(String name) {
         this.name = name;
         return this;
     }
 
     @Override
-    public Comparable<?> getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
     @Override
-    public TreeNode<T> setLevel(Comparable<?> level) {
+    public TreeNode setLevel(Integer level) {
         this.level = level;
+        return this;
+    }
+
+    public Collection<TreeNode> getChildren() {
+        return children;
+    }
+
+    public TreeNode setChildren(Collection<TreeNode> children) {
+        this.children = children;
         return this;
     }
 
@@ -123,7 +136,7 @@ public class TreeNode<T> implements Node<T> {
      * @return this
      * @since 5.2.5
      */
-    public TreeNode<T> setExtra(Map<String, Object> extra) {
+    public TreeNode setExtra(Map<String, Object> extra) {
         this.extra = extra;
         return this;
     }
@@ -132,7 +145,7 @@ public class TreeNode<T> implements Node<T> {
         return full;
     }
 
-    public TreeNode<T> setFull(Map<String, Object> full) {
+    public TreeNode setFull(Map<String, Object> full) {
         this.full = full;
         return this;
     }
