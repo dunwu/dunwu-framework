@@ -4,7 +4,7 @@ package ${package.Entity};
 import ${pkg};
 </#list>
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.github.dunwu.data.validator.annotation.UpdateValidate;
+import io.github.dunwu.data.validator.annotation.EditCheck;
 <#if swagger2>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

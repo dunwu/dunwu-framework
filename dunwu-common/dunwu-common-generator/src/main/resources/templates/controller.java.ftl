@@ -1,6 +1,6 @@
 package ${package.Controller};
 
-import io.github.dunwu.data.validator.annotation.UpdateValidate;
+import io.github.dunwu.data.validator.annotation.EditCheck;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 import ${package.Query}.${table.queryName};

@@ -23,7 +23,7 @@ public @interface RegexValid {
 
     String regexp();
 
-    String message() default "不匹配正则表达式";
+    String message() default "未通过正则校验";
 
     Class<?>[] groups() default {};
 
