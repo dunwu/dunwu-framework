@@ -6,7 +6,9 @@ import io.github.dunwu.tool.util.tree.parser.DefaultNodeParser;
 import io.github.dunwu.tool.util.tree.parser.NodeParser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -22,8 +24,8 @@ public class TreeUtil {
      * @param list 源数据集合
      * @return List
      */
-    public static List<Tree<Integer>> buildStandardTree(List<TreeNode<Integer>> list) {
-        return buildStandardTree(list, 0);
+    public static List<Tree<Integer>> build(List<TreeNode<Integer>> list) {
+        return build(list, 0);
     }
 
     /**
@@ -34,8 +36,8 @@ public class TreeUtil {
      * @param parentId 最顶层父id值 一般为 0 之类
      * @return List
      */
-    public static <E> List<Tree<E>> buildStandardTree(List<TreeNode<E>> list, E parentId) {
-        return buildStandardTree(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, new DefaultNodeParser<>());
+    public static <E> List<Tree<E>> build(List<TreeNode<E>> list, E parentId) {
+        return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, new DefaultNodeParser<>());
     }
 
     /**
@@ -47,9 +49,9 @@ public class TreeUtil {
      * @param treeNodeConfig 配置
      * @return List
      */
-    public static <E> List<Tree<E>> buildStandardTree(List<TreeNode<E>> list, E parentId,
+    public static <E> List<Tree<E>> build(List<TreeNode<E>> list, E parentId,
         TreeNodeConfig treeNodeConfig) {
-        return buildStandardTree(list, parentId, treeNodeConfig, new DefaultNodeParser<>());
+        return build(list, parentId, treeNodeConfig, new DefaultNodeParser<>());
     }
 
     /**
@@ -62,8 +64,8 @@ public class TreeUtil {
      * @param nodeParser 转换器
      * @return List
      */
-    public static <T, E> List<Tree<E>> buildStandardTree(List<T> list, E parentId, NodeParser<T, E> nodeParser) {
-        return buildStandardTree(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
+    public static <T, E> List<Tree<E>> build(List<T> list, E parentId, NodeParser<T, E> nodeParser) {
+        return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
     }
 
     /**
@@ -72,12 +74,12 @@ public class TreeUtil {
      * @param <T>            转换的实体 为数据源里的对象类型
      * @param <E>            ID类型
      * @param list           源数据集合
-     * @param parentId       最顶层父id值 一般为 0 之类
+     * @param rootId         最顶层父id值 一般为 0 之类
      * @param treeNodeConfig 配置
      * @param nodeParser     转换器
      * @return List
      */
-    public static <T, E> List<Tree<E>> buildStandardTree(List<T> list, E parentId, TreeNodeConfig treeNodeConfig,
+    public static <T, E> List<Tree<E>> build(List<T> list, E rootId, TreeNodeConfig treeNodeConfig,
         NodeParser<T, E> nodeParser) {
         final List<Tree<E>> treeList = CollUtil.newArrayList();
         Tree<E> tree;
@@ -87,50 +89,37 @@ public class TreeUtil {
             treeList.add(tree);
         }
 
-        List<Tree<E>> finalTreeList = CollUtil.newArrayList();
-        for (Tree<E> node : treeList) {
-            if (parentId.equals(node.getPid())) {
-                finalTreeList.add(node);
-                innerBuild(treeList, node, 0, treeNodeConfig.getDeep());
+        List<Tree<E>> finalTreeList = new ArrayList<>();
+        Set<E> ids = new HashSet<>();
+        for (Tree<E> parentNode : treeList) {
+            // 如果是顶级节点（非根节点），直接加入树列表
+            if (parentNode.getPid() == rootId) {
+                finalTreeList.add(parentNode);
+            }
+
+            for (Tree<E> it : treeList) {
+                if (it.getPid().equals(parentNode.getId())) {
+                    if (parentNode.getChildren() == null) {
+                        parentNode.setChildren(new ArrayList<>());
+                    }
+                    parentNode.getChildren().add(it);
+                    ids.add(it.getId());
+                }
+            }
+            if (CollUtil.isNotEmpty(parentNode.getChildren())) {
+                List<Tree<E>> children = parentNode.getChildren().stream().sorted().collect(Collectors.toList());
+                parentNode.setChildren(children);
             }
         }
+
+        // 如果没有成功组织为树结构，直接将剩余节点加入列表
+        if (finalTreeList.size() == 0) {
+            finalTreeList = treeList.stream().filter(s -> !ids.contains(s.getId())).collect(Collectors.toList());
+        }
+
         // 内存每层已经排过了 这是最外层排序
         finalTreeList = finalTreeList.stream().sorted().collect(Collectors.toList());
         return finalTreeList;
-    }
-
-    /**
-     * 递归处理
-     *
-     * @param treeNodes  数据集合
-     * @param parentNode 当前节点
-     * @param deep       已递归深度
-     * @param maxDeep    最大递归深度 可能为null即不限制
-     */
-    private static <T> void innerBuild(List<Tree<T>> treeNodes, Tree<T> parentNode, int deep, Integer maxDeep) {
-
-        if (CollUtil.isEmpty(treeNodes)) {
-            return;
-        }
-        //maxDeep 可能为空
-        if (maxDeep != null && deep >= maxDeep) {
-            return;
-        }
-
-        // 每层排序 TreeNodeMap 实现了Comparable接口
-        treeNodes = treeNodes.stream().sorted().collect(Collectors.toList());
-        for (Tree<T> childNode : treeNodes) {
-            if (parentNode.getId().equals(childNode.getPid())) {
-                List<Tree<T>> children = parentNode.getChildren();
-                if (children == null) {
-                    children = CollUtil.newArrayList();
-                    parentNode.setChildren(children);
-                }
-                children.add(childNode);
-                childNode.setParent(parentNode);
-                innerBuild(treeNodes, childNode, deep + 1, maxDeep);
-            }
-        }
     }
 
     /**
