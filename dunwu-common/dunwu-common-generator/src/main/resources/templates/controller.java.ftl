@@ -1,5 +1,6 @@
 package ${package.Controller};
 
+import io.github.dunwu.data.validator.annotation.AddCheck;
 import io.github.dunwu.data.validator.annotation.EditCheck;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
@@ -56,7 +57,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("创建一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> create(@Validated @RequestBody ${entity} entity) {
+    public ResponseEntity<Object> create(@Validated(AddCheck.class) @RequestBody ${entity} entity) {
         return new ResponseEntity<>(service.save(entity), HttpStatus.CREATED);
     }
 
@@ -64,7 +65,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("更新一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> update(@Validated(UpdateValidate.class) @RequestBody ${entity} entity) {
+    public ResponseEntity<Object> update(@Validated(EditCheck.class) @RequestBody ${entity} entity) {
         return new ResponseEntity<>(service.updateById(entity), HttpStatus.ACCEPTED);
     }
 
@@ -72,7 +73,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("删除一条 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> deleteById(@PathVariable String id) {
+    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
         return new ResponseEntity<>(service.removeById(id), HttpStatus.ACCEPTED);
     }
 
@@ -80,7 +81,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("根据 ID 集合批量删除 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> deleteByIds(@RequestBody Set<String> ids) {
+    public ResponseEntity<Object> deleteByIds(@RequestBody Set<Long> ids) {
         return new ResponseEntity<>(service.removeByIds(ids), HttpStatus.ACCEPTED);
     }
 
@@ -102,7 +103,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("根据 ID 查询 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> getById(@PathVariable String id) {
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
         return new ResponseEntity<>(service.pojoById(id), HttpStatus.OK);
     }
 
@@ -124,7 +125,7 @@ public class ${table.controllerName} {
 
     @GetMapping("export")
     @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
-    public void exportByIds(@RequestBody Set<String> ids, HttpServletResponse response) throws IOException {
+    public void exportByIds(@RequestBody Set<Long> ids, HttpServletResponse response) throws IOException {
         service.exportByIds(ids, response);
     }
 
