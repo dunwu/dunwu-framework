@@ -73,7 +73,7 @@ public interface Node<T> extends Comparable<Node> {
 
     Collection<T> getChildren();
 
-    Node setChildren(Collection<T> children);
+    Node<T> setChildren(Collection<T> children);
 
     @SuppressWarnings({ "unchecked", "rawtypes", "NullableProblems" })
     @Override

@@ -6,10 +6,7 @@ import io.github.dunwu.tool.util.tree.parser.DefaultNodeParser;
 import io.github.dunwu.tool.util.tree.parser.NodeParser;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +22,7 @@ public class TreeUtil {
      * @param list 源数据集合
      * @return List
      */
-    public static List<Tree> build(List<TreeNode> list) {
+    public static Collection<Tree> build(Collection<TreeNode> list) {
         return build(list, 0);
     }
 
@@ -36,7 +33,7 @@ public class TreeUtil {
      * @param parentId 最顶层父id值 一般为 0 之类
      * @return List
      */
-    public static List<Tree> build(List<TreeNode> list, Serializable parentId) {
+    public static Collection<Tree> build(Collection<TreeNode> list, Serializable parentId) {
         return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, new DefaultNodeParser());
     }
 
@@ -48,7 +45,7 @@ public class TreeUtil {
      * @param treeNodeConfig 配置
      * @return List
      */
-    public static List<Tree> build(List<TreeNode> list, Serializable parentId,
+    public static Collection<Tree> build(Collection<TreeNode> list, Serializable parentId,
         TreeNodeConfig treeNodeConfig) {
         return build(list, parentId, treeNodeConfig, new DefaultNodeParser());
     }
@@ -61,7 +58,8 @@ public class TreeUtil {
      * @param nodeParser 转换器
      * @return List
      */
-    public static List<Tree> build(List<TreeNode> list, Serializable parentId, NodeParser<TreeNode> nodeParser) {
+    public static Collection<Tree> build(Collection<TreeNode> list, Serializable parentId,
+        NodeParser<TreeNode> nodeParser) {
         return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
     }
 
@@ -74,7 +72,7 @@ public class TreeUtil {
      * @param nodeParser     转换器
      * @return List
      */
-    public static List<Tree> build(List<TreeNode> list, Serializable rootId, TreeNodeConfig treeNodeConfig,
+    public static Collection<Tree> build(Collection<TreeNode> list, Serializable rootId, TreeNodeConfig treeNodeConfig,
         NodeParser<TreeNode> nodeParser) {
         final List<Tree> treeList = CollUtil.newArrayList();
         Tree tree;
@@ -154,7 +152,7 @@ public class TreeUtil {
      * @return 所有父节点名称列表，node为null返回空List
      * @since 5.2.4
      */
-    public static List<CharSequence> getParentsName(Tree node, boolean includeCurrentNode) {
+    public static Collection<CharSequence> getParentsName(Tree node, boolean includeCurrentNode) {
         final List<CharSequence> result = new ArrayList<>();
         if (null == node) {
             return result;

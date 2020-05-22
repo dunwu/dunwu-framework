@@ -67,7 +67,7 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
      * @return 所有父节点名称列表
      * @since 5.2.4
      */
-    public List<CharSequence> getParentsName(Serializable id, boolean includeCurrentNode) {
+    public Collection<CharSequence> getParentsName(Serializable id, boolean includeCurrentNode) {
         return TreeUtil.getParentsName(getNode(id), includeCurrentNode);
     }
 
@@ -81,7 +81,7 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
      * @return 所有父节点名称列表
      * @since 5.2.4
      */
-    public List<CharSequence> getParentsName(boolean includeCurrentNode) {
+    public Collection<CharSequence> getParentsName(boolean includeCurrentNode) {
         return TreeUtil.getParentsName(this, includeCurrentNode);
     }
 
