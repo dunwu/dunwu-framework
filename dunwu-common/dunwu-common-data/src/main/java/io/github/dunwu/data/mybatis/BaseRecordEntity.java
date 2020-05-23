@@ -26,7 +26,7 @@ public abstract class BaseRecordEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     protected Long id;
 
-    @ApiModelProperty(value = "状态，1为有效，0为无效")
+    @ApiModelProperty(value = "状态")
     protected Boolean enabled;
 
     @ApiModelProperty(value = "备注")
