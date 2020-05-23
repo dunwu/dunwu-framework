@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -29,7 +29,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
 
     boolean removeById(Serializable id);
 
-    boolean removeByIds(Set<Serializable> ids);
+    boolean removeByIds(Collection<Serializable> ids);
 
     Page<${table.dtoName}> pojoPageByQuery(Object query, Pageable pageable);
 
@@ -41,7 +41,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
 
     Integer countByQuery(Object query);
 
-    void exportByIds(Set<Serializable> ids, HttpServletResponse response) throws IOException;
+    void exportByIds(Collection<Serializable> ids, HttpServletResponse response) throws IOException;
 
     void exportPageData(Object query, Pageable pageable, HttpServletResponse response) throws IOException;
 

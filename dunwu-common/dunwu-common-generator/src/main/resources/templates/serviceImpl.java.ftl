@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -51,7 +51,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public boolean removeByIds(Set<Serializable> ids) {
+    public boolean removeByIds(Collection<Serializable> ids) {
         return dao.removeByIds(ids);
     }
 
@@ -81,7 +81,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public void exportByIds(Set<Serializable> ids, HttpServletResponse response) throws IOException {
+    public void exportByIds(Collection<Serializable> ids, HttpServletResponse response) throws IOException {
     List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
         dao.exportDtoList(list, response);
     }

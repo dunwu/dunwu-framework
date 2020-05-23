@@ -10,6 +10,7 @@ import io.github.dunwu.web.util.ServletUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ open class ${table.daoImplName} : ${superDaoImplClass}<${table.mapperName}, ${en
 public class ${table.daoImplName} extends ${superDaoImplClass}<${table.mapperName}, ${entity}> implements ${table.daoName} {
 
     @Override
-    public void exportDtoList(List<${table.dtoName}> list, HttpServletResponse response) throws IOException {
+    public void exportDtoList(Collection<${table.dtoName}> list, HttpServletResponse response) throws IOException {
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (${table.dtoName} item : list) {
             Map<String, Object> map = new LinkedHashMap<>();
