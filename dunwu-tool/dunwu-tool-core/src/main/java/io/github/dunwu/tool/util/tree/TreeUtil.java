@@ -140,7 +140,7 @@ public class TreeUtil {
         final List<Tree> treeList = CollUtil.newArrayList();
         for (TreeNode node : list) {
             Tree tree = new Tree(treeNodeConfig);
-            nodeParser.parse(node, new Tree(treeNodeConfig));
+            nodeParser.parse(node, tree);
             treeList.add(tree);
         }
 
