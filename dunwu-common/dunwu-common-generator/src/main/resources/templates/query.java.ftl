@@ -59,11 +59,11 @@ public class ${entity}Query implements Serializable {
      */
             </#if>
         </#if>
-    @QueryField
+    @QueryField(type = QueryField.QueryType.BETWEEN)
         <#if (field.propertyType == "Date") || field.propertyType == "LocalDateTime">
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
         </#if>
-    private ${field.propertyType} ${field.propertyName};
+    private List<${field.propertyType}> ${field.propertyName};
     </#if>
 
 </#list>
