@@ -13,7 +13,7 @@ import java.util.List;
 public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
 
     public static <S, T> Collection<T> toBeanCollection(Collection<S> collection, Class<T> clazz) {
-        Collection<T> targetList = new ArrayList<>();
+        final Collection<T> targetList = new ArrayList<>();
         if (CollectionUtil.isEmpty(collection)) {
             return targetList;
         }
@@ -26,7 +26,7 @@ public class BeanUtil extends cn.hutool.core.bean.BeanUtil {
     }
 
     public static <S, T> List<T> toBeanList(List<S> collection, Class<T> clazz) {
-        List<T> targetList = new ArrayList<>();
+        final List<T> targetList = new ArrayList<>();
         if (CollectionUtil.isEmpty(collection)) {
             return targetList;
         }
