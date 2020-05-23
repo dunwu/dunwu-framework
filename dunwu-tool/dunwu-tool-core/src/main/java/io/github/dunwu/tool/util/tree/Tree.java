@@ -1,12 +1,12 @@
 package io.github.dunwu.tool.util.tree;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * 通过转换器将你的实体转化为TreeNodeMap节点实体 属性都存在此处,属性有序，可支持排序
@@ -167,6 +167,10 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     public void putExtra(String key, Object value) {
         Assert.notEmpty(key, "Key must be not empty !");
         this.put(key, value);
+    }
+
+    public <T> T toBean(Class<T> clazz) {
+        return BeanUtil.mapToBean(this, clazz, true);
     }
 
 }
