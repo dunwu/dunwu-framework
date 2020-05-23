@@ -84,10 +84,12 @@ public class TreeUtil {
             nodeParser.parse(node, new Tree(treeNodeConfig));
             treeList.add(tree);
         }
-        return buildNodeList(treeList, rootId);
+        return build(treeList, rootId);
     }
 
-    private static <T extends Node<T>> Collection<T> buildNodeList(Collection<T> list, Serializable rootId) {
+    // -----------------------------------------------------------------------------------------------------------
+
+    public static <T extends Node<T>> Collection<T> build(Collection<T> list, Serializable rootId) {
         List<T> finalTreeList = new ArrayList<>();
         Set<Serializable> ids = new HashSet<>();
         for (T parentNode : list) {
@@ -121,62 +123,18 @@ public class TreeUtil {
         return finalTreeList;
     }
 
-    // -----------------------------------------------------------------------------------------------------------
-
     public static <T extends Comparable<T>> Collection<T> build(Collection<T> list, Serializable rootId,
         TreeNodeConfig treeNodeConfig, Class<T> beanClass) {
-        Collection<TreeNode> nodes = new ArrayList<>();
-        list.forEach(i -> {
-            TreeNode node = new TreeNode();
-            Map<String, Object> extraMap = BeanUtil.beanToMap(i);
-            node.setFull(extraMap);
-            nodes.add(node);
-        });
-        return build(nodes, rootId, treeNodeConfig, new DefaultNodeParser(), beanClass);
-    }
-
-    public static <T extends Comparable<T>> Collection<T> build(Collection<TreeNode> list, Serializable rootId,
-        TreeNodeConfig treeNodeConfig, NodeParser<TreeNode, Tree> nodeParser, Class<T> beanClass) {
         final List<Tree> treeList = CollUtil.newArrayList();
-        for (TreeNode node : list) {
+        for (T i : list) {
             Tree tree = new Tree(treeNodeConfig);
-            nodeParser.parse(node, tree);
+            Map<String, Object> extraMap = BeanUtil.beanToMap(i);
+            tree.putAll(extraMap);
             treeList.add(tree);
         }
 
-        List<T> finalTreeList = new ArrayList<>();
-        Set<Serializable> ids = new HashSet<>();
-        for (Tree parentNode : treeList) {
-            for (Tree it : treeList) {
-                if (it.getPid().equals(parentNode.getId())) {
-                    if (parentNode.getChildren() == null) {
-                        parentNode.setChildren(new ArrayList<>());
-                    }
-                    parentNode.getChildren().add(it);
-                    ids.add(it.getId());
-                }
-            }
-            if (CollUtil.isNotEmpty(parentNode.getChildren())) {
-                List<Tree> children = parentNode.getChildren().stream().sorted().collect(Collectors.toList());
-                parentNode.setChildren(children);
-            }
-
-            // 如果是顶级节点（非根节点），直接加入树列表
-            if (parentNode.getPid() == rootId) {
-                finalTreeList.add(parentNode.toBean(beanClass));
-            }
-        }
-
-        // 如果没有成功组织为树结构，直接将剩余节点加入列表
-        if (finalTreeList.size() == 0) {
-            finalTreeList = treeList.stream().filter(s -> !ids.contains(s.getId()))
-                .map(i -> i.toBean(beanClass))
-                .collect(Collectors.toList());
-        }
-
-        // 内存每层已经排过了 这是最外层排序
-        finalTreeList = finalTreeList.stream().sorted().collect(Collectors.toList());
-        return finalTreeList;
+        Collection<Tree> finalTreeList = build(treeList, rootId);
+        return BeanUtil.toBeanCollection(finalTreeList, beanClass);
     }
 
     /**

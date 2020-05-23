@@ -170,7 +170,7 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     }
 
     public <T> T toBean(Class<T> clazz) {
-        return BeanUtil.mapToBean(this, clazz, true);
+        return BeanUtil.mapToBean(this, clazz, false);
     }
 
 }
