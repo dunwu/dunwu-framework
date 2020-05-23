@@ -14,7 +14,7 @@ import java.util.Map;
  * @author liangbaikai
  * @author Zhang Peng
  */
-public class DefaultNodeParser implements NodeParser<TreeNode> {
+public class DefaultNodeParser implements NodeParser<TreeNode, Tree> {
 
     @Override
     public void parse(TreeNode treeNode, Tree tree) {

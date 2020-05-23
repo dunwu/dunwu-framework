@@ -59,7 +59,7 @@ public class TreeUtil {
      * @return List
      */
     public static Collection<Tree> build(Collection<TreeNode> list, Serializable parentId,
-        NodeParser<TreeNode> nodeParser) {
+        NodeParser<TreeNode, Tree> nodeParser) {
         return build(list, parentId, TreeNodeConfig.DEFAULT_CONFIG, nodeParser);
     }
 
@@ -73,7 +73,7 @@ public class TreeUtil {
      * @return List
      */
     public static Collection<Tree> build(Collection<TreeNode> list, Serializable rootId, TreeNodeConfig treeNodeConfig,
-        NodeParser<TreeNode> nodeParser) {
+        NodeParser<TreeNode, Tree> nodeParser) {
         final List<Tree> treeList = CollUtil.newArrayList();
         Tree tree;
         for (TreeNode obj : list) {

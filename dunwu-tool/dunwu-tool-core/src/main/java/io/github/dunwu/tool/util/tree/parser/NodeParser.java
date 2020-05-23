@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.util.tree.parser;
 
-import io.github.dunwu.tool.util.tree.Tree;
+import io.github.dunwu.tool.util.tree.Node;
 
 /**
  * 树节点解析器 可以参考{@link DefaultNodeParser}
@@ -9,13 +9,13 @@ import io.github.dunwu.tool.util.tree.Tree;
  * @author liangbaikai
  */
 @FunctionalInterface
-public interface NodeParser<T> {
+public interface NodeParser<S extends Node<S>, T extends Node<T>> {
 
     /**
      * @param object   源数据实体
      * @param treeNode 树节点实体
      */
-    void parse(T object, Tree treeNode);
+    void parse(S object, T treeNode);
 
 }
 
