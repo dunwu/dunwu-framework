@@ -82,13 +82,13 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     @Override
     public void exportByIds(Collection<Serializable> ids, HttpServletResponse response) throws IOException {
-    List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
+        List<${table.dtoName}> list = dao.pojoListByIds(ids, ${table.dtoName}.class);
         dao.exportDtoList(list, response);
     }
 
     @Override
     public void exportPageData(Object query, Pageable pageable, HttpServletResponse response) throws IOException {
-    Page<${table.dtoName}> page = dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class);
+        Page<${table.dtoName}> page = dao.pojoPageByQuery(query, pageable, ${table.dtoName}.class);
         dao.exportDtoList(page.getContent(), response);
     }
 

@@ -83,7 +83,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("根据 ID 集合批量删除 ${entity} 记录")
     </#if>
-    public ResponseEntity<Object> deleteByIds(@RequestBody Set<Serializable> ids) {
+    public ResponseEntity<Object> deleteByIds(@RequestBody Collection<Serializable> ids) {
         return new ResponseEntity<>(service.removeByIds(ids), HttpStatus.ACCEPTED);
     }
 
@@ -127,7 +127,7 @@ public class ${table.controllerName} {
 
     @GetMapping("export")
     @ApiOperation("根据 ID 集合批量导出 ${table.dtoName} 列表数据")
-    public void exportByIds(@RequestBody Set<Serializable> ids, HttpServletResponse response) throws IOException {
+    public void exportByIds(@RequestBody Collection<Serializable> ids, HttpServletResponse response) throws IOException {
         service.exportByIds(ids, response);
     }
 
