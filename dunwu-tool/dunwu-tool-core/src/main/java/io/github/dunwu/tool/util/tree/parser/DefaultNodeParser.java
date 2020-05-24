@@ -28,7 +28,7 @@ public class DefaultNodeParser implements NodeParser<TreeNode, Tree> {
 
         tree.setId(treeNode.getId());
         tree.setPid(treeNode.getPid());
-        tree.setLevel(treeNode.getLevel());
+        tree.setWeight(treeNode.getWeight());
         tree.setName(treeNode.getName());
         tree.setChildren(new ArrayList<>());
 

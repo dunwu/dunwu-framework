@@ -8,7 +8,7 @@
 - [**commons-lang**](https://github.com/apache/commons-lang) - Apache 基础工具包。功能全面，使用简便，但由于工具包开发年月比较久，很多 API 并非基于泛型设计，导致工具包中有许多较为冗余的代码，不够优雅。但是，其应用十分广泛，很多优秀开源项目中使用了它。
 - [**hutool**](https://github.com/looly/hutool) - 国内程序员写的工具包。功能全面，使用简便。API 有中文文档，上手比较快。
 
-个人认为选择优先级：`guava > commons-lang > hutool`
+个人认为选择权重：`guava > commons-lang > hutool`
 
 技术选型思考：
 

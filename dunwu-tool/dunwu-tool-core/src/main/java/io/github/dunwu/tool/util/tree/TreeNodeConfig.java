@@ -16,7 +16,7 @@ public class TreeNodeConfig {
     private String idKey = "id";
     private String pidKey = "pid";
     private String nameKey = "name";
-    private String levelKey = "level";
+    private String weightKey = "weight";
     private String childrenKey = "children";
     // 可以配置递归深度 从0开始计算 默认此配置为空,即不限制
     private Integer deep;
@@ -46,18 +46,18 @@ public class TreeNodeConfig {
      *
      * @return 权重对应的名称
      */
-    public String getLevelKey() {
-        return this.levelKey;
+    public String getWeightKey() {
+        return this.weightKey;
     }
 
     /**
      * 设置权重对应的名称
      *
-     * @param levelKey 权重对应的名称
+     * @param weightKey 权重对应的名称
      * @return this
      */
-    public TreeNodeConfig setLevelKey(String levelKey) {
-        this.levelKey = levelKey;
+    public TreeNodeConfig setWeightKey(String weightKey) {
+        this.weightKey = weightKey;
         return this;
     }
 

@@ -61,15 +61,15 @@ public interface Node<T> extends Comparable<Node> {
      *
      * @return 权重
      */
-    Integer getLevel();
+    Integer getWeight();
 
     /**
      * 设置权重
      *
-     * @param level 级别
+     * @param weight 级别
      * @return this
      */
-    Node<T> setLevel(Integer level);
+    Node<T> setWeight(Integer weight);
 
     Collection<T> getChildren();
 
@@ -78,9 +78,9 @@ public interface Node<T> extends Comparable<Node> {
     @SuppressWarnings({ "unchecked", "rawtypes", "NullableProblems" })
     @Override
     default int compareTo(Node node) {
-        final Comparable level = this.getLevel();
+        final Comparable level = this.getWeight();
         if (null != level) {
-            final Comparable weightOther = node.getLevel();
+            final Comparable weightOther = node.getWeight();
             return level.compareTo(weightOther);
         }
         return 0;

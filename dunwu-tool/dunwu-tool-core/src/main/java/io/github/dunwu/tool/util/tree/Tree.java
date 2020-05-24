@@ -136,13 +136,13 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     }
 
     @Override
-    public Integer getLevel() {
-        return (Integer) this.get(treeNodeConfig.getLevelKey());
+    public Integer getWeight() {
+        return (Integer) this.get(treeNodeConfig.getWeightKey());
     }
 
     @Override
-    public Tree setLevel(Integer level) {
-        this.put(treeNodeConfig.getLevelKey(), level);
+    public Tree setWeight(Integer weight) {
+        this.put(treeNodeConfig.getWeightKey(), weight);
         return this;
     }
 

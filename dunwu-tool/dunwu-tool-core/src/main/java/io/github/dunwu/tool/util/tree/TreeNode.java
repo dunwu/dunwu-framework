@@ -28,9 +28,9 @@ public class TreeNode implements Node<TreeNode> {
     private String name;
 
     /**
-     * 级别 越小优先级越高 默认0
+     * 级别 越小权重越高 默认0
      */
-    private Integer level = 0;
+    private Integer weight = 0;
 
     private Collection<TreeNode> children;
 
@@ -55,14 +55,14 @@ public class TreeNode implements Node<TreeNode> {
      * @param id    ID
      * @param pid   父节点ID
      * @param name  名称
-     * @param level 级别
+     * @param weight 级别
      */
-    public TreeNode(Serializable id, Serializable pid, String name, Integer level) {
+    public TreeNode(Serializable id, Serializable pid, String name, Integer weight) {
         this.id = id;
         this.pid = pid;
         this.name = name;
-        if (level != null) {
-            this.level = level;
+        if (weight != null) {
+            this.weight = weight;
         }
     }
 
@@ -100,13 +100,13 @@ public class TreeNode implements Node<TreeNode> {
     }
 
     @Override
-    public Integer getLevel() {
-        return level;
+    public Integer getWeight() {
+        return weight;
     }
 
     @Override
-    public TreeNode setLevel(Integer level) {
-        this.level = level;
+    public TreeNode setWeight(Integer weight) {
+        this.weight = weight;
         return this;
     }
 
