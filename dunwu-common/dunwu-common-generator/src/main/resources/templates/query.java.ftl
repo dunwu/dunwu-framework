@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 </#if>
 
+import java.util.List;
+
 /**
  * ${table.comment!} Query 类
  *
@@ -59,11 +61,14 @@ public class ${entity}Query implements Serializable {
      */
             </#if>
         </#if>
+        <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
     @QueryField(type = QueryField.QueryType.BETWEEN)
-        <#if (field.propertyType == "Date") || field.propertyType == "LocalDateTime">
     @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-        </#if>
     private List<${field.propertyType}> ${field.propertyName};
+        <#else>
+    @QueryField
+    private ${field.propertyType} ${field.propertyName};
+        </#if>
     </#if>
 
 </#list>
