@@ -1,19 +1,15 @@
 package ${package.DaoImpl};
 
 import io.github.dunwu.data.core.annotation.Dao;
+import ${superDaoImplClassPackage};
 import ${package.Dao}.${table.daoName};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
-import ${superDaoImplClassPackage};
 import io.github.dunwu.web.util.ServletUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
 /**

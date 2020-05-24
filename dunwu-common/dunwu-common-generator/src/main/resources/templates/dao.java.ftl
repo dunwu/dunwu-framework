@@ -1,8 +1,8 @@
 package ${package.Dao};
 
+import ${superDaoClassPackage};
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
-import ${superDaoClassPackage};
 
 import java.io.IOException;
 import java.util.Collection;

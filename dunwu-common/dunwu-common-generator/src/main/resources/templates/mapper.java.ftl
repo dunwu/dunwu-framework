@@ -1,7 +1,7 @@
 package ${package.Mapper};
 
-import ${package.Entity}.${entity};
 import ${superMapperClassPackage};
+import ${package.Entity}.${entity};
 
 /**
  * ${table.comment!} Mapper 接口
