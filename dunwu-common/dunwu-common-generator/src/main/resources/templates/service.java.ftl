@@ -54,7 +54,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
      * @param ids {@link ${entity}} 主键列表
      * @return true / false
      */
-    boolean removeByIds(Set<Serializable> ids);
+    boolean removeByIds(Collection<Serializable> ids);
 
     /**
      * 根据 query 和 pageable 分页查询 {@link ${table.dtoName}}
@@ -103,7 +103,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
      * @param ids      id 列表
      * @param response {@link HttpServletResponse} 实体
      */
-    void exportByIds(Set<Serializable> ids, HttpServletResponse response) throws IOException;
+    void exportByIds(Collection<Serializable> ids, HttpServletResponse response) throws IOException;
 
     /**
      * 根据 query 和 pageable 查询 {@link ${table.dtoName}} 列表，并导出 excel 表单
