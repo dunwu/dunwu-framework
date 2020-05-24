@@ -147,6 +147,17 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     }
 
     @Override
+    public SORT getSort() {
+        return (SORT) this.get(treeNodeConfig.getSortKey());
+    }
+
+    @Override
+    public Tree setSort(SORT sort) {
+        this.put(treeNodeConfig.getSortKey(), sort);
+        return this;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public Collection<Tree> getChildren() {
         return (Collection<Tree>) this.get(treeNodeConfig.getChildrenKey());

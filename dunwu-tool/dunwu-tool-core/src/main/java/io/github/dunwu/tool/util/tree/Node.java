@@ -9,7 +9,7 @@ import java.util.Collection;
  * @author looly
  * @since 5.2.4
  */
-public interface Node<T> extends Comparable<Node> {
+public interface Node<T> extends Comparable<Node<T>> {
 
     /**
      * 获取ID
@@ -71,6 +71,20 @@ public interface Node<T> extends Comparable<Node> {
      */
     Node<T> setWeight(Integer weight);
 
+    /**
+     * 获取排序方式
+     *
+     * @return 排序方式
+     */
+    SORT getSort();
+
+    /**
+     * 设置排序方式
+     *
+     * @return 权重
+     */
+    Node<T> setSort(SORT sort);
+
     Collection<T> getChildren();
 
     Node<T> setChildren(Collection<T> children);
@@ -78,12 +92,21 @@ public interface Node<T> extends Comparable<Node> {
     @SuppressWarnings({ "unchecked", "rawtypes", "NullableProblems" })
     @Override
     default int compareTo(Node node) {
-        final Comparable level = this.getWeight();
-        if (null != level) {
-            final Comparable weightOther = node.getWeight();
-            return level.compareTo(weightOther);
+        final Comparable weight = this.getWeight();
+        if (null != weight) {
+            if (this.getSort() == SORT.ASC) {
+                final Comparable weightOther = node.getWeight();
+                return weight.compareTo(weightOther);
+            } else {
+                final Comparable weightOther = node.getWeight();
+                return weightOther.compareTo(weight);
+            }
         }
         return 0;
+    }
+
+    enum SORT {
+        ASC, DESC
     }
 
 }

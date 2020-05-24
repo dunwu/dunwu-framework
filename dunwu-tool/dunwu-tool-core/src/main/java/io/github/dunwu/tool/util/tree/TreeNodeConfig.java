@@ -17,9 +17,11 @@ public class TreeNodeConfig {
     private String pidKey = "pid";
     private String nameKey = "name";
     private String weightKey = "weight";
+    private String sortKey = "sort";
     private String childrenKey = "children";
     // 可以配置递归深度 从0开始计算 默认此配置为空,即不限制
     private Integer deep;
+    private Node.SORT sort;
 
     /**
      * 获取ID对应的名称
@@ -58,6 +60,26 @@ public class TreeNodeConfig {
      */
     public TreeNodeConfig setWeightKey(String weightKey) {
         this.weightKey = weightKey;
+        return this;
+    }
+
+    /**
+     * 获取排序方式对应的名称
+     *
+     * @return 排序方式对应的名称
+     */
+    public String getSortKey() {
+        return sortKey;
+    }
+
+    /**
+     * 设置排序方式对应的名称
+     *
+     * @param sortKey 排序方式对应的名称
+     * @return this
+     */
+    public TreeNodeConfig setSortKey(String sortKey) {
+        this.sortKey = sortKey;
         return this;
     }
 
@@ -138,6 +160,15 @@ public class TreeNodeConfig {
      */
     public TreeNodeConfig setDeep(Integer deep) {
         this.deep = deep;
+        return this;
+    }
+
+    public Node.SORT getSort() {
+        return sort;
+    }
+
+    public TreeNodeConfig setSort(Node.SORT sort) {
+        this.sort = sort;
         return this;
     }
 

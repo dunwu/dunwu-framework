@@ -28,9 +28,14 @@ public class TreeNode implements Node<TreeNode> {
     private String name;
 
     /**
-     * 级别 越小权重越高 默认0
+     * 权重。默认0
      */
     private Integer weight = 0;
+
+    /**
+     * 排序方式，默认降序，即权重越大排序越靠前
+     */
+    private SORT sort = SORT.DESC;
 
     private Collection<TreeNode> children;
 
@@ -52,9 +57,9 @@ public class TreeNode implements Node<TreeNode> {
     /**
      * 构造
      *
-     * @param id    ID
-     * @param pid   父节点ID
-     * @param name  名称
+     * @param id     ID
+     * @param pid    父节点ID
+     * @param name   名称
      * @param weight 级别
      */
     public TreeNode(Serializable id, Serializable pid, String name, Integer weight) {
@@ -107,6 +112,17 @@ public class TreeNode implements Node<TreeNode> {
     @Override
     public TreeNode setWeight(Integer weight) {
         this.weight = weight;
+        return this;
+    }
+
+    @Override
+    public SORT getSort() {
+        return sort;
+    }
+
+    @Override
+    public TreeNode setSort(SORT sort) {
+        this.sort = sort;
         return this;
     }
 
