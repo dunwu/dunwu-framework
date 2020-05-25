@@ -8,30 +8,30 @@ import io.github.dunwu.data.core.constant.Status;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-11
  */
-public class DatalException extends RuntimeException {
+public class DataException extends RuntimeException {
 
     private static final long serialVersionUID = -7027578114976830416L;
 
     private BaseResult result;
 
-    public DatalException(String message) {
+    public DataException(String message) {
         super(message);
     }
 
-    public DatalException(Throwable cause) {
+    public DataException(Throwable cause) {
         super(cause);
     }
 
-    public DatalException(String message, Throwable cause) {
+    public DataException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public DatalException(BaseResult result) {
+    public DataException(BaseResult result) {
         super(result.getMessage());
         this.result = new BaseResult(result.getCode(), result.getMessage());
     }
 
-    public DatalException(Status status) {
+    public DataException(Status status) {
         super(status.getMessage());
         this.result = BaseResult.fail(status);
     }
