@@ -1,6 +1,5 @@
 package io.github.dunwu.tool.util.tree;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -9,6 +8,7 @@ import java.util.Collection;
  * @author looly
  * @since 5.2.4
  */
+@SuppressWarnings("rawtypes")
 public interface Node<T> extends Comparable<Node<T>> {
 
     /**
@@ -16,7 +16,7 @@ public interface Node<T> extends Comparable<Node<T>> {
      *
      * @return ID
      */
-    Serializable getId();
+    Comparable getId();
 
     /**
      * 设置ID
@@ -24,14 +24,14 @@ public interface Node<T> extends Comparable<Node<T>> {
      * @param id ID
      * @return this
      */
-    Node<T> setId(Serializable id);
+    Node<T> setId(Comparable id);
 
     /**
      * 获取父节点ID
      *
      * @return 父节点ID
      */
-    Serializable getPid();
+    Comparable getPid();
 
     /**
      * 设置父节点ID
@@ -39,7 +39,7 @@ public interface Node<T> extends Comparable<Node<T>> {
      * @param pid 父节点ID
      * @return this
      */
-    Node<T> setPid(Serializable pid);
+    Node<T> setPid(Comparable pid);
 
     /**
      * 获取节点标签名称
@@ -61,7 +61,7 @@ public interface Node<T> extends Comparable<Node<T>> {
      *
      * @return 权重
      */
-    Integer getWeight();
+    Comparable getWeight();
 
     /**
      * 设置权重
@@ -69,7 +69,7 @@ public interface Node<T> extends Comparable<Node<T>> {
      * @param weight 级别
      * @return this
      */
-    Node<T> setWeight(Integer weight);
+    Node<T> setWeight(Comparable weight);
 
     /**
      * 获取排序方式
@@ -106,7 +106,8 @@ public interface Node<T> extends Comparable<Node<T>> {
     }
 
     enum SORT {
-        ASC, DESC
+        ASC,
+        DESC
     }
 
 }

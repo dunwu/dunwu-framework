@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
  * @author liangbaikai
  * @since 5.2.1
  */
+@SuppressWarnings("rawtypes")
 public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
 
     private static final long serialVersionUID = 1L;
@@ -101,25 +102,23 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Serializable getId() {
-        return (Serializable) this.get(treeNodeConfig.getIdKey());
+    public Comparable getId() {
+        return (Comparable) this.get(treeNodeConfig.getIdKey());
     }
 
     @Override
-    public Tree setId(Serializable id) {
+    public Tree setId(Comparable id) {
         this.put(treeNodeConfig.getIdKey(), id);
         return this;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Serializable getPid() {
-        return (Serializable) this.get(treeNodeConfig.getPidKey());
+    public Comparable getPid() {
+        return (Comparable) this.get(treeNodeConfig.getPidKey());
     }
 
     @Override
-    public Tree setPid(Serializable pid) {
+    public Tree setPid(Comparable pid) {
         this.put(treeNodeConfig.getPidKey(), pid);
         return this;
     }
@@ -136,12 +135,14 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     }
 
     @Override
-    public Integer getWeight() {
-        return (Integer) this.get(treeNodeConfig.getWeightKey());
+    @SuppressWarnings("rawtypes")
+    public Comparable<?> getWeight() {
+        return (Comparable) this.get(treeNodeConfig.getWeightKey());
     }
 
     @Override
-    public Tree setWeight(Integer weight) {
+    @SuppressWarnings("rawtypes")
+    public Tree setWeight(Comparable weight) {
         this.put(treeNodeConfig.getWeightKey(), weight);
         return this;
     }

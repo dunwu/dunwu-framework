@@ -7,12 +7,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-dependencies</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
+    <version>0.5.7</version>
     <relativePath>../dunwu-dependencies</relativePath>
   </parent>
 
   <artifactId>dunwu-parent</artifactId>
-  <version>0.5.7-SNAPSHOT</version>
+  <version>0.5.7</version>
   <packaging>pom</packaging>
   <name>dunwu-parent</name>
   <description>普通工具包的父pom</description>

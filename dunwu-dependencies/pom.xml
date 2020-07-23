@@ -7,12 +7,12 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
+    <version>0.5.7</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>dunwu-dependencies</artifactId>
-  <version>0.5.7-SNAPSHOT</version>
+  <version>0.5.7</version>
   <packaging>pom</packaging>
   <name>dunwu-dependencies</name>
   <description>作为所有项目的 maven 父工程（直接或间接），方便统一管理 maven 依赖版本</description>
@@ -22,7 +22,7 @@
     <!-- ========================================================
          Core Versions
     ========================================================= -->
-    <dunwu.version>0.5.7-SNAPSHOT</dunwu.version>
+    <dunwu.version>0.5.7</dunwu.version>
     <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
     <hadoop.version>3.2.0</hadoop.version>
 

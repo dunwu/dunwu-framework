@@ -16,6 +16,7 @@ public class TreeNodeConfig {
     private String idKey = "id";
     private String pidKey = "pid";
     private String nameKey = "name";
+    // 用于排序的字段，也可以将其设为 id、name 这样的可以用于排序的字段
     private String weightKey = "weight";
     private String sortKey = "sort";
     private String childrenKey = "children";

@@ -84,14 +84,30 @@ public class TreeUtil {
             nodeParser.parse(node, new Tree(treeNodeConfig));
             treeList.add(tree);
         }
-        return build(treeList, rootId);
+        return build(treeList, rootId, treeNodeConfig.getSort());
     }
 
     // -----------------------------------------------------------------------------------------------------------
 
-    public static <T extends Node<T>> List<T> build(Collection<T> list, Serializable rootId) {
+    @SuppressWarnings("all")
+    public static <T extends Node<T>> List<T> build(Collection<T> list, Serializable rootId, Node.SORT sort) {
+        // 根据排序方式实例化比较器
+        Comparator<T> comparator = (o1, o2) -> {
+            if (sort == Node.SORT.ASC) {
+                if (o1.getWeight().equals(o2.getWeight())) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+                return o1.getWeight().compareTo(o2.getWeight());
+            } else {
+                if (o1.getWeight().equals(o2.getWeight())) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+                return o2.getWeight().compareTo(o1.getWeight());
+            }
+        };
+
         List<T> finalTreeList = new ArrayList<>();
-        Set<Serializable> ids = new HashSet<>();
+        Set<Comparable> ids = new HashSet<>();
         for (T parentNode : list) {
             // 如果是顶级节点（非根节点），直接加入树列表
             if (parentNode.getPid() == rootId) {
@@ -107,8 +123,11 @@ public class TreeUtil {
                     ids.add(it.getId());
                 }
             }
+
             if (CollUtil.isNotEmpty(parentNode.getChildren())) {
-                List<T> children = parentNode.getChildren().stream().sorted().collect(Collectors.toList());
+                List<T> children;
+
+                children = parentNode.getChildren().stream().sorted(comparator).collect(Collectors.toList());
                 parentNode.setChildren(children);
             }
         }
@@ -119,11 +138,11 @@ public class TreeUtil {
         }
 
         // 内存每层已经排过了 这是最外层排序
-        finalTreeList = finalTreeList.stream().sorted().collect(Collectors.toList());
+        finalTreeList = finalTreeList.stream().sorted(comparator).collect(Collectors.toList());
         return finalTreeList;
     }
 
-    public static <T extends Comparable<T>> List<T> build(Collection<T> list, Serializable rootId,
+    public static <T> List<T> build(Collection<T> list, Serializable rootId,
         TreeNodeConfig treeNodeConfig, Class<T> beanClass) {
         final List<Tree> treeList = CollUtil.newArrayList();
         for (T i : list) {
@@ -133,7 +152,7 @@ public class TreeUtil {
             treeList.add(tree);
         }
 
-        Collection<Tree> finalTreeList = build(treeList, rootId);
+        Collection<Tree> finalTreeList = build(treeList, rootId, treeNodeConfig.getSort());
         return BeanUtil.toBeanList(finalTreeList, beanClass);
     }
 

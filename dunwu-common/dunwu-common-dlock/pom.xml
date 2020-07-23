@@ -6,13 +6,13 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
+    <version>0.5.7</version>
     <relativePath>../../dunwu-parent</relativePath>
   </parent>
 
   <artifactId>dunwu-common-dlock</artifactId>
   <packaging>jar</packaging>
-  <name>${project.artifactId}</name>
+  <name>dunwu-common-dlock</name>
 
   <dependencies>
     <dependency>

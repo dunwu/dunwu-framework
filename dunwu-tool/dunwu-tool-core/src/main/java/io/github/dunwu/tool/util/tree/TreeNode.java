@@ -1,6 +1,5 @@
 package io.github.dunwu.tool.util.tree;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -10,17 +9,18 @@ import java.util.Map;
  * @author liangbaikai
  * @author Zhang Peng
  */
+@SuppressWarnings("rawtypes")
 public class TreeNode implements Node<TreeNode> {
 
     /**
      * ID
      */
-    private Serializable id;
+    private Comparable id;
 
     /**
      * 父节点ID
      */
-    private Serializable pid;
+    private Comparable pid;
 
     /**
      * 名称
@@ -30,7 +30,7 @@ public class TreeNode implements Node<TreeNode> {
     /**
      * 权重。默认0
      */
-    private Integer weight = 0;
+    private Comparable<?> weight = 0;
 
     /**
      * 排序方式，默认降序，即权重越大排序越靠前
@@ -62,7 +62,7 @@ public class TreeNode implements Node<TreeNode> {
      * @param name   名称
      * @param weight 级别
      */
-    public TreeNode(Serializable id, Serializable pid, String name, Integer weight) {
+    public TreeNode(Comparable id, Comparable pid, String name, Integer weight) {
         this.id = id;
         this.pid = pid;
         this.name = name;
@@ -72,23 +72,23 @@ public class TreeNode implements Node<TreeNode> {
     }
 
     @Override
-    public Serializable getId() {
+    public Comparable getId() {
         return id;
     }
 
     @Override
-    public TreeNode setId(Serializable id) {
+    public TreeNode setId(Comparable id) {
         this.id = id;
         return this;
     }
 
     @Override
-    public Serializable getPid() {
+    public Comparable getPid() {
         return this.pid;
     }
 
     @Override
-    public TreeNode setPid(Serializable pid) {
+    public TreeNode setPid(Comparable pid) {
         this.pid = pid;
         return this;
     }
@@ -105,12 +105,13 @@ public class TreeNode implements Node<TreeNode> {
     }
 
     @Override
-    public Integer getWeight() {
+    public Comparable<?> getWeight() {
         return weight;
     }
 
     @Override
-    public TreeNode setWeight(Integer weight) {
+    @SuppressWarnings("all")
+    public TreeNode setWeight(Comparable weight) {
         this.weight = weight;
         return this;
     }
