@@ -3,7 +3,7 @@ package io.github.dunwu.util.net;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSONUtil;
 import io.github.dunwu.util.net.bean.City;
 import io.github.dunwu.util.net.bean.County;
 import io.github.dunwu.util.net.bean.Province;
@@ -76,7 +76,7 @@ public class RegionUtil {
         }
 
         return cities.stream().filter(item -> item.getCode().equals(code)).findAny()
-            .orElse(null);
+                     .orElse(null);
     }
 
     /**
@@ -91,7 +91,7 @@ public class RegionUtil {
         }
 
         return counties.stream().filter(item -> item.getCode().equals(code)).findAny()
-            .orElse(null);
+                       .orElse(null);
     }
 
     /**
@@ -108,7 +108,7 @@ public class RegionUtil {
         }
 
         return counties.stream().filter(item -> item.getName().contains(name))
-            .collect(Collectors.toSet());
+                       .collect(Collectors.toSet());
     }
 
     public static County getCountyByName(String cityName, String countyName) {
@@ -128,7 +128,7 @@ public class RegionUtil {
         }
 
         return cities.stream().filter(item -> item.getName().contains(name)).findAny()
-            .orElse(null);
+                     .orElse(null);
     }
 
     public static County getCountyByName(City city, String countyName) {
@@ -136,7 +136,7 @@ public class RegionUtil {
             return null;
         }
 
-        Set<County> counties = city.getCounties();
+        Set<County> counties = city.getAreas();
         if (CollectionUtil.isEmpty(counties)) {
             return null;
         }
@@ -161,7 +161,7 @@ public class RegionUtil {
         }
 
         return provinces.stream().filter(item -> item.getName().equals(code)).findAny()
-            .orElse(null);
+                        .orElse(null);
     }
 
     /**
@@ -176,7 +176,7 @@ public class RegionUtil {
         }
 
         return provinces.stream().filter(item -> item.getName().contains(name)).findAny()
-            .orElse(null);
+                        .orElse(null);
     }
 
     private static void loadData() {
@@ -190,14 +190,14 @@ public class RegionUtil {
         cities.clear();
         counties.clear();
 
-        provinces = JSON.parseArray(json, Province.class);
+        provinces = JSONUtil.parseArray(json).toList(Province.class);
         if (CollectionUtil.isEmpty(provinces)) {
             return;
         }
         for (Province province : provinces) {
-            for (City city : province.getCities()) {
+            for (City city : province.getAreas()) {
                 city.setProvince(province);
-                for (County county : city.getCounties()) {
+                for (County county : city.getAreas()) {
                     county.setProvince(province);
                     county.setCity(city);
                     counties.add(county);

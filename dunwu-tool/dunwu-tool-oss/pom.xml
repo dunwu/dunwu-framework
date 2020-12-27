@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -10,23 +10,15 @@
     <relativePath>../dunwu-tool-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>dunwu-tool-net</artifactId>
+  <artifactId>dunwu-tool-oss</artifactId>
   <packaging>jar</packaging>
-  <name>dunwu-tool-net</name>
-  <description>文本工具类</description>
+  <name>dunwu-tool-oss</name>
+  <description>OSS 服务封装SDK</description>
 
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-tool-core</artifactId>
+      <artifactId>dunwu-tool-web</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
-  </build>
 </project>
