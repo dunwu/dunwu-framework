@@ -6,9 +6,8 @@
 
   <parent>
     <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-parent</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
-    <relativePath>../../dunwu-parent</relativePath>
+    <artifactId>dunwu-tool</artifactId>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>dunwu-tool-core</artifactId>
@@ -36,11 +35,6 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

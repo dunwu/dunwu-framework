@@ -1,7 +1,5 @@
 package io.github.dunwu.util.net.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -28,8 +26,7 @@ public class City implements Comparable<City>, Serializable {
     /**
      * 下辖区/县
      */
-    @JSONField(name = "children")
-    private Set<County> counties;
+    private Set<County> areas;
 
     /**
      * 所属省
@@ -37,7 +34,7 @@ public class City implements Comparable<City>, Serializable {
     private Province province;
 
     public City() {
-        counties = new TreeSet<>();
+        areas = new TreeSet<>();
     }
 
     @Override
@@ -82,12 +79,12 @@ public class City implements Comparable<City>, Serializable {
         this.name = name;
     }
 
-    public Set<County> getCounties() {
-        return counties;
+    public Set<County> getAreas() {
+        return areas;
     }
 
-    public void setCounties(Set<County> counties) {
-        this.counties = counties;
+    public void setAreas(Set<County> areas) {
+        this.areas = areas;
     }
 
     public Province getProvince() {
