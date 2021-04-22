@@ -93,7 +93,7 @@
     <jsoup.version>1.13.1</jsoup.version>
     <junit-jupiter.version>5.6.0</junit-jupiter.version>
     <mvel.version>2.4.7.Final</mvel.version>
-    <shiro.version>1.5.1</shiro.version>
+    <shiro.version>1.7.0</shiro.version>
     <swagger.ui>2.9.2</swagger.ui>
     <swagger-annotations.version>1.5.22</swagger-annotations.version>
     <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
