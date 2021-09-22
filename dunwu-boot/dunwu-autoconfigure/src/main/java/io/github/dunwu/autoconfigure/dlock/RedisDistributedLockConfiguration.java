@@ -1,7 +1,7 @@
 package io.github.dunwu.autoconfigure.dlock;
 
-import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.provider.RedisLockProvider;
+import io.github.dunwu.tool.dlock.core.LockProvider;
+import io.github.dunwu.tool.dlock.provider.RedisLockProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -35,6 +35,16 @@ public class ValidatorUtil {
     }
 
     /**
+     * 校验文本中是否包含中文字符
+     *
+     * @param text 被校验的文本
+     * @return boolean
+     */
+    public static boolean hasChineseChar(final String text) {
+        return RegexUtil.contains(text, RegexUtil.ZH_CHAR);
+    }
+
+    /**
      * 校验全是汉字字符
      * <p>
      * 描述：校验字符串中只能有中文字符（不包括中文标点符号）。
@@ -47,7 +57,17 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean isAllChineseChar(final String text) {
-        return RegexUtil.matches(text, RegexUtil.ALL_ZH_CHAR);
+        return RegexUtil.matches(text, RegexUtil.ZH_CHAR);
+    }
+
+    /**
+     * 校验文本中是否包含英文字符
+     *
+     * @param text 被校验的文本
+     * @return boolean
+     */
+    public static boolean hasEnglishChar(final String text) {
+        return RegexUtil.contains(text, RegexUtil.EN_CHAR);
     }
 
     /**
@@ -57,7 +77,7 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean isAllEnglishChar(final String text) {
-        return RegexUtil.matches(text, RegexUtil.ALL_EN_CHAR);
+        return RegexUtil.matches(text, RegexUtil.EN_CHAR);
     }
 
     /**
@@ -77,7 +97,7 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean isAllGeneralChar(final String text) {
-        return RegexUtil.matches(text, RegexUtil.ALL_GENERAL_CHAR);
+        return RegexUtil.matches(text, RegexUtil.GENERAL_CHAR);
     }
 
     /**
@@ -87,7 +107,7 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean isAllLowerEnglishChar(final String text) {
-        return RegexUtil.matches(text, RegexUtil.ALL_EN_LOWER_CHAR);
+        return RegexUtil.matches(text, RegexUtil.EN_LOWER_CHAR);
     }
 
     /**
@@ -97,7 +117,7 @@ public class ValidatorUtil {
      * @return boolean
      */
     public static boolean isAllUpperEnglishChar(final String text) {
-        return RegexUtil.matches(text, RegexUtil.ALL_EN_UPPER_CHAR);
+        return RegexUtil.matches(text, RegexUtil.EN_UPPER_CHAR);
     }
 
     /**
@@ -143,7 +163,6 @@ public class ValidatorUtil {
      * 校验日期。
      * <p>
      * 日期满足以下条件：
-     *
      * <ul>
      *   <li>格式yyyy-MM-dd或yyyy-M-d 连字符可以没有或是“-”、“/”、“.”之一</li>
      *   <li>闰年的二月可以有29日；而平年不可以。</li>
@@ -182,7 +201,6 @@ public class ValidatorUtil {
      * 如 : hello@154.145.68.12 '@'符号前的邮箱用户和'.'符号前的域名(domain)
      * <p>
      * 必须满足以下条件：
-     *
      * <ul>
      *   <li>字符只能是英文字母、数字、下划线'_'、'.'、'-'；</li>
      *   <li>首字符必须为字母或数字； '_'、'.'、'-' 不能连续出现。</li>
@@ -291,14 +309,12 @@ public class ValidatorUtil {
      *   <li>嵌入IPv4的 IPv6 地址(section 2 of rfc6052 映射IPv4的 IPv6 地址 (section 2.1 of rfc2765)</li>
      *   <li>翻译IPv4的 IPv6 地址 (section 2.1 of rfc2765)</li>
      * </ul>
-     *
      * <pre>
      * 匹配：1:2:3:4:5:6:7:8 | 1:: | 1::8 | 1::6:7:8 | 1::5:6:7:8 |
      * 	 1::4:5:6:7:8 | 1::3:4:5:6:7:8 | ::2:3:4:5:6:7:8 | 1:2:3:4:5:6:7: |
      * 	 1:2:3:4:5:6::8 | 1:2:3:4:5::8 | 1:2:3:4::8 | 1:2:3::8 | 1:2::8 |
      * 	 1::8 | ::8 | fe80::7:8%1 | ::255.255.255.255 | 2001:db8:3:4::192.0.2.33 |
      * 	 64:ff9b::192.0.2.33
-     *
      * 不匹配：1.2.3.4.5.6.7.8 | 1::2::3
      * </pre>
      *

@@ -4,17 +4,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
+    <groupId>io.github.dunwu.boot</groupId>
     <artifactId>dunwu-boot</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>dunwu-starter-hdfs</artifactId>
-  <description>Starter for using HDFS</description>
+  <version>1.0.2</version>
+  <name>${project.artifactId}</name>
+  <description>dunwu HDFS spring boot 启动包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-boot/dunwu-starter-hdfs</url>
 
   <dependencies>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.boot</groupId>
       <artifactId>dunwu-autoconfigure</artifactId>
       <exclusions>
         <exclusion>
@@ -24,7 +27,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.tool</groupId>
       <artifactId>dunwu-tool-data</artifactId>
     </dependency>
     <dependency>

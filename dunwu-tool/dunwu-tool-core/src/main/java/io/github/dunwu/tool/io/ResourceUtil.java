@@ -5,7 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>

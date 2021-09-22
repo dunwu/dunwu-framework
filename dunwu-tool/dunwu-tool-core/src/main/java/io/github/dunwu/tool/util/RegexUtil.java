@@ -19,25 +19,30 @@ import java.util.regex.Pattern;
  */
 public class RegexUtil {
 
-    /**
-     * 全是英文字符
-     */
-    public static final String ALL_EN_CHAR = "[A-Za-z]+";
-
     // @formatter:off
 
     // 字符类型正则表达式
     // -----------------------------------------------------------------------------
 
-	/**
-	 * 全是英文小写字符
-	 */
-	public static final String ALL_EN_LOWER_CHAR = "[a-z]+";
+    /**
+     * 英文字符
+     */
+    public static final String EN_CHAR = "[A-Za-z]+";
 
 	/**
-	 * 全是英文大写字符
+	 * 英文小写字符
 	 */
-	public static final String ALL_EN_UPPER_CHAR = "[A-Z]+";
+	public static final String EN_LOWER_CHAR = "[a-z]+";
+
+	/**
+	 * 英文大写字符
+	 */
+	public static final String EN_UPPER_CHAR = "[A-Z]+";
+
+    /**
+     * 中文字符
+     */
+    public static final String ZH_CHAR = "[\\u4e00-\\u9fa5]+";
 
 	/**
 	 * 中文字、英文字母、数字和下划线
@@ -45,14 +50,9 @@ public class RegexUtil {
 	public static final String ALL_GENERAL_AND_ZH_CHAR = "[\u4E00-\u9FFF\\w]+";
 
 	/**
-	 * 全是英文字母 、数字和下划线
+	 * 英文字母 、数字和下划线
 	 */
-	public static final String ALL_GENERAL_CHAR = "\\w+";
-
-	/**
-	 * 全是中文字符
-	 */
-	public static final String ALL_ZH_CHAR = "[\\u4e00-\\u9fa5]+";
+	public static final String GENERAL_CHAR = "\\w+";
 
 	/**
 	 * 15位身份证号码
@@ -410,13 +410,15 @@ public class RegexUtil {
     }
 
     /**
-     * 返回正则模式 {@link Pattern}
+     * 返回正则模式 {@link java.util.regex.Pattern}
      *
      * @param regex 正则表达式
-     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
-     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
-     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
-     * @return 正则模式 {@link Pattern}
+     * @param flag  匹配标志，可选值：{@link java.util.regex.Pattern#CASE_INSENSITIVE}, {@link java.util.regex.Pattern#MULTILINE},
+     *              {@link java.util.regex.Pattern#DOTALL}, {@link java.util.regex.Pattern#UNICODE_CASE}, {@link
+     *              java.util.regex.Pattern#CANON_EQ}, {@link java.util.regex.Pattern#UNIX_LINES}, {@link
+     *              java.util.regex.Pattern#LITERAL}, {@link java.util.regex.Pattern#UNICODE_CHARACTER_CLASS}, {@link
+     *              java.util.regex.Pattern#COMMENTS}
+     * @return 正则模式 {@link java.util.regex.Pattern}
      */
     public static Pattern getPattern(final String regex, int flag) {
         if (StrUtil.isBlank(regex)) {
@@ -650,9 +652,11 @@ public class RegexUtil {
      *
      * @param text  被校验的文本
      * @param regex 正则表达式
-     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
-     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
-     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
+     * @param flag  匹配标志，可选值：{@link java.util.regex.Pattern#CASE_INSENSITIVE}, {@link java.util.regex.Pattern#MULTILINE},
+     *              {@link java.util.regex.Pattern#DOTALL}, {@link java.util.regex.Pattern#UNICODE_CASE}, {@link
+     *              java.util.regex.Pattern#CANON_EQ}, {@link java.util.regex.Pattern#UNIX_LINES}, {@link
+     *              java.util.regex.Pattern#LITERAL}, {@link java.util.regex.Pattern#UNICODE_CHARACTER_CLASS}, {@link
+     *              java.util.regex.Pattern#COMMENTS}
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final String regex, final int flag) {
@@ -667,7 +671,7 @@ public class RegexUtil {
      * 校验文本是否满足正则表达式
      *
      * @param text    被校验的文本
-     * @param pattern 正则模式 {@link Pattern}
+     * @param pattern 正则模式 {@link java.util.regex.Pattern}
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final Pattern pattern) {

@@ -20,7 +20,10 @@ import cn.hutool.core.lang.Assert;
 
 import java.awt.*;
 import java.awt.color.ColorSpace;
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Utility for working with {@link AnsiColor} in the context of {@link Color AWT Colors}.

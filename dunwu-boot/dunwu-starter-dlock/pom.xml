@@ -4,14 +4,16 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
+    <groupId>io.github.dunwu.boot</groupId>
     <artifactId>dunwu-boot</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>dunwu-starter-dlock</artifactId>
-  <version>1.0.0</version>
-  <description>Starter for using DLock</description>
+  <version>1.0.2</version>
+  <name>${project.artifactId}</name>
+  <description>dunwu 分布式锁 spring boot 启动包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-boot/dunwu-starter-dlock</url>
 
   <dependencies>
     <dependency>
@@ -19,11 +21,11 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.boot</groupId>
       <artifactId>dunwu-autoconfigure</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.tool</groupId>
       <artifactId>dunwu-tool-dlock</artifactId>
     </dependency>
     <dependency>

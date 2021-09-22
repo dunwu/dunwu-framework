@@ -4,13 +4,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
+    <groupId>io.github.dunwu.boot</groupId>
     <artifactId>dunwu-boot</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>dunwu-starter-mail</artifactId>
-  <description>Starter for using Java Mail</description>
+  <name>${project.artifactId}</name>
+  <description>dunwu 邮件 spring boot 启动包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-boot/dunwu-starter-mail</url>
 
   <dependencies>
     <dependency>
@@ -18,7 +20,7 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.boot</groupId>
       <artifactId>dunwu-autoconfigure</artifactId>
     </dependency>
     <dependency>

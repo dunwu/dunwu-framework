@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-tool</artifactId>
-    <version>1.0.0</version>
-    <relativePath />
+    <artifactId>dunwu-parent</artifactId>
+    <version>1.0.2</version>
+    <relativePath>../dunwu-parent/pom.xml</relativePath>
   </parent>
 
+  <groupId>io.github.dunwu.boot</groupId>
   <artifactId>dunwu-boot</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <packaging>pom</packaging>
-  <name>dunwu-boot</name>
-  <description>Dunwu Starters</description>
+  <name>${project.artifactId}</name>
+  <description>dunwu spring boot 通用 pom</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-boot</url>
 
   <modules>
     <module>dunwu-autoconfigure</module>
@@ -27,38 +29,46 @@
   </modules>
 
   <properties>
-    <dunwu-boot.version>1.0.0</dunwu-boot.version>
+    <dunwu-boot.version>1.0.2</dunwu-boot.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.tool</groupId>
+        <artifactId>dunwu-tool</artifactId>
+        <version>1.0.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-autoconfigure</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-starter-dlock</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-starter-hdfs</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-starter-mail</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-starter-mybatis</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.dunwu</groupId>
+        <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-starter-web</artifactId>
         <version>${dunwu-boot.version}</version>
       </dependency>

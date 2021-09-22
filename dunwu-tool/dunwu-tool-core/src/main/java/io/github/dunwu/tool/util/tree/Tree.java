@@ -59,7 +59,6 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
 
     /**
      * 获取所有父节点名称列表
-     *
      * <p>
      * 比如有个人在研发1部，他上面有研发部，接着上面有技术中心<br> 返回结果就是：[研发一部, 研发中心, 技术中心]
      *
@@ -74,7 +73,6 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
 
     /**
      * 获取所有父节点名称列表
-     *
      * <p>
      * 比如有个人在研发1部，他上面有研发部，接着上面有技术中心<br> 返回结果就是：[研发一部, 研发中心, 技术中心]
      *
@@ -155,6 +153,28 @@ public class Tree extends LinkedHashMap<String, Object> implements Node<Tree> {
     @Override
     public Tree setSort(SORT sort) {
         this.put(treeNodeConfig.getSortKey(), sort);
+        return this;
+    }
+
+    @Override
+    public boolean isHasChildren() {
+        return (boolean) this.get(treeNodeConfig.getHasChildrenKey());
+    }
+
+    @Override
+    public Tree setHasChildren(boolean hasChildren) {
+        this.put(treeNodeConfig.getHasChildrenKey(), hasChildren);
+        return this;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return (boolean) this.get(treeNodeConfig.getLeafKey());
+    }
+
+    @Override
+    public Tree setLeaf(boolean leaf) {
+        this.put(treeNodeConfig.getLeafKey(), leaf);
         return this;
     }
 

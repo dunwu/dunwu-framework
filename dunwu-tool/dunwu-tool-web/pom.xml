@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
+    <groupId>io.github.dunwu.tool</groupId>
     <artifactId>dunwu-tool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>dunwu-tool-web</artifactId>
   <packaging>jar</packaging>
-  <name>dunwu-tool-web</name>
-  <description>Dunwu Web 脚手架</description>
+  <name>${project.artifactId}</name>
+  <description>dunwu web 工具包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-tool/dunwu-tool-web</url>
 
   <dependencies>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
-      <artifactId>dunwu-tool-net</artifactId>
+      <groupId>io.github.dunwu.tool</groupId>
+      <artifactId>dunwu-tool-data</artifactId>
     </dependency>
 
     <!--javaee-->

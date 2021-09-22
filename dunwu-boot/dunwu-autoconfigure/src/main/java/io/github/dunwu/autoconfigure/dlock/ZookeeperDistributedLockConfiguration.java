@@ -1,8 +1,8 @@
 package io.github.dunwu.autoconfigure.dlock;
 
 import io.github.dunwu.autoconfigure.zookeeper.ZookeeperAutoConfiguration;
-import io.github.dunwu.dlock.core.LockProvider;
-import io.github.dunwu.dlock.provider.ZookeeperLockProvider;
+import io.github.dunwu.tool.dlock.core.LockProvider;
+import io.github.dunwu.tool.dlock.provider.ZookeeperLockProvider;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

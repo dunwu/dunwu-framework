@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.github.dunwu</groupId>
+    <groupId>io.github.dunwu.tool</groupId>
     <artifactId>dunwu-tool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>dunwu-tool-generator</artifactId>
   <packaging>jar</packaging>
-  <name>dunwu-tool-generator</name>
-  <description>Dunwu 代码生成器</description>
+  <name>${project.artifactId}</name>
+  <description>dunwu 代码生成工具包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-tool/dunwu-tool-generator</url>
 
   <properties>
     <disable.checks>true</disable.checks>
@@ -29,11 +30,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.tool</groupId>
       <artifactId>dunwu-tool-data</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.dunwu</groupId>
+      <groupId>io.github.dunwu.tool</groupId>
       <artifactId>dunwu-tool-web</artifactId>
     </dependency>
     <dependency>
@@ -50,6 +51,11 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 </project>

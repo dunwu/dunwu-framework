@@ -1,6 +1,5 @@
 package io.github.dunwu.tool.util;
 
-import io.github.dunwu.tool.util.PropertiesUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

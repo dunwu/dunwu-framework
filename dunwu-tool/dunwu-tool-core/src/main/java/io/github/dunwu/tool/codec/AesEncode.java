@@ -3,7 +3,10 @@ package io.github.dunwu.tool.codec;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Base64;
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 
 /**
