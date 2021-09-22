@@ -6,14 +6,15 @@
   <parent>
     <groupId>io.github.dunwu.tool</groupId>
     <artifactId>dunwu-tool</artifactId>
-    <version>1.0.2</version>
-    <relativePath>../../pom.xml</relativePath>
+    <version>1.0.4</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>dunwu-tool-net</artifactId>
   <packaging>jar</packaging>
-  <name>dunwu-tool-net</name>
-  <description>文本工具类</description>
+  <name>${project.artifactId}</name>
+  <description>dunwu 网络工具包</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-tool/dunwu-tool-net</url>
 
   <dependencies>
     <dependency>

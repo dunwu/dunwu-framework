@@ -6,7 +6,8 @@
   <parent>
     <groupId>io.github.dunwu.tool</groupId>
     <artifactId>dunwu-tool</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>dunwu-tool-web</artifactId>
@@ -18,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>io.github.dunwu.tool</groupId>
-      <artifactId>dunwu-tool-data</artifactId>
+      <artifactId>dunwu-tool-net</artifactId>
     </dependency>
 
     <!--javaee-->

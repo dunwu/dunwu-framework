@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
+import io.github.dunwu.tool.net.IpUtil;
 import io.github.dunwu.tool.util.SystemUtil;
 import io.github.dunwu.tool.web.constant.HttpHeaders;
 import io.github.dunwu.tool.web.constant.WebConstant;
@@ -217,7 +218,7 @@ public class ServletUtil {
         RequestIdentityInfo requestIdentityInfo = new RequestIdentityInfo();
         try {
             requestIdentityInfo.setIp(getRealRemoteAddr(request));
-            // requestIdentityInfo.setLocation(IpUtil.getRegionName(requestIdentityInfo.getIp()));
+            requestIdentityInfo.setLocation(IpUtil.getRegionName(requestIdentityInfo.getIp()));
             StringBuilder userAgent = new StringBuilder("[");
             userAgent.append(request.getHeader("User-Agent"));
             userAgent.append("]");

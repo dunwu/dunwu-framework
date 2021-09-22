@@ -6,13 +6,106 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-framework</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.4</version>
   <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>dunwu-framework</description>
+  <url>https://github.com/dunwu/dunwu-framework</url>
+
+  <properties>
+    <disable.checks>false</disable.checks>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.version>3.5.4</maven.version>
+
+    <!-- ========================================================
+         Deploy Plugins
+    ========================================================= -->
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+  </properties>
 
   <modules>
+    <module>dunwu-dependencies</module>
     <module>dunwu-parent</module>
     <module>dunwu-tool</module>
     <module>dunwu-boot</module>
   </modules>
 
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>oss</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus-staging-maven-plugin.version}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>oss</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
+  <inceptionYear>2018 - Now</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/dunwu/dunwu-framework</url>
+    <connection>git@github.com:dunwu/dunwu-framework.git</connection>
+    <developerConnection>https://github.com/dunwu-framework</developerConnection>
+  </scm>
+  <developers>
+    <developer>
+      <name>Zhang Peng</name>
+      <url>https://github.com/dunwu</url>
+      <email>forbreak@163.com</email>
+      <timezone>+8</timezone>
+    </developer>
+  </developers>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/dunwu/dunwu-framework/issues</url>
+  </issueManagement>
 </project>

@@ -7,25 +7,29 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
     <relativePath>../dunwu-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.github.dunwu.tool</groupId>
   <artifactId>dunwu-tool</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.4</version>
   <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>dunwu-tool 父 pom</description>
+  <url>https://github.com/dunwu/dunwu-framework/dunwu-tool</url>
 
   <modules>
     <module>dunwu-tool-core</module>
     <module>dunwu-tool-data</module>
     <module>dunwu-tool-dlock</module>
     <module>dunwu-tool-generator</module>
+    <module>dunwu-tool-net</module>
     <module>dunwu-tool-web</module>
   </modules>
 
   <properties>
-    <dunwu-tool.version>1.0.2</dunwu-tool.version>
+    <dunwu-tool.version>1.0.4</dunwu-tool.version>
   </properties>
 
   <dependencies>
@@ -71,6 +75,11 @@
       <dependency>
         <groupId>io.github.dunwu.tool</groupId>
         <artifactId>dunwu-tool-generator</artifactId>
+        <version>${dunwu-tool.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.dunwu.tool</groupId>
+        <artifactId>dunwu-tool-net</artifactId>
         <version>${dunwu-tool.version}</version>
       </dependency>
       <dependency>
