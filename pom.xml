@@ -6,23 +6,34 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-framework</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>dunwu-framework</description>
   <url>https://github.com/dunwu/dunwu-framework</url>
 
   <properties>
-    <disable.checks>false</disable.checks>
+    <checkstyle.validate.disabled>true</checkstyle.validate.disabled>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.version>3.5.4</maven.version>
 
     <!-- ========================================================
-         Deploy Plugins
+         Plugins
     ========================================================= -->
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+    <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+    <duplicate-finder-maven-plugin.version>1.4.0</duplicate-finder-maven-plugin.version>
   </properties>
 
   <modules>
@@ -31,6 +42,191 @@
     <module>dunwu-tool</module>
     <module>dunwu-boot</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>checkstyle-validation</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <skip>${checkstyle.validate.disabled}</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-rules</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>${java.version}</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>[${maven.version},)</version>
+                </requireMavenVersion>
+                <requireReleaseDeps>
+                  <onlyWhenRelease>true</onlyWhenRelease>
+                </requireReleaseDeps>
+                <requireProperty>
+                  <property>checkstyle.validate.disabled</property>
+                  <message>You must set checkstyle.validate.disabled property!</message>
+                </requireProperty>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>commons-logging:*:*</exclude>
+                    <exclude>org.hibernate:hibernate-validator:*</exclude>
+                  </excludes>
+                  <searchTransitive>true</searchTransitive>
+                </bannedDependencies>
+                <dependencyConvergence />
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <manifest>
+              <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Title>${project.name}</Implementation-Title>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <Built-By>Dunwu</Built-By>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/src/main/java</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.json</include>
+                    <include>**/*.dat</include>
+                    <include>**/*.db</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${basedir}/src/main/resources</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.json</include>
+                    <include>**/*.dat</include>
+                    <include>**/*.db</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.basepom.maven</groupId>
+        <artifactId>duplicate-finder-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>duplicate-dependencies</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+              <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
+              <ignoredClassPatterns>
+                <ignoredClassPattern>.*module-info</ignoredClassPattern>
+              </ignoredClassPatterns>
+              <ignoredResourcePatterns>
+                <ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
+              </ignoredResourcePatterns>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven-checkstyle-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven-enforcer-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${maven-war-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.basepom.maven</groupId>
+          <artifactId>duplicate-finder-maven-plugin</artifactId>
+          <version>${duplicate-finder-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${nexus-staging-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
   <profiles>
     <profile>
@@ -45,7 +241,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven-gpg-plugin.version}</version>
             <executions>
               <execution>
                 <id>oss</id>
@@ -59,13 +254,43 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${nexus-staging-maven-plugin.version}</version>
             <extensions>true</extensions>
             <configuration>
               <serverId>oss</serverId>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <encoding>UTF-8</encoding>
+              <charset>UTF-8</charset>
+              <docencoding>UTF-8</docencoding>
+              <additionalJOption>-Xdoclint:none</additionalJOption>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <inherited>true</inherited>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

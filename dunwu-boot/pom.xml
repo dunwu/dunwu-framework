@@ -7,13 +7,13 @@
   <parent>
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <relativePath>../dunwu-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.github.dunwu.boot</groupId>
   <artifactId>dunwu-boot</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>dunwu spring boot 通用 pom</description>
@@ -29,7 +29,7 @@
   </modules>
 
   <properties>
-    <dunwu-boot.version>1.0.4</dunwu-boot.version>
+    <dunwu-boot.version>1.0.5</dunwu-boot.version>
   </properties>
 
   <dependencyManagement>
@@ -37,7 +37,7 @@
       <dependency>
         <groupId>io.github.dunwu.tool</groupId>
         <artifactId>dunwu-tool</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -76,162 +76,25 @@
   </dependencyManagement>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>checkstyle-validation</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-rules</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <excludes>
-                    <exclude>commons-logging:*:*</exclude>
-                    <exclude>org.hibernate:hibernate-validator:*</exclude>
-                  </excludes>
-                  <searchTransitive>true</searchTransitive>
-                </bannedDependencies>
-                <dependencyConvergence />
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.basepom.maven</groupId>
-        <artifactId>duplicate-finder-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>duplicate-dependencies</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
-              <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
-              <ignoredClassPatterns>
-                <ignoredClassPattern>.*module-info</ignoredClassPattern>
-              </ignoredClassPatterns>
-              <ignoredResourcePatterns>
-                <ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
-              </ignoredResourcePatterns>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-            <manifest>
-              <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
-              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
-            </manifest>
-            <manifestEntries>
-              <Implementation-Title>${project.name}</Implementation-Title>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <Built-By>Dunwu</Built-By>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <encoding>UTF-8</encoding>
-          <charset>UTF-8</charset>
-          <docencoding>UTF-8</docencoding>
-          <additionalJOption>-Xdoclint:none</additionalJOption>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <inherited>true</inherited>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/classes</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/src/main/java</directory>
-                  <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.json</include>
-                    <include>**/*.dat</include>
-                    <include>**/*.db</include>
-                  </includes>
-                </resource>
-                <resource>
-                  <directory>${basedir}/src/main/resources</directory>
-                  <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.json</include>
-                    <include>**/*.dat</include>
-                    <include>**/*.db</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/application*.yml</include>
+          <include>**/application*.yaml</include>
+          <include>**/application*.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <excludes>
+          <exclude>**/application*.yml</exclude>
+          <exclude>**/application*.yaml</exclude>
+          <exclude>**/application*.properties</exclude>
+        </excludes>
+      </resource>
+    </resources>
   </build>
 
   <inceptionYear>2018 - Now</inceptionYear>
