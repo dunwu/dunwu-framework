@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.dunwu.tool.data.core.DataException;
+import io.github.dunwu.tool.data.exception.DataException;
 import io.github.dunwu.tool.generator.InjectionConfig;
 import io.github.dunwu.tool.generator.config.*;
 import io.github.dunwu.tool.generator.config.po.TableField;
@@ -130,6 +130,174 @@ public class ConfigBuilder {
         }
 
         processTypes(this.strategyConfig);
+    }
+
+    /**
+     * 处理包配置
+     *
+     * @param globalConfig   GlobalConfig
+     * @param packageConfig  PackageConfig
+     * @param templateConfig TemplateConfig
+     */
+    private void handlerPackage(GlobalConfig globalConfig, PackageConfig packageConfig, TemplateConfig templateConfig) {
+        // 包信息
+        packageInfo = new HashMap<>(11);
+        packageInfo.put(ConstVal.MODULE_NAME, packageConfig.getModuleName());
+        packageInfo.put(ConstVal.XML, packageConfig.getXml() +
+            (StrUtil.isBlank(packageConfig.getModuleName()) ? "" : StringPool.SLASH + packageConfig.getModuleName()));
+        packageInfo.put(ConstVal.ENTITY, joinPackage(packageConfig.getParent(), packageConfig.getEntity()));
+        packageInfo.put(ConstVal.DTO, joinPackage(packageConfig.getParent(), packageConfig.getDto()));
+        packageInfo.put(ConstVal.QUERY, joinPackage(packageConfig.getParent(), packageConfig.getQuery()));
+        packageInfo.put(ConstVal.MAPPER, joinPackage(packageConfig.getParent(), packageConfig.getMapper()));
+        packageInfo.put(ConstVal.DAO, joinPackage(packageConfig.getParent(), packageConfig.getDao()));
+        packageInfo.put(ConstVal.DAO_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getDaoImpl()));
+        packageInfo.put(ConstVal.SERVICE, joinPackage(packageConfig.getParent(), packageConfig.getService()));
+        packageInfo.put(ConstVal.SERVICE_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getServiceImpl()));
+        packageInfo.put(ConstVal.CONTROLLER, joinPackage(packageConfig.getParent(), packageConfig.getController()));
+
+        // 自定义路径
+        Map<String, String> configPathInfo = packageConfig.getPathInfo();
+        if (null != configPathInfo) {
+            pathInfoMap = configPathInfo;
+        } else {
+            // 生成路径信息
+            pathInfoMap = new HashMap<>(11);
+
+            // 设置 MyBatis Plus 各个 java 文件的包路径
+            String javaDir = globalConfig.getBackendDir() +
+                ConstVal.JAVA_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getEntity(getGlobalConfig().isEnableKotlin()), javaDir,
+                ConstVal.ENTITY_PATH, ConstVal.ENTITY);
+            addPathInfo(pathInfoMap, templateConfig.getDto(), javaDir, ConstVal.DTO_PATH, ConstVal.DTO);
+            addPathInfo(pathInfoMap, templateConfig.getQuery(), javaDir, ConstVal.QUERY_PATH, ConstVal.QUERY);
+            addPathInfo(pathInfoMap, templateConfig.getMapper(), javaDir, ConstVal.MAPPER_PATH, ConstVal.MAPPER);
+            addPathInfo(pathInfoMap, templateConfig.getDao(), javaDir, ConstVal.DAO_PATH, ConstVal.DAO);
+            addPathInfo(pathInfoMap, templateConfig.getDaoImpl(), javaDir, ConstVal.DAO_IMPL_PATH, ConstVal.DAO_IMPL);
+            addPathInfo(pathInfoMap, templateConfig.getService(), javaDir, ConstVal.SERVICE_PATH, ConstVal.SERVICE);
+            addPathInfo(pathInfoMap, templateConfig.getServiceImpl(), javaDir, ConstVal.SERVICE_IMPL_PATH,
+                ConstVal.SERVICE_IMPL);
+            addPathInfo(pathInfoMap, templateConfig.getController(), javaDir, ConstVal.CONTROLLER_PATH,
+                ConstVal.CONTROLLER);
+
+            // 设置 MyBatis Plus 的 Mapper.xml 文件的包路径
+            String resourcesDir = globalConfig.getBackendDir() +
+                ConstVal.RESOURCES_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getXml(), resourcesDir, ConstVal.XML_PATH, ConstVal.XML);
+
+            // 设置前端文件的包路径
+            String viewsDir = globalConfig.getFrontendDir() +
+                ConstVal.VIEWS_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getApi(), viewsDir, ConstVal.API_PATH, ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getList(), viewsDir, ConstVal.LIST_PATH, ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getForm(), viewsDir, ConstVal.FORM_PATH, ConstVal.MODULE_NAME);
+        }
+    }
+
+    /**
+     * 获取全局配置信息
+     */
+    public GlobalConfig getGlobalConfig() {
+        return globalConfig;
+    }
+
+    // =====================================================================
+    // 获取配置信息
+    // =====================================================================
+
+    private void addPathInfo(Map<String, String> pathInfo, String template, String outputDir, String path,
+        String module) {
+        if (StringUtils.isNotBlank(template)) {
+            pathInfo.put(path, joinPath(outputDir, packageInfo.get(module)));
+        }
+    }
+
+    /**
+     * 连接路径字符串
+     *
+     * @param parentDir   路径常量字符串
+     * @param packageName 包名
+     * @return 连接后的路径
+     */
+    private String joinPath(String parentDir, String packageName) {
+        if (StringUtils.isBlank(parentDir)) {
+            parentDir = System.getProperty(ConstVal.JAVA_TMPDIR);
+        }
+        if (!StringUtils.endsWith(parentDir, File.separator)) {
+            parentDir += File.separator;
+        }
+
+        if (StrUtil.isNotBlank(packageName)) {
+            packageName = packageName.replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
+            return parentDir + packageName;
+        }
+        return parentDir;
+    }
+
+    /**
+     * 连接父子包名
+     *
+     * @param parent     父包名
+     * @param subPackage 子包名
+     * @return 连接后的包名
+     */
+    private String joinPackage(String parent, String subPackage) {
+        if (StringUtils.isBlank(parent)) {
+            return subPackage;
+        }
+        return parent + StringPool.DOT + subPackage;
+    }
+
+    /**
+     * 处理superClassName,IdClassType,IdStrategy配置
+     *
+     * @param config 策略配置
+     */
+    private void processTypes(StrategyConfig config) {
+        if (StringUtils.isBlank(config.getSuperDaoClass())) {
+            superDaoClass = ConstVal.SUPER_DAO_CLASS;
+        } else {
+            superDaoClass = config.getSuperDaoClass();
+        }
+        if (StringUtils.isBlank(config.getSuperDaoImplClass())) {
+            superDaoImplClass = ConstVal.SUPER_DAO_IMPL_CLASS;
+        } else {
+            superDaoImplClass = config.getSuperDaoImplClass();
+        }
+        if (StringUtils.isBlank(config.getSuperServiceClass())) {
+            superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
+        } else {
+            superServiceClass = config.getSuperServiceClass();
+        }
+        if (StringUtils.isBlank(config.getSuperServiceImplClass())) {
+            superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
+        } else {
+            superServiceImplClass = config.getSuperServiceImplClass();
+        }
+        if (StringUtils.isBlank(config.getSuperMapperClass())) {
+            superMapperClass = ConstVal.SUPER_MAPPER_CLASS;
+        } else {
+            superMapperClass = config.getSuperMapperClass();
+        }
+        superEntityClass = config.getSuperEntityClass();
+        superControllerClass = config.getSuperControllerClass();
+    }
+
+    public static String getDefaultValidateTypeByJavaType(String javaType) {
+        switch (javaType) {
+            case "LocalDate":
+            case "LocalTime":
+            case "Year":
+            case "YearMonth":
+            case "LocalDateTime":
+            case "Date":
+            case "Time":
+            case "Timestamp":
+                return FormType.DateTimePicker.getCode();
+            case "Boolean":
+                return FormType.Switch.getCode();
+            default:
+                return FormType.Input.getCode();
+        }
     }
 
     public List<TableInfo> queryTableInfoList() {
@@ -320,336 +488,6 @@ public class ConfigBuilder {
         return tableInfo;
     }
 
-    // =====================================================================
-    // 获取配置信息
-    // =====================================================================
-
-    /**
-     * 获取数据源配置
-     */
-    public DataSourceConfig getDataSourceConfig() {
-        return dataSourceConfig;
-    }
-
-    /**
-     * 获取全局配置信息
-     */
-    public GlobalConfig getGlobalConfig() {
-        return globalConfig;
-    }
-
-    /**
-     * 获取模板路径配置信息
-     */
-    public TemplateConfig getTemplateConfig() {
-        return templateConfig == null ? new TemplateConfig() : templateConfig;
-    }
-
-    /**
-     * 获取策略配置
-     */
-    public StrategyConfig getStrategyConfig() {
-        return strategyConfig;
-    }
-
-    /**
-     * 获取注入配置信息
-     */
-    public InjectionConfig getInjectionConfig() {
-        return injectionConfig;
-    }
-
-    public ConfigBuilder setInjectionConfig(InjectionConfig injectionConfig) {
-        this.injectionConfig = injectionConfig;
-        return this;
-    }
-
-    /**
-     * 所有包配置信息
-     *
-     * @return 包配置
-     */
-    public Map<String, String> getPackageInfo() {
-        return packageInfo;
-    }
-
-    /**
-     * 所有路径配置
-     *
-     * @return 路径配置
-     */
-    public Map<String, String> getPathInfoMap() {
-        return pathInfoMap;
-    }
-
-    /**
-     * 表信息
-     *
-     * @return 所有表信息
-     */
-    public Collection<TableInfo> getTableInfoList() {
-        return tableInfoList;
-    }
-
-    public ConfigBuilder setTableInfoList(Collection<TableInfo> tableInfoList) {
-        this.tableInfoList = tableInfoList;
-        return this;
-    }
-
-    // =====================================================================
-    // 获取超类定义
-    // =====================================================================
-
-    public String getSuperEntityClass() {
-        return superEntityClass;
-    }
-
-    public String getSuperMapperClass() {
-        return superMapperClass;
-    }
-
-    public String getSuperDaoClass() {
-        return superDaoClass;
-    }
-
-    public String getSuperDaoImplClass() {
-        return superDaoImplClass;
-    }
-
-    public String getSuperServiceClass() {
-        return superServiceClass;
-    }
-
-    public String getSuperServiceImplClass() {
-        return superServiceImplClass;
-    }
-
-    public String getSuperControllerClass() {
-        return superControllerClass;
-    }
-
-    // =====================================================================
-    // 私有方法
-    // =====================================================================
-
-    /**
-     * 处理包配置
-     *
-     * @param globalConfig   GlobalConfig
-     * @param packageConfig  PackageConfig
-     * @param templateConfig TemplateConfig
-     */
-    private void handlerPackage(GlobalConfig globalConfig, PackageConfig packageConfig, TemplateConfig templateConfig) {
-        // 包信息
-        packageInfo = new HashMap<>(11);
-        packageInfo.put(ConstVal.MODULE_NAME, packageConfig.getModuleName());
-        packageInfo.put(ConstVal.XML, packageConfig.getXml() +
-            (StrUtil.isBlank(packageConfig.getModuleName()) ? "" : StringPool.SLASH + packageConfig.getModuleName()));
-        packageInfo.put(ConstVal.ENTITY, joinPackage(packageConfig.getParent(), packageConfig.getEntity()));
-        packageInfo.put(ConstVal.DTO, joinPackage(packageConfig.getParent(), packageConfig.getDto()));
-        packageInfo.put(ConstVal.QUERY, joinPackage(packageConfig.getParent(), packageConfig.getQuery()));
-        packageInfo.put(ConstVal.MAPPER, joinPackage(packageConfig.getParent(), packageConfig.getMapper()));
-        packageInfo.put(ConstVal.DAO, joinPackage(packageConfig.getParent(), packageConfig.getDao()));
-        packageInfo.put(ConstVal.DAO_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getDaoImpl()));
-        packageInfo.put(ConstVal.SERVICE, joinPackage(packageConfig.getParent(), packageConfig.getService()));
-        packageInfo.put(ConstVal.SERVICE_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getServiceImpl()));
-        packageInfo.put(ConstVal.CONTROLLER, joinPackage(packageConfig.getParent(), packageConfig.getController()));
-
-        // 自定义路径
-        Map<String, String> configPathInfo = packageConfig.getPathInfo();
-        if (null != configPathInfo) {
-            pathInfoMap = configPathInfo;
-        } else {
-            // 生成路径信息
-            pathInfoMap = new HashMap<>(11);
-
-            // 设置 MyBatis Plus 各个 java 文件的包路径
-            String javaDir = globalConfig.getBackendDir() +
-                ConstVal.JAVA_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getEntity(getGlobalConfig().isEnableKotlin()), javaDir,
-                ConstVal.ENTITY_PATH, ConstVal.ENTITY);
-            addPathInfo(pathInfoMap, templateConfig.getDto(), javaDir, ConstVal.DTO_PATH, ConstVal.DTO);
-            addPathInfo(pathInfoMap, templateConfig.getQuery(), javaDir, ConstVal.QUERY_PATH, ConstVal.QUERY);
-            addPathInfo(pathInfoMap, templateConfig.getMapper(), javaDir, ConstVal.MAPPER_PATH, ConstVal.MAPPER);
-            addPathInfo(pathInfoMap, templateConfig.getDao(), javaDir, ConstVal.DAO_PATH, ConstVal.DAO);
-            addPathInfo(pathInfoMap, templateConfig.getDaoImpl(), javaDir, ConstVal.DAO_IMPL_PATH, ConstVal.DAO_IMPL);
-            addPathInfo(pathInfoMap, templateConfig.getService(), javaDir, ConstVal.SERVICE_PATH, ConstVal.SERVICE);
-            addPathInfo(pathInfoMap, templateConfig.getServiceImpl(), javaDir, ConstVal.SERVICE_IMPL_PATH,
-                ConstVal.SERVICE_IMPL);
-            addPathInfo(pathInfoMap, templateConfig.getController(), javaDir, ConstVal.CONTROLLER_PATH,
-                ConstVal.CONTROLLER);
-
-            // 设置 MyBatis Plus 的 Mapper.xml 文件的包路径
-            String resourcesDir = globalConfig.getBackendDir() +
-                ConstVal.RESOURCES_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getXml(), resourcesDir, ConstVal.XML_PATH, ConstVal.XML);
-
-            // 设置前端文件的包路径
-            String viewsDir = globalConfig.getFrontendDir() +
-                ConstVal.VIEWS_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getApi(), viewsDir, ConstVal.API_PATH, ConstVal.MODULE_NAME);
-            addPathInfo(pathInfoMap, templateConfig.getList(), viewsDir, ConstVal.LIST_PATH, ConstVal.MODULE_NAME);
-            addPathInfo(pathInfoMap, templateConfig.getForm(), viewsDir, ConstVal.FORM_PATH, ConstVal.MODULE_NAME);
-        }
-    }
-
-    private void addPathInfo(Map<String, String> pathInfo, String template, String outputDir, String path,
-        String module) {
-        if (StringUtils.isNotBlank(template)) {
-            pathInfo.put(path, joinPath(outputDir, packageInfo.get(module)));
-        }
-    }
-
-    /**
-     * 连接路径字符串
-     *
-     * @param parentDir   路径常量字符串
-     * @param packageName 包名
-     * @return 连接后的路径
-     */
-    private String joinPath(String parentDir, String packageName) {
-        if (StringUtils.isBlank(parentDir)) {
-            parentDir = System.getProperty(ConstVal.JAVA_TMPDIR);
-        }
-        if (!StringUtils.endsWith(parentDir, File.separator)) {
-            parentDir += File.separator;
-        }
-
-        if (StrUtil.isNotBlank(packageName)) {
-            packageName = packageName.replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
-            return parentDir + packageName;
-        }
-        return parentDir;
-    }
-
-    /**
-     * 连接父子包名
-     *
-     * @param parent     父包名
-     * @param subPackage 子包名
-     * @return 连接后的包名
-     */
-    private String joinPackage(String parent, String subPackage) {
-        if (StringUtils.isBlank(parent)) {
-            return subPackage;
-        }
-        return parent + StringPool.DOT + subPackage;
-    }
-
-    /**
-     * 处理superClassName,IdClassType,IdStrategy配置
-     *
-     * @param config 策略配置
-     */
-    private void processTypes(StrategyConfig config) {
-        if (StringUtils.isBlank(config.getSuperDaoClass())) {
-            superDaoClass = ConstVal.SUPER_DAO_CLASS;
-        } else {
-            superDaoClass = config.getSuperDaoClass();
-        }
-        if (StringUtils.isBlank(config.getSuperDaoImplClass())) {
-            superDaoImplClass = ConstVal.SUPER_DAO_IMPL_CLASS;
-        } else {
-            superDaoImplClass = config.getSuperDaoImplClass();
-        }
-        if (StringUtils.isBlank(config.getSuperServiceClass())) {
-            superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
-        } else {
-            superServiceClass = config.getSuperServiceClass();
-        }
-        if (StringUtils.isBlank(config.getSuperServiceImplClass())) {
-            superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
-        } else {
-            superServiceImplClass = config.getSuperServiceImplClass();
-        }
-        if (StringUtils.isBlank(config.getSuperMapperClass())) {
-            superMapperClass = ConstVal.SUPER_MAPPER_CLASS;
-        } else {
-            superMapperClass = config.getSuperMapperClass();
-        }
-        superEntityClass = config.getSuperEntityClass();
-        superControllerClass = config.getSuperControllerClass();
-    }
-
-    /**
-     * 组装查询表信息的 SQL
-     *
-     * @param config    策略配置
-     * @param isInclude 包含的表
-     * @param isExclude 排除的表
-     * @return /
-     */
-    private String getSearchTableSql(DataSourceConfig dataSource, StrategyConfig config,
-        boolean isInclude, boolean isExclude) {
-
-        IDbQuery dbQuery = dataSource.getDbQuery();
-        String tablesSql = dbQuery.tablesSql();
-
-        if (DbType.POSTGRE_SQL == dataSource.getDbType()) {
-            String schema = dataSource.getSchemaName();
-            if (schema == null) {
-                //pg 默认 schema=public
-                schema = "public";
-                dataSource.setSchemaName(schema);
-            }
-            tablesSql = String.format(tablesSql, schema);
-        } else if (DbType.KINGBASE_ES == dataSource.getDbType()) {
-            String schema = dataSource.getSchemaName();
-            if (schema == null) {
-                //kingbase 默认 schema=PUBLIC
-                schema = "PUBLIC";
-                dataSource.setSchemaName(schema);
-            }
-            tablesSql = String.format(tablesSql, schema);
-        } else if (DbType.DB2 == dataSource.getDbType()) {
-            String schema = dataSource.getSchemaName();
-            if (schema == null) {
-                //db2 默认 schema=current schema
-                schema = "current schema";
-                dataSource.setSchemaName(schema);
-            }
-            tablesSql = String.format(tablesSql, schema);
-        }
-        //oracle数据库表太多，出现最大游标错误
-        else if (DbType.ORACLE == dataSource.getDbType()) {
-            String schema = dataSource.getSchemaName();
-            //oracle 默认 schema=username
-            if (schema == null) {
-                schema = dataSource.getUsername().toUpperCase();
-                dataSource.setSchemaName(schema);
-            }
-            tablesSql = String.format(tablesSql, schema);
-        }
-        StringBuilder sql = new StringBuilder(tablesSql);
-        if (config.isEnableSqlFilter()) {
-            if (config.getLikeTable() != null) {
-                sql.append(" AND ")
-                   .append(dbQuery.tableName())
-                   .append(" LIKE '")
-                   .append(config.getLikeTable().getValue())
-                   .append("'");
-            } else if (config.getNotLikeTable() != null) {
-                sql.append(" AND ")
-                   .append(dbQuery.tableName())
-                   .append(" NOT LIKE '")
-                   .append(config.getNotLikeTable().getValue())
-                   .append("'");
-            }
-            if (isInclude) {
-                sql.append(" AND ").append(dbQuery.tableName()).append(" IN (")
-                   .append(Arrays.stream(config.getInclude())
-                                 .map(tb -> "'" + tb + "'")
-                                 .collect(Collectors.joining(","))).append(")");
-            } else if (isExclude) {
-                sql.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (")
-                   .append(Arrays.stream(config.getExclude())
-                                 .map(tb -> "'" + tb + "'")
-                                 .collect(Collectors.joining(","))).append(")");
-            }
-        }
-        return sql.toString();
-    }
-
     /**
      * 检测导入包
      *
@@ -678,18 +516,6 @@ public class ConfigBuilder {
                 }
             });
         }
-    }
-
-    /**
-     * 表名匹配
-     *
-     * @param setTableName 设置表名
-     * @param dbTableName  数据库表单
-     * @return ignore
-     */
-    private boolean tableNameMatches(String setTableName, String dbTableName) {
-        return setTableName.equalsIgnoreCase(dbTableName)
-            || StringUtils.matches(setTableName, dbTableName);
     }
 
     /**
@@ -856,45 +682,16 @@ public class ConfigBuilder {
         return tableInfo;
     }
 
-    public void groupTableFields(TableInfo tableInfo) {
-        if (tableInfo == null || CollectionUtil.isEmpty(tableInfo.getFields())) {
-            return;
-        }
-
-        List<TableField> listFields = new ArrayList<>();
-        List<TableField> formFields = new ArrayList<>();
-        List<TableField> queryFields = new ArrayList<>();
-        List<TableField> queryExtFields = new ArrayList<>();
-        List<TableField> sortFields = new ArrayList<>();
-
-        for (TableField field : tableInfo.getFields()) {
-            if (field.isEnableList()) {
-                listFields.add(field);
-            }
-
-            if (field.isEnableForm()) {
-                formFields.add(field);
-            }
-
-            if (field.isEnableQuery()) {
-                if (queryFields.size() < 3) {
-                    queryFields.add(field);
-                } else {
-                    queryExtFields.add(field);
-                }
-            }
-
-            if (field.isEnableSort()) {
-                sortFields.add(field);
-            }
-        }
-
-        tableInfo.setListFields(listFields)
-                 .setFormFields(formFields)
-                 .setQueryFields(queryFields)
-                 .setQueryExtFields(queryExtFields)
-                 .setSortFields(sortFields);
+    /**
+     * 获取策略配置
+     */
+    public StrategyConfig getStrategyConfig() {
+        return strategyConfig;
     }
+
+    // =====================================================================
+    // 获取超类定义
+    // =====================================================================
 
     /**
      * 处理字段名称
@@ -937,6 +734,155 @@ public class ConfigBuilder {
         return propertyName;
     }
 
+    public static String getDefaultFormTypeByJavaType(String javaType) {
+        switch (javaType) {
+            case "LocalDate":
+            case "LocalTime":
+            case "Year":
+            case "YearMonth":
+            case "LocalDateTime":
+            case "Date":
+            case "Time":
+            case "Timestamp":
+                return FormType.DateTimePicker.getCode();
+            case "Boolean":
+                return FormType.Switch.getCode();
+            default:
+                return FormType.Input.getCode();
+        }
+    }
+
+    public void groupTableFields(TableInfo tableInfo) {
+        if (tableInfo == null || CollectionUtil.isEmpty(tableInfo.getFields())) {
+            return;
+        }
+
+        List<TableField> listFields = new ArrayList<>();
+        List<TableField> formFields = new ArrayList<>();
+        List<TableField> queryFields = new ArrayList<>();
+        List<TableField> queryExtFields = new ArrayList<>();
+        List<TableField> sortFields = new ArrayList<>();
+
+        for (TableField field : tableInfo.getFields()) {
+            if (field.isEnableList()) {
+                listFields.add(field);
+            }
+
+            if (field.isEnableForm()) {
+                formFields.add(field);
+            }
+
+            if (field.isEnableQuery()) {
+                if (queryFields.size() < 3) {
+                    queryFields.add(field);
+                } else {
+                    queryExtFields.add(field);
+                }
+            }
+
+            if (field.isEnableSort()) {
+                sortFields.add(field);
+            }
+        }
+
+        tableInfo.setListFields(listFields)
+                 .setFormFields(formFields)
+                 .setQueryFields(queryFields)
+                 .setQueryExtFields(queryExtFields)
+                 .setSortFields(sortFields);
+    }
+
+    /**
+     * 组装查询表信息的 SQL
+     *
+     * @param config    策略配置
+     * @param isInclude 包含的表
+     * @param isExclude 排除的表
+     * @return /
+     */
+    private String getSearchTableSql(DataSourceConfig dataSource, StrategyConfig config,
+        boolean isInclude, boolean isExclude) {
+
+        IDbQuery dbQuery = dataSource.getDbQuery();
+        String tablesSql = dbQuery.tablesSql();
+
+        if (DbType.POSTGRE_SQL == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //pg 默认 schema=public
+                schema = "public";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        } else if (DbType.KINGBASE_ES == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //kingbase 默认 schema=PUBLIC
+                schema = "PUBLIC";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        } else if (DbType.DB2 == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //db2 默认 schema=current schema
+                schema = "current schema";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        }
+        //oracle数据库表太多，出现最大游标错误
+        else if (DbType.ORACLE == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            //oracle 默认 schema=username
+            if (schema == null) {
+                schema = dataSource.getUsername().toUpperCase();
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        }
+        StringBuilder sql = new StringBuilder(tablesSql);
+        if (config.isEnableSqlFilter()) {
+            if (config.getLikeTable() != null) {
+                sql.append(" AND ")
+                   .append(dbQuery.tableName())
+                   .append(" LIKE '")
+                   .append(config.getLikeTable().getValue())
+                   .append("'");
+            } else if (config.getNotLikeTable() != null) {
+                sql.append(" AND ")
+                   .append(dbQuery.tableName())
+                   .append(" NOT LIKE '")
+                   .append(config.getNotLikeTable().getValue())
+                   .append("'");
+            }
+            if (isInclude) {
+                sql.append(" AND ").append(dbQuery.tableName()).append(" IN (")
+                   .append(Arrays.stream(config.getInclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
+            } else if (isExclude) {
+                sql.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (")
+                   .append(Arrays.stream(config.getExclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
+            }
+        }
+        return sql.toString();
+    }
+
+    /**
+     * 表名匹配
+     *
+     * @param setTableName 设置表名
+     * @param dbTableName  数据库表单
+     * @return ignore
+     */
+    private boolean tableNameMatches(String setTableName, String dbTableName) {
+        return setTableName.equalsIgnoreCase(dbTableName)
+            || StringUtils.matches(setTableName, dbTableName);
+    }
+
     private void checkConfig() {
 
         if (this.globalConfig == null) {
@@ -960,40 +906,94 @@ public class ConfigBuilder {
         }
     }
 
-    public static String getDefaultFormTypeByJavaType(String javaType) {
-        switch (javaType) {
-            case "LocalDate":
-            case "LocalTime":
-            case "Year":
-            case "YearMonth":
-            case "LocalDateTime":
-            case "Date":
-            case "Time":
-            case "Timestamp":
-                return FormType.DateTimePicker.getCode();
-            case "Boolean":
-                return FormType.Switch.getCode();
-            default:
-                return FormType.Input.getCode();
-        }
+    // =====================================================================
+    // 私有方法
+    // =====================================================================
+
+    /**
+     * 获取数据源配置
+     */
+    public DataSourceConfig getDataSourceConfig() {
+        return dataSourceConfig;
     }
 
-    public static String getDefaultValidateTypeByJavaType(String javaType) {
-        switch (javaType) {
-            case "LocalDate":
-            case "LocalTime":
-            case "Year":
-            case "YearMonth":
-            case "LocalDateTime":
-            case "Date":
-            case "Time":
-            case "Timestamp":
-                return FormType.DateTimePicker.getCode();
-            case "Boolean":
-                return FormType.Switch.getCode();
-            default:
-                return FormType.Input.getCode();
-        }
+    /**
+     * 获取模板路径配置信息
+     */
+    public TemplateConfig getTemplateConfig() {
+        return templateConfig == null ? new TemplateConfig() : templateConfig;
+    }
+
+    /**
+     * 获取注入配置信息
+     */
+    public InjectionConfig getInjectionConfig() {
+        return injectionConfig;
+    }
+
+    public ConfigBuilder setInjectionConfig(InjectionConfig injectionConfig) {
+        this.injectionConfig = injectionConfig;
+        return this;
+    }
+
+    /**
+     * 所有包配置信息
+     *
+     * @return 包配置
+     */
+    public Map<String, String> getPackageInfo() {
+        return packageInfo;
+    }
+
+    /**
+     * 所有路径配置
+     *
+     * @return 路径配置
+     */
+    public Map<String, String> getPathInfoMap() {
+        return pathInfoMap;
+    }
+
+    /**
+     * 表信息
+     *
+     * @return 所有表信息
+     */
+    public Collection<TableInfo> getTableInfoList() {
+        return tableInfoList;
+    }
+
+    public ConfigBuilder setTableInfoList(Collection<TableInfo> tableInfoList) {
+        this.tableInfoList = tableInfoList;
+        return this;
+    }
+
+    public String getSuperEntityClass() {
+        return superEntityClass;
+    }
+
+    public String getSuperMapperClass() {
+        return superMapperClass;
+    }
+
+    public String getSuperDaoClass() {
+        return superDaoClass;
+    }
+
+    public String getSuperDaoImplClass() {
+        return superDaoImplClass;
+    }
+
+    public String getSuperServiceClass() {
+        return superServiceClass;
+    }
+
+    public String getSuperServiceImplClass() {
+        return superServiceImplClass;
+    }
+
+    public String getSuperControllerClass() {
+        return superControllerClass;
     }
 
 }

@@ -1,5 +1,6 @@
 package io.github.dunwu.tool.data;
 
+import io.github.dunwu.tool.data.constant.enums.OrderType;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -25,24 +26,14 @@ public class DataOrderItem implements Serializable {
      */
     private OrderType type = OrderType.ASC;
 
-    public static DataOrderItem asc(String column) {
-        return build(column, OrderType.ASC);
-    }
-
-    public static DataOrderItem desc(String column) {
-        return build(column, OrderType.DESC);
-    }
-
     public static List<DataOrderItem> ascs(String... columns) {
         return Arrays.stream(columns)
-            .map(DataOrderItem::asc)
-            .collect(Collectors.toList());
+                     .map(DataOrderItem::asc)
+                     .collect(Collectors.toList());
     }
 
-    public static List<DataOrderItem> descs(String... columns) {
-        return Arrays.stream(columns)
-            .map(DataOrderItem::desc)
-            .collect(Collectors.toList());
+    public static DataOrderItem asc(String column) {
+        return build(column, OrderType.ASC);
     }
 
     private static DataOrderItem build(String column, OrderType type) {
@@ -50,6 +41,16 @@ public class DataOrderItem implements Serializable {
         item.setColumn(column);
         item.setType(type);
         return item;
+    }
+
+    public static List<DataOrderItem> descs(String... columns) {
+        return Arrays.stream(columns)
+                     .map(DataOrderItem::desc)
+                     .collect(Collectors.toList());
+    }
+
+    public static DataOrderItem desc(String column) {
+        return build(column, OrderType.DESC);
     }
 
 }

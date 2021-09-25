@@ -28,7 +28,7 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import io.github.dunwu.tool.data.core.PageResult;
+import io.github.dunwu.tool.data.PageResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -51,15 +51,6 @@ public interface IDao<E> {
      * 默认批次提交数量
      */
     int DEFAULT_BATCH_SIZE = 1000;
-
-    /**
-     * 插入一条记录（选择字段，策略插入）
-     *
-     * @param entity 实体对象
-     */
-    default boolean insert(E entity) {
-        return SqlHelper.retBool(getBaseMapper().insert(entity));
-    }
 
     /**
      * 插入（批量）
@@ -105,6 +96,13 @@ public interface IDao<E> {
     default boolean deleteById(Serializable id) {
         return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
+
+    /**
+     * 获取对应 entity 的 BaseMapper
+     *
+     * @return BaseMapper
+     */
+    BaseMapper<E> getBaseMapper();
 
     /**
      * 根据 columnMap 条件，删除记录
@@ -218,16 +216,6 @@ public interface IDao<E> {
     }
 
     /**
-     * 根据 Wrapper，查询一条记录 <br/>
-     * <p>结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</p>
-     *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    default E getOne(Wrapper<E> queryWrapper) {
-        return getOne(queryWrapper, true);
-    }
-
-    /**
      * 根据 entity，查询一条记录 <br/>
      * <p>
      * 结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
@@ -241,19 +229,22 @@ public interface IDao<E> {
     }
 
     /**
+     * 根据 Wrapper，查询一条记录 <br/>
+     * <p>结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</p>
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    default E getOne(Wrapper<E> queryWrapper) {
+        return getOne(queryWrapper, true);
+    }
+
+    /**
      * 根据 Wrapper，查询一条记录
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      * @param throwEx      有多个 result 是否抛出异常
      */
     E getOne(Wrapper<E> queryWrapper, boolean throwEx);
-
-    /**
-     * 根据 Wrapper，查询一条记录
-     *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    Map<String, Object> getMap(Wrapper<E> queryWrapper);
 
     /**
      * 根据 entity，查询一条记录
@@ -264,6 +255,13 @@ public interface IDao<E> {
         QueryWrapper<E> queryWrapper = Wrappers.query(entity);
         return getMap(queryWrapper);
     }
+
+    /**
+     * 根据 Wrapper，查询一条记录
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    Map<String, Object> getMap(Wrapper<E> queryWrapper);
 
     /**
      * 根据 Wrapper，查询一条记录
@@ -304,20 +302,20 @@ public interface IDao<E> {
     /**
      * 查询列表
      *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    default List<E> list(Wrapper<E> queryWrapper) {
-        return getBaseMapper().selectList(queryWrapper);
-    }
-
-    /**
-     * 查询列表
-     *
      * @param entity 查询实体
      */
     default List<E> list(E entity) {
         QueryWrapper<E> queryWrapper = Wrappers.query(entity);
         return list(queryWrapper);
+    }
+
+    /**
+     * 查询列表
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    default List<E> list(Wrapper<E> queryWrapper) {
+        return getBaseMapper().selectList(queryWrapper);
     }
 
     /**
@@ -332,22 +330,22 @@ public interface IDao<E> {
     /**
      * 翻页查询
      *
-     * @param page         翻页对象
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    default <P extends IPage<E>> P page(P page, Wrapper<E> queryWrapper) {
-        return getBaseMapper().selectPage(page, queryWrapper);
-    }
-
-    /**
-     * 翻页查询
-     *
      * @param page   分页查询参数
      * @param entity 查询实体
      * @return {@link PageResult <T>}
      */
     default <P extends IPage<E>> P page(P page, E entity) {
         return page(page, Wrappers.query(entity));
+    }
+
+    /**
+     * 翻页查询
+     *
+     * @param page         翻页对象
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    default <P extends IPage<E>> P page(P page, Wrapper<E> queryWrapper) {
+        return getBaseMapper().selectPage(page, queryWrapper);
     }
 
     /**
@@ -361,21 +359,21 @@ public interface IDao<E> {
     }
 
     /**
-     * 查询列表
-     *
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    default List<Map<String, Object>> listMaps(Wrapper<E> queryWrapper) {
-        return getBaseMapper().selectMaps(queryWrapper);
-    }
-
-    /**
      * 查询所有列表
      *
      * @see Wrappers#emptyWrapper()
      */
     default List<Map<String, Object>> listMaps() {
         return listMaps(Wrappers.emptyWrapper());
+    }
+
+    /**
+     * 查询列表
+     *
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    default List<Map<String, Object>> listMaps(Wrapper<E> queryWrapper) {
+        return getBaseMapper().selectMaps(queryWrapper);
     }
 
     /**
@@ -398,33 +396,23 @@ public interface IDao<E> {
      * 根据 Wrapper 条件，查询全部记录
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     * @param mapper       转换函数
      */
-    default List<Object> listObjs(Wrapper<E> queryWrapper) {
-        return listObjs(queryWrapper, Function.identity());
+    default <V> List<V> listObjs(Wrapper<E> queryWrapper, Function<? super Object, V> mapper) {
+        return getBaseMapper().selectObjs(queryWrapper)
+                              .stream()
+                              .filter(Objects::nonNull)
+                              .map(mapper)
+                              .collect(Collectors.toList());
     }
 
     /**
      * 根据 Wrapper 条件，查询全部记录
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     * @param mapper       转换函数
      */
-    default <V> List<V> listObjs(Wrapper<E> queryWrapper, Function<? super Object, V> mapper) {
-        return getBaseMapper().selectObjs(queryWrapper)
-            .stream()
-            .filter(Objects::nonNull)
-            .map(mapper)
-            .collect(Collectors.toList());
-    }
-
-    /**
-     * 翻页查询
-     *
-     * @param page         翻页对象
-     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
-     */
-    default <P extends IPage<Map<String, Object>>> P pageMaps(P page, Wrapper<E> queryWrapper) {
-        return getBaseMapper().selectMapsPage(page, queryWrapper);
+    default List<Object> listObjs(Wrapper<E> queryWrapper) {
+        return listObjs(queryWrapper, Function.identity());
     }
 
     /**
@@ -438,11 +426,23 @@ public interface IDao<E> {
     }
 
     /**
-     * 获取对应 entity 的 BaseMapper
+     * 翻页查询
      *
-     * @return BaseMapper
+     * @param page         翻页对象
+     * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    BaseMapper<E> getBaseMapper();
+    default <P extends IPage<Map<String, Object>>> P pageMaps(P page, Wrapper<E> queryWrapper) {
+        return getBaseMapper().selectMapsPage(page, queryWrapper);
+    }
+
+    /**
+     * 链式查询 普通
+     *
+     * @return QueryWrapper 的包装类
+     */
+    default QueryChainWrapper<E> query() {
+        return ChainWrappers.queryChain(getBaseMapper());
+    }
 
     /**
      * 以下的方法使用介绍:
@@ -460,15 +460,6 @@ public interface IDao<E> {
      * 2. 根据条件删除一条数据: `update().eq("column", value).remove()`
      *
      */
-
-    /**
-     * 链式查询 普通
-     *
-     * @return QueryWrapper 的包装类
-     */
-    default QueryChainWrapper<E> query() {
-        return ChainWrappers.queryChain(getBaseMapper());
-    }
 
     /**
      * 链式查询 lambda 式
@@ -508,6 +499,15 @@ public interface IDao<E> {
      */
     default boolean save(E entity, Wrapper<E> updateWrapper) {
         return update(entity, updateWrapper) || insert(entity);
+    }
+
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     *
+     * @param entity 实体对象
+     */
+    default boolean insert(E entity) {
+        return SqlHelper.retBool(getBaseMapper().insert(entity));
     }
 
 }

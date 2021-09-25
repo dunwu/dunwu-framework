@@ -7,8 +7,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.github.dunwu.tool.data.core.Pagination;
-import io.github.dunwu.tool.data.core.annotation.QueryField;
+import io.github.dunwu.tool.data.Pagination;
+import io.github.dunwu.tool.data.annotation.QueryField;
 import io.github.dunwu.tool.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -31,59 +31,6 @@ import java.util.Map;
 public class MybatisPlusUtil {
 
     private MybatisPlusUtil() {}
-
-    /**
-     * 将 Mybatis Plus 分页信息转为 Spring Data 分页信息
-     *
-     * @param page {@link Page<T>}
-     * @param <T>  数据类型
-     * @return {@link Pagination <T>}
-     */
-    public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
-        return new Pagination<>(page.getRecords(), (int) page.getCurrent(), (int) page.getSize(), page.getTotal());
-    }
-
-    public static <T> Page<T> toMybatisPlusPage(Pageable pageable) {
-        Page<T> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
-        List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
-        if (CollectionUtil.isNotEmpty(orderItems)) {
-            page.addOrder(orderItems);
-        }
-        return page;
-    }
-
-    public static <T> Page<T> toMybatisPlusPage(org.springframework.data.domain.Page<T> page) {
-        Page<T> mybatisPlusPage = new Page<>(page.getNumber(), page.getSize(), page.getTotalElements(), true);
-        mybatisPlusPage.setRecords(page.getContent());
-        List<OrderItem> orderItems = toMybatisPlusOrderItems(page.getSort());
-        if (CollectionUtil.isNotEmpty(orderItems)) {
-            mybatisPlusPage.addOrder(orderItems);
-        }
-        return mybatisPlusPage;
-    }
-
-    public static Page<Map<String, Object>> toMybatisPlusMapPage(Pageable pageable) {
-        Page<Map<String, Object>> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
-        List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
-        if (CollectionUtil.isNotEmpty(orderItems)) {
-            page.addOrder(orderItems);
-        }
-        return page;
-    }
-
-    public static List<OrderItem> toMybatisPlusOrderItems(Sort sort) {
-        List<OrderItem> orderItems = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(sort)) {
-            sort.get().forEach(i -> {
-                             if (Sort.Direction.ASC.equals(i.getDirection())) {
-                                 orderItems.add(OrderItem.asc(i.getProperty()));
-                             } else {
-                                 orderItems.add(OrderItem.desc(i.getProperty()));
-                             }
-                         });
-        }
-        return orderItems;
-    }
 
     public static <T> QueryWrapper<T> buildQueryWrapper(final Object queryBean) {
 
@@ -248,6 +195,59 @@ public class MybatisPlusUtil {
             default:
                 break;
         }
+    }
+
+    public static Page<Map<String, Object>> toMybatisPlusMapPage(Pageable pageable) {
+        Page<Map<String, Object>> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
+        List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
+        if (CollectionUtil.isNotEmpty(orderItems)) {
+            page.addOrder(orderItems);
+        }
+        return page;
+    }
+
+    public static List<OrderItem> toMybatisPlusOrderItems(Sort sort) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(sort)) {
+            sort.get().forEach(i -> {
+                if (Sort.Direction.ASC.equals(i.getDirection())) {
+                    orderItems.add(OrderItem.asc(i.getProperty()));
+                } else {
+                    orderItems.add(OrderItem.desc(i.getProperty()));
+                }
+            });
+        }
+        return orderItems;
+    }
+
+    public static <T> Page<T> toMybatisPlusPage(Pageable pageable) {
+        Page<T> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
+        List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
+        if (CollectionUtil.isNotEmpty(orderItems)) {
+            page.addOrder(orderItems);
+        }
+        return page;
+    }
+
+    public static <T> Page<T> toMybatisPlusPage(org.springframework.data.domain.Page<T> page) {
+        Page<T> mybatisPlusPage = new Page<>(page.getNumber(), page.getSize(), page.getTotalElements(), true);
+        mybatisPlusPage.setRecords(page.getContent());
+        List<OrderItem> orderItems = toMybatisPlusOrderItems(page.getSort());
+        if (CollectionUtil.isNotEmpty(orderItems)) {
+            mybatisPlusPage.addOrder(orderItems);
+        }
+        return mybatisPlusPage;
+    }
+
+    /**
+     * 将 Mybatis Plus 分页信息转为 Spring Data 分页信息
+     *
+     * @param page {@link Page<T>}
+     * @param <T>  数据类型
+     * @return {@link Pagination <T>}
+     */
+    public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
+        return new Pagination<>(page.getRecords(), (int) page.getCurrent(), (int) page.getSize(), page.getTotal());
     }
 
 }

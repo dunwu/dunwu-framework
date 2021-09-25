@@ -2,91 +2,91 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>io.github.dunwu</groupId>
-    <artifactId>dunwu-parent</artifactId>
-    <version>1.0.5</version>
-    <relativePath>../dunwu-parent/pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-parent</artifactId>
+        <version>1.0.6-SNAPSHOT</version>
+        <relativePath>../dunwu-parent/pom.xml</relativePath>
+    </parent>
 
-  <groupId>io.github.dunwu.tool</groupId>
-  <artifactId>dunwu-tool</artifactId>
-  <version>1.0.5</version>
-  <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
-  <description>dunwu-tool 父 pom</description>
-  <url>https://github.com/dunwu/dunwu-framework/dunwu-tool</url>
+    <groupId>io.github.dunwu.tool</groupId>
+    <artifactId>dunwu-tool</artifactId>
+    <version>1.0.6-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>dunwu-tool 父 pom</description>
+    <url>https://github.com/dunwu/dunwu-framework/dunwu-tool</url>
 
-  <modules>
-    <module>dunwu-tool-core</module>
-    <module>dunwu-tool-data</module>
-    <module>dunwu-tool-dlock</module>
-    <module>dunwu-tool-generator</module>
-    <module>dunwu-tool-net</module>
-    <module>dunwu-tool-web</module>
-  </modules>
+    <modules>
+        <module>dunwu-tool-core</module>
+        <module>dunwu-tool-data</module>
+        <module>dunwu-tool-dlock</module>
+        <module>dunwu-tool-generator</module>
+        <module>dunwu-tool-net</module>
+        <module>dunwu-tool-web</module>
+    </modules>
 
-  <properties>
-    <dunwu-tool.version>1.0.5</dunwu-tool.version>
-  </properties>
+    <properties>
+        <dunwu-tool.version>1.0.6-SNAPSHOT</dunwu-tool.version>
+    </properties>
 
-  <dependencies>
-    <!-- TEST BEGIN -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!-- TEST END -->
-  </dependencies>
-
-  <dependencyManagement>
     <dependencies>
-      <!-- ========================================================
-           dunwu 项目各 jar 包
-      ========================================================= -->
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-core</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-data</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-dlock</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-generator</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-net</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.dunwu.tool</groupId>
-        <artifactId>dunwu-tool-web</artifactId>
-        <version>${dunwu-tool.version}</version>
-      </dependency>
+        <!-- TEST BEGIN -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- TEST END -->
     </dependencies>
-  </dependencyManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ========================================================
+                 dunwu 项目各 jar 包
+            ========================================================= -->
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-core</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-data</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-dlock</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-generator</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-net</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.dunwu.tool</groupId>
+                <artifactId>dunwu-tool-web</artifactId>
+                <version>${dunwu-tool.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

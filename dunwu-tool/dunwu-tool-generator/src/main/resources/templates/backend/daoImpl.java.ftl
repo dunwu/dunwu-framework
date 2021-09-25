@@ -1,6 +1,6 @@
 package ${package.DaoImpl};
 
-import io.github.dunwu.tool.data.core.annotation.Dao;
+import io.github.dunwu.tool.data.annotation.Dao;
 import ${superDaoImplClassPackage};
 import ${package.Dao}.${table.daoName};
 import ${package.Mapper}.${table.mapperName};

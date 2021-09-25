@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import io.github.dunwu.tool.bean.TypeConvert;
-import io.github.dunwu.tool.data.core.Pagination;
+import io.github.dunwu.tool.data.Pagination;
 import io.github.dunwu.tool.data.mybatis.util.MybatisPlusUtil;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +25,6 @@ public abstract class BaseExtDaoImpl<M extends BaseMapper<E>, E> extends DaoImpl
     implements IExtDao<E> {
 
     @Override
-    public org.springframework.data.domain.Page<E> springPage(Pageable pageable, Wrapper<E> wrapper) {
-        Page<E> queryPage = MybatisPlusUtil.toMybatisPlusPage(pageable);
-        Page<E> page = page(queryPage, wrapper);
-        return MybatisPlusUtil.toSpringPage(page);
-    }
-
-    @Override
     public <T> org.springframework.data.domain.Page<T> springPage(Pageable pageable, Wrapper<E> wrapper,
         TypeConvert<E, T> convert) {
         List<T> list = Lists.newArrayList();
@@ -42,6 +35,13 @@ public abstract class BaseExtDaoImpl<M extends BaseMapper<E>, E> extends DaoImpl
         }
         list.addAll(page.getRecords().stream().map(convert::transform).collect(Collectors.toList()));
         return new PageImpl<>(list, pageable, page.getTotal());
+    }
+
+    @Override
+    public org.springframework.data.domain.Page<E> springPage(Pageable pageable, Wrapper<E> wrapper) {
+        Page<E> queryPage = MybatisPlusUtil.toMybatisPlusPage(pageable);
+        Page<E> page = page(queryPage, wrapper);
+        return MybatisPlusUtil.toSpringPage(page);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ${package.Service};
 
-import io.github.dunwu.tool.data.core.annotation.QueryField;
+import io.github.dunwu.tool.data.annotation.QueryField;
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
 import ${package.Query}.${table.queryName};

@@ -1,6 +1,6 @@
 package ${package.Controller};
 
-import io.github.dunwu.tool.data.core.Result;
+import io.github.dunwu.tool.data.DataResult;
 import io.github.dunwu.tool.data.validator.annotation.AddCheck;
 import io.github.dunwu.tool.data.validator.annotation.EditCheck;
 import ${package.Entity}.${entity};
@@ -61,8 +61,8 @@ public class ${table.controllerName} {
     /** 添加一条 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("add")
-    public Result<Boolean> add(@Validated(AddCheck.class) @RequestBody ${entity} entity) {
-        return Result.ok(service.insert(entity));
+    public DataResult<Boolean> add(@Validated(AddCheck.class) @RequestBody ${entity} entity) {
+        return DataResult.ok(service.insert(entity));
     }
 
     <#if enableSwagger>
@@ -71,8 +71,8 @@ public class ${table.controllerName} {
     /** 批量添加 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("add/batch")
-    public Result<Boolean> addBatch(@Validated(AddCheck.class) @RequestBody Collection<${entity}> list) {
-        return Result.ok(service.insertBatch(list));
+    public DataResult<Boolean> addBatch(@Validated(AddCheck.class) @RequestBody Collection<${entity}> list) {
+        return DataResult.ok(service.insertBatch(list));
     }
 
     <#if enableSwagger>
@@ -81,8 +81,8 @@ public class ${table.controllerName} {
     /** 根据 ID 更新一条 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("edit")
-    public Result<Boolean> edit(@Validated(EditCheck.class) @RequestBody ${entity} entity) {
-        return Result.ok(service.updateById(entity));
+    public DataResult<Boolean> edit(@Validated(EditCheck.class) @RequestBody ${entity} entity) {
+        return DataResult.ok(service.updateById(entity));
     }
 
     <#if enableSwagger>
@@ -91,8 +91,8 @@ public class ${table.controllerName} {
     /** 根据 ID 批量更新 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("edit/batch")
-    public Result<Boolean> editBatch(@Validated(EditCheck.class) @RequestBody Collection<${entity}> list) {
-        return Result.ok(service.updateBatchById(list));
+    public DataResult<Boolean> editBatch(@Validated(EditCheck.class) @RequestBody Collection<${entity}> list) {
+        return DataResult.ok(service.updateBatchById(list));
     }
 
     <#if enableSwagger>
@@ -101,8 +101,8 @@ public class ${table.controllerName} {
     /** 根据 ID 删除一条 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("del/{id}")
-    public Result<Boolean> deleteById(@PathVariable Serializable id) {
-        return Result.ok(service.deleteById(id));
+    public DataResult<Boolean> deleteById(@PathVariable Serializable id) {
+        return DataResult.ok(service.deleteById(id));
     }
 
     <#if enableSwagger>
@@ -111,8 +111,8 @@ public class ${table.controllerName} {
     /** 根据 ID 列表批量删除 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("del/batch")
-    public Result<Boolean> deleteBatchByIds(@RequestBody Collection<? extends Serializable> ids) {
-        return Result.ok(service.deleteBatchByIds(ids));
+    public DataResult<Boolean> deleteBatchByIds(@RequestBody Collection<? extends Serializable> ids) {
+        return DataResult.ok(service.deleteBatchByIds(ids));
     }
 
     <#if enableSwagger>
@@ -121,8 +121,8 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表 */
     </#if>
-    public Result<List<${table.dtoName}>> list(${table.queryName} query) {
-        return Result.ok(service.pojoListByQuery(query));
+    public DataResult<List<${table.dtoName}>> list(${table.queryName} query) {
+        return DataResult.ok(service.pojoListByQuery(query));
     }
 
     <#if enableSwagger>
@@ -131,8 +131,8 @@ public class ${table.controllerName} {
     /** 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表 */
     </#if>
     @GetMapping("page")
-    public Result<Page<${table.dtoName}>> page(${table.queryName} query, Pageable pageable) {
-        return Result.ok(service.pojoPageByQuery(query, pageable));
+    public DataResult<Page<${table.dtoName}>> page(${table.queryName} query, Pageable pageable) {
+        return DataResult.ok(service.pojoPageByQuery(query, pageable));
     }
 
     <#if enableSwagger>
@@ -141,8 +141,8 @@ public class ${table.controllerName} {
     /** 根据 id 查询 {@link ${table.dtoName}} */
     </#if>
     @GetMapping("{id}")
-    public Result<${table.dtoName}> getById(@PathVariable Serializable id) {
-        return Result.ok(service.pojoById(id));
+    public DataResult<${table.dtoName}> getById(@PathVariable Serializable id) {
+        return DataResult.ok(service.pojoById(id));
     }
 
     <#if enableSwagger>
@@ -151,8 +151,8 @@ public class ${table.controllerName} {
     /** 根据 {@link ${table.queryName}} 查询匹配条件的记录数 */
     </#if>
     @GetMapping("count")
-    public Result<Integer> count(${table.queryName} query) {
-        return Result.ok(service.countByQuery(query));
+    public DataResult<Integer> count(${table.queryName} query) {
+        return DataResult.ok(service.countByQuery(query));
     }
 
     <#if enableSwagger>

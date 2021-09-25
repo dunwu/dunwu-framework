@@ -1,6 +1,6 @@
 package ${package.Query};
 
-import io.github.dunwu.tool.data.core.annotation.QueryField;
+import io.github.dunwu.tool.data.annotation.QueryField;
 <#if enableSwagger>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
