@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data.constant;
+package io.github.dunwu.tool.core.constant;
 
 /**
  * 请求 / 应答状态接口
@@ -10,6 +10,6 @@ public interface Status {
 
     int getCode();
 
-    String getMessage();
+    String getMsg();
 
 }

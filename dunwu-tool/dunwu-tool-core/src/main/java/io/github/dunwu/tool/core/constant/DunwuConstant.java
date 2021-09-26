@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data.constant;
+package io.github.dunwu.tool.core.constant;
 
 /**
  * 常量

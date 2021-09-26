@@ -1,7 +1,9 @@
 package io.github.dunwu.tool.data;
 
-import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.data.constant.enums.ResultStatus;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -19,34 +21,39 @@ import java.util.Map;
  */
 public class ResultTest {
 
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
+    {
+        objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+    }
+
     @Test
-    void testBaseResult() {
+    void testBaseResult() throws JsonProcessingException {
 
         // @formatter:off
 
-
-        Assertions.assertEquals("{\"code\":-1,\"message\":\"失败\"}", JSONUtil.toJsonStr(DataResult.fail()));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMessage())));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
+        Assertions.assertEquals("{\"code\":-1,\"msg\":\"失败\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataResult.fail()));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMsg())));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
         Assertions.assertFalse(DataResult.fail().isOk());
-        Assertions.assertEquals("{\"code\":0,\"message\":\"成功\"}", JSONUtil.toJsonStr(DataResult.ok()));
-        Assertions.assertEquals("{\"code\":0,\"data\":\"success\",\"message\":\"成功\"}", JSONUtil.toJsonStr(DataResult.ok("success")));
-        Assertions.assertEquals("{\"code\":0,\"data\":\"success\",\"message\":\"请求成功\"}", JSONUtil.toJsonStr(DataResult.ok("success", "请求成功")));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":null,\"ok\":true}", objectMapper.writeValueAsString(DataResult.ok()));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":\"success\",\"ok\":true}", objectMapper.writeValueAsString(DataResult.ok("success")));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"请求成功\",\"data\":\"success\",\"ok\":true}", objectMapper.writeValueAsString(DataResult.ok("success", "请求成功")));
         Assertions.assertTrue(DataResult.ok().isOk());
 
 
         List<String> list = Arrays.asList("how", "are", "you");
-        Assertions.assertEquals("{\"code\":-1,\"message\":\"失败\"}", JSONUtil.toJsonStr(DataListResult.fail()));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMessage())));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
+        Assertions.assertEquals("{\"code\":-1,\"msg\":\"失败\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataListResult.fail()));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMsg())));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(DataListResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
         Assertions.assertFalse(DataListResult.fail().isOk());
-        Assertions.assertEquals("{\"code\":0,\"message\":\"成功\"}", JSONUtil.toJsonStr(DataListResult.ok()));
-        Assertions.assertEquals("{\"code\":0,\"data\":[\"how\",\"are\",\"you\"],\"message\":\"成功\"}", JSONUtil.toJsonStr(DataListResult.ok(list)));
-        Assertions.assertEquals("{\"code\":0,\"data\":[\"how\",\"are\",\"you\"],\"message\":\"请求成功\"}", JSONUtil.toJsonStr(DataListResult.ok(list, "请求成功")));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":null,\"ok\":true}", objectMapper.writeValueAsString(DataListResult.ok()));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":[\"how\",\"are\",\"you\"],\"ok\":true}", objectMapper.writeValueAsString(DataListResult.ok(list)));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"请求成功\",\"data\":[\"how\",\"are\",\"you\"],\"ok\":true}", objectMapper.writeValueAsString(DataListResult.ok(list, "请求成功")));
         Assertions.assertTrue(DataListResult.ok().isOk());
 
 
@@ -54,30 +61,30 @@ public class ResultTest {
         map.put("MONDAY", 1);
         map.put("TUESDAY", 2);
         map.put("WEDNESDAY", 3);
-        Assertions.assertEquals("{\"code\":-1,\"message\":\"失败\"}", JSONUtil.toJsonStr(MapResult.fail()));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMessage())));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
+        Assertions.assertEquals("{\"code\":-1,\"msg\":\"失败\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(MapResult.fail()));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMsg())));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(MapResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
         Assertions.assertFalse(MapResult.fail().isOk());
-        Assertions.assertEquals("{\"code\":0,\"message\":\"成功\"}", JSONUtil.toJsonStr(MapResult.ok()));
-        Assertions.assertEquals("{\"code\":0,\"data\":{\"TUESDAY\":2,\"WEDNESDAY\":3,\"MONDAY\":1},\"message\":\"成功\"}", JSONUtil.toJsonStr(MapResult.ok(map)));
-        Assertions.assertEquals("{\"code\":0,\"data\":{\"TUESDAY\":2,\"WEDNESDAY\":3,\"MONDAY\":1},\"message\":\"请求成功\"}", JSONUtil.toJsonStr(MapResult.ok(map, "请求成功")));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":null,\"ok\":true}", objectMapper.writeValueAsString(MapResult.ok()));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":{\"MONDAY\":1,\"TUESDAY\":2,\"WEDNESDAY\":3},\"ok\":true}", objectMapper.writeValueAsString(MapResult.ok(map)));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"请求成功\",\"data\":{\"MONDAY\":1,\"TUESDAY\":2,\"WEDNESDAY\":3},\"ok\":true}", objectMapper.writeValueAsString(MapResult.ok(map, "请求成功")));
         Assertions.assertTrue(MapResult.ok().isOk());
 
 
         PageRequest pageRequest =  PageRequest.of(1, 10);
         Page<String> page = new PageImpl<>(list, pageRequest, 1000);
-        Assertions.assertEquals("{\"code\":-1,\"message\":\"失败\"}", JSONUtil.toJsonStr(PageResult.fail()));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"未授权访问资源\"}", JSONUtil.toJsonStr(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMessage())));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
-        Assertions.assertEquals("{\"code\":401,\"message\":\"[\\\"错误一\\\",\\\"错误二\\\"]\"}", JSONUtil.toJsonStr(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
+        Assertions.assertEquals("{\"code\":-1,\"msg\":\"失败\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(PageResult.fail()));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED)));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"未授权访问资源\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), ResultStatus.HTTP_UNAUTHORIZED.getMsg())));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), "错误一", "错误二")));
+        Assertions.assertEquals("{\"code\":401,\"msg\":\"[\\\"错误一\\\",\\\"错误二\\\"]\",\"data\":null,\"ok\":false}", objectMapper.writeValueAsString(PageResult.fail(ResultStatus.HTTP_UNAUTHORIZED.getCode(), Arrays.asList("错误一", "错误二"))));
         Assertions.assertFalse(PageResult.fail().isOk());
-        Assertions.assertEquals("{\"code\":0,\"message\":\"成功\"}", JSONUtil.toJsonStr(PageResult.ok()));
+        Assertions.assertEquals("{\"code\":0,\"msg\":\"成功\",\"data\":null,\"ok\":true}", objectMapper.writeValueAsString(PageResult.ok()));
         PageResult<String> pageResult = PageResult.ok(page, "请求成功");
         Assertions.assertEquals(ResultStatus.OK.getCode(), pageResult.getCode());
-        Assertions.assertEquals("请求成功", pageResult.getMessage());
+        Assertions.assertEquals("请求成功", pageResult.getMsg());
         Assertions.assertEquals(page, pageResult.getData());
         Assertions.assertTrue(PageResult.ok().isOk());
 

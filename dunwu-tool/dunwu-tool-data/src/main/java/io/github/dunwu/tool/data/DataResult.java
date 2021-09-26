@@ -2,8 +2,8 @@ package io.github.dunwu.tool.data;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.data.constant.Status;
-import io.github.dunwu.tool.data.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -32,7 +32,7 @@ public class DataResult<T> implements Status, Serializable {
     /**
      * 响应信息
      */
-    protected String message;
+    protected String msg;
 
     /**
      * 应答数据实体
@@ -49,19 +49,19 @@ public class DataResult<T> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      */
     public DataResult(final Status status) {
-        this(status.getCode(), status.getMessage(), null);
+        this(status.getCode(), status.getMsg(), null);
     }
 
     /**
      * 构造 {@link DataResult}
      *
      * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
+     * @param msg 响应状态消息
      * @param data    应答数据实体
      */
-    public DataResult(final int code, final String message, final T data) {
+    public DataResult(final int code, final String msg, final T data) {
         this.code = code;
-        this.message = message;
+        this.msg = msg;
         this.data = data;
     }
 
@@ -71,7 +71,7 @@ public class DataResult<T> implements Status, Serializable {
      * @param data 应答数据实体
      */
     public DataResult(final T data) {
-        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMessage(), data);
+        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), data);
     }
 
     /**
@@ -79,8 +79,8 @@ public class DataResult<T> implements Status, Serializable {
      *
      * @param data 应答数据实体
      */
-    public DataResult(final T data, final String message) {
-        this(ResultStatus.OK.getCode(), message, data);
+    public DataResult(final T data, final String msg) {
+        this(ResultStatus.OK.getCode(), msg, data);
     }
 
     /**
@@ -89,17 +89,17 @@ public class DataResult<T> implements Status, Serializable {
      * @param result {@link DataResult}
      */
     public DataResult(final DataResult<T> result) {
-        this(result.getCode(), result.getMessage(), result.getData());
+        this(result.getCode(), result.getMsg(), result.getData());
     }
 
     /**
      * 构造 {@link DataResult}
      *
      * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
+     * @param msg 响应状态消息
      */
-    public DataResult(final int code, final String message) {
-        this(code, message, null);
+    public DataResult(final int code, final String msg) {
+        this(code, msg, null);
     }
 
     /**
@@ -135,11 +135,11 @@ public class DataResult<T> implements Status, Serializable {
      * 根据参数返回失败的 {@link DataResult}
      *
      * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
+     * @param msg 响应状态消息
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail(final int code, final String message) {
-        return new DataResult<>(code, message);
+    public static DataResult<?> fail(final int code, final String msg) {
+        return new DataResult<>(code, msg);
     }
 
     /**
@@ -187,8 +187,8 @@ public class DataResult<T> implements Status, Serializable {
      *
      * @return {@link DataResult}
      */
-    public static <T> DataResult<T> ok(final T data, final String message) {
-        return new DataResult<>(data, message);
+    public static <T> DataResult<T> ok(final T data, final String msg) {
+        return new DataResult<>(data, msg);
     }
 
     /**

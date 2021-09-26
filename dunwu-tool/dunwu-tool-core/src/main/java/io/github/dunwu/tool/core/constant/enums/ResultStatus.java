@@ -1,6 +1,6 @@
-package io.github.dunwu.tool.data.constant.enums;
+package io.github.dunwu.tool.core.constant.enums;
 
-import io.github.dunwu.tool.data.constant.Status;
+import io.github.dunwu.tool.core.constant.Status;
 
 /**
  * 系统级错误码
@@ -61,11 +61,11 @@ public enum ResultStatus implements Status {
 
     private final int code;
 
-    private final String message;
+    private final String msg;
 
     ResultStatus(int code, String msg) {
         this.code = code;
-        this.message = msg;
+        this.msg = msg;
     }
 
     @Override
@@ -74,7 +74,7 @@ public enum ResultStatus implements Status {
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 }

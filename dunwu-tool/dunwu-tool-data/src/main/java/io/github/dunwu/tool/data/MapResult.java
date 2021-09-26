@@ -2,8 +2,8 @@ package io.github.dunwu.tool.data;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.data.constant.Status;
-import io.github.dunwu.tool.data.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -33,7 +33,7 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 响应信息
      */
-    protected String message;
+    protected String msg;
 
     /**
      * 应答数据实体
@@ -50,19 +50,19 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      */
     public MapResult(final Status status) {
-        this(status.getCode(), status.getMessage(), null);
+        this(status.getCode(), status.getMsg(), null);
     }
 
     /**
      * 构造 {@link MapResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
-     * @param data    应答数据实体
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
+     * @param data 应答数据实体
      */
-    public MapResult(final int code, final String message, final Map<K, V> data) {
+    public MapResult(final int code, final String msg, final Map<K, V> data) {
         this.code = code;
-        this.message = message;
+        this.msg = msg;
         this.data = data;
     }
 
@@ -72,7 +72,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param data 应答数据实体
      */
     public MapResult(final Map<K, V> data) {
-        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMessage(), data);
+        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), data);
     }
 
     /**
@@ -80,8 +80,8 @@ public class MapResult<K, V> implements Status, Serializable {
      *
      * @param data 应答数据实体
      */
-    public MapResult(final Map<K, V> data, final String message) {
-        this(ResultStatus.OK.getCode(), message, data);
+    public MapResult(final Map<K, V> data, final String msg) {
+        this(ResultStatus.OK.getCode(), msg, data);
     }
 
     /**
@@ -90,17 +90,17 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param result {@link MapResult}
      */
     public MapResult(final MapResult<K, V> result) {
-        this(result.getCode(), result.getMessage(), result.getData());
+        this(result.getCode(), result.getMsg(), result.getData());
     }
 
     /**
      * 构造 {@link MapResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
      */
-    public MapResult(final int code, final String message) {
-        this(code, message, null);
+    public MapResult(final int code, final String msg) {
+        this(code, msg, null);
     }
 
     /**
@@ -135,12 +135,12 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 根据参数返回失败的 {@link MapResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param message 响应状态消息
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail(final int code, final String message) {
-        return new MapResult<>(code, message);
+    public static MapResult<?, ?> fail(final int code, final String msg) {
+        return new MapResult<>(code, msg);
     }
 
     /**
@@ -188,8 +188,8 @@ public class MapResult<K, V> implements Status, Serializable {
      *
      * @return {@link MapResult}
      */
-    public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String message) {
-        return new MapResult<>(data, message);
+    public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String msg) {
+        return new MapResult<>(data, msg);
     }
 
     /**

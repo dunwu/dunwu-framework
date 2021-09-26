@@ -62,33 +62,33 @@ public class AnsiColorUtil {
     }
 
     public void printf(String format, Object... args) {
-        String message = String.format(format, args);
+        String msg = String.format(format, args);
         if (enabled) {
-            System.out.print(encode(message));
+            System.out.print(encode(msg));
         } else {
-            System.out.print(message);
+            System.out.print(msg);
         }
     }
 
-    private String encode(String message) {
+    private String encode(String msg) {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.code).append(message).append(RESET);
+        sb.append(this.code).append(msg).append(RESET);
         return sb.toString();
     }
 
-    public void print(String message) {
+    public void print(String msg) {
         if (enabled) {
-            System.out.print(encode(message));
+            System.out.print(encode(msg));
         } else {
-            System.out.print(message);
+            System.out.print(msg);
         }
     }
 
-    public void println(String message) {
+    public void println(String msg) {
         if (enabled) {
-            System.out.println(encode(message));
+            System.out.println(encode(msg));
         } else {
-            System.out.println(message);
+            System.out.println(msg);
         }
     }
 
