@@ -46,7 +46,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * IService 实现类（ 泛型：M 是 mapper 对象，T 是实体 ）
+ * IDao 实现类（ 泛型：M 是 mapper 对象，T 是实体 ）
  *
  * @author hubin
  * @since 2018-06-23

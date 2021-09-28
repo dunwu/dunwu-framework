@@ -148,15 +148,13 @@ public class ${table.queryName} implements Serializable {
     }
   </#list>
 </#if>
-<#if entityColumnConstant>
 
+<#if entityColumnConstant>
     <#list table.queryFields as field>
     public static final String ${field.fieldName?upper_case} = "${field.fieldName}";
-
     </#list>
     <#list table.queryExtFields as field>
     public static final String ${field.fieldName?upper_case} = "${field.fieldName}";
-
     </#list>
 </#if>
 <#if !entityLombokModel>

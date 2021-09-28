@@ -40,7 +40,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 顶级 Service
+ * 顶级 Dao
  *
  * @author hubin
  * @since 2018-06-23
@@ -400,10 +400,10 @@ public interface IDao<E> {
      */
     default <V> List<V> listObjs(Wrapper<E> queryWrapper, Function<? super Object, V> mapper) {
         return getBaseMapper().selectObjs(queryWrapper)
-                              .stream()
-                              .filter(Objects::nonNull)
-                              .map(mapper)
-                              .collect(Collectors.toList());
+            .stream()
+            .filter(Objects::nonNull)
+            .map(mapper)
+            .collect(Collectors.toList());
     }
 
     /**

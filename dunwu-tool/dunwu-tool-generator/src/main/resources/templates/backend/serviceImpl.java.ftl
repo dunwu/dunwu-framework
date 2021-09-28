@@ -77,13 +77,18 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    public List<${table.dtoName}> pojoList() {
+        return dao.pojoList(this::doToDto);
+    }
+
+    @Override
     public List<${table.dtoName}> pojoListByQuery(${table.queryName} query) {
         return dao.pojoListByQuery(query, this::doToDto);
     }
 
     @Override
-    public Page<${table.dtoName}> pojoPageByQuery(${table.queryName} query, Pageable pageable) {
-        return dao.pojoPageByQuery(query, pageable, this::doToDto);
+    public Page<${table.dtoName}> pojoSpringPageByQuery(${table.queryName} query, Pageable pageable) {
+        return dao.pojoSpringPageByQuery(query, pageable, this::doToDto);
     }
 
     @Override
@@ -109,17 +114,39 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     @Override
     public void exportPage(${table.queryName} query, Pageable pageable, HttpServletResponse response) {
-        Page<${table.dtoName}> page = dao.pojoPageByQuery(query, pageable, this::doToDto);
+        Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(query, pageable, this::doToDto);
         exportDtoList(page.getContent(), response);
     }
 
+    /**
+     * 根据传入的 ${table.dtoName} 列表，导出 excel 表单
+     *
+     * @param list     {@link ${table.dtoName}} 列表
+     * @param response {@link HttpServletResponse} 实体
+     */
+    private void exportDtoList(Collection<${table.dtoName}> list, HttpServletResponse response) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (${table.dtoName} item : list) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            <#list table.fields as field>
+              <#if field.comment != ''>
+            map.put("${field.comment}", item.get${field.propertyName?cap_first}());
+              <#else>
+            map.put("${field.propertyName}", item.get${field.propertyName?cap_first}());
+              </#if>
+            </#list>
+            mapList.add(map);
+        }
+        ServletUtil.downloadExcel(response, mapList);
+    }
+
     @Override
-    public ${table.dtoName} doToDto(${entity} model) {
-        if (model == null) {
+    public ${table.dtoName} doToDto(${entity} entity) {
+        if (entity == null) {
             return null;
         }
 
-        return BeanUtil.toBean(model, ${table.dtoName}.class);
+        return BeanUtil.toBean(entity, ${table.dtoName}.class);
     }
 
     @Override
@@ -129,28 +156,6 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
         }
 
         return BeanUtil.toBean(dto, ${entity}.class);
-    }
-
-    /**
-      * 根据传入的 ${table.dtoName} 列表，导出 excel 表单
-      *
-      * @param list     {@link ${table.dtoName}} 列表
-      * @param response {@link HttpServletResponse} 实体
-      */
-    private void exportDtoList(Collection<${table.dtoName}> list, HttpServletResponse response) {
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        for (${table.dtoName} item : list) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            <#list table.fields as field>
-              <#if field.comment != ''>
-                map.put("${field.comment}", item.get${field.propertyName?cap_first}());
-              <#else>
-                map.put("${field.propertyName}", item.get${field.propertyName?cap_first}());
-              </#if>
-            </#list>
-            mapList.add(map);
-        }
-        ServletUtil.downloadExcel(response, mapList);
     }
 
 }

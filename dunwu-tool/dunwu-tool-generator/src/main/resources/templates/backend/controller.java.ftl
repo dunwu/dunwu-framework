@@ -1,6 +1,8 @@
 package ${package.Controller};
 
+import io.github.dunwu.tool.data.DataListResult;
 import io.github.dunwu.tool.data.DataResult;
+import io.github.dunwu.tool.data.PageResult;
 import io.github.dunwu.tool.data.validator.annotation.AddCheck;
 import io.github.dunwu.tool.data.validator.annotation.EditCheck;
 import ${package.Entity}.${entity};
@@ -76,9 +78,9 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ID 更新一条 ${entity} 记录")
+    @ApiOperation("根据 id 更新一条 ${entity} 记录")
     <#else>
-    /** 根据 ID 更新一条 {@link ${entity}} 记录 */
+    /** 根据 id 更新一条 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("edit")
     public DataResult<Boolean> edit(@Validated(EditCheck.class) @RequestBody ${entity} entity) {
@@ -86,9 +88,9 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ID 批量更新 ${entity} 记录")
+    @ApiOperation("根据 id 批量更新 ${entity} 记录")
     <#else>
-    /** 根据 ID 批量更新 {@link ${entity}} 记录 */
+    /** 根据 id 批量更新 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("edit/batch")
     public DataResult<Boolean> editBatch(@Validated(EditCheck.class) @RequestBody Collection<${entity}> list) {
@@ -96,9 +98,9 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ID 删除一条 ${entity} 记录")
+    @ApiOperation("根据 id 删除一条 ${entity} 记录")
     <#else>
-    /** 根据 ID 删除一条 {@link ${entity}} 记录 */
+    /** 根据 id 删除一条 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("del/{id}")
     public DataResult<Boolean> deleteById(@PathVariable Serializable id) {
@@ -106,9 +108,9 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ID 列表批量删除 ${entity} 记录")
+    @ApiOperation("根据 id 列表批量删除 ${entity} 记录")
     <#else>
-    /** 根据 ID 列表批量删除 {@link ${entity}} 记录 */
+    /** 根据 id 列表批量删除 {@link ${entity}} 记录 */
     </#if>
     @PostMapping("del/batch")
     public DataResult<Boolean> deleteBatchByIds(@RequestBody Collection<? extends Serializable> ids) {
@@ -121,8 +123,8 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表 */
     </#if>
-    public DataResult<List<${table.dtoName}>> list(${table.queryName} query) {
-        return DataResult.ok(service.pojoListByQuery(query));
+    public DataListResult<${table.dtoName}> list(${table.queryName} query) {
+        return DataListResult.ok(service.pojoListByQuery(query));
     }
 
     <#if enableSwagger>
@@ -131,8 +133,8 @@ public class ${table.controllerName} {
     /** 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表 */
     </#if>
     @GetMapping("page")
-    public DataResult<Page<${table.dtoName}>> page(${table.queryName} query, Pageable pageable) {
-        return DataResult.ok(service.pojoPageByQuery(query, pageable));
+    public PageResult<${table.dtoName}> page(${table.queryName} query, Pageable pageable) {
+        return PageResult.ok(service.pojoSpringPageByQuery(query, pageable));
     }
 
     <#if enableSwagger>

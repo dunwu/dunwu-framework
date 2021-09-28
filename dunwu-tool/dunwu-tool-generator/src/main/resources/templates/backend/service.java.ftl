@@ -56,7 +56,6 @@ public interface ${table.serviceName} extends ${superServiceClass} {
      */
     boolean updateBatchById(Collection<${entity}> list);
 
-
     /**
      * 添加或更新一条 {@link ${entity}} 记录
      *
@@ -90,9 +89,16 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     boolean deleteBatchByIds(Collection<? extends Serializable> ids);
 
     /**
+     * 查询 {@link ${table.dtoName}} 全量数据列表
+     *
+     * @return {@link List<${table.dtoName}>}
+     */
+    List<${table.dtoName}> pojoList();
+
+    /**
      * 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表
      *
-     * @param query 查询条件，根据 ${table.queryName} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param query 查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @return {@link List<${table.dtoName}>}
      */
     List<${table.dtoName}> pojoListByQuery(${table.queryName} query);
@@ -100,11 +106,11 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
      * 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表
      *
-     * @param query    查询条件，根据 ${table.queryName} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @param pageable 分页查询条件
      * @return {@link Page<${table.dtoName}>}
      */
-    Page<${table.dtoName}> pojoPageByQuery(${table.queryName} query, Pageable pageable);
+    Page<${table.dtoName}> pojoSpringPageByQuery(${table.queryName} query, Pageable pageable);
 
     /**
      * 根据 id 查询 {@link ${table.dtoName}}
@@ -117,7 +123,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
      * 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表
      *
-     * @param query 查询条件，根据 ${table.queryName} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param query 查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @return {@link ${table.dtoName}}
      */
     ${table.dtoName} pojoByQuery(${table.queryName} query);
@@ -125,7 +131,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
      * 根据 {@link ${table.queryName}} 查询匹配条件的记录数
      *
-     * @param query 查询条件，根据 ${table.queryName} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param query 查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @return {@link Integer}
      */
     Integer countByQuery(${table.queryName} query);
@@ -141,7 +147,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
      * 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单
      *
-     * @param query    查询条件，根据 ${table.queryName} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @param pageable 分页查询条件
      * @param response {@link HttpServletResponse} 实体
      */
@@ -150,10 +156,10 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
      * 将 {@link ${entity}} 转为 {@link ${table.dtoName}}
      *
-     * @param model 数据实体
+     * @param entity 数据实体
      * @return /
      */
-    ${table.dtoName} doToDto(${entity} model);
+    ${table.dtoName} doToDto(${entity} entity);
 
     /**
      * 将 {@link ${table.dtoName}} 转为 {@link ${entity}}
