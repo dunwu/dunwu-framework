@@ -97,12 +97,6 @@ public class ${table.dtoName} implements Serializable {
     </#list>
 </#if>
 
-<#if entityColumnConstant>
-    <#list table.fields as field>
-    public static final String ${field.fieldName?upper_case} = "${field.fieldName}";
-
-    </#list>
-</#if>
 <#if enableActiveRecord>
     @Override
     protected Serializable pkVal() {

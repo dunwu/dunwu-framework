@@ -84,7 +84,7 @@ public class ${entity} implements Serializable {
     @TableField(fill = FieldFill.${field.fill})
         </#if>
     <#elseif field.convert>
-    @TableField("${field.fieldName}")
+    @TableField("`${field.fieldName}`")
     </#if>
     <#-- 乐观锁注解 -->
     <#if (versionFieldName!"") == field.fieldName>
@@ -96,7 +96,7 @@ public class ${entity} implements Serializable {
     </#if>
 <#--    <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">-->
     <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate")>
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>

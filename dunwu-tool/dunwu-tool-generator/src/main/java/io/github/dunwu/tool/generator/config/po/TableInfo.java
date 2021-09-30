@@ -76,6 +76,8 @@ public class TableInfo {
     private boolean enableSort = true;
     /** 开启校验 */
     private boolean enableValidate = true;
+    /** 记录操作日志 */
+    private boolean enableLog = true;
     /** REST接口根路径 */
     private String apiBaseUrl;
 
@@ -106,6 +108,7 @@ public class TableInfo {
 
     /**
      * REST接口根路径，如果没配置，返回 entityPath 的值
+     *
      * @return
      */
     public String getEntityPath() {

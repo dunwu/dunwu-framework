@@ -410,15 +410,13 @@ public class RegexUtil {
     }
 
     /**
-     * 返回正则模式 {@link java.util.regex.Pattern}
+     * 返回正则模式 {@link Pattern}
      *
      * @param regex 正则表达式
-     * @param flag  匹配标志，可选值：{@link java.util.regex.Pattern#CASE_INSENSITIVE}, {@link java.util.regex.Pattern#MULTILINE},
-     *              {@link java.util.regex.Pattern#DOTALL}, {@link java.util.regex.Pattern#UNICODE_CASE}, {@link
-     *              java.util.regex.Pattern#CANON_EQ}, {@link java.util.regex.Pattern#UNIX_LINES}, {@link
-     *              java.util.regex.Pattern#LITERAL}, {@link java.util.regex.Pattern#UNICODE_CHARACTER_CLASS}, {@link
-     *              java.util.regex.Pattern#COMMENTS}
-     * @return 正则模式 {@link java.util.regex.Pattern}
+     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
+     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
+     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
+     * @return 正则模式 {@link Pattern}
      */
     public static Pattern getPattern(final String regex, int flag) {
         if (StrUtil.isBlank(regex)) {
@@ -652,11 +650,9 @@ public class RegexUtil {
      *
      * @param text  被校验的文本
      * @param regex 正则表达式
-     * @param flag  匹配标志，可选值：{@link java.util.regex.Pattern#CASE_INSENSITIVE}, {@link java.util.regex.Pattern#MULTILINE},
-     *              {@link java.util.regex.Pattern#DOTALL}, {@link java.util.regex.Pattern#UNICODE_CASE}, {@link
-     *              java.util.regex.Pattern#CANON_EQ}, {@link java.util.regex.Pattern#UNIX_LINES}, {@link
-     *              java.util.regex.Pattern#LITERAL}, {@link java.util.regex.Pattern#UNICODE_CHARACTER_CLASS}, {@link
-     *              java.util.regex.Pattern#COMMENTS}
+     * @param flag  匹配标志，可选值：{@link Pattern#CASE_INSENSITIVE}, {@link Pattern#MULTILINE}, {@link Pattern#DOTALL}, {@link
+     *              Pattern#UNICODE_CASE}, {@link Pattern#CANON_EQ}, {@link Pattern#UNIX_LINES}, {@link
+     *              Pattern#LITERAL}, {@link Pattern#UNICODE_CHARACTER_CLASS}, {@link Pattern#COMMENTS}
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final String regex, final int flag) {
@@ -671,7 +667,7 @@ public class RegexUtil {
      * 校验文本是否满足正则表达式
      *
      * @param text    被校验的文本
-     * @param pattern 正则模式 {@link java.util.regex.Pattern}
+     * @param pattern 正则模式 {@link Pattern}
      * @return text、regex 如果为 null 或空字符串则返回 false
      */
     public static boolean matches(final CharSequence text, final Pattern pattern) {

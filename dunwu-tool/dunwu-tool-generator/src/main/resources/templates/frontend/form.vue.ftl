@@ -17,24 +17,24 @@
     <#elseif field.formType = 'Textarea'>
         <el-input v-model="form.${field.propertyName}" :rows="3" type="textarea" style="width: 90%" placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>" />
     <#elseif field.formType = 'Radio'>
-          <#if (field.dictName)?? && (field.dictName)!="">
+      <#if (field.dictName)?? && (field.dictName)!="">
         <el-radio v-model="form.${field.propertyName}" v-for="item in dict.${field.dictName}" :key="item.id" :label="item.value"  placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">{{ item.label }}</el-radio>
-          <#else>
+      <#else>
             未设置字典，请手动设置 Radio
-          </#if>
+      </#if>
     <#elseif field.formType = 'Select'>
-          <#if (field.dictName)?? && (field.dictName)!="">
+      <#if (field.dictName)?? && (field.dictName)!="">
         <el-select v-model="form.${field.propertyName}" filterable placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">
-            <el-option
-              v-for="item in dict.${field.dictName}"
-              :key="item.id"
-              :label="item.label"
-              :value="item.value" />
-          </el-select>
-    <#else>
+          <el-option
+            v-for="item in dict.${field.dictName}"
+            :key="item.id"
+            :label="item.label"
+            :value="item.value" />
+        </el-select>
+      <#else>
           未设置字典，请手动设置 Select
-    </#if>
-  <#else>
+      </#if>
+    <#else>
         <el-date-picker
           v-model="form.${field.propertyName}"
           type="datetime"
@@ -42,9 +42,9 @@
           value-format="${field.datePattern}"
           placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>"
         />
-  </#if>
+    </#if>
       </el-form-item>
-</#if>
+  </#if>
 </#list>
     </el-form>
     <div slot="footer" class="dialog-footer">
