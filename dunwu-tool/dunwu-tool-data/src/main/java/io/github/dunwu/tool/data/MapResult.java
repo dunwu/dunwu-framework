@@ -118,7 +118,7 @@ public class MapResult<K, V> implements Status, Serializable {
      *
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail() {
+    public static <K, V> MapResult<K, V> fail() {
         return new MapResult<>(ResultStatus.FAIL);
     }
 
@@ -128,7 +128,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail(final Status status) {
+    public static <K, V> MapResult<K, V> fail(final Status status) {
         return new MapResult<>(status);
     }
 
@@ -139,7 +139,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param msg  响应状态消息
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail(final int code, final String msg) {
+    public static <K, V> MapResult<K, V> fail(final int code, final String msg) {
         return new MapResult<>(code, msg);
     }
 
@@ -150,7 +150,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param messages 响应状态消息动态数组
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail(final int code, final String... messages) {
+    public static <K, V> MapResult<K, V> fail(final int code, final String... messages) {
         return new MapResult<>(code, CollectionUtil.newArrayList(messages));
     }
 
@@ -161,7 +161,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * @param messages 响应状态消息列表
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> fail(final int code, final Collection<String> messages) {
+    public static <K, V> MapResult<K, V> fail(final int code, final Collection<String> messages) {
         return new MapResult<>(code, messages);
     }
 
@@ -170,7 +170,7 @@ public class MapResult<K, V> implements Status, Serializable {
      *
      * @return {@link MapResult}
      */
-    public static MapResult<?, ?> ok() {
+    public static <K, V> MapResult<K, V> ok() {
         return new MapResult<>(ResultStatus.OK);
     }
 

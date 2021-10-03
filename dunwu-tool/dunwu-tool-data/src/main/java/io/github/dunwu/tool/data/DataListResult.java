@@ -117,7 +117,7 @@ public class DataListResult<T> implements Status, Serializable {
      *
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> fail() {
+    public static <T> DataListResult<T> fail() {
         return new DataListResult<>(ResultStatus.FAIL);
     }
 
@@ -127,7 +127,7 @@ public class DataListResult<T> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> fail(final Status status) {
+    public static <T> DataListResult<T> fail(final Status status) {
         return new DataListResult<>(status);
     }
 
@@ -138,7 +138,7 @@ public class DataListResult<T> implements Status, Serializable {
      * @param msg  响应状态消息
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> fail(final int code, final String msg) {
+    public static <T> DataListResult<T> fail(final int code, final String msg) {
         return new DataListResult<>(code, msg);
     }
 
@@ -149,7 +149,7 @@ public class DataListResult<T> implements Status, Serializable {
      * @param messages 响应状态消息动态数组
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> fail(final int code, final String... messages) {
+    public static <T> DataListResult<T> fail(final int code, final String... messages) {
         return new DataListResult<>(code, CollectionUtil.newArrayList(messages));
     }
 
@@ -160,7 +160,7 @@ public class DataListResult<T> implements Status, Serializable {
      * @param messages 响应状态消息列表
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> fail(final int code, final Collection<String> messages) {
+    public static <T> DataListResult<T> fail(final int code, final Collection<String> messages) {
         return new DataListResult<>(code, messages);
     }
 
@@ -169,7 +169,7 @@ public class DataListResult<T> implements Status, Serializable {
      *
      * @return {@link DataListResult}
      */
-    public static DataListResult<?> ok() {
+    public static <T> DataListResult<T> ok() {
         return new DataListResult(ResultStatus.OK);
     }
 

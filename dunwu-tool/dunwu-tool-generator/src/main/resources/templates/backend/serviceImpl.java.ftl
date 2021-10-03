@@ -82,6 +82,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    public List<${table.dtoName}> pojoListByIds(Collection<? extends Serializable> ids) {
+        return dao.pojoListByIds(ids, this::doToDto);
+    }
+
+    @Override
     public List<${table.dtoName}> pojoListByQuery(${table.queryName} query) {
         return dao.pojoListByQuery(query, this::doToDto);
     }

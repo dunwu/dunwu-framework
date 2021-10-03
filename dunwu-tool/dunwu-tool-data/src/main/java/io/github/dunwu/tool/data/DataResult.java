@@ -55,9 +55,9 @@ public class DataResult<T> implements Status, Serializable {
     /**
      * 构造 {@link DataResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param msg 响应状态消息
-     * @param data    应答数据实体
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
+     * @param data 应答数据实体
      */
     public DataResult(final int code, final String msg, final T data) {
         this.code = code;
@@ -95,8 +95,8 @@ public class DataResult<T> implements Status, Serializable {
     /**
      * 构造 {@link DataResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param msg 响应状态消息
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
      */
     public DataResult(final int code, final String msg) {
         this(code, msg, null);
@@ -117,7 +117,7 @@ public class DataResult<T> implements Status, Serializable {
      *
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail() {
+    public static <T> DataResult<T> fail() {
         return new DataResult<>(ResultStatus.FAIL);
     }
 
@@ -127,18 +127,18 @@ public class DataResult<T> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail(final Status status) {
+    public static <T> DataResult<T> fail(final Status status) {
         return new DataResult<>(status);
     }
 
     /**
      * 根据参数返回失败的 {@link DataResult}
      *
-     * @param code    状态码 {@link Status}
-     * @param msg 响应状态消息
+     * @param code 状态码 {@link Status}
+     * @param msg  响应状态消息
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail(final int code, final String msg) {
+    public static <T> DataResult<T> fail(final int code, final String msg) {
         return new DataResult<>(code, msg);
     }
 
@@ -149,7 +149,7 @@ public class DataResult<T> implements Status, Serializable {
      * @param messages 响应状态消息动态数组
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail(final int code, final String... messages) {
+    public static <T> DataResult<T> fail(final int code, final String... messages) {
         return new DataResult<>(code, CollectionUtil.newArrayList(messages));
     }
 
@@ -160,7 +160,7 @@ public class DataResult<T> implements Status, Serializable {
      * @param messages 响应状态消息列表
      * @return {@link DataResult}
      */
-    public static DataResult<?> fail(final int code, final Collection<String> messages) {
+    public static <T> DataResult<T> fail(final int code, final Collection<String> messages) {
         return new DataResult<>(code, messages);
     }
 
@@ -169,7 +169,7 @@ public class DataResult<T> implements Status, Serializable {
      *
      * @return {@link DataResult}
      */
-    public static DataResult<?> ok() {
+    public static <T> DataResult<T> ok() {
         return new DataResult<>(ResultStatus.OK);
     }
 

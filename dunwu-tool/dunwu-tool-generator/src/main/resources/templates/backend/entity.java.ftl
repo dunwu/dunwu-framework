@@ -94,8 +94,7 @@ public class ${entity} implements Serializable {
     <#if (logicDeleteFieldName!"") == field.fieldName>
     @TableLogic
     </#if>
-<#--    <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">-->
-    <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate")>
+    <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
     @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
     private ${field.propertyType} ${field.propertyName};

@@ -118,7 +118,7 @@ public class PageResult<T> implements Status, Serializable {
      *
      * @return {@link PageResult}
      */
-    public static PageResult<?> fail() {
+    public static <T> PageResult<T> fail() {
         return new PageResult<>(ResultStatus.FAIL);
     }
 
@@ -128,7 +128,7 @@ public class PageResult<T> implements Status, Serializable {
      * @param status {@link Status}（应答状态）
      * @return {@link PageResult}
      */
-    public static PageResult<?> fail(final Status status) {
+    public static <T> PageResult<T> fail(final Status status) {
         return new PageResult<>(status);
     }
 
@@ -139,7 +139,7 @@ public class PageResult<T> implements Status, Serializable {
      * @param msg  响应状态消息
      * @return {@link PageResult}
      */
-    public static PageResult<?> fail(final int code, final String msg) {
+    public static <T> PageResult<T> fail(final int code, final String msg) {
         return new PageResult<>(code, msg);
     }
 
@@ -150,7 +150,7 @@ public class PageResult<T> implements Status, Serializable {
      * @param messages 响应状态消息动态数组
      * @return {@link PageResult}
      */
-    public static PageResult<?> fail(final int code, final String... messages) {
+    public static <T> PageResult<T> fail(final int code, final String... messages) {
         return new PageResult<>(code, CollectionUtil.newArrayList(messages));
     }
 
@@ -161,7 +161,7 @@ public class PageResult<T> implements Status, Serializable {
      * @param messages 响应状态消息列表
      * @return {@link PageResult}
      */
-    public static PageResult<?> fail(final int code, final Collection<String> messages) {
+    public static <T> PageResult<T> fail(final int code, final Collection<String> messages) {
         return new PageResult<>(code, messages);
     }
 
@@ -170,7 +170,7 @@ public class PageResult<T> implements Status, Serializable {
      *
      * @return {@link PageResult}
      */
-    public static PageResult<?> ok() {
+    public static <T> PageResult<T> ok() {
         return new PageResult<>(ResultStatus.OK);
     }
 

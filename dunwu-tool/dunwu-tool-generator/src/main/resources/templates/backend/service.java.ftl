@@ -96,6 +96,14 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     List<${table.dtoName}> pojoList();
 
     /**
+    * 根据 ID 列表查询 {@link ${table.dtoName}} 列表
+    *
+    * @param {@link ${entity}} 主键列表
+    * @return {@link List<${table.dtoName}>}
+    */
+    List<${table.dtoName}> pojoListByIds(Collection<? extends Serializable> ids);
+
+    /**
      * 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表
      *
      * @param query 查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
