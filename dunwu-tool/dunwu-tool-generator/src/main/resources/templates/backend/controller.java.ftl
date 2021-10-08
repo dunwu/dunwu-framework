@@ -131,7 +131,7 @@ public class ${table.controllerName} {
     /** 根据 id 列表批量删除 {@link ${entity}} 记录 */
     </#if>
     <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量删除", value = "'批量删除 ${table.tableName} 表中 ' + #list.size + ' 条记录'")
+    @AppLog(bizType = "${table.comment!}", operType = "批量删除", value = "'批量删除 ${table.tableName} 表中 id = ' + #ids + ' 的记录'")
     </#if>
     @PostMapping("del/batch")
     public DataResult<Boolean> deleteBatchByIds(@RequestBody Collection<? extends Serializable> ids) {

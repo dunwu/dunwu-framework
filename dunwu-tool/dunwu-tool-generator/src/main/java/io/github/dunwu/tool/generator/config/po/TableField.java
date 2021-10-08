@@ -19,7 +19,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.dunwu.tool.generator.config.StrategyConfig;
 import io.github.dunwu.tool.generator.config.rules.IColumnType;
-import io.github.dunwu.tool.generator.config.rules.JavaColumnType;
 import io.github.dunwu.tool.generator.config.rules.NamingStrategy;
 import lombok.Data;
 import lombok.experimental.Accessors;

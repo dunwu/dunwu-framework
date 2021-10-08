@@ -262,6 +262,11 @@ public class ServletUtil {
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
+
+        if (StrUtil.isNotBlank(ip)) {
+            String[] array = ip.split(",");
+            return StrUtil.trim(array[0]);
+        }
         return ip;
     }
 

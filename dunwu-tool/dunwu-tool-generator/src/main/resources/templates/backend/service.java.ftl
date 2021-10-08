@@ -98,7 +98,7 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     /**
     * 根据 ID 列表查询 {@link ${table.dtoName}} 列表
     *
-    * @param {@link ${entity}} 主键列表
+    * @param ids {@link ${entity}} 主键列表
     * @return {@link List<${table.dtoName}>}
     */
     List<${table.dtoName}> pojoListByIds(Collection<? extends Serializable> ids);

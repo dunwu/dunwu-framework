@@ -44,7 +44,7 @@ public class IpUtil {
     private static int offset;
     private static ByteBuffer dataBuffer;
     private static ByteBuffer indexBuffer;
-    private static ReentrantLock lock = new ReentrantLock();
+    private static final ReentrantLock LOCK = new ReentrantLock();
 
     static {
         loadData();
@@ -135,8 +135,8 @@ public class IpUtil {
      */
     public static String intToIpv4Str(final int i) {
         return new StringBuilder(15).append((i >> 24) & 0xff).append('.')
-            .append(i >> 16 & 0xff).append('.').append((i >> 8) & 0xff).append('.')
-            .append(i & 0xff).toString();
+                                    .append(i >> 16 & 0xff).append('.').append((i >> 8) & 0xff).append('.')
+                                    .append(i & 0xff).toString();
     }
 
     /**
@@ -213,13 +213,13 @@ public class IpUtil {
         }
 
         byte[] bytes;
-        lock.lock();
+        LOCK.lock();
         try {
             dataBuffer.position(offset + (int) indexOffset - 1024);
             bytes = new byte[indexLength];
             dataBuffer.get(bytes, 0, indexLength);
         } finally {
-            lock.unlock();
+            LOCK.unlock();
         }
 
         String temp = new String(bytes, StandardCharsets.UTF_8);
@@ -353,7 +353,7 @@ public class IpUtil {
     private static void loadData() {
 
         InputStream fis = null;
-        lock.lock();
+        LOCK.lock();
         try {
             fis = IpUtil.class.getClassLoader().getResourceAsStream(IP_DB_FILE);
             if (fis == null) {
@@ -389,7 +389,7 @@ public class IpUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            lock.unlock();
+            LOCK.unlock();
         }
     }
 
@@ -402,10 +402,12 @@ public class IpUtil {
         try {
             InetAddress candidateAddress = null;
             // 遍历所有的网络接口
-            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+                interfaces.hasMoreElements(); ) {
                 NetworkInterface anInterface = interfaces.nextElement();
                 // 在所有的接口下再遍历IP
-                for (Enumeration<InetAddress> inetAddresses = anInterface.getInetAddresses(); inetAddresses.hasMoreElements();) {
+                for (Enumeration<InetAddress> inetAddresses = anInterface.getInetAddresses();
+                    inetAddresses.hasMoreElements(); ) {
                     InetAddress inetAddr = inetAddresses.nextElement();
                     // 排除loopback类型地址
                     if (!inetAddr.isLoopbackAddress()) {
