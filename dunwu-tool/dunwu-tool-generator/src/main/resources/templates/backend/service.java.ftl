@@ -96,11 +96,11 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     List<${table.dtoName}> pojoList();
 
     /**
-    * 根据 ID 列表查询 {@link ${table.dtoName}} 列表
-    *
-    * @param ids {@link ${entity}} 主键列表
-    * @return {@link List<${table.dtoName}>}
-    */
+     * 根据 ID 列表查询 {@link ${table.dtoName}} 列表
+     *
+     * @param ids {@link ${entity}} 主键列表
+     * @return {@link List<${table.dtoName}>}
+     */
     List<${table.dtoName}> pojoListByIds(Collection<? extends Serializable> ids);
 
     /**
@@ -112,13 +112,13 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     List<${table.dtoName}> pojoListByQuery(${table.queryName} query);
 
     /**
-     * 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表
+     * 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表
      *
-     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @param pageable 分页查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @return {@link Page<${table.dtoName}>}
      */
-    Page<${table.dtoName}> pojoSpringPageByQuery(${table.queryName} query, Pageable pageable);
+    Page<${table.dtoName}> pojoSpringPageByQuery(Pageable pageable, ${table.queryName} query);
 
     /**
      * 根据 id 查询 {@link ${table.dtoName}}
@@ -153,13 +153,13 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     void exportList(Collection<? extends Serializable> ids, HttpServletResponse response);
 
     /**
-     * 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单
+     * 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单
      *
-     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @param pageable 分页查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
      * @param response {@link HttpServletResponse} 实体
      */
-    void exportPage(${table.queryName} query, Pageable pageable, HttpServletResponse response);
+    void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response);
 
     /**
      * 将 {@link ${entity}} 转为 {@link ${table.dtoName}}

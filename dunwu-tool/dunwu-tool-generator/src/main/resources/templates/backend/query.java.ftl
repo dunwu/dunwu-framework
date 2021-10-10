@@ -62,7 +62,7 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
   </#if>
-    @QueryField
+    @QueryField(value = "`${field.fieldName}`")
     private ${field.propertyType} ${field.propertyName};
   <#if field.queryType == "BETWEEN">
 
@@ -71,7 +71,7 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "${field.datePattern}", timezone = "GMT+8")
       </#if>
     </#if>
-    @QueryField(value = "${field.propertyName}", type = QueryField.QueryType.BETWEEN)
+    @QueryField(value = "${field.fieldName}", type = QueryField.QueryType.BETWEEN)
     private List<${field.propertyType}> ${field.propertyName}Range;
   </#if>
 </#list>
@@ -89,7 +89,7 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
   </#if>
-    @QueryField
+    @QueryField(value = "`${field.fieldName}`")
     private ${field.propertyType} ${field.propertyName};
   <#if field.queryType == "BETWEEN">
 
@@ -98,7 +98,7 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "${field.datePattern}", timezone = "GMT+8")
           </#if>
       </#if>
-    @QueryField(value = "${field.propertyName}", type = QueryField.QueryType.BETWEEN)
+    @QueryField(value = "${field.fieldName}", type = QueryField.QueryType.BETWEEN)
     private List<${field.propertyType}> ${field.propertyName}Range;
   </#if>
 </#list>

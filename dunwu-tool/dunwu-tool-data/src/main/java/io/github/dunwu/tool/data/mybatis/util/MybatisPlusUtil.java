@@ -16,10 +16,7 @@ import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mybatis Plus 工具类
@@ -114,16 +111,33 @@ public class MybatisPlusUtil {
                 wrapper.and(w -> w.likeRight(key, value));
                 break;
             case IN:
-                wrapper.and(w -> w.in(key, value));
+                if (value instanceof Collection) {
+                    Collection<?> list = (Collection<?>) value;
+                    Object[] array = list.toArray();
+                    wrapper.and(w -> w.in(key, array));
+                } else if (ArrayUtil.isArray(value)) {
+                    wrapper.and(w -> w.in(key, value));
+                } else {
+                    throw new IllegalArgumentException("IN 请求参数必须是数组或 Collection");
+                }
                 break;
             case NOT_IN:
+                if (value instanceof Collection) {
+                    Collection<?> list = (Collection<?>) value;
+                    Object[] array = list.toArray();
+                    wrapper.and(w -> w.notIn(key, array));
+                } else if (ArrayUtil.isArray(value)) {
+                    wrapper.and(w -> w.notIn(key, value));
+                } else {
+                    throw new IllegalArgumentException("NOT_IN 请求参数必须是数组或 Collection");
+                }
                 wrapper.and(w -> w.notIn(key, value));
                 break;
             case NOT_NULL:
                 wrapper.and(w -> w.isNotNull(key));
                 break;
             case BETWEEN:
-                List<Object> between = new ArrayList<>((List<Object>) value);
+                List<?> between = new ArrayList<>((List<?>) value);
                 if (CollectionUtil.isEmpty(between) || between.size() != 2) {
                     throw new IllegalArgumentException("BETWEEN 请求参数必须为2个");
                 }

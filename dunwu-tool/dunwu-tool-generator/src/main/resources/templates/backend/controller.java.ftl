@@ -149,13 +149,13 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ${table.queryName} 和 Pageable 分页查询 ${table.dtoName} 列表")
+    @ApiOperation("根据 Pageable 和 ${table.queryName} 分页查询 ${table.dtoName} 列表")
     <#else>
-    /** 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表 */
+    /** 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表 */
     </#if>
     @GetMapping("page")
-    public PageResult<${table.dtoName}> page(${table.queryName} query, Pageable pageable) {
-        return PageResult.ok(service.pojoSpringPageByQuery(query, pageable));
+    public PageResult<${table.dtoName}> page(Pageable pageable, ${table.queryName} query) {
+        return PageResult.ok(service.pojoSpringPageByQuery(pageable, query));
     }
 
     <#if enableSwagger>
@@ -192,16 +192,16 @@ public class ${table.controllerName} {
     }
 
     <#if enableSwagger>
-    @ApiOperation("根据 ${table.queryName} 和 Pageable 分页查询 ${table.dtoName} 列表，并导出 excel 表单")
+    @ApiOperation("根据 Pageable 和 ${table.queryName} 分页查询 ${table.dtoName} 列表，并导出 excel 表单")
     <#else>
-    /** 根据 {@link ${table.queryName}} 和 {@link Pageable} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单 */
+    /** 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单 */
     </#if>
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "导出", value = "分页导出 ${table.tableName} 表中的记录")
     </#if>
     @GetMapping("export/page")
-    public void exportPage(${table.queryName} query, Pageable pageable, HttpServletResponse response) {
-        service.exportPage(query, pageable, response);
+    public void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response) {
+        service.exportPage(pageable, query, response);
     }
 
 }

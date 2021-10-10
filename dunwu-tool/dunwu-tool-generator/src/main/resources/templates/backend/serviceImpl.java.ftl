@@ -92,8 +92,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public Page<${table.dtoName}> pojoSpringPageByQuery(${table.queryName} query, Pageable pageable) {
-        return dao.pojoSpringPageByQuery(query, pageable, this::doToDto);
+    public Page<${table.dtoName}> pojoSpringPageByQuery(Pageable pageable, ${table.queryName} query) {
+        return dao.pojoSpringPageByQuery(pageable, query, this::doToDto);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
-    public void exportPage(${table.queryName} query, Pageable pageable, HttpServletResponse response) {
-        Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(query, pageable, this::doToDto);
+    public void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response) {
+        Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(pageable, query, this::doToDto);
         exportDtoList(page.getContent(), response);
     }
 

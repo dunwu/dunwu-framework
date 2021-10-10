@@ -188,7 +188,7 @@ public interface IExtDao<E> extends IDao<E> {
         return springPage(pageable, MybatisPlusUtil.buildQueryWrapper(query));
     }
 
-    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Object query, Pageable pageable,
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Pageable pageable, Object query,
         Class<T> clazz) {
         org.springframework.data.domain.Page<E> page = springPageByQuery(pageable, query);
         List<T> list;
@@ -200,7 +200,7 @@ public interface IExtDao<E> extends IDao<E> {
         return new Pagination<>(list, pageable, page.getTotalElements());
     }
 
-    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Object query, Pageable pageable,
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Pageable pageable, Object query,
         TypeConvert<E, T> convert) {
         org.springframework.data.domain.Page<E> page = springPageByQuery(pageable, query);
         if (CollectionUtil.isEmpty(page.getContent())) {
