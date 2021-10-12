@@ -17,8 +17,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 </#if>
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+<#if table.enablePermission>
+import org.springframework.security.access.prepost.PreAuthorize;
+</#if>
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 <#if !restControllerStyle>
@@ -27,7 +29,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -68,7 +69,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "添加", value = "'向 ${table.tableName} 表中添加一条记录，内容为：' + #entity")
     </#if>
-    @PostMapping("add")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add')")
+    </#if>
+    @PostMapping("/add")
     public DataResult<Boolean> add(@Validated(AddCheck.class) @RequestBody ${entity} entity) {
         return DataResult.ok(service.insert(entity));
     }
@@ -81,7 +85,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "批量添加", value = "'向 ${table.tableName} 表中批量添加 ' + #list.size + ' 条记录'")
     </#if>
-    @PostMapping("add/batch")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add')")
+    </#if>
+    @PostMapping("/add/batch")
     public DataResult<Boolean> addBatch(@Validated(AddCheck.class) @RequestBody Collection<${entity}> list) {
         return DataResult.ok(service.insertBatch(list));
     }
@@ -94,7 +101,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "更新", value = "'更新 ${table.tableName} 表中 id = ' + #entity.id + ' 的记录，内容为：' + #entity")
     </#if>
-    @PostMapping("edit")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
+    </#if>
+    @PostMapping("/edit")
     public DataResult<Boolean> edit(@Validated(EditCheck.class) @RequestBody ${entity} entity) {
         return DataResult.ok(service.updateById(entity));
     }
@@ -107,7 +117,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "批量更新", value = "'批量更新 ${table.tableName} 表中 ' + #list.size + ' 条记录'")
     </#if>
-    @PostMapping("edit/batch")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
+    </#if>
+    @PostMapping("/edit/batch")
     public DataResult<Boolean> editBatch(@Validated(EditCheck.class) @RequestBody Collection<${entity}> list) {
         return DataResult.ok(service.updateBatchById(list));
     }
@@ -120,7 +133,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "删除", value = "'删除 ${table.tableName} 表中 id = ' + #entity.id + ' 的记录'")
     </#if>
-    @PostMapping("del/{id}")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del')")
+    </#if>
+    @PostMapping("/del/{id}")
     public DataResult<Boolean> deleteById(@PathVariable Serializable id) {
         return DataResult.ok(service.deleteById(id));
     }
@@ -133,7 +149,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "批量删除", value = "'批量删除 ${table.tableName} 表中 id = ' + #ids + ' 的记录'")
     </#if>
-    @PostMapping("del/batch")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del')")
+    </#if>
+    @PostMapping("/del/batch")
     public DataResult<Boolean> deleteBatchByIds(@RequestBody Collection<? extends Serializable> ids) {
         return DataResult.ok(service.deleteBatchByIds(ids));
     }
@@ -143,7 +162,10 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 {@link ${table.queryName}} 查询 {@link ${table.dtoName}} 列表 */
     </#if>
-    @GetMapping("list")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
+    </#if>
+    @GetMapping("/list")
     public DataListResult<${table.dtoName}> list(${table.queryName} query) {
         return DataListResult.ok(service.pojoListByQuery(query));
     }
@@ -153,7 +175,10 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表 */
     </#if>
-    @GetMapping("page")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
+    </#if>
+    @GetMapping("/page")
     public PageResult<${table.dtoName}> page(Pageable pageable, ${table.queryName} query) {
         return PageResult.ok(service.pojoSpringPageByQuery(pageable, query));
     }
@@ -163,7 +188,10 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 id 查询 {@link ${table.dtoName}} */
     </#if>
-    @GetMapping("{id}")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
+    </#if>
+    @GetMapping("/{id}")
     public DataResult<${table.dtoName}> getById(@PathVariable Serializable id) {
         return DataResult.ok(service.pojoById(id));
     }
@@ -173,7 +201,7 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 {@link ${table.queryName}} 查询匹配条件的记录数 */
     </#if>
-    @GetMapping("count")
+    @GetMapping("/count")
     public DataResult<Integer> count(${table.queryName} query) {
         return DataResult.ok(service.countByQuery(query));
     }
@@ -186,7 +214,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "导出", value = "'导出 ${table.tableName} 表中 id = ' + #ids + ' 的记录'")
     </#if>
-    @PostMapping("export/list")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
+    </#if>
+    @PostMapping("/export/list")
     public void exportList(@RequestBody Collection<? extends Serializable> ids, HttpServletResponse response) {
         service.exportList(ids, response);
     }
@@ -199,7 +230,10 @@ public class ${table.controllerName} {
     <#if table.enableLog>
     @AppLog(bizType = "${table.comment!}", operType = "导出", value = "分页导出 ${table.tableName} 表中的记录")
     </#if>
-    @GetMapping("export/page")
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
+    </#if>
+    @GetMapping("/export/page")
     public void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response) {
         service.exportPage(pageable, query, response);
     }

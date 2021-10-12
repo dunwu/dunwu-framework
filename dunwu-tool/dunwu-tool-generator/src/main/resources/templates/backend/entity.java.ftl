@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
+<#if superEntityClass??>
 import lombok.EqualsAndHashCode;
+</#if>
 import lombok.experimental.Accessors;
 </#if>
 <#if table.importPackages??>
@@ -30,8 +32,6 @@ import ${pkg};
 @Data
 @Accessors(chain = true)
     <#if superEntityClass??>
-@EqualsAndHashCode(callSuper = false)
-    <#else>
 @EqualsAndHashCode(callSuper = false)
     </#if>
 </#if>

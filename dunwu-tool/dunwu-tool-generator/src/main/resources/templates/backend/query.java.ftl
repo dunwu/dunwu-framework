@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
+<#if superEntityClass??>
 import lombok.EqualsAndHashCode;
+</#if>
 import lombok.experimental.Accessors;
 </#if>
 <#if table.importPackages??>
@@ -28,8 +30,6 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
     <#if superEntityClass??>
-@EqualsAndHashCode(callSuper = false)
-    <#else>
 @EqualsAndHashCode(callSuper = false)
     </#if>
 </#if>
