@@ -7,13 +7,13 @@
     <parent>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-parent</artifactId>
-        <version>1.0.6-SNAPSHOT</version>
+        <version>1.0.6</version>
         <relativePath>../dunwu-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>io.github.dunwu.tool</groupId>
     <artifactId>dunwu-tool</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>dunwu-tool 父 pom</description>
@@ -29,7 +29,7 @@
     </modules>
 
     <properties>
-        <dunwu-tool.version>1.0.6-SNAPSHOT</dunwu-tool.version>
+        <dunwu-tool.version>1.0.6</dunwu-tool.version>
     </properties>
 
     <dependencies>
