@@ -1,8 +1,8 @@
 package io.github.dunwu.tool.util;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -16,12 +16,12 @@ public class ClassUtil extends cn.hutool.core.util.ClassUtil {
      * @return 对象及其父类的所有字段
      */
     public static Field[] getAllFields(Class<?> clazz) {
-        Set<Field> fieldSet = new HashSet<>();
+        Set<Field> fieldSet = new LinkedHashSet<>();
         // 为了避免出现死循环，所以设定最大嵌套层数为 10 （正常情况，嵌套层数不会太深）
         int i = 0;
         while (clazz != null && i < 10) {
             i++;
-            fieldSet.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            Collections.addAll(fieldSet, clazz.getDeclaredFields());
             clazz = clazz.getSuperclass();
         }
         Field[] fields = new Field[fieldSet.size()];

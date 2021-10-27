@@ -83,7 +83,7 @@ public class ${table.controllerName} {
     /** 批量添加 {@link ${entity}} 记录 */
     </#if>
     <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量添加", value = "'向 ${table.tableName} 表中批量添加 ' + #list.size + ' 条记录'")
+    @AppLog(bizType = "${table.comment!}", operType = "批量添加", value = "'向 ${table.tableName} 表中批量添加 ' + #list.size() + ' 条记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add')")
@@ -115,7 +115,7 @@ public class ${table.controllerName} {
     /** 根据 id 批量更新 {@link ${entity}} 记录 */
     </#if>
     <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量更新", value = "'批量更新 ${table.tableName} 表中 ' + #list.size + ' 条记录'")
+    @AppLog(bizType = "${table.comment!}", operType = "批量更新", value = "'批量更新 ${table.tableName} 表中 ' + #list.size() + ' 条记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
@@ -131,7 +131,7 @@ public class ${table.controllerName} {
     /** 根据 id 删除一条 {@link ${entity}} 记录 */
     </#if>
     <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "删除", value = "'删除 ${table.tableName} 表中 id = ' + #entity.id + ' 的记录'")
+    @AppLog(bizType = "${table.comment!}", operType = "删除", value = "'删除 ${table.tableName} 表中 id = ' + #id + ' 的记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del')")

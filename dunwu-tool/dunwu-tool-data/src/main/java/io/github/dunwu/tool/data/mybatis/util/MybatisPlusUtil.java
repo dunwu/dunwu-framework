@@ -212,7 +212,7 @@ public class MybatisPlusUtil {
     }
 
     public static Page<Map<String, Object>> toMybatisPlusMapPage(Pageable pageable) {
-        Page<Map<String, Object>> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
+        Page<Map<String, Object>> page = new Page<>((pageable.getPageNumber() + 1), pageable.getPageSize(), true);
         List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
         if (CollectionUtil.isNotEmpty(orderItems)) {
             page.addOrder(orderItems);
@@ -235,7 +235,7 @@ public class MybatisPlusUtil {
     }
 
     public static <T> Page<T> toMybatisPlusPage(Pageable pageable) {
-        Page<T> page = new Page<>(pageable.getPageNumber(), pageable.getPageSize(), true);
+        Page<T> page = new Page<>((pageable.getPageNumber() + 1), pageable.getPageSize(), true);
         List<OrderItem> orderItems = toMybatisPlusOrderItems(pageable.getSort());
         if (CollectionUtil.isNotEmpty(orderItems)) {
             page.addOrder(orderItems);
@@ -244,7 +244,7 @@ public class MybatisPlusUtil {
     }
 
     public static <T> Page<T> toMybatisPlusPage(org.springframework.data.domain.Page<T> page) {
-        Page<T> mybatisPlusPage = new Page<>(page.getNumber(), page.getSize(), page.getTotalElements(), true);
+        Page<T> mybatisPlusPage = new Page<>((page.getNumber() + 1), page.getSize(), page.getTotalElements(), true);
         mybatisPlusPage.setRecords(page.getContent());
         List<OrderItem> orderItems = toMybatisPlusOrderItems(page.getSort());
         if (CollectionUtil.isNotEmpty(orderItems)) {
@@ -261,7 +261,7 @@ public class MybatisPlusUtil {
      * @return {@link Pagination <T>}
      */
     public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
-        return new Pagination<>(page.getRecords(), (int) page.getCurrent(), (int) page.getSize(), page.getTotal());
+        return new Pagination<>(page.getRecords(), (int) (page.getCurrent() - 1), (int) page.getSize(), page.getTotal());
     }
 
 }

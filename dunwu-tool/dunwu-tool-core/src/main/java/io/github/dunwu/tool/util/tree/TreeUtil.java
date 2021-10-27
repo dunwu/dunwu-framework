@@ -1,6 +1,7 @@
 package io.github.dunwu.tool.util.tree;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import io.github.dunwu.tool.bean.BeanUtil;
 import io.github.dunwu.tool.util.tree.parser.DefaultNodeParser;
@@ -170,6 +171,10 @@ public class TreeUtil {
     public static Tree getNode(Tree node, Serializable id) {
         if (ObjectUtil.equal(id, node.getId())) {
             return node;
+        }
+
+        if (CollectionUtil.isEmpty(node.getChildren())) {
+            return null;
         }
 
         // 查找子节点

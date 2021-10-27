@@ -6,7 +6,7 @@
 
   <groupId>io.github.dunwu</groupId>
   <artifactId>dunwu-framework</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>dunwu-framework</description>
