@@ -23,7 +23,7 @@ import ${pkg};
 </#if>
 
 /**
- * ${table.comment!}
+ * ${table.comment!}实体
  *
  * @author ${author}
  * @since ${date}
@@ -39,7 +39,7 @@ import ${pkg};
 @TableName("${table.tableName}")
 </#if>
 <#if enableSwagger>
-@ApiModel(value = "${entity}", description = "${table.comment!}")
+@ApiModel(value = "${entity}", description = "${table.comment!}实体")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if enableActiveRecord><${entity}></#if> {

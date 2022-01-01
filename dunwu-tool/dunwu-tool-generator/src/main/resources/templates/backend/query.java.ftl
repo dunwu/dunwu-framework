@@ -21,7 +21,7 @@ import ${pkg};
 import java.util.List;
 
 /**
- * ${table.comment!} Query 类
+ * ${table.comment!} Query 实体
  *
  * @author ${author}
  * @since ${date}
@@ -34,7 +34,7 @@ import java.util.List;
     </#if>
 </#if>
 <#if enableSwagger>
-@ApiModel(value = "${table.queryName}", description = "${table.comment!}")
+@ApiModel(value = "${table.queryName}", description = "${table.comment!} Query 实体")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if enableActiveRecord><${entity}></#if> {

@@ -5,4 +5,5 @@ io.github.dunwu.autoconfigure.zookeeper.ZookeeperAutoConfiguration,\
 io.github.dunwu.autoconfigure.hdfs.DunwuHdfsConfiguration,\
 io.github.dunwu.autoconfigure.json.DunwuJsonConfiguration,\
 io.github.dunwu.autoconfigure.redis.DunwuRedisExtConfiguration,\
-io.github.dunwu.autoconfigure.dlock.DistributedLockAutoConfiguration
+io.github.dunwu.autoconfigure.dlock.DistributedLockAutoConfiguration,\
+io.github.dunwu.autoconfigure.log.DunwuOperationLogConfiguration

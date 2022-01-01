@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
  * @since 2020-03-12
  */
 @Configuration
-@ConditionalOnProperty(value = "dunwu.dlock.enable", havingValue = "true")
+@ConditionalOnProperty(value = "dunwu.dlock.enabled", havingValue = "true")
 @EnableConfigurationProperties(DistributedLockProperties.class)
 @Import({ JdbcDistributedLockConfiguration.class, RedisDistributedLockConfiguration.class,
     ZookeeperDistributedLockConfiguration.class })

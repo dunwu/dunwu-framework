@@ -19,7 +19,7 @@ import ${pkg};
 </#if>
 
 /**
- * ${table.comment!} Dto 类
+ * ${table.comment!} Dto 实体
  *
  * @author ${author}
  * @since ${date}
@@ -32,7 +32,7 @@ import ${pkg};
     </#if>
 </#if>
 <#if enableSwagger>
-@ApiModel(value = "${table.dtoName}", description = "${table.comment!}")
+@ApiModel(value = "${table.dtoName}", description = "${table.comment!} Dto 实体")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if enableActiveRecord><${entity}></#if> {
