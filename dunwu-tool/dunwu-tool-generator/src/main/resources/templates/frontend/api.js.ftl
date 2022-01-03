@@ -14,19 +14,6 @@ export function add(data) {
 }
 
 /**
- * 根据 ID 集合批量删除
- * @param ids
- * @returns {*}
- */
-export function delBatch(ids) {
-  return request({
-    url: '<#if package.ModuleName??>${package.ModuleName}/</#if>${table.apiBaseUrl}/del/batch',
-    method: 'post',
-    data: ids
-  })
-}
-
-/**
  * 修改一条记录
  * @param data
  * @returns {*}
@@ -36,6 +23,31 @@ export function edit(data) {
     url: '<#if package.ModuleName??>${package.ModuleName}/</#if>${table.apiBaseUrl}/edit',
     method: 'post',
     data
+  })
+}
+
+/**
+ * 根据 ID 删除一条记录
+ * @param id
+ * @returns {*}
+ */
+export function del(id) {
+  return request({
+    url: '<#if package.ModuleName??>${package.ModuleName}/</#if>${table.apiBaseUrl}/del/' + id,
+    method: 'post'
+  })
+}
+
+/**
+ * 根据 ID 集合批量删除
+ * @param ids
+ * @returns {*}
+ */
+export function delBatch(ids) {
+  return request({
+    url: '<#if package.ModuleName??>${package.ModuleName}/</#if>${table.apiBaseUrl}/del/batch',
+    method: 'post',
+    data: ids
   })
 }
 
@@ -105,4 +117,4 @@ export function exportPage(params) {
   })
 }
 
-export default { add, edit, delBatch, list, page, getById, exportList, exportPage }
+export default { add, edit, del, delBatch, list, page, getById, exportList, exportPage }

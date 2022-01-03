@@ -5,9 +5,6 @@ import io.github.dunwu.tool.data.DataResult;
 import io.github.dunwu.tool.data.PageResult;
 import io.github.dunwu.tool.data.validator.annotation.AddCheck;
 import io.github.dunwu.tool.data.validator.annotation.EditCheck;
-<#if table.enableLog>
-import io.github.dunwu.tool.web.log.annotation.AppLog;
-</#if>
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
 import ${package.Query}.${table.queryName};
@@ -66,9 +63,6 @@ public class ${table.controllerName} {
     <#else>
     /** 添加一条 {@link ${entity}} 记录 */
     </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "添加", value = "'向 ${table.tableName} 表中添加一条记录，内容为：' + #entity")
-    </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add')")
     </#if>
@@ -81,9 +75,6 @@ public class ${table.controllerName} {
     @ApiOperation("批量添加 ${entity} 记录")
     <#else>
     /** 批量添加 {@link ${entity}} 记录 */
-    </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量添加", value = "'向 ${table.tableName} 表中批量添加 ' + #list.size() + ' 条记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add')")
@@ -98,9 +89,6 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 id 更新一条 {@link ${entity}} 记录 */
     </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "更新", value = "'更新 ${table.tableName} 表中 id = ' + #entity.id + ' 的记录，内容为：' + #entity")
-    </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
     </#if>
@@ -113,9 +101,6 @@ public class ${table.controllerName} {
     @ApiOperation("根据 id 批量更新 ${entity} 记录")
     <#else>
     /** 根据 id 批量更新 {@link ${entity}} 记录 */
-    </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量更新", value = "'批量更新 ${table.tableName} 表中 ' + #list.size() + ' 条记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
@@ -130,9 +115,6 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 id 删除一条 {@link ${entity}} 记录 */
     </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "删除", value = "'删除 ${table.tableName} 表中 id = ' + #id + ' 的记录'")
-    </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del')")
     </#if>
@@ -145,9 +127,6 @@ public class ${table.controllerName} {
     @ApiOperation("根据 id 列表批量删除 ${entity} 记录")
     <#else>
     /** 根据 id 列表批量删除 {@link ${entity}} 记录 */
-    </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "批量删除", value = "'批量删除 ${table.tableName} 表中 id = ' + #ids + ' 的记录'")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del')")
@@ -211,9 +190,6 @@ public class ${table.controllerName} {
     <#else>
     /** 根据 id 列表查询 {@link ${table.dtoName}} 列表，并导出 excel 表单 */
     </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "导出", value = "'导出 ${table.tableName} 表中 id = ' + #ids + ' 的记录'")
-    </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")
     </#if>
@@ -226,9 +202,6 @@ public class ${table.controllerName} {
     @ApiOperation("根据 Pageable 和 ${table.queryName} 分页查询 ${table.dtoName} 列表，并导出 excel 表单")
     <#else>
     /** 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单 */
-    </#if>
-    <#if table.enableLog>
-    @AppLog(bizType = "${table.comment!}", operType = "导出", value = "分页导出 ${table.tableName} 表中的记录")
     </#if>
     <#if table.enablePermission>
     @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:view')")

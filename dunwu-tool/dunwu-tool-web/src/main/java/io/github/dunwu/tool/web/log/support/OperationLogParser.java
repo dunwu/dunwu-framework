@@ -53,7 +53,8 @@ public class OperationLogParser {
                                                    .success(annotation.success())
                                                    .fail(annotation.fail())
                                                    .detail(annotation.detail())
-                                                   .operator(annotation.operator())
+                                                   .operatorId(annotation.operatorId())
+                                                   .operatorName(annotation.operatorName())
                                                    .condition(annotation.condition())
                                                    .build();
         if (StrUtil.isBlank(logInfo.getBizType())) {

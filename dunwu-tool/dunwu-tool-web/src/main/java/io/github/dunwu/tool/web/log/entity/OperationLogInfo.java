@@ -33,8 +33,11 @@ public class OperationLogInfo {
     /** 详情信息 SpEl 模板 */
     private String detail;
 
-    /** 操作者 SpEl 模板 */
-    private String operator;
+    /** 操作者ID SpEl 模板 */
+    private String operatorId;
+
+    /** 操作者名 SpEl 模板 */
+    private String operatorName;
 
     /** 日志记录条件 SpEl 模板 */
     private String condition;

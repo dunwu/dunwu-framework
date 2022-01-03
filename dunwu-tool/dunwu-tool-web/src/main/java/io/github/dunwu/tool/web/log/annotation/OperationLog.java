@@ -34,8 +34,11 @@ public @interface OperationLog {
     /** 详情信息 SpEl 模板 */
     String detail() default "";
 
-    /** 操作者 SpEl 模板 */
-    String operator() default "";
+    /** 操作者ID SpEl 模板 */
+    String operatorId() default "";
+
+    /** 操作者名 SpEl 模板 */
+    String operatorName() default "";
 
     /** 日志记录条件 SpEl 模板 */
     String condition() default "";

@@ -11,6 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import io.github.dunwu.tool.web.ServletUtil;
+<#if table.enableLog>
+import io.github.dunwu.tool.web.log.annotation.OperationLog;
+import io.github.dunwu.tool.web.log.constant.OperationType;
+</#if>
 
 import java.io.Serializable;
 import java.util.*;
@@ -37,41 +41,65 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.ADD)
+    </#if>
     public boolean insert(${entity} entity) {
         return dao.insert(entity);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.BATCH_ADD)
+    </#if>
     public boolean insertBatch(Collection<${entity}> list) {
         return dao.insertBatch(list);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EDIT, bizNo = "{{#entity.id}}")
+    </#if>
     public boolean updateById(${entity} entity) {
         return dao.updateById(entity);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.BATCH_EDIT)
+    </#if>
     public boolean updateBatchById(Collection<${entity}> list) {
         return dao.updateBatchById(list);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.SAVE, bizNo = "{{#entity.id}}")
+    </#if>
     public boolean save(${entity} entity) {
         return dao.save(entity);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.BATCH_SAVE)
+    </#if>
     public boolean saveBatch(Collection<${entity}> list) {
         return dao.saveBatch(list);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.DEL, bizNo = "{{#id}}")
+    </#if>
     public boolean deleteById(Serializable id) {
         return dao.deleteById(id);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.BATCH_DEL, bizNo = "{{#ids}}")
+    </#if>
     public boolean deleteBatchByIds(Collection<? extends Serializable> ids) {
         return dao.deleteBatchByIds(ids);
     }
@@ -112,12 +140,21 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_LIST, bizNo = "{{#ids}}")
+    </#if>
     public void exportList(Collection<? extends Serializable> ids, HttpServletResponse response) {
         List<${table.dtoName}> list = dao.pojoListByIds(ids, this::doToDto);
         exportDtoList(list, response);
     }
 
     @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_PAGE,
+        success = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『成功』",
+        fail = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『失败』"
+    )
+    </#if>
     public void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response) {
         Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(pageable, query, this::doToDto);
         exportDtoList(page.getContent(), response);
