@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-boot</artifactId>
-        <version>1.0.7-SNAPSHOT</version>
+        <version>1.0.7</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
