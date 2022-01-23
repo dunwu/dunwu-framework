@@ -6,6 +6,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.alibaba.excel.EasyExcel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.medsea.mimeutil.MimeType;
@@ -78,6 +79,38 @@ public class ServletUtil {
             //此处记得关闭输出Servlet流
             IoUtil.close(out);
         }
+    }
+
+    /**
+     * 根据传入的 list 列表，导出 excel 表单
+     *
+     * @param response {@link HttpServletResponse} 实体
+     * @param list     {@link T} 列表
+     * @param clazz    {@link T} 类型
+     * @param fileName 文件名
+     */
+    public static <T> void downloadEasyExcel(HttpServletResponse response, Collection<T> list, Class<T> clazz,
+        String fileName) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        if (StrUtil.isBlank(fileName)) {
+            fileName = "导出数据";
+        }
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String encodeFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + encodeFileName + ".xlsx");
+        EasyExcel.write(response.getOutputStream(), clazz).sheet("数据").doWrite(list);
+    }
+
+    /**
+     * 根据传入的 list 列表，导出 excel 表单
+     *
+     * @param response {@link HttpServletResponse} 实体
+     * @param list     {@link T} 列表
+     * @param clazz    {@link T} 类型
+     */
+    public static <T> void downloadEasyExcel(HttpServletResponse response, Collection<T> list, Class<T> clazz)
+        throws IOException {
+        downloadEasyExcel(response, list, clazz, null);
     }
 
     /**

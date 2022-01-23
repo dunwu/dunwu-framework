@@ -6,12 +6,12 @@
     <parent>
         <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-boot</artifactId>
-        <version>1.0.7</version>
+        <version>1.0.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>dunwu-starter-hdfs</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>dunwu HDFS spring boot 启动包</description>
     <url>https://github.com/dunwu/dunwu-framework/dunwu-boot/dunwu-starter-hdfs</url>
