@@ -55,7 +55,7 @@
         <fst.version>2.56</fst.version>
         <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
         <lombok.version>1.18.12</lombok.version>
-        <protobuf-java.version>3.11.4</protobuf-java.version>
+        <protobuf-java.version>3.16.1</protobuf-java.version>
         <reflections.version>0.9.12</reflections.version>
 
         <!-- ========================================================
