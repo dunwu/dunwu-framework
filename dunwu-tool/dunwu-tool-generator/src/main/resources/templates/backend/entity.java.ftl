@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if table.enableValidate>
+import io.github.dunwu.tool.data.validator.annotation.AddCheck;
 import io.github.dunwu.tool.data.validator.annotation.EditCheck;
 import javax.validation.constraints.NotNull;
 </#if>
@@ -78,6 +79,9 @@ public class ${entity} implements Serializable {
         <#-- 普通字段 -->
     <#elseif field.fill??>
     <#-- -----   存在字段填充设置   ----->
+        <#if field.notNull>
+    @NotNull(groups = { AddCheck.class, EditCheck.class })
+        </#if>
         <#if field.convert>
     @TableField(value = "${field.fieldName}", fill = FieldFill.${field.fill})
         <#else>

@@ -1,8 +1,10 @@
 package io.github.dunwu.tool.generator.config.rules;
 
 /**
+ * 列表控件类型
+ *
  * @author peng.zhang
- * @date 2021/3/23
+ * @date 2022/1/25
  */
 public enum FormType {
     Input("Input", "输入框"),
@@ -14,18 +16,18 @@ public enum FormType {
     DateTimePicker("DateTimePicker", "日期时间选择器");
 
     private final String code;
-    private final String desc;
+    private final String name;
 
-    FormType(String code, String desc) {
+    FormType(String code, String name) {
         this.code = code;
-        this.desc = desc;
+        this.name = name;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getName() {
+        return name;
     }
 }

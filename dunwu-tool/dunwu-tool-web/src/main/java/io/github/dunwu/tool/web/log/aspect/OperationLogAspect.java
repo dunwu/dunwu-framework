@@ -200,7 +200,8 @@ public class OperationLogAspect {
                     case SAVE:
                     case DEL:
                     case BATCH_DEL:
-                    case EXPORT_LIST:
+                    case IMPORT_EXCEL:
+                    case EXPORT_EXCEL:
                         message = StrUtil.format("{}{}(id = {})『成功』",
                             operation.getOperation().getName(), operation.getBizType(), operation.getBizNo());
                         break;
@@ -218,7 +219,8 @@ public class OperationLogAspect {
                     case SAVE:
                     case DEL:
                     case BATCH_DEL:
-                    case EXPORT_LIST:
+                    case IMPORT_EXCEL:
+                    case EXPORT_EXCEL:
                         message = StrUtil.format("{}{}(id = {})『失败』",
                             operation.getOperation().getName(), operation.getBizType(), operation.getBizNo());
                         break;

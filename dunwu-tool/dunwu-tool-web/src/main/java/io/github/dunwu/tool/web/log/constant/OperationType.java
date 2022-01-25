@@ -24,10 +24,10 @@ public enum OperationType {
     BATCH_DEL("批量删除"),
     /** 批量保存 */
     BATCH_SAVE("批量保存"),
-    /** 根据ID导出 */
-    EXPORT_LIST("根据ID导出"),
-    /** 分页查询导出 */
-    EXPORT_PAGE("分页查询导出"),
+    /** 导入Excel */
+    IMPORT_EXCEL("导入Excel"),
+    /** 导出Excel */
+    EXPORT_EXCEL("导出Excel"),
     /** 其他 */
     OTHER("其他");
 

@@ -10,7 +10,7 @@ import ${superServiceImplClassPackage};
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import io.github.dunwu.tool.web.ServletUtil;
+import io.github.dunwu.tool.data.excel.ExcelUtil;
 <#if table.enableLog>
 import io.github.dunwu.tool.web.log.annotation.OperationLog;
 import io.github.dunwu.tool.web.log.constant.OperationType;
@@ -141,7 +141,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     @Override
     <#if table.enableLog>
-    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_LIST, bizNo = "{{#ids}}")
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_EXCEL, bizNo = "{{#ids}}")
     </#if>
     public void exportList(Collection<? extends Serializable> ids, HttpServletResponse response) {
         List<${table.dtoName}> list = dao.pojoListByIds(ids, this::doToDto);
@@ -150,7 +150,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     @Override
     <#if table.enableLog>
-    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_PAGE,
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_EXCEL,
         success = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『成功』",
         fail = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『失败』"
     )
@@ -179,7 +179,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
             </#list>
             mapList.add(map);
         }
-        ServletUtil.downloadExcel(response, mapList);
+        ExcelUtil.downloadExcel(response, mapList);
     }
 
     @Override

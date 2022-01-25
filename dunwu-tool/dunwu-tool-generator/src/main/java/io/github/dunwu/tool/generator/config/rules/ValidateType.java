@@ -7,13 +7,34 @@ package io.github.dunwu.tool.generator.config.rules;
  * @date 2021/3/23
  */
 public enum ValidateType {
+    /**
+     * 文本校验
+     */
     STRING("string", "文本校验"),
+    /**
+     * 数字校验
+     */
     NUMBER("number", "数字校验"),
+    /**
+     * 布尔校验
+     */
     BOOLEAN("boolean", "布尔校验"),
+    /**
+     * 整数校验
+     */
     INTEGER("integer", "整型校验"),
-    FLOAT("float", "选择器"),
-    URL("url", "开关"),
-    EMAIL("email", "日期时间选择器");
+    /**
+     * 浮点数校验
+     */
+    FLOAT("float", "浮点数校验"),
+    /**
+     * URL校验
+     */
+    URL("url", "URL校验"),
+    /**
+     * 邮件校验
+     */
+    EMAIL("email", "邮件校验");
 
     private final String code;
     private final String desc;

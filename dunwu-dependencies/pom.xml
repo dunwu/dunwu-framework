@@ -89,6 +89,7 @@
         <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <zxing.version>3.4.0</zxing.version>
+        <easyexcel.version>3.0.5</easyexcel.version>
 
         <!-- ========================================================
              Deploy Plugins
@@ -424,6 +425,12 @@
                 <artifactId>core</artifactId>
                 <version>${zxing.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
