@@ -7,6 +7,7 @@ import ${package.Query}.${table.queryName};
 import ${superServiceClassPackage};
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -143,6 +144,13 @@ public interface ${table.serviceName} extends ${superServiceClass} {
      * @return {@link Integer}
      */
     Integer countByQuery(${table.queryName} query);
+
+    /**
+     * 导入 excel 表单，将表单数据转为数据实体并存储
+     *
+     * @param file {@link MultipartFile} 实体
+     */
+    void importList(MultipartFile file);
 
     /**
      * 根据 id 列表查询 {@link ${table.dtoName}} 列表，并导出 excel 表单

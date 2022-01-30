@@ -1,5 +1,7 @@
 <template>
   <el-dialog
+    v-el-drag-dialog
+    append-to-body
     :close-on-click-modal="false"
     :before-close="crud.cancelCU"
     :visible.sync="crud.status.cu > 0"

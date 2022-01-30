@@ -334,6 +334,7 @@ public abstract class AbstractTemplateEngine {
         objectMap.put("enableActiveRecord", globalConfig.isEnableActiveRecord());
         objectMap.put("enableKotlin", globalConfig.isEnableKotlin());
         objectMap.put("enableSwagger", tableInfo.isEnableSwagger());
+        objectMap.put("enableEasyExcel", tableInfo.isEnableEasyExcel());
         objectMap.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         objectMap.put("table", tableInfo);
         objectMap.put("enableCache", globalConfig.isEnableCache());

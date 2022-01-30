@@ -7,9 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
-<#if superEntityClass??>
+  <#if superEntityClass??>
 import lombok.EqualsAndHashCode;
-</#if>
+  </#if>
 import lombok.experimental.Accessors;
 </#if>
 <#if table.importPackages??>
@@ -62,10 +62,10 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
   </#if>
-    @QueryField(value = "`${field.fieldName}`")
+  <#if field.queryType == "LIKE">
+    @QueryField(value = "`${field.fieldName}`", type = QueryField.QueryType.LIKE)
     private ${field.propertyType} ${field.propertyName};
-  <#if field.queryType == "BETWEEN">
-
+  <#elseif field.queryType == "BETWEEN">
     <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
       <#if field.datePattern??>
     @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "${field.datePattern}", timezone = "GMT+8")
@@ -73,6 +73,9 @@ public class ${table.queryName} implements Serializable {
     </#if>
     @QueryField(value = "${field.fieldName}", type = QueryField.QueryType.BETWEEN)
     private List<${field.propertyType}> ${field.propertyName}Range;
+  <#else>
+    @QueryField(value = "`${field.fieldName}`", type = QueryField.QueryType.EQUALS)
+    private ${field.propertyType} ${field.propertyName};
   </#if>
 </#list>
 <#list table.queryExtFields as field>
@@ -89,9 +92,10 @@ public class ${table.queryName} implements Serializable {
     @JsonFormat(pattern = "${field.datePattern}", timezone = "GMT+8")
     </#if>
   </#if>
-    @QueryField(value = "`${field.fieldName}`")
+  <#if field.queryType == "LIKE">
+    @QueryField(value = "`${field.fieldName}`", type = QueryField.QueryType.LIKE)
     private ${field.propertyType} ${field.propertyName};
-  <#if field.queryType == "BETWEEN">
+  <#elseif field.queryType == "BETWEEN">
 
       <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
           <#if field.datePattern??>
@@ -100,6 +104,9 @@ public class ${table.queryName} implements Serializable {
       </#if>
     @QueryField(value = "${field.fieldName}", type = QueryField.QueryType.BETWEEN)
     private List<${field.propertyType}> ${field.propertyName}Range;
+  <#else>
+    @QueryField(value = "`${field.fieldName}`", type = QueryField.QueryType.EQUALS)
+    private ${field.propertyType} ${field.propertyName};
   </#if>
 </#list>
 <#------------  END 字段循环遍历  ---------->

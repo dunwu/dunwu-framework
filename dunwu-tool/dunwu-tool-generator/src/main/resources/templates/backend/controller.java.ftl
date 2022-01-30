@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 <#if !restControllerStyle>
 import org.springframework.stereotype.Controller;
 </#if>
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -183,6 +184,20 @@ public class ${table.controllerName} {
     @GetMapping("/count")
     public DataResult<Integer> count(${table.queryName} query) {
         return DataResult.ok(service.countByQuery(query));
+    }
+
+    <#if enableSwagger>
+    @ApiOperation("导入 excel 表单")
+    <#else>
+    /** 导入 excel 表单 */
+    </#if>
+    <#if table.enablePermission>
+    @PreAuthorize("@exp.check('<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit')")
+    </#if>
+    @PostMapping("/import/list")
+    public DataResult<Boolean> importList(@RequestBody MultipartFile file) {
+        service.importList(file);
+        return DataResult.ok();
     }
 
     <#if enableSwagger>

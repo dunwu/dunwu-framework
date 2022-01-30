@@ -10,12 +10,23 @@ import ${superServiceImplClassPackage};
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.exception.AppException;
 import io.github.dunwu.tool.data.excel.ExcelUtil;
+<#if entityLombokModel>
+import lombok.extern.slf4j.Slf4j;
+<#else>
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+</#if>
 <#if table.enableLog>
 import io.github.dunwu.tool.web.log.annotation.OperationLog;
 import io.github.dunwu.tool.web.log.constant.OperationType;
 </#if>
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +37,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author ${author}
  * @since ${date}
  */
+<#if entityLombokModel>
+@Slf4j
+</#if>
 @Service
 <#if enableKotlin>
 open class ${table.serviceImplName} : ${superServiceImplClass}(), ${table.serviceName} {
@@ -33,6 +47,10 @@ open class ${table.serviceImplName} : ${superServiceImplClass}(), ${table.servic
 }
 <#else>
 public class ${table.serviceImplName} extends ${superServiceImplClass} implements ${table.serviceName} {
+
+    <#if !entityLombokModel>
+    private static final Logger log = LoggerFactory.getLogger(${table.serviceImplName}.class);
+    </#if>
 
     private final ${table.daoName} dao;
 
@@ -140,26 +158,60 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    @Transactional(rollbackFor = { Exception.class })
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.IMPORT_EXCEL,
+        success = "导入${table.comment!}(Excel文件：{{#file.getOriginalFilename()}})『成功』",
+        fail = "导入${table.comment!}(Excel文件：{{#file.getOriginalFilename()}})『失败』"
+    )
+    public void importList(MultipartFile file) {
+        try {
+            ExcelUtil.saveExcelData(file.getInputStream(), ${entity}.class, dao);
+        } catch (IOException e) {
+            log.error("【${table.comment!}】【导入失败】", e);
+            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导入失败】");
+        }
+    }
+
+    @Override
     <#if table.enableLog>
     @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_EXCEL, bizNo = "{{#ids}}")
     </#if>
     public void exportList(Collection<? extends Serializable> ids, HttpServletResponse response) {
         List<${table.dtoName}> list = dao.pojoListByIds(ids, this::doToDto);
-        exportDtoList(list, response);
+        <#if table.enableEasyExcel>
+        try {
+            ExcelUtil.downloadEasyExcel(response, list, DictDto.class);
+        } catch (IOException e) {
+            log.error("【${table.comment!}】【导出失败】", e);
+            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
+        }
+        <#else>
+        exportDtoList(page.getContent(), response);
+        </#if>
     }
 
     @Override
     <#if table.enableLog>
     @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_EXCEL,
-        success = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『成功』",
-        fail = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toJsonStr()}})『失败』"
+        success = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toString()}})『成功』",
+        fail = "分页查询导出${table.comment!}(page={{#pageable.getPageNumber()}}, size={{#pageable.getPageSize()}}, query={{#query.toString()}})『失败』"
     )
     </#if>
     public void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response) {
         Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(pageable, query, this::doToDto);
+        <#if table.enableEasyExcel>
+        try {
+            ExcelUtil.downloadEasyExcel(response, page.getContent(), DictDto.class);
+        } catch (IOException e) {
+            log.error("【${table.comment!}】【导出失败】", e);
+            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
+        }
+        <#else>
         exportDtoList(page.getContent(), response);
+        </#if>
     }
 
+    <#if !table.enableEasyExcel>
     /**
      * 根据传入的 ${table.dtoName} 列表，导出 excel 表单
      *
@@ -181,6 +233,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
         }
         ExcelUtil.downloadExcel(response, mapList);
     }
+    </#if>
 
     @Override
     public ${table.dtoName} doToDto(${entity} entity) {

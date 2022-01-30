@@ -27,6 +27,8 @@ public enum MybatisPlusGenProps {
     FRONTEND_DIR("mybatis.generator.gc.frontend.dir", null),
     /** 是否自动生成 Swagger 注解 */
     GC_ENABLE_SWAGGER("mybatis.generator.gc.enable.swagger", "true"),
+    /** 是否开启 EasyExcel */
+    GC_ENABLE_EASY_EXCEL("mybatis.generator.gc.enable.easy.excel", "false"),
     /**
      * 作者名
      */

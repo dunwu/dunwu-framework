@@ -41,6 +41,8 @@ public class GlobalConfig {
     private boolean enableOverride = true;
     /** 开启 swagger2 模式 */
     private boolean enableSwagger = true;
+    /** 开启 EasyExcel */
+    private boolean enableEasyExcel = false;
     /** 是否打开输出目录 */
     private boolean open = false;
     /** 开启 Kotlin 模式 */

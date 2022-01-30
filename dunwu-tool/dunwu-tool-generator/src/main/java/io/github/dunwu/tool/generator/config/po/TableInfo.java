@@ -60,10 +60,10 @@ public class TableInfo {
     private String fieldNames;
     private Map<String, TableField> fieldMap;
 
-    /**
-     * 开启 Swagger
-     */
+    /** 开启 Swagger */
     private boolean enableSwagger = true;
+    /** 开启 EasyExcel */
+    private boolean enableEasyExcel = false;
     /** 开启权限校验 */
     private boolean enablePermission = false;
     /** 开启搜索 */

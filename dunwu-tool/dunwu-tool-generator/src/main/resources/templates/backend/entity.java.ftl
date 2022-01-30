@@ -1,5 +1,9 @@
 package ${package.Entity};
 
+<#if enableEasyExcel>
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
+</#if>
 <#if enableSwagger>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,10 +15,9 @@ import javax.validation.constraints.NotNull;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
-<#if superEntityClass??>
+  <#if superEntityClass??>
 import lombok.EqualsAndHashCode;
-</#if>
-import lombok.experimental.Accessors;
+  </#if>
 </#if>
 <#if table.importPackages??>
 
@@ -31,10 +34,12 @@ import ${pkg};
  */
 <#if entityLombokModel>
 @Data
-@Accessors(chain = true)
     <#if superEntityClass??>
 @EqualsAndHashCode(callSuper = false)
     </#if>
+</#if>
+<#if enableEasyExcel>
+@ExcelIgnoreUnannotated
 </#if>
 <#if table.convert>
 @TableName("${table.tableName}")
@@ -60,6 +65,9 @@ public class ${entity} implements Serializable {
     </#if>
 
     <#if field.comment!?length gt 0>
+        <#if enableEasyExcel>
+    @ExcelProperty(value = "<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>")
+        </#if>
         <#if enableSwagger>
     @ApiModelProperty(value = "${field.comment}")
         <#else>
@@ -88,7 +96,15 @@ public class ${entity} implements Serializable {
     @TableField(fill = FieldFill.${field.fill})
         </#if>
     <#elseif field.convert>
+      <#if field.notNull>
+    @NotNull(groups = { AddCheck.class, EditCheck.class })
+      </#if>
     @TableField("`${field.fieldName}`")
+    <#else>
+      <#if field.notNull>
+    @NotNull(groups = { AddCheck.class, EditCheck.class })
+      </#if>
+    @TableField("${field.fieldName}")
     </#if>
     <#-- 乐观锁注解 -->
     <#if (versionFieldName!"") == field.fieldName>

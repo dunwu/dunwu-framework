@@ -1,15 +1,18 @@
 package ${package.Dto};
 
+<#if enableEasyExcel>
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
+</#if>
 <#if enableSwagger>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
-<#if superEntityClass??>
+  <#if superEntityClass??>
 import lombok.EqualsAndHashCode;
-</#if>
-import lombok.experimental.Accessors;
+  </#if>
 </#if>
 <#if table.importPackages??>
 
@@ -26,10 +29,12 @@ import ${pkg};
  */
 <#if entityLombokModel>
 @Data
-@Accessors(chain = true)
     <#if superEntityClass??>
 @EqualsAndHashCode(callSuper = false)
     </#if>
+</#if>
+<#if enableEasyExcel>
+@ExcelIgnoreUnannotated
 </#if>
 <#if enableSwagger>
 @ApiModel(value = "${table.dtoName}", description = "${table.comment!} Dto 实体")
@@ -52,6 +57,9 @@ public class ${table.dtoName} implements Serializable {
     </#if>
 
     <#if field.comment!?length gt 0>
+        <#if enableEasyExcel>
+    @ExcelProperty(value = "<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>")
+        </#if>
         <#if enableSwagger>
     @ApiModelProperty(value = "${field.comment}")
         <#else>

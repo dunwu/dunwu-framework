@@ -79,6 +79,8 @@ public class CodeGeneratorUtil {
         // 全局配置
         boolean enableSwagger = PropertiesUtil.getBoolean(properties,
             MybatisPlusGenProps.GC_ENABLE_SWAGGER.getKey(), false);
+        boolean enableEasyExcel = PropertiesUtil.getBoolean(properties,
+            MybatisPlusGenProps.GC_ENABLE_EASY_EXCEL.getKey(), false);
 
         String authorName = getProperty(properties, MybatisPlusGenProps.GC_AUTHOR_NAME);
 
@@ -114,7 +116,8 @@ public class CodeGeneratorUtil {
               .setServiceName(serviceName)
               .setServiceImplName(serviceImplName)
               .setControllerName(controllerName)
-              .setEnableSwagger(enableSwagger);
+              .setEnableSwagger(enableSwagger)
+              .setEnableEasyExcel(enableEasyExcel);
 
         if (StrUtil.isNotBlank(authorName)) {
             config.setAuthor(authorName);
