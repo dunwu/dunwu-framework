@@ -54,6 +54,7 @@ public class TableInfo {
     private List<TableField> formFields;
     private List<TableField> queryFields;
     private List<TableField> queryExtFields;
+    private List<TableField> dictFields;
     /** 公共字段 */
     private List<TableField> commonFields;
     /** 字段名称，以逗号分隔 */

@@ -7,7 +7,33 @@
       <div v-if="crud.props.searchToggle">
         <el-row>
   <#list table.queryFields as field>
-    <#if field.queryType!='BETWEEN'>
+    <#if field.queryType = 'Dict'>
+          <el-col :span="6">
+          <#if (field.dictCode)?? && (field.dictCode)!="">
+            <el-select v-model="query.${field.propertyName}" filterable placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">
+              <el-option
+                  v-for="item in dict.${field.dictCode}.options"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                  :disabled="item.disabled"
+              />
+            </el-select>
+          <#else>
+            未设置字典，请手动设置 Select
+          </#if>
+          </el-col>
+    <#elseif field.queryType = 'BETWEEN'>
+      <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
+          <el-col :span="6">
+            <date-range-picker
+              v-model="query.${field.propertyName}Range"
+              class="date-item"
+              style="width: 90%"
+            />
+          </el-col>
+      </#if>
+    <#else>
           <el-col :span="6">
             <el-input
               v-model="query.${field.propertyName}"
@@ -18,23 +44,39 @@
               @keyup.enter.native="crud.toQuery"
             />
           </el-col>
-    <#else>
-      <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
-          <el-col :span="6">
-            <date-range-picker
-              v-model="query.${field.propertyName}Range"
-              class="date-item"
-              style="width: 90%"
-            />
-          </el-col>
-      </#if>
     </#if>
   </#list>
   <#assign queryExtFieldsSize = table.queryExtFields?size />
   <#if table.queryExtFields??>
     <#list table.queryExtFields as field>
           <template v-if="crud.showExtendSearch">
-      <#if field.queryType!='BETWEEN'>
+          <#if field.queryType = 'Dict'>
+            <el-col :span="6">
+            <#if (field.dictCode)?? && (field.dictCode)!="">
+              <el-select v-model="query.${field.propertyName}" filterable placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">
+                <el-option
+                    v-for="item in dict.${field.dictCode}.options"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                    :disabled="item.disabled"
+                />
+              </el-select>
+            <#else>
+              未设置字典，请手动设置 Select
+            </#if>
+            </el-col>
+          <#elseif field.queryType = 'BETWEEN'>
+            <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
+            <el-col :span="6">
+              <date-range-picker
+                v-model="query.${field.propertyName}Range"
+                class="date-item"
+                style="width: 90%"
+              />
+            </el-col>
+            </#if>
+          <#else>
             <el-col :span="6">
               <el-input
                 v-model="query.${field.propertyName}"
@@ -45,24 +87,7 @@
                 @keyup.enter.native="crud.toQuery"
               />
             </el-col>
-      <#else>
-        <#if (field.propertyType == "Date") || (field.propertyType == "LocalDate") || field.propertyType == "LocalDateTime">
-            <el-col :span="6">
-              <date-range-picker v-model="query.${field.propertyName}Range" class="date-item" style="width: 90%" />
-            </el-col>
-        <#else>
-            <el-col :span="6">
-              <el-input
-                v-model="query.${field.propertyName}"
-                clearable
-                placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>"
-                style="width: 90%;"
-                class="filter-item"
-                @keyup.enter.native="crud.toQuery"
-              />
-            </el-col>
-        </#if>
-      </#if>
+          </#if>
           </template>
     </#list>
   </#if>
@@ -108,10 +133,10 @@
         </template>
       </el-table-column>
       <#else>
-        <#if (field.dictName)?? && (field.dictName)!="">
+        <#if (field.dictCode)?? && (field.dictCode)!="">
       <el-table-column prop="${field.propertyName}" label="<#if field.labelName??>${field.labelName}<#else>${field.propertyName}</#if>"<#if field.enableSort> :sortable="'custom'"</#if> :show-overflow-tooltip="true">
         <template slot-scope="scope">
-            {{ dict.label.${field.dictName}[scope.row.${field.propertyName}] }}
+            {{ dict.label.${field.dictCode}[scope.row.${field.propertyName}] }}
         </template>
       </el-table-column>
         <#else>
@@ -168,6 +193,16 @@ export default {
       crudMethod: { ...${table.apiName} }
     })
   },
+<#if (table.dictFields)?? && (table.dictFields?size > 0)>
+  /**
+   * 数据字典
+   */
+  dicts: [
+    <#list table.dictFields as field>
+    '${field.dictCode}',
+    </#list>
+  ],
+</#if>
   data() {
     return {
       <#if table.enablePermission>permission: {

@@ -88,8 +88,8 @@ public class TableField {
     private String sortType = "asc";
     /** 校验类型 */
     private String validateType = "string";
-    /** 字典名称 */
-    private String dictName;
+    /** 字典编码 */
+    private String dictCode;
     /** 日期表达式（只有当字段为时间类型时才有效） */
     private String datePattern = "yyyy-MM-dd HH:mm:ss";
     /** 字段名称是否经过了转换 */

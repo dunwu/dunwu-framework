@@ -500,7 +500,7 @@ public class ConfigBuilder {
         } else if (global.isEnableActiveRecord()) {
             // 无父类开启 AR 模式
             tableInfo.getImportPackages()
-                     .add(com.baomidou.mybatisplus.extension.activerecord.Model.class.getCanonicalName());
+                .add(com.baomidou.mybatisplus.extension.activerecord.Model.class.getCanonicalName());
         }
         if (null != global.getIdType()) {
             // 指定需要 IdType 场景
@@ -512,7 +512,7 @@ public class ConfigBuilder {
             tableInfo.getFields().forEach(f -> {
                 if (strategy.getVersionFieldName().equals(f.getFieldName())) {
                     tableInfo.getImportPackages()
-                             .add(com.baomidou.mybatisplus.annotation.Version.class.getCanonicalName());
+                        .add(com.baomidou.mybatisplus.annotation.Version.class.getCanonicalName());
                 }
             });
         }
@@ -587,7 +587,7 @@ public class ConfigBuilder {
                     }
 
                     field.setSchemaName(dataSource.getSchemaName())
-                         .setTableName(tableInfo.getTableName());
+                        .setTableName(tableInfo.getTableName());
 
                     // 是否允许为空
                     String nullAble = results.getString(dbQuery.nullAble());
@@ -762,6 +762,7 @@ public class ConfigBuilder {
         List<TableField> queryFields = new ArrayList<>();
         List<TableField> queryExtFields = new ArrayList<>();
         List<TableField> sortFields = new ArrayList<>();
+        List<TableField> dictFields = new ArrayList<>();
 
         for (TableField field : tableInfo.getFields()) {
             if (field.isEnableList()) {
@@ -783,13 +784,18 @@ public class ConfigBuilder {
             if (field.isEnableSort()) {
                 sortFields.add(field);
             }
+
+            if (StrUtil.isNotBlank(field.getDictCode())) {
+                dictFields.add(field);
+            }
         }
 
         tableInfo.setListFields(listFields)
-                 .setFormFields(formFields)
-                 .setQueryFields(queryFields)
-                 .setQueryExtFields(queryExtFields)
-                 .setSortFields(sortFields);
+            .setFormFields(formFields)
+            .setQueryFields(queryFields)
+            .setQueryExtFields(queryExtFields)
+            .setSortFields(sortFields)
+            .setDictFields(dictFields);
     }
 
     /**
@@ -845,27 +851,27 @@ public class ConfigBuilder {
         if (config.isEnableSqlFilter()) {
             if (config.getLikeTable() != null) {
                 sql.append(" AND ")
-                   .append(dbQuery.tableName())
-                   .append(" LIKE '")
-                   .append(config.getLikeTable().getValue())
-                   .append("'");
+                    .append(dbQuery.tableName())
+                    .append(" LIKE '")
+                    .append(config.getLikeTable().getValue())
+                    .append("'");
             } else if (config.getNotLikeTable() != null) {
                 sql.append(" AND ")
-                   .append(dbQuery.tableName())
-                   .append(" NOT LIKE '")
-                   .append(config.getNotLikeTable().getValue())
-                   .append("'");
+                    .append(dbQuery.tableName())
+                    .append(" NOT LIKE '")
+                    .append(config.getNotLikeTable().getValue())
+                    .append("'");
             }
             if (isInclude) {
                 sql.append(" AND ").append(dbQuery.tableName()).append(" IN (")
-                   .append(Arrays.stream(config.getInclude())
-                                 .map(tb -> "'" + tb + "'")
-                                 .collect(Collectors.joining(","))).append(")");
+                    .append(Arrays.stream(config.getInclude())
+                        .map(tb -> "'" + tb + "'")
+                        .collect(Collectors.joining(","))).append(")");
             } else if (isExclude) {
                 sql.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (")
-                   .append(Arrays.stream(config.getExclude())
-                                 .map(tb -> "'" + tb + "'")
-                                 .collect(Collectors.joining(","))).append(")");
+                    .append(Arrays.stream(config.getExclude())
+                        .map(tb -> "'" + tb + "'")
+                        .collect(Collectors.joining(","))).append(")");
             }
         }
         return sql.toString();

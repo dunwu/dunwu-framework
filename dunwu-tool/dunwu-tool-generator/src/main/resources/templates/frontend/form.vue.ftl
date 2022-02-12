@@ -4,7 +4,7 @@
     append-to-body
     :close-on-click-modal="false"
     :before-close="crud.cancelCU"
-    :visible.sync="crud.status.cu > 0"
+    :visible="crud.status.cu > 0"
     :title="crud.status.title"
     width="640px"
   >
@@ -17,24 +17,38 @@
     <#elseif field.formType = 'InputNumber'>
         <el-input-number v-model="form.${field.propertyName}" style="width: 90%" placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>" />
     <#elseif field.formType = 'Textarea'>
-        <el-input v-model="form.${field.propertyName}" :rows="3" type="textarea" style="width: 90%" placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>" />
+        <el-input v-model="form.${field.propertyName}" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" style="width: 90%" placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>" />
     <#elseif field.formType = 'Radio'>
-      <#if (field.dictName)?? && (field.dictName)!="">
-        <el-radio v-model="form.${field.propertyName}" v-for="item in dict.${field.dictName}" :key="item.id" :label="item.value"  placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">{{ item.label }}</el-radio>
+      <#if (field.dictCode)?? && (field.dictCode)!="">
+        <el-radio v-model="form.${field.propertyName}" v-for="item in dict.${field.dictCode}" :key="item.id" :label="item.value"  placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">{{ item.label }}</el-radio>
       <#else>
             未设置字典，请手动设置 Radio
       </#if>
     <#elseif field.formType = 'Select'>
-      <#if (field.dictName)?? && (field.dictName)!="">
+      <#if (field.dictCode)?? && (field.dictCode)!="">
         <el-select v-model="form.${field.propertyName}" filterable placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">
           <el-option
-            v-for="item in dict.${field.dictName}"
+            v-for="item in dict.${field.dictCode}"
             :key="item.id"
             :label="item.label"
             :value="item.value" />
         </el-select>
       <#else>
           未设置字典，请手动设置 Select
+      </#if>
+    <#elseif field.formType = 'Dict'>
+      <#if (field.dictCode)?? && (field.dictCode)!="">
+        <el-select v-model="form.${field.propertyName}" filterable placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">
+          <el-option
+            v-for="item in dict.${field.dictCode}.options"
+            :key="item.code"
+            :label="item.name"
+            :value="item.code"
+            :disabled="item.disabled"
+          />
+        </el-select>
+      <#else>
+        未设置字典，请手动设置 Select
       </#if>
     <#else>
         <el-date-picker
@@ -57,7 +71,8 @@
 </template>
 
 <script>
-import { form } from '@crud/crud'
+import CRUD, { crud, form } from '@crud/crud'
+import ElDragDialog from '@/directive/el-drag-dialog'
 
 /**
  * 表单实体默认值
@@ -65,7 +80,18 @@ import { form } from '@crud/crud'
 const defaultForm = {<#if table.formFields??><#list table.formFields as field> ${field.propertyName}: null,</#list></#if> }
 export default {
   name: '${table.formName}',
-  mixins: [form(defaultForm)],
+  directives: { ElDragDialog },
+  mixins: [form(defaultForm), crud()],
+<#if (table.dictFields)?? && (table.dictFields?size > 0)>
+  /**
+   * 数据字典
+   */
+  dicts: [
+  <#list table.dictFields as field>
+    '${field.dictCode}',
+  </#list>
+  ],
+</#if>
   data() {
     return {
       /**
@@ -85,7 +111,17 @@ export default {
 </#list>
       }
     }
+  },
+<#if (table.dictFields)?? && (table.dictFields?size > 0)>
+  methods: {
+    // 添加与编辑前做的操作
+    [CRUD.HOOK.afterToCU](crud, form) {
+      <#list table.dictFields as field>
+      form.${field.propertyName} = `<#noparse>${form.</#noparse>${field.propertyName}<#noparse>}</#noparse>`
+      </#list>
+    }
   }
+</#if>
 }
 </script>
 
