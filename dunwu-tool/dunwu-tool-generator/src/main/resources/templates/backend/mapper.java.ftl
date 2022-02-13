@@ -9,10 +9,6 @@ import ${package.Entity}.${entity};
  * @author ${author}
  * @since ${date}
  */
-<#if enableKotlin>
-interface ${table.mapperName} : ${superMapperClass}<${entity}>
-<#else>
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
 }
-</#if>

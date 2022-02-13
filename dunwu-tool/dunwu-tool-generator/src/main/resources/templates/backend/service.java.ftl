@@ -20,9 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author ${author}
  * @since ${date}
  */
-<#if enableKotlin>
-interface ${table.serviceName} : ${superServiceClass}
-<#else>
 public interface ${table.serviceName} extends ${superServiceClass} {
 
     /**
@@ -186,4 +183,3 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     ${entity} dtoToDo(${table.dtoName} dto);
 
 }
-</#if>

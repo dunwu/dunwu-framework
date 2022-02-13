@@ -15,9 +15,8 @@
  */
 package io.github.dunwu.tool.generator.config;
 
-import lombok.AccessLevel;
+import io.github.dunwu.tool.generator.config.rules.FileType;
 import lombok.Data;
-import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
@@ -34,29 +33,23 @@ public class TemplateConfig {
     // 后端源码模板文件
     // =========================================================
 
-    @Getter(AccessLevel.NONE)
-    private String entity = ConstVal.TEMPLATE_ENTITY_JAVA;
-    private String dto = ConstVal.TEMPLATE_DTO_JAVA;
-    private String query = ConstVal.TEMPLATE_QUERY_JAVA;
-    private String entityKt = ConstVal.TEMPLATE_ENTITY_KT;
-    private String mapper = ConstVal.TEMPLATE_MAPPER;
-    private String dao = ConstVal.TEMPLATE_DAO;
-    private String daoImpl = ConstVal.TEMPLATE_DAO_IMPL;
-    private String service = ConstVal.TEMPLATE_SERVICE;
-    private String serviceImpl = ConstVal.TEMPLATE_SERVICE_IMPL;
-    private String controller = ConstVal.TEMPLATE_CONTROLLER;
-    private String xml = ConstVal.TEMPLATE_XML;
+    private String entity = FileType.ENTITY.getTemplatePath();
+    private String dto = FileType.DTO.getTemplatePath();
+    private String query = FileType.QUERY.getTemplatePath();
+    private String mapper = FileType.MAPPER.getTemplatePath();
+    private String dao = FileType.DAO.getTemplatePath();
+    private String daoImpl = FileType.DAO_IMPL.getTemplatePath();
+    private String service = FileType.SERVICE.getTemplatePath();
+    private String serviceImpl = FileType.SERVICE_IMPL.getTemplatePath();
+    private String controller = FileType.CONTROLLER.getTemplatePath();
+    private String xml = FileType.XML.getTemplatePath();
 
     // =========================================================
     // 前端源码模板文件
     // =========================================================
 
-    private String api = ConstVal.TEMPLATE_API;
-    private String list = ConstVal.TEMPLATE_LIST;
-    private String form = ConstVal.TEMPLATE_FORM;
-
-    public String getEntity(boolean enableKotlin) {
-        return enableKotlin ? entityKt : entity;
-    }
+    private String api = FileType.API.getTemplatePath();
+    private String list = FileType.LIST.getTemplatePath();
+    private String form = FileType.FORM.getTemplatePath();
 
 }

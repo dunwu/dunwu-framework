@@ -15,6 +15,7 @@
  */
 package io.github.dunwu.tool.generator.engine;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -69,75 +70,80 @@ public abstract class AbstractTemplateEngine {
     public List<CodeGenerateContentDto> preview() throws IOException, TemplateException {
         List<CodeGenerateContentDto> codeGenerateContentDtos = new ArrayList<>();
 
-        Collection<TableInfo> tableInfoList = getConfigBuilder().getTableInfoList();
+        Collection<TableInfo> tableInfoList = configBuilder.getTableInfoList();
         for (TableInfo tableInfo : tableInfoList) {
             Map<String, Object> objectMap = getObjectMap(tableInfo);
-            TemplateConfig template = getConfigBuilder().getTemplateConfig();
+            TemplateConfig template = configBuilder.getTemplateConfig();
 
             // 自定义内容
-            InjectionConfig injectionConfig = getConfigBuilder().getInjectionConfig();
+            InjectionConfig injectionConfig = configBuilder.getInjectionConfig();
             if (null != injectionConfig) {
                 injectionConfig.initTableMap(tableInfo);
                 objectMap.put("cfg", injectionConfig.getMap());
             }
 
-            CodeGenerateContentDto entity = new CodeGenerateContentDto(ConstVal.ENTITY, getMergeContent(objectMap,
-                templateFilePath(template.getEntity(getConfigBuilder().getGlobalConfig().isEnableKotlin()))));
+            // @formatter:off
+            CodeGenerateContentDto entity = new CodeGenerateContentDto(FileType.ENTITY.getCode(), getMergeContent(objectMap, getTemplatePath(template.getEntity())));
             codeGenerateContentDtos.add(entity);
-            CodeGenerateContentDto dto = new CodeGenerateContentDto(ConstVal.DTO,
-                getMergeContent(objectMap, templateFilePath(template.getDto())));
+            CodeGenerateContentDto dto = new CodeGenerateContentDto(FileType.DTO.getCode(), getMergeContent(objectMap, getTemplatePath(template.getDto())));
             codeGenerateContentDtos.add(dto);
-            CodeGenerateContentDto query = new CodeGenerateContentDto(ConstVal.QUERY,
-                getMergeContent(objectMap, templateFilePath(template.getQuery())));
+            CodeGenerateContentDto query = new CodeGenerateContentDto(FileType.QUERY.getCode(), getMergeContent(objectMap, getTemplatePath(template.getQuery())));
             codeGenerateContentDtos.add(query);
-            CodeGenerateContentDto mapper = new CodeGenerateContentDto(ConstVal.MAPPER,
-                getMergeContent(objectMap, templateFilePath(template.getMapper())));
+            CodeGenerateContentDto mapper = new CodeGenerateContentDto(FileType.MAPPER.getCode(), getMergeContent(objectMap, getTemplatePath(template.getMapper())));
             codeGenerateContentDtos.add(mapper);
-            CodeGenerateContentDto dao = new CodeGenerateContentDto(ConstVal.DAO,
-                getMergeContent(objectMap, templateFilePath(template.getDao())));
+            CodeGenerateContentDto dao = new CodeGenerateContentDto(FileType.DAO.getCode(), getMergeContent(objectMap, getTemplatePath(template.getDao())));
             codeGenerateContentDtos.add(dao);
-            CodeGenerateContentDto daoImpl = new CodeGenerateContentDto(ConstVal.DAO_IMPL,
-                getMergeContent(objectMap, templateFilePath(template.getDaoImpl())));
+            CodeGenerateContentDto daoImpl = new CodeGenerateContentDto(FileType.DAO_IMPL.getCode(), getMergeContent(objectMap, getTemplatePath(template.getDaoImpl())));
             codeGenerateContentDtos.add(daoImpl);
-            CodeGenerateContentDto service = new CodeGenerateContentDto(ConstVal.SERVICE,
-                getMergeContent(objectMap, templateFilePath(template.getService())));
+            CodeGenerateContentDto service = new CodeGenerateContentDto(FileType.SERVICE.getCode(), getMergeContent(objectMap, getTemplatePath(template.getService())));
             codeGenerateContentDtos.add(service);
-            CodeGenerateContentDto serviceImpl = new CodeGenerateContentDto(ConstVal.SERVICE_IMPL,
-                getMergeContent(objectMap, templateFilePath(template.getServiceImpl())));
+            CodeGenerateContentDto serviceImpl = new CodeGenerateContentDto(FileType.SERVICE_IMPL.getCode(), getMergeContent(objectMap, getTemplatePath(template.getServiceImpl())));
             codeGenerateContentDtos.add(serviceImpl);
-            CodeGenerateContentDto controller = new CodeGenerateContentDto(ConstVal.CONTROLLER,
-                getMergeContent(objectMap, templateFilePath(template.getController())));
+            CodeGenerateContentDto controller = new CodeGenerateContentDto(FileType.CONTROLLER.getCode(), getMergeContent(objectMap, getTemplatePath(template.getController())));
             codeGenerateContentDtos.add(controller);
-            CodeGenerateContentDto xml = new CodeGenerateContentDto(ConstVal.XML,
-                getMergeContent(objectMap, templateFilePath(template.getXml())));
+            CodeGenerateContentDto xml = new CodeGenerateContentDto(FileType.XML.getCode(), getMergeContent(objectMap, getTemplatePath(template.getXml())));
             codeGenerateContentDtos.add(xml);
-            CodeGenerateContentDto api = new CodeGenerateContentDto(ConstVal.API,
-                getMergeContent(objectMap, templateFilePath(template.getApi())));
+            CodeGenerateContentDto api = new CodeGenerateContentDto(FileType.API.getCode(), getMergeContent(objectMap, getTemplatePath(template.getApi())));
             codeGenerateContentDtos.add(api);
-            CodeGenerateContentDto list = new CodeGenerateContentDto(ConstVal.LIST,
-                getMergeContent(objectMap, templateFilePath(template.getList())));
+            CodeGenerateContentDto list = new CodeGenerateContentDto(FileType.LIST.getCode(), getMergeContent(objectMap, getTemplatePath(template.getList())));
             codeGenerateContentDtos.add(list);
-            CodeGenerateContentDto form = new CodeGenerateContentDto(ConstVal.FORM,
-                getMergeContent(objectMap, templateFilePath(template.getForm())));
+            CodeGenerateContentDto form = new CodeGenerateContentDto(FileType.FORM.getCode(), getMergeContent(objectMap, getTemplatePath(template.getForm())));
             codeGenerateContentDtos.add(form);
+            // @formatter:on
         }
 
         return codeGenerateContentDtos;
     }
 
     /**
-     * 输出 java xml 文件
+     * 生成前部前后端代码
      */
-    public AbstractTemplateEngine batchOutput() {
+    public AbstractTemplateEngine generateAll() {
+        List<FileType> frontendTypes = CollectionUtil.newArrayList(FileType.API, FileType.LIST, FileType.FORM);
+        List<FileType> backendTypes = CollectionUtil.newArrayList(FileType.ENTITY, FileType.DTO, FileType.QUERY,
+            FileType.MAPPER, FileType.DAO, FileType.DAO_IMPL, FileType.SERVICE, FileType.SERVICE_IMPL,
+            FileType.CONTROLLER, FileType.XML);
+        List<FileType> types = new ArrayList<>();
+        types.addAll(frontendTypes);
+        types.addAll(backendTypes);
+        return generate(types);
+    }
+
+    public AbstractTemplateEngine generate(Collection<FileType> types) {
+
+        if (CollectionUtil.isEmpty(types)) {
+            logger.error("未指定类型");
+            return null;
+        }
 
         try {
-            Collection<TableInfo> tableInfoList = getConfigBuilder().getTableInfoList();
+            Collection<TableInfo> tableInfoList = configBuilder.getTableInfoList();
             for (TableInfo tableInfo : tableInfoList) {
                 Map<String, Object> objectMap = getObjectMap(tableInfo);
-                Map<String, String> pathInfoMap = getConfigBuilder().getPathInfoMap();
-                TemplateConfig template = getConfigBuilder().getTemplateConfig();
+                Map<String, String> pathInfoMap = configBuilder.getPathInfoMap();
+                TemplateConfig template = configBuilder.getTemplateConfig();
                 // 自定义内容
-                InjectionConfig injectionConfig = getConfigBuilder().getInjectionConfig();
+                InjectionConfig injectionConfig = configBuilder.getInjectionConfig();
                 if (null != injectionConfig) {
                     injectionConfig.initTableMap(tableInfo);
                     objectMap.put("cfg", injectionConfig.getMap());
@@ -145,7 +151,7 @@ public abstract class AbstractTemplateEngine {
                     if (CollectionUtils.isNotEmpty(focList)) {
                         for (FileOutConfig foc : focList) {
                             if (isCreate(FileType.OTHER, foc.outputFile(tableInfo))) {
-                                writer(objectMap, foc.getTemplatePath(), foc.outputFile(tableInfo));
+                                outputFile(objectMap, foc.getTemplatePath(), foc.outputFile(tableInfo));
                             }
                         }
                     }
@@ -153,9 +159,9 @@ public abstract class AbstractTemplateEngine {
 
                 AnsiColorUtil.BOLD_BLUE.println(JSONUtil.toJsonStr(objectMap));
 
-                // 生成后端源码文件
-                outputBackendFiles(tableInfo, objectMap, pathInfoMap, template);
-                outputFrontendFiles(tableInfo, objectMap, pathInfoMap, template);
+                for (FileType type : types) {
+                    generateSpecifiedTypeFile(tableInfo, objectMap, pathInfoMap, template, type);
+                }
             }
         } catch (Exception e) {
             logger.error("无法创建文件，请检查配置信息！", e);
@@ -163,137 +169,222 @@ public abstract class AbstractTemplateEngine {
         return this;
     }
 
-    private void outputFrontendFiles(TableInfo tableInfo, Map<String, Object> objectMap,
+    private void generateSpecifiedTypeFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template, FileType type) throws Exception {
+        switch (type) {
+            case ENTITY:
+                generateEntityFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case DTO:
+                generateDtoFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case QUERY:
+                generateQueryFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case MAPPER:
+                generateMapperFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case DAO:
+                generateDaoFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case DAO_IMPL:
+                generateDaoImplFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case SERVICE:
+                generateServiceFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case SERVICE_IMPL:
+                generateServiceImplFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case CONTROLLER:
+                generateControllerFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case XML:
+                generateXmlFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case API:
+                generateApiFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case LIST:
+                generateListFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            case FORM:
+                generateFormFile(tableInfo, objectMap, pathInfoMap, template);
+                break;
+            default:
+                logger.error("不支持生成 type = {} 类型的文件", type);
+                break;
+        }
+    }
+
+    private void generateApiFile(TableInfo tableInfo, Map<String, Object> objectMap,
         Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
-        // MpApi.js
-        if (null != tableInfo.getApiName() && null != pathInfoMap.get(ConstVal.API_PATH)) {
-            String apiFile = String.format((pathInfoMap.get(ConstVal.API_PATH)
+        if (null != tableInfo.getApiName() && null != pathInfoMap.get(FileType.API.getFilePath())) {
+            String apiFile = String.format((pathInfoMap.get(FileType.API.getFilePath())
                 + File.separator
                 + tableInfo.getApiName()
                 + ConstVal.JS_SUFFIX), tableInfo.getEntityName());
             if (isCreate(FileType.API, apiFile)) {
-                writer(objectMap, templateFilePath(template.getApi()), apiFile);
-            }
-        }
-        // MpList.vue
-        if (null != tableInfo.getListName() && null != pathInfoMap.get(ConstVal.LIST_PATH)) {
-            String listFile = String.format((pathInfoMap.get(ConstVal.LIST_PATH)
-                + File.separator
-                + tableInfo.getListName()
-                + ConstVal.VUE_SUFFIX), tableInfo.getEntityName());
-            if (isCreate(FileType.LIST, listFile)) {
-                writer(objectMap, templateFilePath(template.getList()), listFile);
-            }
-        }
-        // MpForm.vue
-        if (null != tableInfo.getFormName() && null != pathInfoMap.get(ConstVal.FORM_PATH)) {
-            String formFile = String.format((pathInfoMap.get(ConstVal.FORM_PATH)
-                + File.separator
-                + tableInfo.getFormName()
-                + ConstVal.VUE_SUFFIX), tableInfo.getEntityName());
-            if (isCreate(FileType.FORM, formFile)) {
-                writer(objectMap, templateFilePath(template.getForm()), formFile);
+                outputFile(objectMap, getTemplatePath(template.getApi()), apiFile);
             }
         }
     }
 
-    private void outputBackendFiles(TableInfo tableInfo, Map<String, Object> objectMap,
+    private void generateListFile(TableInfo tableInfo, Map<String, Object> objectMap,
         Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
-        // Mp.java
-        String entityName = tableInfo.getEntityName();
-        if (null != entityName && null != pathInfoMap.get(ConstVal.ENTITY_PATH)) {
+        if (null != tableInfo.getListName() && null != pathInfoMap.get(FileType.LIST.getFilePath())) {
+            String listFile = String.format((pathInfoMap.get(FileType.LIST.getFilePath())
+                + File.separator
+                + tableInfo.getListName()
+                + ConstVal.VUE_SUFFIX), tableInfo.getEntityName());
+            if (isCreate(FileType.LIST, listFile)) {
+                outputFile(objectMap, getTemplatePath(template.getList()), listFile);
+            }
+        }
+    }
+
+    private void generateFormFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getFormName() && null != pathInfoMap.get(FileType.FORM.getFilePath())) {
+            String formFile = String.format((pathInfoMap.get(FileType.FORM.getFilePath())
+                + File.separator
+                + tableInfo.getFormName()
+                + ConstVal.VUE_SUFFIX), tableInfo.getEntityName());
+            if (isCreate(FileType.FORM, formFile)) {
+                outputFile(objectMap, getTemplatePath(template.getForm()), formFile);
+            }
+        }
+    }
+
+    private void generateEntityFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getEntityName() && null != pathInfoMap.get(FileType.ENTITY.getFilePath())) {
             String entityFile = String.format(
-                (pathInfoMap.get(ConstVal.ENTITY_PATH) + File.separator + "%s" + suffixJavaOrKt()), entityName);
+                (pathInfoMap.get(FileType.ENTITY.getFilePath()) + File.separator + "%s" + suffixJavaOrKt()),
+                tableInfo.getEntityName());
             if (isCreate(FileType.ENTITY, entityFile)) {
-                writer(objectMap,
-                    templateFilePath(template.getEntity(getConfigBuilder().getGlobalConfig().isEnableKotlin())),
+                outputFile(objectMap,
+                    getTemplatePath(template.getEntity()),
                     entityFile);
             }
         }
-        // MpDto.java
+    }
+
+    private void generateDtoFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
         String dtoName = tableInfo.getDtoName();
-        if (null != dtoName && null != pathInfoMap.get(ConstVal.DTO_PATH)) {
+        if (null != dtoName && null != pathInfoMap.get(FileType.DTO.getFilePath())) {
             String dtoFile = String.format(
-                (pathInfoMap.get(ConstVal.DTO_PATH) + File.separator + "%s" + suffixJavaOrKt()), dtoName);
+                (pathInfoMap.get(FileType.DTO.getFilePath()) + File.separator + "%s" + suffixJavaOrKt()), dtoName);
             if (isCreate(FileType.DTO, dtoFile)) {
-                writer(objectMap, templateFilePath(template.getDto()), dtoFile);
+                outputFile(objectMap, getTemplatePath(template.getDto()), dtoFile);
             }
         }
-        // MpQuery.java
+    }
+
+    private void generateQueryFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
         String queryName = tableInfo.getQueryName();
-        if (null != queryName && null != pathInfoMap.get(ConstVal.QUERY_PATH)) {
+        if (null != queryName && null != pathInfoMap.get(FileType.QUERY.getFilePath())) {
             String queryFile = String.format(
-                (pathInfoMap.get(ConstVal.QUERY_PATH) + File.separator + "%s" + suffixJavaOrKt()), queryName);
+                (pathInfoMap.get(FileType.QUERY.getFilePath()) + File.separator + "%s" + suffixJavaOrKt()), queryName);
             if (isCreate(FileType.QUERY, queryFile)) {
-                writer(objectMap, templateFilePath(template.getQuery()), queryFile);
+                outputFile(objectMap, getTemplatePath(template.getQuery()), queryFile);
             }
         }
-        // MpMapper.java
-        if (null != tableInfo.getMapperName() && null != pathInfoMap.get(ConstVal.MAPPER_PATH)) {
+    }
+
+    private void generateMapperFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getMapperName() && null != pathInfoMap.get(FileType.MAPPER.getFilePath())) {
             String mapperFile = String.format(
-                (pathInfoMap.get(ConstVal.MAPPER_PATH) + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()),
-                entityName);
+                (pathInfoMap.get(FileType.MAPPER.getFilePath())
+                    + File.separator
+                    + tableInfo.getMapperName()
+                    + suffixJavaOrKt()),
+                tableInfo.getEntityName());
             if (isCreate(FileType.MAPPER, mapperFile)) {
-                writer(objectMap, templateFilePath(template.getMapper()), mapperFile);
+                outputFile(objectMap, getTemplatePath(template.getMapper()), mapperFile);
             }
         }
-        // IMpDao.java
-        if (null != tableInfo.getDaoName() && null != pathInfoMap.get(ConstVal.DAO_PATH)) {
+    }
+
+    private void generateDaoFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getDaoName() && null != pathInfoMap.get(FileType.DAO.getFilePath())) {
             String daoFile = String.format(
-                (pathInfoMap.get(ConstVal.DAO_PATH) + File.separator + tableInfo.getDaoName() + suffixJavaOrKt()),
-                entityName);
+                (pathInfoMap.get(FileType.DAO.getFilePath())
+                    + File.separator
+                    + tableInfo.getDaoName()
+                    + suffixJavaOrKt()),
+                tableInfo.getEntityName());
             if (isCreate(FileType.DAO, daoFile)) {
-                writer(objectMap, templateFilePath(template.getDao()), daoFile);
+                outputFile(objectMap, getTemplatePath(template.getDao()), daoFile);
             }
         }
-        // MpDaoImpl.java
-        if (null != tableInfo.getDaoImplName() && null != pathInfoMap.get(ConstVal.DAO_IMPL_PATH)) {
-            String implFile = String.format((pathInfoMap.get(ConstVal.DAO_IMPL_PATH)
+    }
+
+    private void generateDaoImplFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getDaoImplName() && null != pathInfoMap.get(FileType.DAO_IMPL.getFilePath())) {
+            String implFile = String.format((pathInfoMap.get(FileType.DAO_IMPL.getFilePath())
                 + File.separator
                 + tableInfo.getDaoImplName()
-                + suffixJavaOrKt()), entityName);
+                + suffixJavaOrKt()), tableInfo.getEntityName());
             if (isCreate(FileType.DAO_IMPL, implFile)) {
-                writer(objectMap, templateFilePath(template.getDaoImpl()), implFile);
+                outputFile(objectMap, getTemplatePath(template.getDaoImpl()), implFile);
             }
         }
-        // IMpService.java
-        if (null != tableInfo.getServiceName() && null != pathInfoMap.get(ConstVal.SERVICE_PATH)) {
-            String serviceFile = String.format((pathInfoMap.get(ConstVal.SERVICE_PATH)
+    }
+
+    private void generateServiceFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getServiceName() && null != pathInfoMap.get(FileType.SERVICE.getFilePath())) {
+            String serviceFile = String.format((pathInfoMap.get(FileType.SERVICE.getFilePath())
                 + File.separator
                 + tableInfo.getServiceName()
-                + suffixJavaOrKt()), entityName);
+                + suffixJavaOrKt()), tableInfo.getEntityName());
             if (isCreate(FileType.SERVICE, serviceFile)) {
-                writer(objectMap, templateFilePath(template.getService()), serviceFile);
+                outputFile(objectMap, getTemplatePath(template.getService()), serviceFile);
             }
         }
-        // MpServiceImpl.java
-        if (null != tableInfo.getServiceImplName() && null != pathInfoMap.get(ConstVal.SERVICE_IMPL_PATH)) {
-            String implFile = String.format((pathInfoMap.get(ConstVal.SERVICE_IMPL_PATH)
+    }
+
+    private void generateServiceImplFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getServiceImplName() && null != pathInfoMap.get(FileType.SERVICE_IMPL.getFilePath())) {
+            String implFile = String.format((pathInfoMap.get(FileType.SERVICE_IMPL.getFilePath())
                 + File.separator
                 + tableInfo.getServiceImplName()
-                + suffixJavaOrKt()), entityName);
+                + suffixJavaOrKt()), tableInfo.getEntityName());
             if (isCreate(FileType.SERVICE_IMPL, implFile)) {
-                writer(objectMap, templateFilePath(template.getServiceImpl()), implFile);
+                outputFile(objectMap, getTemplatePath(template.getServiceImpl()), implFile);
             }
         }
-        // MpController.java
-        if (null != tableInfo.getControllerName() && null != pathInfoMap.get(ConstVal.CONTROLLER_PATH)) {
-            String controllerFile = String.format((pathInfoMap.get(ConstVal.CONTROLLER_PATH)
+    }
+
+    private void generateControllerFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getControllerName() && null != pathInfoMap.get(FileType.CONTROLLER.getFilePath())) {
+            String controllerFile = String.format((pathInfoMap.get(FileType.CONTROLLER.getFilePath())
                 + File.separator
                 + tableInfo.getControllerName()
-                + suffixJavaOrKt()), entityName);
+                + suffixJavaOrKt()), tableInfo.getEntityName());
             if (isCreate(FileType.CONTROLLER, controllerFile)) {
-                writer(objectMap, templateFilePath(template.getController()), controllerFile);
+                outputFile(objectMap, getTemplatePath(template.getController()), controllerFile);
             }
         }
-        // MpMapper.xml
-        if (null != tableInfo.getXmlName() && null != pathInfoMap.get(ConstVal.XML_PATH)) {
-            String xmlFile = String.format((pathInfoMap.get(ConstVal.XML_PATH)
+    }
+
+    private void generateXmlFile(TableInfo tableInfo, Map<String, Object> objectMap,
+        Map<String, String> pathInfoMap, TemplateConfig template) throws Exception {
+        if (null != tableInfo.getXmlName() && null != pathInfoMap.get(FileType.XML.getFilePath())) {
+            String xmlFile = String.format((pathInfoMap.get(FileType.XML.getFilePath())
                 + File.separator
                 + tableInfo.getXmlName()
-                + ConstVal.XML_SUFFIX), entityName);
+                + ConstVal.XML_SUFFIX), tableInfo.getEntityName());
             if (isCreate(FileType.XML, xmlFile)) {
-                writer(objectMap, templateFilePath(template.getXml()), xmlFile);
+                outputFile(objectMap, getTemplatePath(template.getXml()), xmlFile);
             }
         }
     }
@@ -308,7 +399,8 @@ public abstract class AbstractTemplateEngine {
      * @param templatePath 模板文件
      * @param outputFile   文件生成的目录
      */
-    public abstract void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception;
+    public abstract void outputFile(Map<String, Object> objectMap, String templatePath, String outputFile)
+        throws Exception;
 
     /**
      * 渲染对象 MAP 信息
@@ -318,7 +410,7 @@ public abstract class AbstractTemplateEngine {
      */
     public Map<String, Object> getObjectMap(TableInfo tableInfo) {
         Map<String, Object> objectMap = new HashMap<>(30);
-        ConfigBuilder config = getConfigBuilder();
+        ConfigBuilder config = configBuilder;
         if (config.getStrategyConfig().isControllerMappingHyphenStyle()) {
             objectMap.put("controllerMappingHyphenStyle", config.getStrategyConfig().isControllerMappingHyphenStyle());
             objectMap.put("controllerMappingHyphen", StringUtils.camelToHyphen(tableInfo.getEntityPath()));
@@ -332,7 +424,6 @@ public abstract class AbstractTemplateEngine {
         objectMap.put("logicDeleteFieldName", config.getStrategyConfig().getLogicDeleteFieldName());
         objectMap.put("versionFieldName", config.getStrategyConfig().getVersionFieldName());
         objectMap.put("enableActiveRecord", globalConfig.isEnableActiveRecord());
-        objectMap.put("enableKotlin", globalConfig.isEnableKotlin());
         objectMap.put("enableSwagger", tableInfo.isEnableSwagger());
         objectMap.put("enableEasyExcel", tableInfo.isEnableEasyExcel());
         objectMap.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -393,7 +484,7 @@ public abstract class AbstractTemplateEngine {
      * @param filePath 文件路径
      * @return ignore
      */
-    public abstract String templateFilePath(String filePath);
+    public abstract String getTemplatePath(String filePath);
 
     /**
      * 检测文件是否存在
@@ -401,7 +492,7 @@ public abstract class AbstractTemplateEngine {
      * @return 文件是否存在
      */
     protected boolean isCreate(FileType fileType, String filePath) {
-        ConfigBuilder cb = getConfigBuilder();
+        ConfigBuilder cb = configBuilder;
         // 自定义判断
         InjectionConfig ic = cb.getInjectionConfig();
         if (null != ic && null != ic.getFileCreate()) {
@@ -413,18 +504,14 @@ public abstract class AbstractTemplateEngine {
         if (!exist) {
             file.getParentFile().mkdirs();
         }
-        return !exist || getConfigBuilder().getGlobalConfig().isEnableOverride();
+        return !exist || configBuilder.getGlobalConfig().isEnableOverride();
     }
 
     /**
      * 文件后缀
      */
     protected String suffixJavaOrKt() {
-        return getConfigBuilder().getGlobalConfig().isEnableKotlin() ? ConstVal.KT_SUFFIX : ConstVal.JAVA_SUFFIX;
-    }
-
-    public ConfigBuilder getConfigBuilder() {
-        return configBuilder;
+        return ConstVal.JAVA_SUFFIX;
     }
 
     public AbstractTemplateEngine setConfigBuilder(ConfigBuilder configBuilder) {
@@ -436,7 +523,7 @@ public abstract class AbstractTemplateEngine {
      * 处理输出目录
      */
     public AbstractTemplateEngine mkdirs() {
-        getConfigBuilder().getPathInfoMap().forEach((key, value) -> {
+        configBuilder.getPathInfoMap().forEach((key, value) -> {
             File dir = new File(value);
             if (!dir.exists()) {
                 boolean result = dir.mkdirs();
@@ -452,9 +539,8 @@ public abstract class AbstractTemplateEngine {
      * 打开输出目录
      */
     public void open() {
-        String outDir = getConfigBuilder().getGlobalConfig().getOutputDir();
-        if (getConfigBuilder().getGlobalConfig().isOpen()
-            && StringUtils.isNotBlank(outDir)) {
+        String outDir = configBuilder.getGlobalConfig().getOutputDir();
+        if (configBuilder.getGlobalConfig().isOpen() && StringUtils.isNotBlank(outDir)) {
             try {
                 String osName = System.getProperty("os.name");
                 if (osName != null) {

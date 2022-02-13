@@ -9,10 +9,6 @@ import ${package.Entity}.${entity};
  * @author ${author}
  * @since ${date}
  */
-<#if enableKotlin>
-interface ${table.daoName} : ${superDaoClass}<${entity}>
-<#else>
 public interface ${table.daoName} extends ${superDaoClass}<${entity}> {
 
 }
-</#if>

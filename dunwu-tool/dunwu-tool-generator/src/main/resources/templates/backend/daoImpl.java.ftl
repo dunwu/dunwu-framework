@@ -13,12 +13,6 @@ import ${package.Entity}.${entity};
  * @since ${date}
  */
 @Dao
-<#if enableKotlin>
-open class ${table.daoImplName} : ${superDaoImplClass}<${table.mapperName}, ${entity}>(), ${table.daoName} {
-
-}
-<#else>
 public class ${table.daoImplName} extends ${superDaoImplClass}<${table.mapperName}, ${entity}> implements ${table.daoName} {
 
 }
-</#if>

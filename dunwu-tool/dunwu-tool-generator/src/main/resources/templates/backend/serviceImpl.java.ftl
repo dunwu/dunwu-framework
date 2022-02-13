@@ -41,11 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 </#if>
 @Service
-<#if enableKotlin>
-open class ${table.serviceImplName} : ${superServiceImplClass}(), ${table.serviceName} {
-
-}
-<#else>
 public class ${table.serviceImplName} extends ${superServiceImplClass} implements ${table.serviceName} {
 
     <#if !entityLombokModel>
@@ -254,4 +249,3 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
 }
-</#if>

@@ -199,7 +199,7 @@ export default {
    */
   dicts: [
     <#list table.dictFields as field>
-    '${field.dictCode}',
+    '${field.dictCode}'<#if field_has_next>,</#if>
     </#list>
   ],
 </#if>
@@ -209,7 +209,7 @@ export default {
         add: ['admin', '<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:add'],
         edit: ['admin', '<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:edit'],
         del: ['admin', '<#if package.ModuleName??>${package.ModuleName}</#if>:${table.apiBaseUrl}:del']
-      }, </#if>
+      },</#if>
     }
   },
   methods: {

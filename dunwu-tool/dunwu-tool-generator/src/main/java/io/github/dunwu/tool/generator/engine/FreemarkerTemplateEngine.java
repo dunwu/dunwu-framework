@@ -15,17 +15,12 @@
  */
 package io.github.dunwu.tool.generator.engine;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.github.dunwu.tool.generator.config.ConstVal;
 import io.github.dunwu.tool.generator.config.builder.ConfigBuilder;
+import io.github.dunwu.tool.generator.util.FreemarkerHelper;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.util.Map;
 
 /**
@@ -41,34 +36,25 @@ public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
     @Override
     public FreemarkerTemplateEngine init(ConfigBuilder configBuilder) {
         super.init(configBuilder);
-        configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding(ConstVal.UTF8);
-        configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class, StringPool.SLASH);
+        configuration = FreemarkerHelper.getDefaultConfiguration();
         return this;
     }
 
     @Override
     public String getMergeContent(Map<String, Object> objectMap, String templatePath)
         throws IOException, TemplateException {
-        Template template = configuration.getTemplate(templatePath);
-        StringWriter stringWriter = new StringWriter();
-        template.process(objectMap, stringWriter);
-        String content = stringWriter.toString();
-        stringWriter.close();
-        return content;
+        return FreemarkerHelper.getMergeContent(configuration, objectMap, templatePath);
     }
 
     @Override
-    public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
-        Template template = configuration.getTemplate(templatePath);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            template.process(objectMap, new OutputStreamWriter(fileOutputStream, ConstVal.UTF8));
-        }
+    public void outputFile(Map<String, Object> objectMap, String templatePath, String outputFile)
+        throws IOException, TemplateException {
+        FreemarkerHelper.outputFile(configuration, objectMap, templatePath, outputFile);
         logger.debug(">>>> 创建文件：\n【模板】{}\n【文件】{}", templatePath, outputFile);
     }
 
     @Override
-    public String templateFilePath(String filePath) {
+    public String getTemplatePath(String filePath) {
         return filePath + ".ftl";
     }
 

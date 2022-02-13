@@ -88,7 +88,7 @@ export default {
    */
   dicts: [
   <#list table.dictFields as field>
-    '${field.dictCode}',
+    '${field.dictCode}'<#if field_has_next>,</#if>
   </#list>
   ],
 </#if>
@@ -106,7 +106,7 @@ export default {
     <#if field.validateType??>
           { type: '${field.validateType}', trigger: 'blur', message: '<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>必须为 ${field.validateType} 类型' }
     </#if>
-        ],
+        ]<#if field_has_next>,</#if>
   </#if>
 </#list>
       }

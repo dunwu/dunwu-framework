@@ -66,11 +66,14 @@ public class CodeGenerator {
         templateEngine.init(this.pretreatmentConfigBuilder(builder));
     }
 
-    public void generate() {
+    /**
+     * 生成所有代码
+     */
+    public void generateAll() {
         log.debug(">>>>>>>> 准备自动生成源码文件");
 
         // 模板引擎初始化执行文件输出
-        templateEngine.mkdirs().batchOutput().open();
+        templateEngine.mkdirs().generateAll().open();
         log.debug("<<<<<<<< 自动生成源码文件完成");
     }
 
@@ -146,7 +149,7 @@ public class CodeGenerator {
             if (builder.getStrategyConfig().isEntityBooleanColumnRemoveIsPrefix()
                 && CollectionUtils.isNotEmpty(tableInfo.getFields())) {
                 tableInfo.getFields().stream().filter(
-                    field -> "boolean".equalsIgnoreCase(field.getJavaType().getType()))
+                             field -> "boolean".equalsIgnoreCase(field.getJavaType().getType()))
                          .filter(field -> field.getPropertyName().startsWith("is"))
                          .forEach(field -> {
                              field.setConvert(true);

@@ -29,6 +29,7 @@ import io.github.dunwu.tool.generator.config.po.TableField;
 import io.github.dunwu.tool.generator.config.po.TableFill;
 import io.github.dunwu.tool.generator.config.po.TableInfo;
 import io.github.dunwu.tool.generator.config.querys.H2Query;
+import io.github.dunwu.tool.generator.config.rules.FileType;
 import io.github.dunwu.tool.generator.config.rules.FormType;
 import io.github.dunwu.tool.generator.config.rules.NamingStrategy;
 
@@ -141,19 +142,20 @@ public class ConfigBuilder {
      */
     private void handlerPackage(GlobalConfig globalConfig, PackageConfig packageConfig, TemplateConfig templateConfig) {
         // 包信息
+        // @formatter:off
         packageInfo = new HashMap<>(11);
         packageInfo.put(ConstVal.MODULE_NAME, packageConfig.getModuleName());
-        packageInfo.put(ConstVal.XML, packageConfig.getXml() +
-            (StrUtil.isBlank(packageConfig.getModuleName()) ? "" : StringPool.SLASH + packageConfig.getModuleName()));
-        packageInfo.put(ConstVal.ENTITY, joinPackage(packageConfig.getParent(), packageConfig.getEntity()));
-        packageInfo.put(ConstVal.DTO, joinPackage(packageConfig.getParent(), packageConfig.getDto()));
-        packageInfo.put(ConstVal.QUERY, joinPackage(packageConfig.getParent(), packageConfig.getQuery()));
-        packageInfo.put(ConstVal.MAPPER, joinPackage(packageConfig.getParent(), packageConfig.getMapper()));
-        packageInfo.put(ConstVal.DAO, joinPackage(packageConfig.getParent(), packageConfig.getDao()));
-        packageInfo.put(ConstVal.DAO_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getDaoImpl()));
-        packageInfo.put(ConstVal.SERVICE, joinPackage(packageConfig.getParent(), packageConfig.getService()));
-        packageInfo.put(ConstVal.SERVICE_IMPL, joinPackage(packageConfig.getParent(), packageConfig.getServiceImpl()));
-        packageInfo.put(ConstVal.CONTROLLER, joinPackage(packageConfig.getParent(), packageConfig.getController()));
+        packageInfo.put(FileType.XML.getCode(), packageConfig.getXml() + (StrUtil.isBlank(packageConfig.getModuleName()) ? "" : StringPool.SLASH + packageConfig.getModuleName()));
+        packageInfo.put(FileType.ENTITY.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getEntity()));
+        packageInfo.put(FileType.DTO.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDto()));
+        packageInfo.put(FileType.QUERY.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getQuery()));
+        packageInfo.put(FileType.MAPPER.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getMapper()));
+        packageInfo.put(FileType.DAO.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDao()));
+        packageInfo.put(FileType.DAO_IMPL.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDaoImpl()));
+        packageInfo.put(FileType.SERVICE.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getService()));
+        packageInfo.put(FileType.SERVICE_IMPL.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getServiceImpl()));
+        packageInfo.put(FileType.CONTROLLER.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getController()));
+        // @formatter:on
 
         // 自定义路径
         Map<String, String> configPathInfo = packageConfig.getPathInfo();
@@ -164,32 +166,34 @@ public class ConfigBuilder {
             pathInfoMap = new HashMap<>(11);
 
             // 设置 MyBatis Plus 各个 java 文件的包路径
-            String javaDir = globalConfig.getBackendDir() +
-                ConstVal.JAVA_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getEntity(getGlobalConfig().isEnableKotlin()), javaDir,
-                ConstVal.ENTITY_PATH, ConstVal.ENTITY);
-            addPathInfo(pathInfoMap, templateConfig.getDto(), javaDir, ConstVal.DTO_PATH, ConstVal.DTO);
-            addPathInfo(pathInfoMap, templateConfig.getQuery(), javaDir, ConstVal.QUERY_PATH, ConstVal.QUERY);
-            addPathInfo(pathInfoMap, templateConfig.getMapper(), javaDir, ConstVal.MAPPER_PATH, ConstVal.MAPPER);
-            addPathInfo(pathInfoMap, templateConfig.getDao(), javaDir, ConstVal.DAO_PATH, ConstVal.DAO);
-            addPathInfo(pathInfoMap, templateConfig.getDaoImpl(), javaDir, ConstVal.DAO_IMPL_PATH, ConstVal.DAO_IMPL);
-            addPathInfo(pathInfoMap, templateConfig.getService(), javaDir, ConstVal.SERVICE_PATH, ConstVal.SERVICE);
-            addPathInfo(pathInfoMap, templateConfig.getServiceImpl(), javaDir, ConstVal.SERVICE_IMPL_PATH,
-                ConstVal.SERVICE_IMPL);
-            addPathInfo(pathInfoMap, templateConfig.getController(), javaDir, ConstVal.CONTROLLER_PATH,
-                ConstVal.CONTROLLER);
+            // @formatter:off
+            String javaDir = globalConfig.getBackendDir() + ConstVal.JAVA_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getEntity(), javaDir, FileType.ENTITY.getFilePath(), FileType.ENTITY.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDto(), javaDir, FileType.DTO.getFilePath(), FileType.DTO.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getQuery(), javaDir, FileType.QUERY.getFilePath(), FileType.QUERY.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getMapper(), javaDir, FileType.MAPPER.getFilePath(), FileType.MAPPER.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDao(), javaDir, FileType.DAO.getFilePath(), FileType.DAO.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDaoImpl(), javaDir, FileType.DAO_IMPL.getFilePath(), FileType.DAO_IMPL.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getService(), javaDir, FileType.SERVICE.getFilePath(), FileType.SERVICE.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getServiceImpl(), javaDir, FileType.SERVICE_IMPL.getFilePath(), FileType.SERVICE_IMPL.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getController(), javaDir, FileType.CONTROLLER.getFilePath(), FileType.CONTROLLER.getCode());
+            // @formatter:on
 
             // 设置 MyBatis Plus 的 Mapper.xml 文件的包路径
-            String resourcesDir = globalConfig.getBackendDir() +
-                ConstVal.RESOURCES_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getXml(), resourcesDir, ConstVal.XML_PATH, ConstVal.XML);
+            String resourcesDir = globalConfig.getBackendDir() + ConstVal.RESOURCES_PATH.replaceAll("//",
+                StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getXml(), resourcesDir, FileType.XML.getFilePath(),
+                FileType.XML.getCode());
 
             // 设置前端文件的包路径
             String viewsDir = globalConfig.getFrontendDir() +
                 ConstVal.VIEWS_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
-            addPathInfo(pathInfoMap, templateConfig.getApi(), viewsDir, ConstVal.API_PATH, ConstVal.MODULE_NAME);
-            addPathInfo(pathInfoMap, templateConfig.getList(), viewsDir, ConstVal.LIST_PATH, ConstVal.MODULE_NAME);
-            addPathInfo(pathInfoMap, templateConfig.getForm(), viewsDir, ConstVal.FORM_PATH, ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getApi(), viewsDir, FileType.API.getFilePath(),
+                ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getList(), viewsDir, FileType.LIST.getFilePath(),
+                ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getForm(), viewsDir, FileType.FORM.getFilePath(),
+                ConstVal.MODULE_NAME);
         }
     }
 
@@ -280,24 +284,6 @@ public class ConfigBuilder {
         }
         superEntityClass = config.getSuperEntityClass();
         superControllerClass = config.getSuperControllerClass();
-    }
-
-    public static String getDefaultValidateTypeByJavaType(String javaType) {
-        switch (javaType) {
-            case "LocalDate":
-            case "LocalTime":
-            case "Year":
-            case "YearMonth":
-            case "LocalDateTime":
-            case "Date":
-            case "Time":
-            case "Timestamp":
-                return FormType.DateTimePicker.getCode();
-            case "Boolean":
-                return FormType.Switch.getCode();
-            default:
-                return FormType.Input.getCode();
-        }
     }
 
     public List<TableInfo> queryTableInfoList() {
@@ -436,52 +422,52 @@ public class ConfigBuilder {
         if (StringUtils.isNotBlank(globalConfig.getMapperName())) {
             tableInfo.setMapperName(String.format(globalConfig.getMapperName(), entityName));
         } else {
-            tableInfo.setMapperName(entityName + ConstVal.MAPPER);
+            tableInfo.setMapperName(entityName + FileType.MAPPER.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getDaoName())) {
             tableInfo.setDaoName(String.format(globalConfig.getDaoName(), entityName));
         } else {
-            tableInfo.setDaoName(entityName + ConstVal.DAO);
+            tableInfo.setDaoName(entityName + FileType.DAO.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getDaoImplName())) {
             tableInfo.setDaoImplName(String.format(globalConfig.getDaoImplName(), entityName));
         } else {
-            tableInfo.setDaoImplName(entityName + ConstVal.DAO_IMPL);
+            tableInfo.setDaoImplName(entityName + FileType.DAO_IMPL.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getServiceName())) {
             tableInfo.setServiceName(String.format(globalConfig.getServiceName(), entityName));
         } else {
-            tableInfo.setServiceName(entityName + ConstVal.SERVICE);
+            tableInfo.setServiceName(entityName + FileType.SERVICE.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getServiceImplName())) {
             tableInfo.setServiceImplName(String.format(globalConfig.getServiceImplName(), entityName));
         } else {
-            tableInfo.setServiceImplName(entityName + ConstVal.SERVICE_IMPL);
+            tableInfo.setServiceImplName(entityName + FileType.SERVICE_IMPL.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getControllerName())) {
             tableInfo.setControllerName(String.format(globalConfig.getControllerName(), entityName));
         } else {
-            tableInfo.setControllerName(entityName + ConstVal.CONTROLLER);
+            tableInfo.setControllerName(entityName + FileType.CONTROLLER.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getXmlName())) {
             tableInfo.setXmlName(String.format(globalConfig.getXmlName(), entityName));
         } else {
-            tableInfo.setXmlName(entityName + ConstVal.MAPPER);
+            tableInfo.setXmlName(entityName + FileType.MAPPER.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getApiName())) {
             tableInfo.setApiName(String.format(globalConfig.getApiName(), entityName));
         } else {
-            tableInfo.setApiName(entityName + ConstVal.API);
+            tableInfo.setApiName(entityName + FileType.API.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getListName())) {
             tableInfo.setListName(String.format(globalConfig.getListName(), entityName));
         } else {
-            tableInfo.setListName(entityName + ConstVal.LIST);
+            tableInfo.setListName(entityName + FileType.LIST.getCode());
         }
         if (StringUtils.isNotBlank(globalConfig.getFormName())) {
             tableInfo.setFormName(String.format(globalConfig.getFormName(), entityName));
         } else {
-            tableInfo.setFormName(entityName + ConstVal.FORM);
+            tableInfo.setFormName(entityName + FileType.FORM.getCode());
         }
         // 检测导入包
         checkImportPackages(tableInfo, globalConfig, strategyConfig);
@@ -500,7 +486,7 @@ public class ConfigBuilder {
         } else if (global.isEnableActiveRecord()) {
             // 无父类开启 AR 模式
             tableInfo.getImportPackages()
-                .add(com.baomidou.mybatisplus.extension.activerecord.Model.class.getCanonicalName());
+                     .add(com.baomidou.mybatisplus.extension.activerecord.Model.class.getCanonicalName());
         }
         if (null != global.getIdType()) {
             // 指定需要 IdType 场景
@@ -512,7 +498,7 @@ public class ConfigBuilder {
             tableInfo.getFields().forEach(f -> {
                 if (strategy.getVersionFieldName().equals(f.getFieldName())) {
                     tableInfo.getImportPackages()
-                        .add(com.baomidou.mybatisplus.annotation.Version.class.getCanonicalName());
+                             .add(com.baomidou.mybatisplus.annotation.Version.class.getCanonicalName());
                 }
             });
         }
@@ -587,7 +573,7 @@ public class ConfigBuilder {
                     }
 
                     field.setSchemaName(dataSource.getSchemaName())
-                        .setTableName(tableInfo.getTableName());
+                         .setTableName(tableInfo.getTableName());
 
                     // 是否允许为空
                     String nullAble = results.getString(dbQuery.nullAble());
@@ -791,11 +777,11 @@ public class ConfigBuilder {
         }
 
         tableInfo.setListFields(listFields)
-            .setFormFields(formFields)
-            .setQueryFields(queryFields)
-            .setQueryExtFields(queryExtFields)
-            .setSortFields(sortFields)
-            .setDictFields(dictFields);
+                 .setFormFields(formFields)
+                 .setQueryFields(queryFields)
+                 .setQueryExtFields(queryExtFields)
+                 .setSortFields(sortFields)
+                 .setDictFields(dictFields);
     }
 
     /**
@@ -851,27 +837,27 @@ public class ConfigBuilder {
         if (config.isEnableSqlFilter()) {
             if (config.getLikeTable() != null) {
                 sql.append(" AND ")
-                    .append(dbQuery.tableName())
-                    .append(" LIKE '")
-                    .append(config.getLikeTable().getValue())
-                    .append("'");
+                   .append(dbQuery.tableName())
+                   .append(" LIKE '")
+                   .append(config.getLikeTable().getValue())
+                   .append("'");
             } else if (config.getNotLikeTable() != null) {
                 sql.append(" AND ")
-                    .append(dbQuery.tableName())
-                    .append(" NOT LIKE '")
-                    .append(config.getNotLikeTable().getValue())
-                    .append("'");
+                   .append(dbQuery.tableName())
+                   .append(" NOT LIKE '")
+                   .append(config.getNotLikeTable().getValue())
+                   .append("'");
             }
             if (isInclude) {
                 sql.append(" AND ").append(dbQuery.tableName()).append(" IN (")
-                    .append(Arrays.stream(config.getInclude())
-                        .map(tb -> "'" + tb + "'")
-                        .collect(Collectors.joining(","))).append(")");
+                   .append(Arrays.stream(config.getInclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
             } else if (isExclude) {
                 sql.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (")
-                    .append(Arrays.stream(config.getExclude())
-                        .map(tb -> "'" + tb + "'")
-                        .collect(Collectors.joining(","))).append(")");
+                   .append(Arrays.stream(config.getExclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
             }
         }
         return sql.toString();

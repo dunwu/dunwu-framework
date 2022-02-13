@@ -45,8 +45,6 @@ public class GlobalConfig {
     private boolean enableEasyExcel = false;
     /** 是否打开输出目录 */
     private boolean open = false;
-    /** 开启 Kotlin 模式 */
-    private boolean enableKotlin = false;
     /** 开启 ActiveRecord 模式 */
     private boolean enableActiveRecord = false;
     /** 开启 BaseResultMap */

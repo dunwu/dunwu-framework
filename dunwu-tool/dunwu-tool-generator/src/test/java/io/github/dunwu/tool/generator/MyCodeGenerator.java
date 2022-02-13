@@ -56,7 +56,7 @@ public class MyCodeGenerator {
 
         builder.setTableInfoList(tableInfoList);
         CodeGenerator codeGenerator = new CodeGenerator(builder);
-        codeGenerator.generate();
+        codeGenerator.generateAll();
         AnsiColorUtil.YELLOW.println(JSONUtil.toJsonStr(builder.getTableInfoList()));
     }
 
@@ -78,7 +78,7 @@ public class MyCodeGenerator {
             }
             builder.setTableInfoList(tableInfoList);
             CodeGenerator codeGenerator = new CodeGenerator(builder);
-            codeGenerator.generate();
+            codeGenerator.generateAll();
             AnsiColorUtil.YELLOW.println(JSONUtil.toJsonStr(builder.getTableInfoList()));
         }
     }

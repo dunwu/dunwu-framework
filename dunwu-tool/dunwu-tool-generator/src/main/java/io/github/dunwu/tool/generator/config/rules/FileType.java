@@ -1,39 +1,51 @@
-/*
- * Copyright (c) 2011-2020, baomidou (jobob@qq.com).
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * <p>
- * https://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package io.github.dunwu.tool.generator.config.rules;
 
 /**
  * 生成文件类型
  *
- * @author hubin
- * @since 2018-08-07
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ * @since 2022-02-13
  */
 public enum FileType {
-    XML,
-    ENTITY,
-    DTO,
-    QUERY,
-    MAPPER,
-    DAO,
-    DAO_IMPL,
-    SERVICE,
-    SERVICE_IMPL,
-    CONTROLLER,
-    API,
-    LIST,
-    FORM,
-    OTHER
+
+    // 前端文件类型
+    API("Api", "api_path", "/templates/frontend/api.js"),
+    LIST("List", "list_path", "/templates/frontend/list.vue"),
+    FORM("Form", "form_path", "/templates/frontend/form.vue"),
+
+    // 后端文件类型
+    XML("Xml", "xml_path", "/templates/backend/mapper.xml"),
+    ENTITY("Entity", "entity_path", "/templates/backend/entity.java"),
+    DTO("Dto", "dto_path", "/templates/backend/dto.java"),
+    QUERY("Query", "query_path", "/templates/backend/query.java"),
+    MAPPER("Mapper", "mapper_path", "/templates/backend/mapper.java"),
+    DAO("Dao", "dao_path", "/templates/backend/dao.java"),
+    DAO_IMPL("DaoImpl", "dao_impl_path", "/templates/backend/daoImpl.java"),
+    SERVICE("Service", "service_path", "/templates/backend/service.java"),
+    SERVICE_IMPL("ServiceImpl", "service_impl_path", "/templates/backend/serviceImpl.java"),
+    CONTROLLER("Controller", "controller_path", "/templates/backend/controller.java"),
+
+    OTHER("Other", null, null);
+
+    private final String code;
+    private final String filePath;
+    private final String templatePath;
+
+    FileType(String code, String filePath, String templatePath) {
+        this.code = code;
+        this.filePath = filePath;
+        this.templatePath = templatePath;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public String getTemplatePath() {
+        return templatePath;
+    }
 }
