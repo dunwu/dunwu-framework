@@ -81,8 +81,8 @@ public class ZookeeperLockProvider implements LockProvider {
         throws Exception {
         try {
             client.setData()
-                .withVersion(stat.getVersion())
-                .forPath(nodePath, serialize(lockConfiguration.getLockMaxTime()));
+                  .withVersion(stat.getVersion())
+                  .forPath(nodePath, serialize(lockConfiguration.getLockMaxTime()));
             return Optional.of(new CuratorLock(nodePath, client, lockConfiguration));
         } catch (KeeperException.BadVersionException e) {
             logger.trace("Node value can not be set, must have been set by a parallel process");
@@ -97,9 +97,9 @@ public class ZookeeperLockProvider implements LockProvider {
     private boolean createNode(LockConfiguration lockConfiguration, String nodePath) {
         try {
             client.create()
-                .creatingParentsIfNeeded()
-                .withMode(CreateMode.PERSISTENT)
-                .forPath(nodePath, serialize(lockConfiguration.getLockMaxTime()));
+                  .creatingParentsIfNeeded()
+                  .withMode(CreateMode.PERSISTENT)
+                  .forPath(nodePath, serialize(lockConfiguration.getLockMaxTime()));
             return true;
         } catch (KeeperException.NodeExistsException e) {
             return false;

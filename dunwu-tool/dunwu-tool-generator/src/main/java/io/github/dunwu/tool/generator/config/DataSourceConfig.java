@@ -56,7 +56,7 @@ public class DataSourceConfig {
     /** 是否支持注释（部分数据库不支持） */
     private boolean commentSupported;
 
-    public DataSourceConfig() {}
+    public DataSourceConfig() { }
 
     public DataSourceConfig(String url, String driverName, String username, String password) {
         this(url, driverName, username, password, null);

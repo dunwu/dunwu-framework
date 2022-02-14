@@ -99,9 +99,9 @@ public class KaptchaUtils {
     private static ImageProperties kaptchaConfigToImageProperties(KaptchaConfig config) {
         ImageProperties properties = new ImageProperties();
         properties.setWidth(config.getWidth())
-            .setHeight(config.getHeight())
-            .setScale(config.getScale())
-            .setFormat(config.getType());
+                  .setHeight(config.getHeight())
+                  .setScale(config.getScale())
+                  .setFormat(config.getType());
         return properties;
     }
 
@@ -114,7 +114,7 @@ public class KaptchaUtils {
         private KaptchaConfig config;
         private BufferedImage image;
 
-        public Kaptcha() {}
+        public Kaptcha() { }
 
         public Kaptcha(String code, LocalDateTime expireTime, KaptchaConfig config, BufferedImage image) {
             this.code = code;
@@ -233,12 +233,12 @@ public class KaptchaUtils {
         public static KaptchaConfig defaultKaptchaConfig() {
             KaptchaConfig config = new KaptchaConfig();
             config.setWidth(WIDTH)
-                .setHeight(HEIGHT)
-                .setScale(SCALE)
-                .setCodeCount(CODE_COUNT)
-                .setLineCount(LINE_COUNT)
-                .setTimeout(DEFAULT_EXPIRE_TIME)
-                .setType(ImageType.jpg);
+                  .setHeight(HEIGHT)
+                  .setScale(SCALE)
+                  .setCodeCount(CODE_COUNT)
+                  .setLineCount(LINE_COUNT)
+                  .setTimeout(DEFAULT_EXPIRE_TIME)
+                  .setType(ImageType.jpg);
             return config;
         }
 

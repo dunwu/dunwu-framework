@@ -19,7 +19,7 @@ public class DictOptionInfo {
     /** 字典选项格式化编码 */
     private String formatCode;
 
-    public DictOptionInfo() {}
+    public DictOptionInfo() { }
 
     public DictOptionInfo(String code, String name, String note) {
         this.code = code;

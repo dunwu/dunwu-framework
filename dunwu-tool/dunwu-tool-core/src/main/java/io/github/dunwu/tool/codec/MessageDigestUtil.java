@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MessageDigestUtil {
 
-    private MessageDigestUtil() {}
+    private MessageDigestUtil() { }
 
     public static String encodeWithBase64(String type, byte[] input, byte[] salt) throws NoSuchAlgorithmException {
         return Base64.encodeUrlSafe(encode(type, input, salt));

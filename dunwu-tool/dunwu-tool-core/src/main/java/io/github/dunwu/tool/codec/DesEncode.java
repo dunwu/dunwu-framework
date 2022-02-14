@@ -37,7 +37,7 @@ public class DesEncode implements SymmetricEncode {
         this(Type.DEFAULT.getKey());
     }
 
-    public  DesEncode(Type type) throws GeneralSecurityException {
+    public DesEncode(Type type) throws GeneralSecurityException {
         this(type.getKey());
     }
 

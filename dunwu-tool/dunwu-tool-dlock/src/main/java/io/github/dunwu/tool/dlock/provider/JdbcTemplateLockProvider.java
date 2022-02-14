@@ -65,10 +65,10 @@ public class JdbcTemplateLockProvider extends StorageBasedLockProvider {
     public JdbcTemplateLockProvider(@NotNull JdbcTemplate jdbcTemplate,
         PlatformTransactionManager transactionManager, @NotNull String tableName) {
         this(Configuration.builder()
-            .withJdbcTemplate(jdbcTemplate)
-            .withTransactionManager(transactionManager)
-            .withTableName(tableName)
-            .build()
+                          .withJdbcTemplate(jdbcTemplate)
+                          .withTransactionManager(transactionManager)
+                          .withTableName(tableName)
+                          .build()
         );
     }
 

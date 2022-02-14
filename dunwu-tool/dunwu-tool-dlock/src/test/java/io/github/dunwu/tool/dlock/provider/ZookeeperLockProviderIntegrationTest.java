@@ -73,8 +73,8 @@ public class ZookeeperLockProviderIntegrationTest extends AbstractLockProviderIn
 
     private CuratorFramework newClient() {
         CuratorFramework client = CuratorFrameworkFactory.builder().namespace("MyApp")
-            .retryPolicy(new RetryOneTime(2000))
-            .connectString(zkTestServer.getConnectString()).build();
+                                                         .retryPolicy(new RetryOneTime(2000))
+                                                         .connectString(zkTestServer.getConnectString()).build();
         client.start();
         return client;
     }

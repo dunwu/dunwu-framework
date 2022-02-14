@@ -50,7 +50,7 @@ public class IpUtil {
         loadData();
     }
 
-    private IpUtil() {}
+    private IpUtil() { }
 
     // isValid
     // -------------------------------------------------------------------------------------------------

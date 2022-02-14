@@ -47,7 +47,8 @@ public class NetUtil {
     public static boolean isPortAvailable(int port) {
         try {
             ServerSocket serverSocket = ServerSocketFactory.getDefault()
-                .createServerSocket(port, 1, InetAddress.getByName("localhost"));
+                                                           .createServerSocket(port, 1,
+                                                               InetAddress.getByName("localhost"));
             serverSocket.close();
             return true;
         } catch (Exception ex) { // NOSONAR

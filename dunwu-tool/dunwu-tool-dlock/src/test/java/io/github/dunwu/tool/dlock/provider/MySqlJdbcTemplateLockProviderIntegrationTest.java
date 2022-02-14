@@ -60,12 +60,12 @@ public class MySqlJdbcTemplateLockProviderIntegrationTest extends AbstractJdbcLo
 
         public void startDb() {
             MysqldConfig config = MysqldConfig.aMysqldConfig(Version.v5_6_latest)
-                .withUser(USERNAME, PASSWORD)
-                .build();
+                                              .withUser(USERNAME, PASSWORD)
+                                              .build();
 
             mysqld = EmbeddedMysql.anEmbeddedMysql(config)
-                .addSchema(schemaConfig)
-                .start();
+                                  .addSchema(schemaConfig)
+                                  .start();
         }
 
         public void shutdownDb() {

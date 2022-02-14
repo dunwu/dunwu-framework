@@ -23,7 +23,7 @@ public class DictInfo {
     /** 属于字典的字典选项 */
     private List<DictOptionInfo> options;
 
-    public DictInfo() {}
+    public DictInfo() { }
 
     public DictInfo(String code, String name, String note) {
         this.code = code;

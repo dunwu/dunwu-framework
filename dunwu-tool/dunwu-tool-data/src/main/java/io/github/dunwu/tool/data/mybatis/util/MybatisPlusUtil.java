@@ -27,7 +27,7 @@ import java.util.*;
 @Slf4j
 public class MybatisPlusUtil {
 
-    private MybatisPlusUtil() {}
+    private MybatisPlusUtil() { }
 
     public static <T> QueryWrapper<T> buildQueryWrapper(final Object queryBean) {
 
@@ -261,7 +261,8 @@ public class MybatisPlusUtil {
      * @return {@link Pagination <T>}
      */
     public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
-        return new Pagination<>(page.getRecords(), (int) (page.getCurrent() - 1), (int) page.getSize(), page.getTotal());
+        return new Pagination<>(page.getRecords(), (int) (page.getCurrent() - 1), (int) page.getSize(),
+            page.getTotal());
     }
 
 }

@@ -15,7 +15,7 @@ public class P6spySlf4jLogger extends FormattedLogger {
 
     private Logger log = LoggerFactory.getLogger("p6spy");
 
-    public P6spySlf4jLogger() {}
+    public P6spySlf4jLogger() { }
 
     @Override
     public void logException(Exception e) {

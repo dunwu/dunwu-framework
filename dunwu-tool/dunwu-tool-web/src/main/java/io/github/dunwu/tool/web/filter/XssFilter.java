@@ -72,9 +72,9 @@ public class XssFilter implements Filter {
         }
         String url = request.getServletPath();
         return excludes.stream()
-            .map(pattern -> Pattern.compile("^" + pattern))
-            .map(p -> p.matcher(url))
-            .anyMatch(Matcher::find);
+                       .map(pattern -> Pattern.compile("^" + pattern))
+                       .map(p -> p.matcher(url))
+                       .anyMatch(Matcher::find);
     }
 
 }

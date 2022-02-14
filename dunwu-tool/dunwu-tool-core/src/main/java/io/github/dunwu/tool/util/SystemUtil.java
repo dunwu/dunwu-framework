@@ -1439,7 +1439,7 @@ public class SystemUtil {
      * This constructor is public to permit tools that require a JavaBean instance to operate.
      * </p>
      */
-    private SystemUtil() {}
+    private SystemUtil() { }
 
     /**
      * <p>

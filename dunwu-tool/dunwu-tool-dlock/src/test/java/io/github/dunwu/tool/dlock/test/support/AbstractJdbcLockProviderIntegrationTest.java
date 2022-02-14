@@ -39,8 +39,8 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
 
     private Instant getLockedUntil(String lockName) {
         return testUtils.getJdbcTemplate()
-            .queryForObject("SELECT lock_until FROM dunwulock WHERE name = ?", new Object[] { lockName },
-                Instant.class);
+                        .queryForObject("SELECT `lock_until` FROM `dunwulock` WHERE `name` = ?",
+                            new Object[] { lockName }, Instant.class);
     }
 
     @Override
@@ -65,8 +65,9 @@ public abstract class AbstractJdbcLockProviderIntegrationTest extends AbstractSt
     public void shouldCreateLockIfRecordAlreadyExists() {
         Calendar now = now();
         testUtils.getJdbcTemplate()
-            .update("INSERT INTO dunwulock(name, lock_until, locked_at, locked_by) VALUES(?, ?, ?, ?)", LOCK_NAME1, now,
-                now, "me");
+                 .update("INSERT INTO `dunwulock`(`name`, `lock_until`, `locked_at`, `locked_by`) VALUES(?, ?, ?, ?)",
+                     LOCK_NAME1,
+                     now, now, "me");
         shouldCreateLock();
     }
 

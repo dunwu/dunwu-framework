@@ -27,8 +27,8 @@ public class ZookeeperAutoConfiguration {
     @Bean
     public CuratorFramework zookeeperClient() {
         CuratorFramework client = CuratorFrameworkFactory.builder()
-            .retryPolicy(new ExponentialBackoffRetry(1000, 3))
-            .connectString(host + ":" + port).build();
+                                                         .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                                                         .connectString(host + ":" + port).build();
         client.start();
         return client;
     }

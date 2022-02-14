@@ -160,7 +160,7 @@ public class ServletUtil {
                 }
                 String str = sb.toString();
                 ObjectMapper objectMapper = SpringUtil.getBean(ObjectMapper.class);
-                map = objectMapper.readValue(str, new TypeReference<Map<String, String>>() {});
+                map = objectMapper.readValue(str, new TypeReference<Map<String, String>>() { });
             } else {
                 throw new UnsupportedOperationException("http media type not support");
             }

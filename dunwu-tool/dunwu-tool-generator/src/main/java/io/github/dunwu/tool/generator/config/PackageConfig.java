@@ -86,7 +86,7 @@ public class PackageConfig {
      */
     private Map<String, String> pathInfo;
 
-    public PackageConfig() {}
+    public PackageConfig() { }
 
     public PackageConfig(String parent, String moduleName) {
         this.parent = parent;

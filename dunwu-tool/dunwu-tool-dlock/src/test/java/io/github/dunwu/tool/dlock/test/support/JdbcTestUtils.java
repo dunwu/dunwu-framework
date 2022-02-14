@@ -30,12 +30,12 @@ public class JdbcTestUtils {
         datasource.setPassword(dbConfig.getPassword());
 
         jdbcTemplate = new JdbcTemplate(datasource);
-        String sql = "CREATE TABLE IF NOT EXISTS dunwulock (\n"
-            + "    name       VARCHAR(64),\n"
-            + "    lock_until TIMESTAMP(3) NULL,\n"
-            + "    locked_at  TIMESTAMP(3) NULL,\n"
-            + "    locked_by  VARCHAR(255),\n"
-            + "    PRIMARY KEY (name)\n"
+        String sql = "CREATE TABLE IF NOT EXISTS `dunwulock` (\n"
+            + "    `name`       VARCHAR(64),\n"
+            + "    `lock_until` TIMESTAMP(3) NULL,\n"
+            + "    `locked_at`  TIMESTAMP(3) NULL,\n"
+            + "    `locked_by`  VARCHAR(255),\n"
+            + "    PRIMARY KEY (`name`)\n"
             + ");\n";
         jdbcTemplate.execute(sql);
     }

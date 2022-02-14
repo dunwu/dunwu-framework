@@ -17,7 +17,7 @@ public class P6spySqlFormat implements MessageFormattingStrategy {
         if (StrUtil.isNotBlank(sql)) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("耗时：%s ms ", elapsed))
-                .append(String.format("执行 SQL：\n%s\n", sql.replaceAll("[\\s]+", StrUtil.SPACE)));
+              .append(String.format("执行 SQL：\n%s\n", sql.replaceAll("[\\s]+", StrUtil.SPACE)));
             return sb.toString();
         } else {
             return StrUtil.EMPTY;

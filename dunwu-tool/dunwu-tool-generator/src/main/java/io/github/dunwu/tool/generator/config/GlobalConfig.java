@@ -89,7 +89,7 @@ public class GlobalConfig {
     private String listName;
     private String formName;
 
-    public GlobalConfig() {}
+    public GlobalConfig() { }
 
     public String getBackendDir() {
         if (StrUtil.isBlank(this.backendDir)) {

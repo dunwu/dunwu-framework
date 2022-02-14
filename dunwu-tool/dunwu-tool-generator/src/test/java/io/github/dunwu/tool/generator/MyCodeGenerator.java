@@ -33,7 +33,10 @@ public class MyCodeGenerator {
         DataSourceConfig dataSourceConfig = new DataSourceConfig(url, "com.mysql.cj.jdbc.Driver", "root", "root");
         PackageConfig packageConfig = new PackageConfig("io.github.dunwu.module", "generator");
         GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setAuthor("<a href=\"mailto:forbreak@163.com\">Zhang Peng</a>").setOutputDir("E:\\Temp\\codes").setOpen(true).setEnableSwagger(true);
+        globalConfig.setAuthor("<a href=\"mailto:forbreak@163.com\">Zhang Peng</a>")
+                    .setOutputDir("E:\\Temp\\codes")
+                    .setOpen(true)
+                    .setEnableSwagger(true);
         StrategyConfig strategyConfig = new StrategyConfig();
         strategyConfig.setInclude("code_global_config");
         TemplateConfig templateConfig = new TemplateConfig();

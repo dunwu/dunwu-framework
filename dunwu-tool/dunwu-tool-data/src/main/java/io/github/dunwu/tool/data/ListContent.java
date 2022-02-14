@@ -14,7 +14,7 @@ public class ListContent<T> {
     protected long totalElements;
     protected List<T> content = new ArrayList<>();
 
-    public ListContent() {}
+    public ListContent() { }
 
     public ListContent(List<T> content) {
         this.content = content;

@@ -26,7 +26,7 @@ public class ElasticSearchUtil {
 
     private static final String LIKE_REGEX_TEMPLATE = ".*%s.*";
 
-    private ElasticSearchUtil() {}
+    private ElasticSearchUtil() { }
 
     public static List<QueryBuilder> transToQueryBuilders(final Object queryBean) throws IllegalAccessException {
 

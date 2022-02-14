@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class PageUtil extends cn.hutool.core.util.PageUtil {
 
-    private PageUtil() {}
+    private PageUtil() { }
 
     /**
      * List 分页

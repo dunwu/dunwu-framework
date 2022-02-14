@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class ValidatorUtil {
 
-    private ValidatorUtil() {}
+    private ValidatorUtil() { }
 
     // 字符校验
     // ------------------------------------------------------------------------------

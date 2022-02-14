@@ -25,7 +25,7 @@ public class ImageWaterMark {
      */
     private Float opacity;
 
-    public ImageWaterMark() {}
+    public ImageWaterMark() { }
 
     public ImageWaterMark(WaterMarkPositions position, BufferedImage image, Float opacity) {
         this.position = position;

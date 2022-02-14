@@ -14,4 +14,4 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties(DistributedLockProperties.class)
 @Import({ JdbcDistributedLockConfiguration.class, RedisDistributedLockConfiguration.class,
     ZookeeperDistributedLockConfiguration.class })
-public class DistributedLockAutoConfiguration {}
+public class DistributedLockAutoConfiguration { }

@@ -14,7 +14,7 @@ import javax.validation.ConstraintValidatorContext;
 public class MobileValidator implements ConstraintValidator<IsMobile, String> {
 
     @Override
-    public void initialize(IsMobile constraintAnnotation) {}
+    public void initialize(IsMobile constraintAnnotation) { }
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {

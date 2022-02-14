@@ -33,6 +33,6 @@ public class HdfsConfig implements Serializable {
 
     protected String user = HDFS_DEFAULT_USER_NAME;
 
-    public static class Pool extends GenericObjectPoolConfig<FileSystem> {}
+    public static class Pool extends GenericObjectPoolConfig<FileSystem> { }
 
 }

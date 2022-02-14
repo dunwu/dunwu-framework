@@ -17,7 +17,6 @@ package io.github.dunwu.tool.generator.config.converts;
 
 import io.github.dunwu.tool.generator.config.GlobalConfig;
 import io.github.dunwu.tool.generator.config.ITypeConvert;
-import io.github.dunwu.tool.generator.config.rules.DateType;
 import io.github.dunwu.tool.generator.config.rules.IColumnType;
 import io.github.dunwu.tool.generator.config.rules.JavaColumnType;
 
@@ -42,6 +41,8 @@ public class OracleTypeConvert implements ITypeConvert {
                     return JavaColumnType.TIMESTAMP;
                 case TIME_PACK:
                     return JavaColumnType.LOCAL_DATE_TIME;
+                default:
+                    return null;
             }
         } else if (t.contains("number")) {
             if (t.matches("number\\(+\\d\\)")) {

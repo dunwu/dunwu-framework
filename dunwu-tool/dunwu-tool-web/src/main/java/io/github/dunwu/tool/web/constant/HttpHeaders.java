@@ -554,6 +554,6 @@ public final class HttpHeaders {
      */
     public static final String PING_TO = "Ping-To";
 
-    private HttpHeaders() {}
+    private HttpHeaders() { }
 
 }

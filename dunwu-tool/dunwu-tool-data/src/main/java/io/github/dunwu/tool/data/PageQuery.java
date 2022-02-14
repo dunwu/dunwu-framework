@@ -27,7 +27,7 @@ public class PageQuery implements Serializable {
      */
     private long size = 10L;
 
-    public PageQuery() {}
+    public PageQuery() { }
 
     public PageQuery(long current, long size) {
         this.current = current;

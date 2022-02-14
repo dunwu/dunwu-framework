@@ -232,7 +232,7 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
         String domain1 = randomString(2, 11);
         String domain2 = randomString(2, 4);
         return new StringBuilder().append(domain1.toLowerCase()).append(".")
-            .append(domain2.toLowerCase()).toString();
+                                  .append(domain2.toLowerCase()).toString();
     }
 
     /**
@@ -328,7 +328,7 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
     public static String randomEmail() {
         String name = randomString(2, 11);
         return new StringBuilder().append(name.toLowerCase()).append("@")
-            .append(randomDomain()).toString();
+                                  .append(randomDomain()).toString();
     }
 
     public static <E extends Enum<E>> E randomEnum(final Class<E> enumClass) {

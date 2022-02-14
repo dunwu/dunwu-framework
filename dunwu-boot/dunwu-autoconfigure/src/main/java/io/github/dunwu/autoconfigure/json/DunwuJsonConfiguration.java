@@ -71,8 +71,8 @@ public class DunwuJsonConfiguration {
         timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
             DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .registerModule(timeModule).registerModule(new ParameterNamesModule())
-            .registerModule(new Jdk8Module());
+                    .registerModule(timeModule).registerModule(new ParameterNamesModule())
+                    .registerModule(new Jdk8Module());
     }
 
 }

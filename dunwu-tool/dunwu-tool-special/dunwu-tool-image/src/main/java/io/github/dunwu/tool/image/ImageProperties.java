@@ -55,7 +55,7 @@ public class ImageProperties implements Serializable {
      */
     private ImageWaterMark imageWaterMark;
 
-    public ImageProperties() {}
+    public ImageProperties() { }
 
     public ImageProperties(Integer width, Integer height, Double scale, Double rotate,
         Double quality, ImageType format, ImageWaterMark imageWaterMark) {

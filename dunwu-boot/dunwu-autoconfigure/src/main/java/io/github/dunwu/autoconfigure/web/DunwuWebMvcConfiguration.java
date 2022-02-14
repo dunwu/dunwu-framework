@@ -1,12 +1,12 @@
 package io.github.dunwu.autoconfigure.web;
 
 import cn.hutool.core.map.MapUtil;
+import io.github.dunwu.tool.web.SpringUtil;
 import io.github.dunwu.tool.web.converter.DateConverter;
 import io.github.dunwu.tool.web.converter.DateTimeConverter;
 import io.github.dunwu.tool.web.converter.LocalDateConverter;
 import io.github.dunwu.tool.web.converter.LocalDateTimeConverter;
 import io.github.dunwu.tool.web.interceptor.HttpDebugInterceptor;
-import io.github.dunwu.tool.web.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -64,8 +64,8 @@ public class DunwuWebMvcConfiguration implements WebMvcConfigurer {
         if (properties.isHttpDebugEnabled()) {
             // 使用日志 DEBUG 级别打印 HTTP 请求、应答信息的拦截器
             registry.addInterceptor(new HttpDebugInterceptor())
-                .addPathPatterns(properties.getDebugPath())
-                .order(2);
+                    .addPathPatterns(properties.getDebugPath())
+                    .order(2);
         }
     }
 
