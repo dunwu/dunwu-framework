@@ -175,13 +175,13 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
         List<${table.dtoName}> list = dao.pojoListByIds(ids, this::doToDto);
         <#if table.enableEasyExcel>
         try {
-            ExcelUtil.downloadEasyExcel(response, list, DictDto.class);
+            ExcelUtil.downloadEasyExcel(response, list, ${table.dtoName}.class);
         } catch (IOException e) {
             log.error("【${table.comment!}】【导出失败】", e);
             throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
         }
         <#else>
-        exportDtoList(page.getContent(), response);
+        exportDtoList(list, response);
         </#if>
     }
 
@@ -196,7 +196,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
         Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(pageable, query, this::doToDto);
         <#if table.enableEasyExcel>
         try {
-            ExcelUtil.downloadEasyExcel(response, page.getContent(), DictDto.class);
+            ExcelUtil.downloadEasyExcel(response, page.getContent(), ${table.dtoName}.class);
         } catch (IOException e) {
             log.error("【${table.comment!}】【导出失败】", e);
             throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");

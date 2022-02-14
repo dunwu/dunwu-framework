@@ -65,14 +65,15 @@ public class ${entity} implements Serializable {
     </#if>
 
     <#if field.comment!?length gt 0>
-        <#if enableEasyExcel>
-    @ExcelProperty(value = "<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>")
-        </#if>
         <#if enableSwagger>
     @ApiModelProperty(value = "${field.comment}")
         <#else>
     /** ${field.comment} */
         </#if>
+    </#if>
+    <#-- EasyExcel注解 -->
+    <#if enableEasyExcel>
+    @ExcelProperty(value = "<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>")
     </#if>
     <#if field.keyFlag>
         <#-- 主键 -->

@@ -16,6 +16,7 @@
 package io.github.dunwu.tool.generator.config;
 
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import io.github.dunwu.tool.generator.config.rules.DateType;
 import lombok.Data;
@@ -91,14 +92,14 @@ public class GlobalConfig {
     public GlobalConfig() {}
 
     public String getBackendDir() {
-        if (this.backendDir == null) {
+        if (StrUtil.isBlank(this.backendDir)) {
             this.backendDir = this.outputDir + File.separator + "backend";
         }
         return this.backendDir;
     }
 
     public String getFrontendDir() {
-        if (this.frontendDir == null) {
+        if (StrUtil.isBlank(this.frontendDir)) {
             this.frontendDir = this.outputDir + File.separator + "frontend";
         }
         return this.frontendDir;
