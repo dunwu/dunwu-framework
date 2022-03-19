@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.dunwu.tool</groupId>
         <artifactId>dunwu-tool</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 

@@ -7,13 +7,13 @@
     <parent>
         <groupId>io.github.dunwu</groupId>
         <artifactId>dunwu-parent</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9-SNAPSHOT</version>
         <relativePath>../dunwu-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>io.github.dunwu.boot</groupId>
     <artifactId>dunwu-boot</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>dunwu spring boot 通用 pom</description>
@@ -29,7 +29,7 @@
     </modules>
 
     <properties>
-        <dunwu-boot.version>1.0.8</dunwu-boot.version>
+        <dunwu-boot.version>1.0.9-SNAPSHOT</dunwu-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -37,7 +37,7 @@
             <dependency>
                 <groupId>io.github.dunwu.tool</groupId>
                 <artifactId>dunwu-tool</artifactId>
-                <version>1.0.8</version>
+                <version>1.0.9-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
