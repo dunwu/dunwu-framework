@@ -9,7 +9,7 @@ public enum ${dict.formatCode} {
   <#if entry.note!?length gt 0>
     /** ${entry.note} */
   </#if>
-    ${entry.formatCode}("${entry.code}", "${entry.name}")<#if entry_has_next>,<#else>;</#if>
+    ${entry.code}("${entry.value}", "${entry.name}")<#if entry_has_next>,<#else>;</#if>
 </#list>
 
 <#------------  END 字段循环遍历  ---------->

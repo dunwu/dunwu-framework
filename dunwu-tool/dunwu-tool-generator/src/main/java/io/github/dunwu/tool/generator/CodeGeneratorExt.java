@@ -61,8 +61,8 @@ public class CodeGeneratorExt {
     }
 
     private static DictInfo getDictInfo() {
-        DictOptionInfo entry1 = new DictOptionInfo("false", "启用", "启用");
-        DictOptionInfo entry2 = new DictOptionInfo("true", "禁用", "禁用");
+        DictOptionInfo entry1 = new DictOptionInfo("ENABLE", "启用", "false", "启用");
+        DictOptionInfo entry2 = new DictOptionInfo("DISABLE", "禁用", "true", "禁用");
         List<DictOptionInfo> entries = new ArrayList<>();
         entries.add(entry1);
         entries.add(entry2);

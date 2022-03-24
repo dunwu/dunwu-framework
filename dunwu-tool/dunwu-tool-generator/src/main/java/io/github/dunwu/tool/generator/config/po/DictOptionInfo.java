@@ -14,6 +14,8 @@ public class DictOptionInfo {
     private String code;
     /** 字典选项名称 */
     private String name;
+    /** 字典选项值 */
+    private String value;
     /** 字典选项备注 */
     private String note;
     /** 字典选项格式化编码 */
@@ -21,9 +23,10 @@ public class DictOptionInfo {
 
     public DictOptionInfo() { }
 
-    public DictOptionInfo(String code, String name, String note) {
+    public DictOptionInfo(String code, String name, String value, String note) {
         this.code = code;
         this.name = name;
+        this.value = value;
         this.note = note;
     }
 
@@ -42,6 +45,15 @@ public class DictOptionInfo {
 
     public DictOptionInfo setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public DictOptionInfo setValue(String value) {
+        this.value = value;
         return this;
     }
 
