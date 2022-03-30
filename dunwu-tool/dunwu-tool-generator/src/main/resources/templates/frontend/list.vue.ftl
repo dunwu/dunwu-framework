@@ -32,7 +32,7 @@
                 v-for="item in dict.${field.dictCode}.options"
                 :key="item.code"
                 :label="item.name"
-                :value="item.code"
+                :value="item.value"
                 :disabled="item.disabled"
               />
             </el-select>
@@ -78,7 +78,7 @@
                   v-for="item in dict.${field.dictCode}.options"
                   :key="item.code"
                   :label="item.name"
-                  :value="item.code"
+                  :value="item.value"
                   :disabled="item.disabled"
                 />
               </el-select>

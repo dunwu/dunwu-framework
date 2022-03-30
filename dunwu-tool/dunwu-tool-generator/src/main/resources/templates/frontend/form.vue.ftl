@@ -20,7 +20,7 @@
         <el-input v-model="form.${field.propertyName}" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" style="width: 90%" placeholder="请输入<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>" />
     <#elseif field.formType = 'Radio'>
       <#if (field.dictCode)?? && (field.dictCode)!="">
-        <el-radio v-model="form.${field.propertyName}" v-for="item in dict.${field.dictCode}.options" :key="item.code" :label="item.code" placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">{{ item.name }}</el-radio>
+        <el-radio v-model="form.${field.propertyName}" v-for="item in dict.${field.dictCode}.options" :key="item.code" :label="item.value" placeholder="请选择<#if field.labelName??>${field.labelName}<#else>${field.comment}</#if>">{{ item.name }}</el-radio>
       <#else>
             未设置字典，请手动设置 Radio
       </#if>
@@ -31,7 +31,7 @@
               v-for="item in dict.${field.dictCode}.options"
               :key="item.code"
               :label="item.name"
-              :value="item.code"
+              :value="item.value"
               :disabled="item.disabled"
           />
         </el-select>
@@ -45,7 +45,7 @@
             v-for="item in dict.${field.dictCode}.options"
             :key="item.code"
             :label="item.name"
-            :value="item.code"
+            :value="item.value"
             :disabled="item.disabled"
           />
         </el-select>

@@ -65,6 +65,8 @@ public class TableInfo {
     private boolean enableSwagger = true;
     /** 开启 EasyExcel */
     private boolean enableEasyExcel = false;
+    /** 记录操作日志 */
+    private boolean enableLog = true;
     /** 开启权限校验 */
     private boolean enablePermission = false;
     /** 开启搜索 */
@@ -77,8 +79,7 @@ public class TableInfo {
     private boolean enableSort = true;
     /** 开启校验 */
     private boolean enableValidate = true;
-    /** 记录操作日志 */
-    private boolean enableLog = true;
+
     /** REST接口根路径 */
     private String apiBaseUrl;
 

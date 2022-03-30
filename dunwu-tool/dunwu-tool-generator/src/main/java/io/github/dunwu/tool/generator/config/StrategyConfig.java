@@ -58,7 +58,6 @@ public class StrategyConfig {
     /** 字段前缀 */
     @Setter(AccessLevel.NONE)
     private String[] fieldPrefix;
-
     /**
      * 自定义继承的Entity类全称，带包名
      */
@@ -114,14 +113,14 @@ public class StrategyConfig {
     /**
      * 【实体】是否生成字段常量（默认 false）<br> -----------------------------------<br> public static final String ID = "test_id";
      */
-    private boolean entityColumnConstant = true;
+    private boolean entityColumnConstant = false;
     /**
-     * 【实体】是否为构建者模型（默认 false）<br> -----------------------------------<br> public User setName(String name) { this.name =
+     * 【实体】是否为构建者模型（默认 true）<br> -----------------------------------<br> public User setName(String name) { this.name =
      * name; return this; }
      */
     private boolean entityBuilderModel = true;
     /**
-     * 【实体】是否为lombok模型（默认 false）<br>
+     * 【实体】是否为lombok模型（默认 true）<br>
      * <a href="https://projectlombok.org/">document</a>
      */
     private boolean entityLombokModel = true;

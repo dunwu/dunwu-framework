@@ -154,10 +154,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
 
     @Override
     @Transactional(rollbackFor = { Exception.class })
+    <#if table.enableLog>
     @OperationLog(bizType = "${table.comment!}", operation = OperationType.IMPORT_EXCEL,
         success = "导入${table.comment!}(Excel文件：{{#file.getOriginalFilename()}})『成功』",
         fail = "导入${table.comment!}(Excel文件：{{#file.getOriginalFilename()}})『失败』"
     )
+    </#if>
     public void importList(MultipartFile file) {
         try {
             ExcelUtil.saveExcelData(file.getInputStream(), ${entity}.class, dao);
