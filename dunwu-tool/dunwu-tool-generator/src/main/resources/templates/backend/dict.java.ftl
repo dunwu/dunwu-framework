@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * ${dict.note!}
@@ -27,6 +29,39 @@ public enum ${dict.formatCode} {
 
     public String getName() {
         return name;
+    }
+
+    public static ${dict.formatCode} getEnumByCode(String code) {
+        for (${dict.formatCode} i : ${dict.formatCode}.values()) {
+            if (i.getCode().equals(code)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public static List<String> getEntries() {
+        List<String> list = new LinkedList<>();
+        for (${dict.formatCode} i : ${dict.formatCode}.values()) {
+            list.add(i.toString());
+        }
+        return list;
+    }
+
+    public static List<String> getCodes() {
+        List<String> list = new LinkedList<>();
+        for (${dict.formatCode} i : ${dict.formatCode}.values()) {
+            list.add(i.getCode());
+        }
+        return list;
+    }
+
+    public static List<String> getNames() {
+        List<String> list = new LinkedList<>();
+        for (${dict.formatCode} i : ${dict.formatCode}.values()) {
+            list.add(i.getName());
+        }
+        return list;
     }
 
 }

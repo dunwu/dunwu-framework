@@ -110,6 +110,21 @@ public class MybatisPlusUtil {
             case LIKE_RIGHT:
                 wrapper.and(w -> w.likeRight(key, value));
                 break;
+            case LT:
+                wrapper.and(w -> w.lt(key, value));
+                break;
+            case LE:
+                wrapper.and(w -> w.le(key, value));
+                break;
+            case GT:
+                wrapper.and(w -> w.gt(key, value));
+                break;
+            case GE:
+                wrapper.and(w -> w.ge(key, value));
+                break;
+            case NE:
+                wrapper.and(w -> w.ne(key, value));
+                break;
             case IN:
                 if (value instanceof Collection) {
                     Collection<?> list = (Collection<?>) value;
