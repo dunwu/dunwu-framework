@@ -1,7 +1,10 @@
 package io.github.dunwu.tool.io;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 
 import java.io.File;
@@ -9,6 +12,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -141,6 +147,52 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         os.close();
         ins.close();
         return file;
+    }
+
+    /**
+     * 获取指定路径下所有特定类型的文件
+     *
+     * @param path 根目录
+     * @param ignoredDirs 忽略的目录
+     * @param ext 文件类型后缀名
+     * @return 子文件列表
+     */
+    public static List<File> getAllExtFiles(String path, String[] ignoredDirs, String ext) {
+        List<File> files = new ArrayList<>();
+        getChildrenFiles(path, ignoredDirs, ext, files);
+        if (CollectionUtil.isNotEmpty(files)) {
+            return files.stream().distinct().collect(Collectors.toList());
+        }
+
+        return files;
+    }
+
+    static void getChildrenFiles(String path, String[] blackList, String ext, List<File> resultFiles) {
+        File file = new File(path);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (ArrayUtil.isNotEmpty(files)) {
+                for (File f : files) {
+                    if (f.isDirectory()) {
+                        if (StrUtil.containsAny(f.getName(), blackList)) {
+                            continue;
+                        }
+                        getChildrenFiles(f.getAbsolutePath(), blackList, ext, resultFiles);
+                    } else {
+                        String extensionName = getExtensionName(f.getName());
+                        if (ext.equalsIgnoreCase(extensionName)) {
+                            resultFiles.add(f);
+                        }
+                    }
+                }
+            }
+
+        } else {
+            String extensionName = getExtensionName(file.getName());
+            if (ext.equalsIgnoreCase(extensionName)) {
+                resultFiles.add(file);
+            }
+        }
     }
 
 }
