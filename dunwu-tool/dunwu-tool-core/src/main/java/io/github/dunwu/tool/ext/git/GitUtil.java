@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.git;
+package io.github.dunwu.tool.ext.git;
 
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.util.RegexUtil;
