@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,19 +10,23 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>dunwu-tool-image</artifactId>
+    <artifactId>dunwu-tool-parser</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <description>图形处理工具类</description>
+    <description>包装各种第三方工具包，用于文件解析</description>
 
     <dependencies>
         <dependency>
             <groupId>io.github.dunwu.tool</groupId>
             <artifactId>dunwu-tool-core</artifactId>
         </dependency>
+
+        <!--yaml 解析工具-->
         <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

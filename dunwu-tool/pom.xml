@@ -26,6 +26,8 @@
         <module>dunwu-tool-generator</module>
         <module>dunwu-tool-net</module>
         <module>dunwu-tool-web</module>
+        <module>dunwu-tool-special/dunwu-tool-image</module>
+        <module>dunwu-tool-special/dunwu-tool-parser</module>
     </modules>
 
     <properties>
