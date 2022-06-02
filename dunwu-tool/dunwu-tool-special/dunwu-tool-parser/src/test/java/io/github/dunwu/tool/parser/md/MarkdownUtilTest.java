@@ -31,15 +31,19 @@ public class MarkdownUtilTest {
 
     public static final String MARKDOWN_EXT = "md";
     // 忽略的目录
-    public static final String[] IGNORED_DIR_LIST =
-        { ".git", ".idea", ".temp", "node_modules", "assets", ".github", "scripts", "settings", "scaffolds", "@pages" };
+    public static final String[] IGNORED_DIR_LIST = { ".git", ".idea", ".temp", "node_modules", "assets", ".github",
+        "scripts", "settings", "scaffolds", "@pages" };
 
     private static final boolean IS_BLOG = false;
     private static final int SPAN = 20;
 
-    private static final ExecutorService EXECUTOR =
-        ExecutorBuilder.create().setCorePoolSize(4).setMaxPoolSize(10).setWorkQueue(new LinkedBlockingQueue<>(20))
-                       .setThreadFactory(ThreadUtil.newNamedThreadFactory("Markdown 文件处理线程", false)).build();
+    private static final ExecutorService EXECUTOR = ExecutorBuilder.create()
+                                                                   .setCorePoolSize(4)
+                                                                   .setMaxPoolSize(10)
+                                                                   .setWorkQueue(new LinkedBlockingQueue<>(20))
+                                                                   .setThreadFactory(ThreadUtil.newNamedThreadFactory(
+                                                                       "Markdown 文件处理线程", false))
+                                                                   .build();
 
     @ParameterizedTest
     @DisplayName("刷新指定项目路径下的md文档的创建时间")
@@ -86,20 +90,21 @@ public class MarkdownUtilTest {
             return;
         }
 
+        MarkdownUtil.HexoFrontMatter hexoFrontMatter;
         MarkdownUtil.FrontMatter frontMatter = MarkdownUtil.getFrontMatterFromLines(lines);
         if (frontMatter == null) {
             System.err.println(filename + " 文件的 front matter 解析失败！");
-            return;
-        }
-
-        // Yaml 解析
-        MarkdownUtil.HexoFrontMatter hexoFrontMatter;
-        try {
-            hexoFrontMatter = YamlUtil.parse(frontMatter.getContent(), MarkdownUtil.HexoFrontMatter.class);
-        } catch (Exception e) {
-            System.err.println(filename + " 解析失败！");
-            e.printStackTrace();
-            return;
+            frontMatter = new MarkdownUtil.FrontMatter();
+            hexoFrontMatter = new MarkdownUtil.HexoFrontMatter();
+        } else {
+            try {
+                // Yaml 解析
+                hexoFrontMatter = YamlUtil.parse(frontMatter.getContent(), MarkdownUtil.HexoFrontMatter.class);
+            } catch (Exception e) {
+                System.err.println(filename + " 解析失败！");
+                e.printStackTrace();
+                return;
+            }
         }
 
         if (filename.endsWith("README.md")) {
@@ -113,7 +118,7 @@ public class MarkdownUtilTest {
         String relativePath = filename.replace("docs\\", "");
         String[] paths = relativePath.split("\\\\");
         if (ArrayUtil.isNotEmpty(paths)) {
-            hexoFrontMatter.getCategories().clear();
+            hexoFrontMatter.setCategories(new ArrayList<>());
             for (int i = 0; i < paths.length - 1; i++) {
                 String dir = RegexUtil.replaceFirst(paths[i], "^[0-9]{2}\\.", "");
                 hexoFrontMatter.getCategories().add(dir);
@@ -127,9 +132,15 @@ public class MarkdownUtilTest {
         //     hexoFrontMatter.setAbbrlink(null);
         // }
 
-        List<String> newLines = lines.subList(frontMatter.getEndLine() + 1, lines.size());
+        List<String> textLines;
+        if (frontMatter.getEndLine() != 0) {
+            textLines = lines.subList(frontMatter.getEndLine() + 1, lines.size());
+        } else {
+            textLines = lines;
+        }
+
         List<String> finalLines = new ArrayList<>(hexoFrontMatter.toLines());
-        finalLines.addAll(newLines);
+        finalLines.addAll(textLines);
         FileUtil.writeUtf8Lines(finalLines, f);
     }
 
@@ -150,7 +161,7 @@ public class MarkdownUtilTest {
             // System.out.printf("处理范围：%d - %d\n", start, end);
             while (start < size && start < end) {
                 resolveMarkdownFile(projectPath, files.get(start));
-                System.out.printf("处理了第 %d 个文件\n", start);
+                // System.out.printf("处理了第 %d 个文件\n", start);
                 start++;
             }
 

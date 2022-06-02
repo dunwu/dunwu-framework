@@ -59,14 +59,18 @@ public class MarkdownUtil {
         }
 
         DateTime oldDate = null;
-        try {
-            oldDate = DateUtil.parse(hexoFrontMatter.getDate(), DatePattern.NORM_DATETIME_PATTERN);
-        } catch (DateException e) {
+        if (hexoFrontMatter.getDate() != null) {
             try {
-                oldDate = DateUtil.parse(hexoFrontMatter.getDate(), DatePattern.NORM_DATETIME_MINUTE_PATTERN);
-            } catch (DateException e2) {
-                e2.printStackTrace();
+                oldDate = DateUtil.parse(hexoFrontMatter.getDate(), DatePattern.NORM_DATETIME_PATTERN);
+            } catch (DateException e) {
+                try {
+                    oldDate = DateUtil.parse(hexoFrontMatter.getDate(), DatePattern.NORM_DATETIME_MINUTE_PATTERN);
+                } catch (DateException e2) {
+                    e2.printStackTrace();
+                }
             }
+        } else {
+            oldDate = new DateTime();
         }
 
         String dateStr;
@@ -118,13 +122,13 @@ public class MarkdownUtil {
                 sb.append("date: ").append(date).append("\r\n");
             }
             if (CollectionUtil.isNotEmpty(categories)) {
-                sb.append("categories: ").append("\r\n");
+                sb.append("categories:").append("\r\n");
                 for (String category : categories) {
                     sb.append("  - ").append(category).append("\r\n");
                 }
             }
             if (CollectionUtil.isNotEmpty(tags)) {
-                sb.append("tags: ").append("\r\n");
+                sb.append("tags:").append("\r\n");
                 for (String tag : tags) {
                     sb.append("  - ").append(tag).append("\r\n");
                 }
