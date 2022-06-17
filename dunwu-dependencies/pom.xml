@@ -78,7 +78,7 @@
         ========================================================= -->
         <poi.version>5.0.0</poi.version>
         <disruptor.version>3.4.2</disruptor.version>
-        <drools.version>7.11.0.Final</drools.version>
+        <drools.version>7.60.0.Final</drools.version>
         <jjwt.version>0.11.1</jjwt.version>
         <jsoup.version>1.14.2</jsoup.version>
         <junit-jupiter.version>5.6.0</junit-jupiter.version>
