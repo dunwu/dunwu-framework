@@ -28,7 +28,7 @@ public class DunwuKafkaExtConfiguration {
     @Bean
     @ConditionalOnMissingBean(AdminClient.class)
     public AdminClient kafkaAdminClient(KafkaAdmin kafkaAdmin) {
-        return AdminClient.create(kafkaAdmin.getConfig());
+        return AdminClient.create(kafkaAdmin.getConfigurationProperties());
     }
 
     @Bean

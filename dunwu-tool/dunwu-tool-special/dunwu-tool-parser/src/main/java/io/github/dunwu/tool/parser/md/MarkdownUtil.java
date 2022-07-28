@@ -136,9 +136,6 @@ public class MarkdownUtil {
             if (StrUtil.isNotBlank(permalink)) {
                 sb.append("permalink: ").append(permalink).append("\r\n");
             }
-            if (StrUtil.isNotBlank(abbrlink)) {
-                sb.append("abbrlink: ").append(abbrlink).append("\r\n");
-            }
             if (StrUtil.isNotBlank(hidden)) {
                 sb.append("hidden: ").append(hidden).append("\r\n");
             }
