@@ -24,7 +24,7 @@
              Core Versions
         ========================================================= -->
         <spring-boot.version>2.7.2</spring-boot.version>
-        <hadoop.version>3.2.2</hadoop.version>
+        <hadoop.version>3.2.3</hadoop.version>
 
         <!-- ==========================================
              Java Web
