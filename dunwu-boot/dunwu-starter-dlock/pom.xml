@@ -6,12 +6,12 @@
     <parent>
         <groupId>io.github.dunwu.boot</groupId>
         <artifactId>dunwu-boot</artifactId>
-        <version>1.0.9-SNAPSHOT</version>
+        <version>1.0.9</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>dunwu-starter-dlock</artifactId>
-    <version>1.0.9-SNAPSHOT</version>
+    <version>1.0.9</version>
     <name>${project.artifactId}</name>
     <description>dunwu 分布式锁 spring boot 启动包</description>
     <url>https://github.com/dunwu/dunwu-framework/dunwu-boot/dunwu-starter-dlock</url>
