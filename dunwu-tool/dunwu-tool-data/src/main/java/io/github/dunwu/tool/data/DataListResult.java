@@ -1,15 +1,14 @@
 package io.github.dunwu.tool.data;
 
+import java.io.Serializable;
+import java.util.Collection;
+
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.json.JSONUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * 数据类型为 {@link Collection<T>} 的响应实体
@@ -37,7 +36,7 @@ public class DataListResult<T> implements Status, Serializable {
     /**
      * 应答数据实体
      */
-    private Collection<T> data;
+    protected Collection<T> data;
 
     public DataListResult() {
         this(ResultStatus.OK);
@@ -50,19 +49,6 @@ public class DataListResult<T> implements Status, Serializable {
      */
     public DataListResult(final Status status) {
         this(status.getCode(), status.getMsg(), null);
-    }
-
-    /**
-     * 构造 {@link DataListResult}
-     *
-     * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
-     * @param data 应答数据实体
-     */
-    public DataListResult(final int code, final String msg, final Collection<T> data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
     }
 
     /**
@@ -79,7 +65,7 @@ public class DataListResult<T> implements Status, Serializable {
      *
      * @param data 应答数据实体
      */
-    public DataListResult(final Collection<T> data, String msg) {
+    public DataListResult(final Collection<T> data, final String msg) {
         this(ResultStatus.OK.getCode(), msg, data);
     }
 
@@ -96,20 +82,33 @@ public class DataListResult<T> implements Status, Serializable {
      * 构造 {@link DataListResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      */
     public DataListResult(final int code, final String msg) {
         this(code, msg, null);
     }
 
     /**
-     * 构造 {@link DataListResult}
+     * 构造 {@link DataResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      */
     public DataListResult(final int code, final Collection<String> messages) {
-        this(code, JSONUtil.toJsonStr(messages), null);
+        this(code, CollectionUtil.join(messages, ","), null);
+    }
+
+    /**
+     * 构造 {@link DataListResult}
+     *
+     * @param code 状态码 {@link Status}
+     * @param msg 响应状态消息
+     * @param data 应答数据实体
+     */
+    public DataListResult(final int code, final String msg, final Collection<T> data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     /**
@@ -132,10 +131,21 @@ public class DataListResult<T> implements Status, Serializable {
     }
 
     /**
+     * 根据 {@link Status} 返回失败的 {@link DataListResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg 响应状态消息
+     * @return {@link DataListResult}
+     */
+    public static <T> DataListResult<T> fail(final Status status, final String msg) {
+        return new DataListResult<>(status.getCode(), msg);
+    }
+
+    /**
      * 根据参数返回失败的 {@link DataListResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      * @return {@link DataListResult}
      */
     public static <T> DataListResult<T> fail(final int code, final String msg) {
@@ -145,7 +155,7 @@ public class DataListResult<T> implements Status, Serializable {
     /**
      * 返回失败的 {@link DataListResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息动态数组
      * @return {@link DataListResult}
      */
@@ -156,7 +166,7 @@ public class DataListResult<T> implements Status, Serializable {
     /**
      * 返回失败的 {@link DataListResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      * @return {@link DataListResult}
      */
@@ -170,14 +180,14 @@ public class DataListResult<T> implements Status, Serializable {
      * @return {@link DataListResult}
      */
     public static <T> DataListResult<T> ok() {
-        return new DataListResult(ResultStatus.OK);
+        return new DataListResult<>(ResultStatus.OK);
     }
 
     /**
      * 根据模板字符串以及参数，组装响应消息，返回成功的 {@link DataListResult}
      *
      * @param data 数据对象列表
-     * @param <T>  数据类型
+     * @param <T> 数据类型
      * @return {@link DataListResult}
      */
     public static <T> DataListResult<T> ok(final Collection<T> data) {
@@ -187,6 +197,9 @@ public class DataListResult<T> implements Status, Serializable {
     /**
      * 返回成功的 {@link DataListResult}
      *
+     * @param data 数据对象列表
+     * @param msg 响应状态消息
+     * @param <T> 数据类型
      * @return {@link DataListResult}
      */
     public static <T> DataListResult<T> ok(final Collection<T> data, final String msg) {

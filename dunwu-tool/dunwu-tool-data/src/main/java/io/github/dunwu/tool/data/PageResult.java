@@ -1,16 +1,16 @@
 package io.github.dunwu.tool.data;
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import org.springframework.data.domain.Page;
+
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.json.JSONUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.springframework.data.domain.Page;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * 数据类型为 {@link Page<T>} 的响应实体
@@ -54,19 +54,6 @@ public class PageResult<T> implements Status, Serializable {
     }
 
     /**
-     * 构造 {@link PageResult}
-     *
-     * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
-     * @param data 应答数据实体
-     */
-    public PageResult(final int code, final String msg, final Page<T> data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-    }
-
-    /**
      * 构造成功的 {@link PageResult}
      *
      * @param data 应答数据实体
@@ -97,7 +84,7 @@ public class PageResult<T> implements Status, Serializable {
      * 构造 {@link PageResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      */
     public PageResult(final int code, final String msg) {
         this(code, msg, null);
@@ -106,11 +93,24 @@ public class PageResult<T> implements Status, Serializable {
     /**
      * 构造 {@link PageResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      */
     public PageResult(final int code, final Collection<String> messages) {
-        this(code, JSONUtil.toJsonStr(messages), null);
+        this(code, CollectionUtil.join(messages, ","), null);
+    }
+
+    /**
+     * 构造 {@link PageResult}
+     *
+     * @param code 状态码 {@link Status}
+     * @param msg 响应状态消息
+     * @param data 应答数据实体
+     */
+    public PageResult(final int code, final String msg, final Page<T> data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     /**
@@ -136,7 +136,7 @@ public class PageResult<T> implements Status, Serializable {
      * 根据参数返回失败的 {@link PageResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> fail(final int code, final String msg) {
@@ -146,7 +146,7 @@ public class PageResult<T> implements Status, Serializable {
     /**
      * 返回失败的 {@link PageResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息动态数组
      * @return {@link PageResult}
      */
@@ -157,7 +157,7 @@ public class PageResult<T> implements Status, Serializable {
     /**
      * 返回失败的 {@link PageResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      * @return {@link PageResult}
      */

@@ -1,5 +1,8 @@
 package io.github.dunwu.tool.parser.md;
 
+import java.io.File;
+import java.util.List;
+
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateException;
 import cn.hutool.core.date.DatePattern;
@@ -11,10 +14,6 @@ import io.github.dunwu.tool.parser.git.GitUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.File;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Markdown 工具类
@@ -135,9 +134,6 @@ public class MarkdownUtil {
             }
             if (StrUtil.isNotBlank(permalink)) {
                 sb.append("permalink: ").append(permalink).append("\r\n");
-            }
-            if (StrUtil.isNotBlank(abbrlink)) {
-                sb.append("abbrlink: ").append(abbrlink).append("\r\n");
             }
             if (StrUtil.isNotBlank(hidden)) {
                 sb.append("hidden: ").append(hidden).append("\r\n");

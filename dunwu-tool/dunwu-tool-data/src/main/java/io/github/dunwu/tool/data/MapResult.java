@@ -1,16 +1,15 @@
 package io.github.dunwu.tool.data;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
+
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.json.JSONUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * 数据类型为 {@link Map<K, V>} 的响应实体
@@ -54,19 +53,6 @@ public class MapResult<K, V> implements Status, Serializable {
     }
 
     /**
-     * 构造 {@link MapResult}
-     *
-     * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
-     * @param data 应答数据实体
-     */
-    public MapResult(final int code, final String msg, final Map<K, V> data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-    }
-
-    /**
      * 构造成功的 {@link MapResult}
      *
      * @param data 应答数据实体
@@ -97,7 +83,7 @@ public class MapResult<K, V> implements Status, Serializable {
      * 构造 {@link MapResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      */
     public MapResult(final int code, final String msg) {
         this(code, msg, null);
@@ -106,11 +92,24 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 构造 {@link MapResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      */
     public MapResult(final int code, final Collection<String> messages) {
-        this(code, JSONUtil.toJsonStr(messages), null);
+        this(code, CollectionUtil.join(messages, ","), null);
+    }
+
+    /**
+     * 构造 {@link MapResult}
+     *
+     * @param code 状态码 {@link Status}
+     * @param msg 响应状态消息
+     * @param data 应答数据实体
+     */
+    public MapResult(final int code, final String msg, final Map<K, V> data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     /**
@@ -133,10 +132,21 @@ public class MapResult<K, V> implements Status, Serializable {
     }
 
     /**
+     * 根据 {@link Status} 返回失败的 {@link MapResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg 响应状态消息
+     * @return {@link MapResult}
+     */
+    public static <K, V> MapResult<K, V> fail(final Status status, final String msg) {
+        return new MapResult<>(status.getCode(), msg);
+    }
+
+    /**
      * 根据参数返回失败的 {@link MapResult}
      *
      * @param code 状态码 {@link Status}
-     * @param msg  响应状态消息
+     * @param msg 响应状态消息
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> fail(final int code, final String msg) {
@@ -146,7 +156,7 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 返回失败的 {@link MapResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息动态数组
      * @return {@link MapResult}
      */
@@ -157,7 +167,7 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 返回失败的 {@link MapResult}
      *
-     * @param code     响应状态错误码
+     * @param code 响应状态错误码
      * @param messages 响应状态消息列表
      * @return {@link MapResult}
      */
@@ -177,6 +187,9 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 返回成功的 {@link MapResult}
      *
+     * @param data 数据对象 Map
+     * @param <K> Key 数据类型
+     * @param <V> Value 数据类型
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data) {
@@ -186,6 +199,10 @@ public class MapResult<K, V> implements Status, Serializable {
     /**
      * 返回成功的 {@link MapResult}
      *
+     * @param data 数据对象 Map
+     * @param msg 响应状态消息
+     * @param <K> Key 数据类型
+     * @param <V> Value 数据类型
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String msg) {
