@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
-import io.github.dunwu.tool.core.exception.AppException;
+import io.github.dunwu.tool.core.exception.DefaultException;
 import io.github.dunwu.tool.data.excel.ExcelUtil;
 <#if entityLombokModel>
 import lombok.extern.slf4j.Slf4j;
@@ -165,7 +165,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
             ExcelUtil.saveExcelData(file.getInputStream(), ${entity}.class, dao);
         } catch (IOException e) {
             log.error("【${table.comment!}】【导入失败】", e);
-            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导入失败】");
+            throw new DefaultException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导入失败】");
         }
     }
 
@@ -180,7 +180,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
             ExcelUtil.downloadEasyExcel(response, list, ${table.dtoName}.class);
         } catch (IOException e) {
             log.error("【${table.comment!}】【导出失败】", e);
-            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
+            throw new DefaultException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
         }
         <#else>
         exportDtoList(list, response);
@@ -201,7 +201,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
             ExcelUtil.downloadEasyExcel(response, page.getContent(), ${table.dtoName}.class);
         } catch (IOException e) {
             log.error("【${table.comment!}】【导出失败】", e);
-            throw new AppException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
+            throw new DefaultException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
         }
         <#else>
         exportDtoList(page.getContent(), response);

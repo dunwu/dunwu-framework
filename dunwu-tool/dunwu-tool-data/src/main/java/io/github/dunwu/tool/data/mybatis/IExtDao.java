@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.dunwu.tool.bean.BeanUtil;
 import io.github.dunwu.tool.bean.TypeConvert;
-import io.github.dunwu.tool.data.Pagination;
 import io.github.dunwu.tool.data.mybatis.util.MybatisPlusUtil;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
@@ -166,22 +166,22 @@ public interface IExtDao<E> extends IDao<E> {
         Class<T> clazz) {
         org.springframework.data.domain.Page<E> page = springPage(pageable, wrapper);
         if (CollectionUtil.isEmpty(page.getContent())) {
-            return new Pagination<>(Collections.emptyList(), pageable, page.getTotalElements());
+            return new PageImpl<>(Collections.emptyList(), pageable, page.getTotalElements());
         }
         List<T> list = BeanUtil.toBeanList(page.getContent(), clazz);
-        return new Pagination<>(list, pageable, page.getTotalElements());
+        return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
     default <T> org.springframework.data.domain.Page<T> pojoSpringPage(Pageable pageable, Wrapper<E> wrapper,
         TypeConvert<E, T> convert) {
         org.springframework.data.domain.Page<E> page = springPage(pageable, wrapper);
         if (CollectionUtil.isEmpty(page.getContent())) {
-            return new Pagination<>(Collections.emptyList(), pageable, page.getTotalElements());
+            return new PageImpl<>(Collections.emptyList(), pageable, page.getTotalElements());
         }
         List<T> list = page.getContent().stream()
                            .map(convert::transform)
                            .collect(Collectors.toList());
-        return new Pagination<>(list, pageable, page.getTotalElements());
+        return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
     default org.springframework.data.domain.Page<E> springPageByQuery(Pageable pageable, Object query) {
@@ -197,19 +197,19 @@ public interface IExtDao<E> extends IDao<E> {
         } else {
             list = BeanUtil.toBeanList(page.getContent(), clazz);
         }
-        return new Pagination<>(list, pageable, page.getTotalElements());
+        return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
     default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Pageable pageable, Object query,
         TypeConvert<E, T> convert) {
         org.springframework.data.domain.Page<E> page = springPageByQuery(pageable, query);
         if (CollectionUtil.isEmpty(page.getContent())) {
-            return new Pagination<>(Collections.emptyList(), pageable, page.getTotalElements());
+            return new PageImpl<>(Collections.emptyList(), pageable, page.getTotalElements());
         }
         List<T> list = page.getContent().stream()
                            .map(convert::transform)
                            .collect(Collectors.toList());
-        return new Pagination<>(list, pageable, page.getTotalElements());
+        return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
 }

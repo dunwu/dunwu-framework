@@ -1,14 +1,14 @@
 package io.github.dunwu.tool.data;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * 数据类型为 {@link Collection<T>} 的响应实体
@@ -89,7 +89,7 @@ public class DataListResult<T> implements Status, Serializable {
     }
 
     /**
-     * 构造 {@link DataResult}
+     * 构造 {@link DataListResult}
      *
      * @param code 响应状态错误码
      * @param messages 响应状态消息列表

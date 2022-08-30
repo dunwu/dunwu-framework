@@ -5,7 +5,6 @@ import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 
 /**
  * 认证异常
- *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-11
  */
@@ -14,37 +13,58 @@ public class AuthException extends CodeMsgException {
     private static final long serialVersionUID = -7027578114976830416L;
 
     public AuthException() {
-        super(ResultStatus.AUTH_ERROR);
+        this(ResultStatus.AUTH_ERROR);
     }
 
     public AuthException(Status status) {
-        super(status.getCode(), status.getMsg());
+        this(status.getCode(), status.getMsg());
     }
 
-    public AuthException(int code, String msg) {
-        super(code, msg);
+    public AuthException(Status status, String msg) {
+        this(status.getCode(), msg, null);
+    }
+
+    public AuthException(Status status, String msg, String toast) {
+        this(status.getCode(), msg, toast);
     }
 
     public AuthException(String msg) {
-        super(msg);
+        this(ResultStatus.AUTH_ERROR, msg);
+    }
+
+    public AuthException(int code, String msg) {
+        this(code, msg, msg);
+    }
+
+    public AuthException(int code, String msg, String toast) {
+        super(code, msg, toast);
     }
 
     public AuthException(Throwable cause) {
-        super(cause);
+        this(cause, ResultStatus.AUTH_ERROR);
     }
 
-    public AuthException(int code, String msg, Throwable cause) {
-        super(code, msg, cause);
+    public AuthException(Throwable cause, String msg) {
+        this(cause, ResultStatus.AUTH_ERROR, msg);
     }
 
-    public AuthException(String msg, Throwable cause) {
-        super(msg, cause);
+    public AuthException(Throwable cause, Status status) {
+        this(cause, status.getCode(), status.getMsg());
     }
 
-    public AuthException(String msg, Throwable cause,
-        boolean enableSuppression,
-        boolean writableStackTrace) {
-        super(msg, cause, enableSuppression, writableStackTrace);
+    public AuthException(Throwable cause, Status status, String msg) {
+        this(cause, status.getCode(), msg, null);
     }
 
+    public AuthException(Throwable cause, Status status, String msg, String toast) {
+        this(cause, status.getCode(), msg, toast);
+    }
+
+    public AuthException(Throwable cause, int code, String msg) {
+        this(cause, code, msg, null);
+    }
+
+    public AuthException(Throwable cause, int code, String msg, String toast) {
+        super(cause, code, msg, toast);
+    }
 }

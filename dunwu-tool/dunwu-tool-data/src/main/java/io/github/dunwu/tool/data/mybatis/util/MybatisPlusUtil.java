@@ -7,10 +7,11 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.github.dunwu.tool.data.Pagination;
 import io.github.dunwu.tool.data.annotation.QueryField;
 import io.github.dunwu.tool.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -273,11 +274,11 @@ public class MybatisPlusUtil {
      *
      * @param page {@link Page<T>}
      * @param <T>  数据类型
-     * @return {@link Pagination <T>}
+     * @return {@link PageImpl <T>}
      */
     public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
-        return new Pagination<>(page.getRecords(), (int) (page.getCurrent() - 1), (int) page.getSize(),
-            page.getTotal());
+        PageRequest pageRequest = PageRequest.of((int)(page.getCurrent() - 1), (int)page.getSize());
+        return new PageImpl<>(page.getRecords(), pageRequest, page.getTotal());
     }
 
 }
