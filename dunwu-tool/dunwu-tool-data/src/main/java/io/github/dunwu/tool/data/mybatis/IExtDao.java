@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.dunwu.tool.bean.BeanUtil;
 import io.github.dunwu.tool.bean.TypeConvert;
+import io.github.dunwu.tool.data.PageQuery;
 import io.github.dunwu.tool.data.mybatis.util.MybatisPlusUtil;
+import io.github.dunwu.tool.data.util.PageUtil;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
@@ -154,11 +157,35 @@ public interface IExtDao<E> extends IDao<E> {
     /**
      * 分页查询
      *
+     * @param pageQuery {@link PageQuery} 分页查询参数
+     * @param wrapper   {@link Wrapper<E>} Mybatis Plus 实体 Wrapper，将查询参数包裹
+     * @return {@link org.springframework.data.domain.Page<E>}
+     */
+    default org.springframework.data.domain.Page<E> springPage(PageQuery pageQuery, Wrapper<E> wrapper) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return springPage(pageable, wrapper);
+    }
+
+    /**
+     * 分页查询
+     *
      * @param pageable {@link Pageable} 分页查询参数
      * @param entity   查询实体
      * @return {@link org.springframework.data.domain.Page<E>}
      */
     default org.springframework.data.domain.Page<E> springPage(Pageable pageable, E entity) {
+        return springPage(pageable, Wrappers.query(entity));
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageQuery {@link PageQuery} 分页查询参数
+     * @param entity    查询实体
+     * @return {@link org.springframework.data.domain.Page<E>}
+     */
+    default org.springframework.data.domain.Page<E> springPage(PageQuery pageQuery, E entity) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
         return springPage(pageable, Wrappers.query(entity));
     }
 
@@ -172,20 +199,35 @@ public interface IExtDao<E> extends IDao<E> {
         return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPage(PageQuery pageQuery, Wrapper<E> wrapper,
+        Class<T> clazz) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return pojoSpringPage(pageable, wrapper, clazz);
+    }
+
     default <T> org.springframework.data.domain.Page<T> pojoSpringPage(Pageable pageable, Wrapper<E> wrapper,
         TypeConvert<E, T> convert) {
         org.springframework.data.domain.Page<E> page = springPage(pageable, wrapper);
         if (CollectionUtil.isEmpty(page.getContent())) {
             return new PageImpl<>(Collections.emptyList(), pageable, page.getTotalElements());
         }
-        List<T> list = page.getContent().stream()
-                           .map(convert::transform)
-                           .collect(Collectors.toList());
+        List<T> list = page.getContent().stream().map(convert::transform).collect(Collectors.toList());
         return new PageImpl<>(list, pageable, page.getTotalElements());
+    }
+
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPage(PageQuery pageQuery, Wrapper<E> wrapper,
+        TypeConvert<E, T> convert) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return pojoSpringPage(pageable, wrapper, convert);
     }
 
     default org.springframework.data.domain.Page<E> springPageByQuery(Pageable pageable, Object query) {
         return springPage(pageable, MybatisPlusUtil.buildQueryWrapper(query));
+    }
+
+    default org.springframework.data.domain.Page<E> springPageByQuery(PageQuery pageQuery, Object query) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return springPageByQuery(pageable, query);
     }
 
     default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Pageable pageable, Object query,
@@ -200,16 +242,26 @@ public interface IExtDao<E> extends IDao<E> {
         return new PageImpl<>(list, pageable, page.getTotalElements());
     }
 
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(PageQuery pageQuery, Object query,
+        Class<T> clazz) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return pojoSpringPageByQuery(pageable, query, clazz);
+    }
+
     default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(Pageable pageable, Object query,
         TypeConvert<E, T> convert) {
         org.springframework.data.domain.Page<E> page = springPageByQuery(pageable, query);
         if (CollectionUtil.isEmpty(page.getContent())) {
             return new PageImpl<>(Collections.emptyList(), pageable, page.getTotalElements());
         }
-        List<T> list = page.getContent().stream()
-                           .map(convert::transform)
-                           .collect(Collectors.toList());
+        List<T> list = page.getContent().stream().map(convert::transform).collect(Collectors.toList());
         return new PageImpl<>(list, pageable, page.getTotalElements());
+    }
+
+    default <T> org.springframework.data.domain.Page<T> pojoSpringPageByQuery(PageQuery pageQuery, Object query,
+        TypeConvert<E, T> convert) {
+        PageRequest pageable = PageUtil.toPageRequest(pageQuery);
+        return pojoSpringPageByQuery(pageable, query, convert);
     }
 
 }

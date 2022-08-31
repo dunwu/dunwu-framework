@@ -28,7 +28,7 @@ import java.util.*;
 @Slf4j
 public class MybatisPlusUtil {
 
-    private MybatisPlusUtil() { }
+    private MybatisPlusUtil() {}
 
     public static <T> QueryWrapper<T> buildQueryWrapper(final Object queryBean) {
 

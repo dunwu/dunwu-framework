@@ -1,6 +1,7 @@
 package ${package.Service};
 
 import io.github.dunwu.tool.data.annotation.QueryField;
+import io.github.dunwu.tool.data.PageQuery;
 import ${package.Entity}.${entity};
 import ${package.Dto}.${table.dtoName};
 import ${package.Query}.${table.queryName};
@@ -119,6 +120,15 @@ public interface ${table.serviceName} extends ${superServiceClass} {
     Page<${table.dtoName}> pojoSpringPageByQuery(Pageable pageable, ${table.queryName} query);
 
     /**
+     * 根据 {@link Pageable} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表
+     *
+     * @param pageQuery 分页查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
+     * @return {@link Page<${table.dtoName}>}
+     */
+    Page<${table.dtoName}> pojoSpringPageByQuery(PageQuery pageQuery, ${table.queryName} query);
+
+    /**
      * 根据 id 查询 {@link ${table.dtoName}}
      *
      * @param id {@link ${entity}} 主键
@@ -165,6 +175,15 @@ public interface ${table.serviceName} extends ${superServiceClass} {
      * @param response {@link HttpServletResponse} 实体
      */
     void exportPage(Pageable pageable, ${table.queryName} query, HttpServletResponse response);
+
+    /**
+     * 根据 {@link PageQuery} 和 {@link ${table.queryName}} 分页查询 {@link ${table.dtoName}} 列表，并导出 excel 表单
+     *
+     * @param pageQuery 分页查询条件
+     * @param query    查询条件，根据 {@link ${table.queryName}} 中的 {@link QueryField} 注解自动组装查询条件
+     * @param response {@link HttpServletResponse} 实体
+     */
+    void exportPage(PageQuery pageQuery, ${table.queryName} query, HttpServletResponse response);
 
     /**
      * 将 {@link ${entity}} 转为 {@link ${table.dtoName}}

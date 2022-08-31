@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
+import io.github.dunwu.tool.data.PageQuery;
 import io.github.dunwu.tool.data.excel.ExcelUtil;
 <#if entityLombokModel>
 import lombok.extern.slf4j.Slf4j;
@@ -138,6 +139,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
     }
 
     @Override
+    public Page<${table.dtoName}> pojoSpringPageByQuery(PageQuery pageQuery, ${table.queryName} query) {
+        return dao.pojoSpringPageByQuery(pageQuery, query, this::doToDto);
+    }
+
+    @Override
     public ${table.dtoName} pojoById(Serializable id) {
         return dao.pojoById(id, this::doToDto);
     }
@@ -205,6 +211,27 @@ public class ${table.serviceImplName} extends ${superServiceImplClass} implement
         }
         <#else>
         exportDtoList(page.getContent(), response);
+        </#if>
+    }
+
+    @Override
+    <#if table.enableLog>
+    @OperationLog(bizType = "${table.comment!}", operation = OperationType.EXPORT_EXCEL,
+        success = "分页查询导出${table.comment!}(page={{#pageQuery.getPage()}}, size={{#pageQuery.getSize()}}, query={{#query.toString()}})『成功』",
+        fail = "分页查询导出${table.comment!}(page={{#pageQuery.getPage()}}, size={{#pageQuery.getSize()}}, query={{#query.toString()}})『失败』"
+    )
+    </#if>
+    public void exportPage(PageQuery pageQuery, ${table.queryName} query, HttpServletResponse response) {
+        Page<${table.dtoName}> page = dao.pojoSpringPageByQuery(pageQuery, query, this::doToDto);
+        <#if table.enableEasyExcel>
+        try {
+            ExcelUtil.downloadEasyExcel(response, page.getContent(), ${table.dtoName}.class);
+        } catch (IOException e) {
+            log.error("【${table.comment!}】【导出失败】", e);
+            throw new DefaultException(ResultStatus.IO_ERROR.getCode(), "【${table.comment!}】【导出失败】");
+       }
+        <#else>
+            exportDtoList(page.getContent(), response);
         </#if>
     }
 
