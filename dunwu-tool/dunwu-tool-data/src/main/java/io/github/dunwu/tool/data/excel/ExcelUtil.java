@@ -5,7 +5,15 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.metadata.ReadSheet;
+import com.google.common.collect.Lists;
 import io.github.dunwu.tool.data.mybatis.IExtDao;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author peng.zhang
  * @date 2022-01-24
  */
+@Slf4j
 public class ExcelUtil {
 
     /**
@@ -103,6 +112,47 @@ public class ExcelUtil {
     public static <T> void downloadEasyExcel(HttpServletResponse response, Collection<T> list, Class<T> clazz)
         throws IOException {
         downloadEasyExcel(response, list, clazz, null);
+    }
+
+    /**
+     * 读取 Excel 内容，并转换为 Java 实体列表
+     *
+     * @param inputStream IO 流
+     * @param clazz       将要转换的 Java 实体类型
+     * @param <T>         泛型
+     * @return /
+     */
+    public static <T> List<T> readExcel(InputStream inputStream, Class<T> clazz) {
+        final List<T> dataList = Lists.newArrayList();
+        try {
+            AnalysisEventListener<T> listener = new AnalysisEventListener<T>() {
+                @Override
+                public void invoke(T obj, AnalysisContext context) {
+                    dataList.add(obj);
+                }
+
+                @Override
+                public void doAfterAllAnalysed(AnalysisContext context) { }
+            };
+
+            ExcelReaderBuilder builder = EasyExcelFactory.read(inputStream, listener);
+            ExcelReader excelReader = builder.build();
+            ReadSheet sheet = new ReadSheet();
+            sheet.setSheetNo(1);
+            sheet.setClazz(clazz);
+            excelReader.read(sheet);
+            // 解析每行结果在listener中处理
+        } catch (Exception e) {
+            log.error("文件{}读取失败 失败堆栈为{}", inputStream, e);
+        } finally {
+            try {
+                assert inputStream != null;
+                inputStream.close();
+            } catch (IOException e) {
+                log.error("关闭资源失败", e);
+            }
+        }
+        return dataList;
     }
 
 }

@@ -19,24 +19,9 @@ import java.util.Collection;
 @Data
 @ToString
 @Accessors(chain = true)
-public class DataListResult<T> implements Status, Serializable {
+public class DataListResult<T> extends Result implements Status, Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 状态码
-     */
-    protected int code;
-
-    /**
-     * 响应信息
-     */
-    protected String msg;
-
-    /**
-     * 提示信息
-     */
-    protected String toast;
 
     /**
      * 数据实体
@@ -282,15 +267,6 @@ public class DataListResult<T> implements Status, Serializable {
      */
     public static <T> DataListResult<T> ok(final Collection<T> data, final String msg, final String toast) {
         return new DataListResult<>(data, msg, toast);
-    }
-
-    /**
-     * 结果是成功或失败
-     *
-     * @return true / false
-     */
-    public boolean isOk() {
-        return this.code == ResultStatus.OK.getCode();
     }
 
 }
