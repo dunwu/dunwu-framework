@@ -1,5 +1,6 @@
 package io.github.dunwu.tool.data.excel;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
@@ -11,14 +12,14 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.google.common.collect.Lists;
 import io.github.dunwu.tool.data.mybatis.IExtDao;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +59,9 @@ public class ExcelUtil {
         File file = new File(tempPath);
         BigExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getBigWriter(file);
 
-        //response为HttpServletResponse对象
+        // response为HttpServletResponse对象
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        //test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
+        // test.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
         response.setHeader("Content-Disposition", "attachment;filename=file.xlsx");
 
         ServletOutputStream out = null;
@@ -77,7 +78,7 @@ public class ExcelUtil {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            //此处记得关闭输出Servlet流
+            // 此处记得关闭输出Servlet流
             IoUtil.close(out);
         }
     }
@@ -99,7 +100,13 @@ public class ExcelUtil {
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         String encodeFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + encodeFileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), clazz).sheet("数据").doWrite(list);
+        List<T> finalList;
+        if (CollectionUtil.isEmpty(list)) {
+            finalList = new ArrayList<>();
+        } else {
+            finalList = new ArrayList<>(list);
+        }
+        EasyExcel.write(response.getOutputStream(), clazz).sheet("数据").doWrite(finalList);
     }
 
     /**
@@ -138,12 +145,12 @@ public class ExcelUtil {
             ExcelReaderBuilder builder = EasyExcelFactory.read(inputStream, listener);
             ExcelReader excelReader = builder.build();
             ReadSheet sheet = new ReadSheet();
-            sheet.setSheetNo(1);
+            sheet.setSheetNo(0);
             sheet.setClazz(clazz);
             excelReader.read(sheet);
             // 解析每行结果在listener中处理
         } catch (Exception e) {
-            log.error("文件{}读取失败 失败堆栈为{}", inputStream, e);
+            log.error("excel 文件读取失败失败！", e);
         } finally {
             try {
                 assert inputStream != null;
@@ -153,6 +160,12 @@ public class ExcelUtil {
             }
         }
         return dataList;
+    }
+
+    public static <T> OutputStream createExcelStream(List<T> list, Class<T> clazz) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        EasyExcel.write(outputStream, clazz).excelType(ExcelTypeEnum.XLSX).sheet("数据").doWrite(() -> list);
+        return outputStream;
     }
 
 }
