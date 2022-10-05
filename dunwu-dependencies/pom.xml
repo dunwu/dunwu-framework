@@ -54,7 +54,7 @@
         <fastjson.version>1.2.70</fastjson.version>
         <fst.version>2.56</fst.version>
         <lombok.version>1.18.12</lombok.version>
-        <protobuf-java.version>3.16.1</protobuf-java.version>
+        <protobuf-java.version>3.16.3</protobuf-java.version>
         <reflections.version>0.10.2</reflections.version>
 
         <!-- ========================================================
