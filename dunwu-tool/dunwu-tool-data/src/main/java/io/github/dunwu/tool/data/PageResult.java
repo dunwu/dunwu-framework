@@ -27,7 +27,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
     /**
      * 数据实体
      */
-    protected Page<T> data;
+    protected PageImpl<T> data;
 
     /**
      * 默认构造方法
@@ -90,7 +90,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      *
      * @param data 数据实体
      */
-    public PageResult(final Page<T> data) {
+    public PageResult(final PageImpl<T> data) {
         this(data, ResultStatus.OK.getCode(), ResultStatus.OK.getMsg());
     }
 
@@ -100,7 +100,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param data 数据实体
      * @param msg  响应信息
      */
-    public PageResult(final Page<T> data, final String msg) {
+    public PageResult(final PageImpl<T> data, final String msg) {
         this(data, ResultStatus.OK.getCode(), msg);
     }
 
@@ -111,7 +111,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param msg   响应信息
      * @param toast 响应信息
      */
-    public PageResult(final Page<T> data, final String msg, final String toast) {
+    public PageResult(final PageImpl<T> data, final String msg, final String toast) {
         this(data, ResultStatus.OK.getCode(), msg, toast);
     }
 
@@ -122,7 +122,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param code 状态码 {@link Status}
      * @param msg  响应信息
      */
-    public PageResult(final Page<T> data, final int code, final String msg) {
+    public PageResult(final PageImpl<T> data, final int code, final String msg) {
         this(data, code, msg, null);
     }
 
@@ -134,7 +134,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param msg   响应信息
      * @param toast 提示信息
      */
-    public PageResult(final Page<T> data, final int code, final String msg, final String toast) {
+    public PageResult(final PageImpl<T> data, final int code, final String msg, final String toast) {
         this.code = code;
         this.msg = msg;
         this.toast = toast;
@@ -242,7 +242,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> ok(final Page<T> data) {
-        return new PageResult<>(data);
+        return new PageResult<>(PageImpl.of(data));
     }
 
     /**
@@ -254,7 +254,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> ok(final Page<T> data, final String msg) {
-        return new PageResult<>(data, msg);
+        return new PageResult<>(PageImpl.of(data), msg);
     }
 
     /**
@@ -267,7 +267,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> ok(final Page<T> data, final String msg, final String toast) {
-        return new PageResult<>(data, msg, toast);
+        return new PageResult<>(PageImpl.of(data), msg, toast);
     }
 
 }

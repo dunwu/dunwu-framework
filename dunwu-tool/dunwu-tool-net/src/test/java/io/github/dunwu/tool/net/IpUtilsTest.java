@@ -1,6 +1,5 @@
 package io.github.dunwu.tool.net;
 
-import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.AnsiColorUtil;
 import org.junit.jupiter.api.Test;
 
@@ -57,17 +56,12 @@ class IpUtilsTest {
 
         long time = 0L;
         for (String ip : ips) {
-            String[] regionNames = IpUtil.getFullRegionName(ip);
             long beginTime = System.nanoTime();
-            AnsiColorUtil.BLUE.println(ip + " 所属完整行政单位：" + StrUtil.join(",", regionNames));
-            AnsiColorUtil.BLUE.println(ip + " 最小行政单位：" + StrUtil.join(IpUtil.getRegionName(ip)));
+            AnsiColorUtil.BLUE.println(ip + " 所属地区：" + IpUtil.getRegion(ip));
             long endTime = System.nanoTime();
             long value = (endTime - beginTime) / 1000000;
             time += value;
             System.out.println("耗时：" + value);
-            String city;
-            city = IpUtil.getRegionCode(ip);
-            AnsiColorUtil.YELLOW.println("IP:" + ip + " City :" + city);
         }
 
         System.out.println("平均耗时：" + (time / ips.length));

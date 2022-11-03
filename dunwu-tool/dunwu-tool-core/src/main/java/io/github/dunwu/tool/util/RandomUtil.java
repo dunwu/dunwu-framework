@@ -10,7 +10,15 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -61,14 +69,14 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
 
         if (2 == count) {
             String secondDictionary = "睿,浩,博,瑞,昊,杰,刚,伟,勇,林,驰,俊,明,清,正,云,鹏,晨,强";
-            String[] names = StrUtil.split(secondDictionary, ",");
-            return randomInArray(names);
+            List<String> names = StrUtil.split(secondDictionary, ",");
+            return randomInList(names);
         } else if (3 == count) {
             String secondDictionary = "子,梓,浩,宇,俊,文,志,晓,小,大";
             String thirdDictionary = "轩,宇,泽,杰,豪,刚,伟,勇,明,然,涵,蔼,仁,容,德,轩,贤,良,伦,正,清,义,诚,直,道,达,耀,兴,荣,华,丰,余,昌,盛,涛";
-            String[] seconds = StrUtil.split(secondDictionary, ",");
-            String[] thirds = StrUtil.split(thirdDictionary, ",");
-            return randomInArray(seconds) + randomInArray(thirds);
+            List<String> seconds = StrUtil.split(secondDictionary, ",");
+            List<String> thirds = StrUtil.split(thirdDictionary, ",");
+            return randomInList(seconds) + randomInList(thirds);
         } else {
             return "";
         }
@@ -83,14 +91,14 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
 
         if (2 == count) {
             String secondDictionary = "悦,妍,玥,蕊,欣,洁,雪,静,慧,晴,娜,玟,倩,柔,雅,丽,萍,娟";
-            String[] names = StrUtil.split(secondDictionary, ",");
-            return randomInArray(names);
+            List<String> names = StrUtil.split(secondDictionary, ",");
+            return randomInList(names);
         } else if (3 == count) {
             String secondDictionary = "雨,梓,欣,子,语,馨,思,婉,涵,婷,文,梦,玉,安";
             String thirdDictionary = "涵,萱,怡,彤,琪,文,宁,雪,彤,柔,雅,丽,曼,云,晴,琴,娜";
-            String[] seconds = StrUtil.split(secondDictionary, ",");
-            String[] thirds = StrUtil.split(thirdDictionary, ",");
-            return randomInArray(seconds) + randomInArray(thirds);
+            List<String> seconds = StrUtil.split(secondDictionary, ",");
+            List<String> thirds = StrUtil.split(thirdDictionary, ",");
+            return randomInList(seconds) + randomInList(thirds);
         } else {
             return "";
         }
@@ -105,8 +113,8 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
             "李,王,张,刘,陈,杨,黄,赵,周,吴,徐,孙,朱,马,胡,郭,林,何,高,梁,郑,罗,宋,谢,唐,韩,曹,许,邓,萧,冯,曾,程,蔡,彭,潘,袁,于,董,余,苏,叶,吕,魏,蒋,田,杜,丁,沈,姜,范,江,"
                 + "傅,钟,卢,汪,戴,崔,任,陆,廖,姚,方,金,邱,夏,谭,韦,贾,邹,石,熊,孟,秦,阎,薛,侯,雷,白,龙,段,郝,孔,邵,史,毛,常,万,顾,赖,武,康,贺,严,尹,钱,施,牛,洪,龚,汤,"
                 + "陶,黎,温,莫,易,樊,乔,文,安,殷,颜,庄,章,鲁,倪,庞,邢,俞,翟,蓝,聂,齐,向,申,葛,岳";
-        String[] names = StrUtil.split(dictionary, ",");
-        return randomInArray(names);
+        List<String> names = StrUtil.split(dictionary, ",");
+        return randomInList(names);
     }
 
     public static String randomChineseLetterString(final int min, final int max) {
@@ -355,8 +363,8 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
                 + "Connor,Logan,Aiden,Noah,Alexande,Jackson,Brayden,Lucas,William,Nathan,Joseph,Justin,Daniel,"
                 + "Benjamin,Christopher,James,Gavin,Evan,Austin,Cameron,Brandon,Mason,Luke,Anthony,Christian,"
                 + "Jonathan,Owen,David,John,Matthew,Samuel,Sean,Hunter,Elijah,Thomas";
-        String[] names = StrUtil.split(dictionary, ",");
-        return randomInArray(names);
+        List<String> names = StrUtil.split(dictionary, ",");
+        return randomInList(names);
     }
 
     public static String randomGirlFirstName() {
@@ -365,8 +373,8 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
                 + "Ella,Riley,Alexis,Alyssa,Samantha,Lauren,Mia,Grace,Chloe,Ashley,Brianna,Jessica,Elizabeth,Taylor,"
                 + "Makayla,Makenzie,Anna,Zoe,Kayla,Sydney,Megan,Natalie,Kylie,ulia,Avery,Katherine,Isabel,Victoria,"
                 + "Morgan,Kyra,Jasmine,Allison,Savannah,JRachel,Jordan";
-        String[] names = StrUtil.split(dictionary, ",");
-        return randomInArray(names);
+        List<String> names = StrUtil.split(dictionary, ",");
+        return randomInList(names);
     }
 
     public static String randomIpv4() {
@@ -405,8 +413,8 @@ public class RandomUtil extends cn.hutool.core.util.RandomUtil {
         String dictionary =
             "Smith,Jones,Williams,Taylor,Brown,Davies,Evans,Wilson,Thomas,Johnson,Roberts,Robinson,Thompson,Wright,"
                 + "Walker,White,Edwards,Hughes,Green,Hall,Lewis,Harris,Clarke,Patel,Jackson";
-        String[] names = StrUtil.split(dictionary, ",");
-        return randomInArray(names);
+        List<String> names = StrUtil.split(dictionary, ",");
+        return randomInList(names);
     }
 
     public static <T> T randomInArray(final T[] list) {

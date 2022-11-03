@@ -2,13 +2,13 @@ package io.github.dunwu.tool.net;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONUtil;
 import io.github.dunwu.tool.net.bean.City;
 import io.github.dunwu.tool.net.bean.County;
 import io.github.dunwu.tool.net.bean.Province;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 /**
  * 中国省市区查询工具类
  * <p>
- * 省市区数据来源于 <a href= "https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
+ * 省市区数据来源于 <a href=
+ * "https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @see <a href= "https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>
@@ -136,7 +137,7 @@ public class RegionUtil {
             return null;
         }
 
-        Set<County> counties = city.getAreas();
+        Set<County> counties = city.getChildren();
         if (CollectionUtil.isEmpty(counties)) {
             return null;
         }
@@ -181,7 +182,7 @@ public class RegionUtil {
 
     private static void loadData() {
         URL url = RegionUtil.class.getClassLoader().getResource(JSON_DATA_FILE);
-        String json = FileUtil.readString(url, CharsetUtil.UTF_8);
+        String json = FileUtil.readString(url, StandardCharsets.UTF_8);
         parseRegionsFromJson(json);
     }
 
@@ -195,9 +196,9 @@ public class RegionUtil {
             return;
         }
         for (Province province : provinces) {
-            for (City city : province.getAreas()) {
+            for (City city : province.getChildren()) {
                 city.setProvince(province);
-                for (County county : city.getAreas()) {
+                for (County county : city.getChildren()) {
                     county.setProvince(province);
                     county.setCity(city);
                     counties.add(county);

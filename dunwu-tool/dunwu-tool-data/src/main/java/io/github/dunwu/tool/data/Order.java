@@ -5,20 +5,24 @@ import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * 排序实体
  *
- * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ * @author 11123558
  * @date 2022-08-22
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = 942008637590762831L;
 
     /**
      * 排序字段
@@ -31,7 +35,8 @@ public class Order {
     private Direction direction;
 
     public enum Direction {
-        asc, desc;
+        asc,
+        desc;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class Order {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Order order = (Order)o;
+        Order order = (Order) o;
         return Objects.equals(field, order.field);
     }
 
@@ -73,6 +78,20 @@ public class Order {
         String field = list.get(0);
         Direction direction = Direction.valueOf(list.get(1));
         return new Order(field, direction);
+    }
+
+    public static Order parse(Sort.Order order) {
+        if (order == null) {
+            return null;
+        }
+
+        Direction direction;
+        if (order.getDirection().isAscending()) {
+            direction = Direction.asc;
+        } else {
+            direction = Direction.desc;
+        }
+        return new Order(order.getProperty(), direction);
     }
 
 }

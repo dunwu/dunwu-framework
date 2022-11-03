@@ -29,7 +29,12 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.scheduling.annotation.Async;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -113,7 +118,7 @@ public class OperationLogAspect {
         // 获取用户身份信息、请求信息
         HttpServletRequest request = ServletUtil.getHttpServletRequest();
         ServletUtil.RequestIdentityInfo requestIdentityInfo = ServletUtil.getRequestIdentityInfo(request);
-        String address = IpUtil.getRegionName(requestIdentityInfo.getIp());
+        String address = IpUtil.getRegion(requestIdentityInfo.getIp());
         String serverIp = IpUtil.getLocalIp();
 
         Long userId = securityService.getCurrentUserId();

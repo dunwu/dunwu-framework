@@ -1,24 +1,26 @@
 package io.github.dunwu.tool.net;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.net.bean.City;
-import io.github.dunwu.tool.net.bean.County;
-import io.github.dunwu.tool.net.bean.Province;
+import io.github.dunwu.tool.io.AnsiColorUtil;
+import io.github.dunwu.tool.net.ip.Searcher;
 import io.github.dunwu.tool.util.ValidatorUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.URL;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Ip 工具类 (数据来自 IPIP)
@@ -34,25 +36,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class IpUtil {
 
-    private static final String IP_DB_FILE = "db/17monipdb.dat";
-
-    private static final int IPV4_PART_COUNT = 4;
-    private static final int IPV6_PART_COUNT = 8;
-    private static final String REGION_CHINA = "中国";
-    private static final int IP_DB_INDEX_LENGTH = 256;
-    private static final int[] IP_INDEXES = new int[IP_DB_INDEX_LENGTH];
-    private static int offset;
-    private static ByteBuffer dataBuffer;
-    private static ByteBuffer indexBuffer;
-    private static final ReentrantLock LOCK = new ReentrantLock();
-
-    static {
-        loadData();
-    }
+    private static final String IP_FILE = "db/ip2region.xdb";
+    private static final Searcher searcher = getSearcher();
 
     private IpUtil() { }
 
-    // isValid
+    // IP 校验
     // -------------------------------------------------------------------------------------------------
 
     /**
@@ -66,6 +55,16 @@ public class IpUtil {
     }
 
     /**
+     * 判断传入的字符串是否为有效 ipv4 地址
+     *
+     * @param ipv4Str ipv4 地址
+     * @return true / false
+     */
+    public static boolean isValidIpv4(final String ipv4Str) {
+        return ValidatorUtil.isIpv4(ipv4Str);
+    }
+
+    /**
      * 判断传入的字符串是否为有效 ipv6 地址
      *
      * @param ipv6Str ipv6 地址
@@ -75,7 +74,7 @@ public class IpUtil {
         return ValidatorUtil.isIpv6(ipv6Str);
     }
 
-    // Inet4Address
+    // Ip 地址转化
     // -------------------------------------------------------------------------------------------------
 
     /**
@@ -103,22 +102,6 @@ public class IpUtil {
     }
 
     /**
-     * 从 InetAddress 转换为 String（可以是 ipv4 或 ipv6）。
-     */
-    public static String getStrFromInetAddress(final InetAddress address) {
-        return address.getHostAddress();
-    }
-
-    // -------------------------------------------------------------------------------------------------
-
-    /**
-     * Ipv4 String 转换到 long
-     */
-    public static long ipv4StrToLong(final String ipv4Str) {
-        return ipv4StrToInt(ipv4Str);
-    }
-
-    /**
      * Ipv4 String 转换到 int
      */
     public static int ipv4StrToInt(final String ipv4Str) {
@@ -131,204 +114,19 @@ public class IpUtil {
     }
 
     /**
+     * Ipv4 String 转换到 long
+     */
+    public static long ipv4StrToLong(final String ipv4Str) {
+        return ipv4StrToInt(ipv4Str);
+    }
+
+    /**
      * int转换到IPV4 String, from Netty NetUtil
      */
     public static String intToIpv4Str(final int i) {
         return new StringBuilder(15).append((i >> 24) & 0xff).append('.')
                                     .append(i >> 16 & 0xff).append('.').append((i >> 8) & 0xff).append('.')
                                     .append(i & 0xff).toString();
-    }
-
-    /**
-     * 返回 IP 地址所属地的编码（返回能得到的最小行政单位）
-     *
-     * @param ip IP 地址
-     * @return 所属地的编码
-     */
-    public static String getRegionCode(final String ip) {
-        String[] regionNames = getFullRegionName(ip);
-        if (REGION_CHINA.equals(regionNames[0])) {
-            if (StrUtil.isBlank(ArrayUtil.get(regionNames, 1))) {
-                return null;
-            }
-
-            Province province = RegionUtil.getProvinceByName(regionNames[1]);
-            if (province == null) {
-                return null;
-            }
-
-            if (StrUtil.isBlank(ArrayUtil.get(regionNames, 2))) {
-                return province.getCode();
-            }
-            City city = RegionUtil.getCityByName(regionNames[2]);
-            if (city == null) {
-                // 如果省级行政单位名和市级行政单位名同名，视其为直辖市
-                // 对于直辖市，第一个区号名为市辖区
-                if (regionNames[1].equals(regionNames[2])) {
-                    city = RegionUtil.getCityByName("市辖区");
-                    return city != null ? city.getCode() : null;
-                }
-                return null;
-            }
-
-            return city.getCode();
-        } else {
-            return null;
-        }
-    }
-
-    // getRegion
-    // -------------------------------------------------------------------------------------------------
-
-    /**
-     * 返回 IP 地址所属地（返回能得到的所有级别行政单位）
-     *
-     * @param ip IP 地址
-     * @return 所属地的名称数组
-     */
-    public static String[] getFullRegionName(final String ip) {
-        if (StrUtil.isBlank(ip)) {
-            throw new IllegalArgumentException(ip + " must not be null");
-        }
-
-        if (!isValidIpv4(ip)) {
-            throw new IllegalArgumentException(ip + " is not valid ipv4 address");
-        }
-
-        int ipPrefixValue = new Integer(ip.substring(0, ip.indexOf(".")));
-        long ip2longValue = ipv4StrToInt(ip);
-        int start = IP_INDEXES[ipPrefixValue];
-        int maxCompLen = offset - 1028;
-        long indexOffset = -1;
-        int indexLength = -1;
-        byte b = 0;
-        for (start = start * 8 + 1024; start < maxCompLen; start += 8) {
-            if (indexBuffer.getInt(start) >= ip2longValue) {
-                byte[] bytes = { b, indexBuffer.get(start + 6),
-                    indexBuffer.get(start + 5), indexBuffer.get(start + 4) };
-                indexOffset = Convert.bytesToInt(bytes);
-                indexLength = 0xFF & indexBuffer.get(start + 7);
-                break;
-            }
-        }
-
-        byte[] bytes;
-        LOCK.lock();
-        try {
-            dataBuffer.position(offset + (int) indexOffset - 1024);
-            bytes = new byte[indexLength];
-            dataBuffer.get(bytes, 0, indexLength);
-        } finally {
-            LOCK.unlock();
-        }
-
-        String temp = new String(bytes, StandardCharsets.UTF_8);
-        String[] regions = temp.split("\t");
-
-        return toStandardRegionNames(regions);
-    }
-
-    /**
-     * 判断传入的字符串是否为有效 ipv4 地址
-     *
-     * @param ipv4Str ipv4 地址
-     * @return true / false
-     */
-    public static boolean isValidIpv4(final String ipv4Str) {
-        return ValidatorUtil.isIpv4(ipv4Str);
-    }
-
-    private static String[] toStandardRegionNames(final String[] regionNames) {
-        if (ArrayUtil.isEmpty(regionNames)) {
-            return null;
-        }
-
-        // 国家级行政单位为空，直接返回 null
-        String country = ArrayUtil.get(regionNames, 0);
-        if (StrUtil.isBlank(country)) {
-            return null;
-        }
-
-        // 判断是否为国内行政单位
-        if (REGION_CHINA.equals(country)) {
-
-            List<String> result = new ArrayList<>();
-            result.add(country);
-
-            // 国内地名需查询省市区
-            // 省级行政单位为空，直接返回 null
-            String provinceStr = ArrayUtil.get(regionNames, 1);
-            if (StrUtil.isBlank(provinceStr)) {
-                return result.toArray(new String[0]);
-            }
-            // 查询省级行政单位标准名称
-            Province province = RegionUtil.getProvinceByName(provinceStr);
-            if (province == null) {
-                return result.toArray(new String[0]);
-            }
-            result.add(province.getName());
-
-            // 市级行政单位为空，直接返回 null
-            String cityStr = ArrayUtil.get(regionNames, 2);
-            if (StrUtil.isBlank(cityStr)) {
-                return result.toArray(new String[0]);
-            }
-            // 正常情况下，省级行政单位不应该和市级行政单位同名
-            // 对于直辖市来说，如果省级行政单位和市级行政单位同名，将其视为市辖区
-            if (provinceStr.equals(cityStr)) {
-                cityStr = "市辖区";
-            }
-            City city = RegionUtil.getCityByName(cityStr);
-            if (city == null) {
-                return result.toArray(new String[0]);
-            }
-            result.add(city.getName());
-
-            // 区/县级行政单位为空，直接返回 null
-            String countyStr = ArrayUtil.get(regionNames, 3);
-            if (StrUtil.isBlank(countyStr)) {
-                return result.toArray(new String[0]);
-            }
-            County county = RegionUtil.getCountyByName(city, countyStr);
-            if (county == null) {
-                return result.toArray(new String[0]);
-            }
-            result.add(county.getName());
-
-            return result.toArray(new String[0]);
-        } else {
-            // 国外地名无需查询省市区
-            // 数组过滤空字符串
-            String[] temp = ArrayUtil.removeEmpty(regionNames);
-            // 地名去重
-            return getDeduplicateArray(temp);
-        }
-    }
-
-    public static String[] getDeduplicateArray(final String[] array) {
-        Set<String> set = new TreeSet<>(Arrays.asList(array));
-        return set.toArray(new String[0]);
-    }
-
-    /**
-     * 返回 IP 地址所属地的名称（返回能得到的最小行政单位）
-     *
-     * @param ip IP 地址
-     * @return 所属地的名称
-     */
-    public static String getRegionName(final String ip) {
-        String[] regionNames = getFullRegionName(ip);
-        if (ArrayUtil.isEmpty(regionNames)) {
-            return null;
-        }
-
-        int end = regionNames.length - 1;
-        for (int i = end; i >= 0; i--) {
-            if (StrUtil.isNotBlank(regionNames[i])) {
-                return regionNames[i];
-            }
-        }
-        return null;
     }
 
     public static String ipv4ToIpv6(final String ipv4Str) throws UnknownHostException {
@@ -350,47 +148,97 @@ public class IpUtil {
         return address.getHostAddress();
     }
 
-    private static void loadData() {
+    /**
+     * 从 InetAddress 转换为 String（可以是 ipv4 或 ipv6）。
+     */
+    public static String getStrFromInetAddress(final InetAddress address) {
+        return address.getHostAddress();
+    }
 
-        InputStream fis = null;
-        LOCK.lock();
-        try {
-            fis = IpUtil.class.getClassLoader().getResourceAsStream(IP_DB_FILE);
-            if (fis == null) {
-                System.out.printf("加载 IP 数据库文件 %s 失败\n", IP_DB_FILE);
-                return;
-            }
-            dataBuffer = ByteBuffer.allocate(fis.available());
-            byte[] chunk = new byte[4096];
-            while (fis.available() > 0) {
-                int len = fis.read(chunk);
-                dataBuffer.put(chunk, 0, len);
-            }
-            dataBuffer.position(0);
-            int indexLength = dataBuffer.getInt();
-            byte[] indexBytes = new byte[indexLength];
-            dataBuffer.get(indexBytes, 0, indexLength - 4);
-            indexBuffer = ByteBuffer.wrap(indexBytes);
-            indexBuffer.order(ByteOrder.LITTLE_ENDIAN);
-            offset = indexLength;
+    // getRegion
+    // -------------------------------------------------------------------------------------------------
 
-            int loop = 0;
-            while (loop++ < IP_DB_INDEX_LENGTH) {
-                IP_INDEXES[loop - 1] = indexBuffer.getInt();
-            }
-            indexBuffer.order(ByteOrder.BIG_ENDIAN);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            LOCK.unlock();
+    private static String getIpDbFilePath() {
+        URL url = IpUtil.class.getClassLoader().getResource(IP_FILE);
+        if (url == null) {
+            AnsiColorUtil.BOLD_RED.printf("IP地址库文件路径 %s 不存在！\n", IP_FILE);
+            return null;
         }
+
+        String dbPath = url.getPath();
+        File file = new File(dbPath);
+        if (!file.exists()) {
+            AnsiColorUtil.BOLD_RED.printf("IP地址库文件 %s 不存在！\n", IP_FILE);
+            String tmpDir = System.getProperties().getProperty("java.io.tmpdir");
+            dbPath = tmpDir + File.separator + "ip2region.db";
+            AnsiColorUtil.BOLD_RED.printf("IP地址库临时文件路径：%s\n", dbPath);
+            file = new File(dbPath);
+            if (!file.exists() || (System.currentTimeMillis() - file.lastModified() > 86400000L)) {
+                InputStream input = null;
+                try {
+                    input = IpUtil.class.getClassLoader().getResourceAsStream(IP_FILE);
+                    IoUtil.copy(input, new FileOutputStream(file));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                } finally {
+                    IoUtil.close(input);
+                }
+            }
+        }
+        return dbPath;
+    }
+
+    private static Searcher getSearcher() {
+        String dbPath = getIpDbFilePath();
+
+        // 1、从 dbPath 中预先加载 VectorIndex 缓存，并且把这个得到的数据作为全局变量，后续反复使用。
+        byte[] vIndex;
+        try {
+            vIndex = Searcher.loadVectorIndexFromFile(dbPath);
+        } catch (Exception e) {
+            AnsiColorUtil.BOLD_RED.printf("failed to load vector index from `%s`: %s\n", dbPath, e);
+            return null;
+        }
+        // 2、使用全局的 vIndex 创建带 VectorIndex 缓存的查询对象。
+        Searcher searcher = null;
+        try {
+            searcher = Searcher.newWithVectorIndex(dbPath, vIndex);
+        } catch (Exception e) {
+            System.out.printf("failed to create vectorIndex cached searcher with `%s`: %s\n", dbPath, e);
+        }
+        return searcher;
+    }
+
+    /**
+     * 返回 IP 地址所属地（返回能得到的所有级别行政单位+ISP）
+     *
+     * @param ip IP 地址
+     * @return 所属地的名称数组
+     */
+    public static String getRegion(String ip) {
+        if (searcher == null) {
+            AnsiColorUtil.BOLD_RED.println("IP地址库查询器未成功加载！");
+            return null;
+        }
+
+        String result = null;
+        try {
+            result = searcher.search(ip);
+        } catch (Exception e) {
+            AnsiColorUtil.BOLD_RED.printf("查询 (%s) 失败！%s\n", ip, e);
+        }
+
+        if (StrUtil.isEmpty(result)) {
+            return null;
+        }
+
+        List<String> regions = StrUtil.split(result, '|');
+        if (CollectionUtil.isEmpty(regions)) {
+            return null;
+        }
+
+        regions = regions.stream().filter(i -> !i.equals("0")).collect(Collectors.toList());
+        return CollectionUtil.join(regions, "|");
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * 数据类型为 {@link Map<K, V>} 的响应实体
+ * 数据类型为 {@link java.util.Map<K, V>} 的响应实体
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-24

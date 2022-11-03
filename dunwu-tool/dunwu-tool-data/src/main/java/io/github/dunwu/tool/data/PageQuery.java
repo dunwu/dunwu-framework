@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
@@ -16,15 +17,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Spring4 的 webmvc 无法直接数据绑定 {@link org.springframework.data.domain.Pageable}
+ * Spring4 的 webmvc 无法直接数据绑定 {@link Pageable}
  * <p>
  * 所以使用本类进行数据适配，流程为：
  * <ol>
  * <li>web 层使用 {@link PageQuery} 作为请求参数，由 Spring Web 进行数据绑定</li>
- * <li>自行将 {@link PageQuery} 转化为 {@link org.springframework.data.domain.Pageable}</li>
- * <li>最后由 Mybatis Plus 扩展工具类使用 {@link org.springframework.data.domain.Pageable} 进行分页</li>
+ * <li>自行将 {@link PageQuery} 转化为 {@link Pageable}</li>
+ * <li>最后由 Mybatis Plus 扩展工具类使用 {@link Pageable} 进行分页</li>
  * </ol>
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
@@ -130,24 +132,32 @@ public class PageQuery implements Serializable {
         }
     }
 
-    public static PageQuery by(int page, int size) {
-        return by(page, size);
+    public static PageQuery of(int page, int size) {
+        return new PageQuery(page, size);
     }
 
-    public static PageQuery by(int page, int size, Collection<Order> orders) {
+    public static PageQuery of(int page, int size, Collection<Order> orders) {
         return new PageQuery(page, size, orders);
     }
 
-    public static PageQuery bySort(int page, int size, Collection<String> sort) {
-        if (CollectionUtil.isEmpty(sort)) {
+    public static PageQuery of(int page, int size, String... sort) {
+        if (ArrayUtil.isEmpty(sort)) {
             return new PageQuery(page, size);
         }
-        List<Order> orders = sort.stream().map(Order::parse).collect(Collectors.toList());
+        List<Order> orders = Stream.of(sort).map(Order::parse).collect(Collectors.toList());
         return new PageQuery(page, size, orders);
+    }
+
+    public static PageQuery of(Pageable pageable) {
+        if (pageable.getSort().isUnsorted()) {
+            return new PageQuery(pageable.getPageNumber(), pageable.getPageSize());
+        }
+        List<Order> orders = pageable.getSort().stream().sorted().map(Order::parse).collect(Collectors.toList());
+        return new PageQuery(pageable.getPageNumber(), pageable.getPageSize(), orders);
     }
 
     /**
-     * 通过字符串表达式解析为 {@link Sort.Order}
+     * 通过字符串表达式解析为 {@link org.springframework.data.domain.Sort.Order}
      *
      * @param expression 字符串表达式，形式如：id,asc
      * @return /
@@ -164,7 +174,7 @@ public class PageQuery implements Serializable {
     }
 
     /**
-     * 通过字符串表达式数组解析为 {@link Sort.Order} 列表
+     * 通过字符串表达式数组解析为 {@link org.springframework.data.domain.Sort.Order} 列表
      *
      * @param expressions 字符串表达式列表，形式如：id,asc
      * @return /
@@ -183,7 +193,7 @@ public class PageQuery implements Serializable {
     }
 
     /**
-     * 通过字符串表达式数组解析为 {@link Sort}
+     * 通过字符串表达式数组解析为 {@link org.springframework.data.domain.Sort}
      *
      * @param expressions 字符串表达式列表，形式如：id,asc
      * @return /

@@ -26,7 +26,7 @@ public class City implements Comparable<City>, Serializable {
     /**
      * 下辖区/县
      */
-    private Set<County> areas;
+    private Set<County> children;
 
     /**
      * 所属省
@@ -34,7 +34,7 @@ public class City implements Comparable<City>, Serializable {
     private Province province;
 
     public City() {
-        areas = new TreeSet<>();
+        children = new TreeSet<>();
     }
 
     @Override
@@ -79,12 +79,12 @@ public class City implements Comparable<City>, Serializable {
         this.name = name;
     }
 
-    public Set<County> getAreas() {
-        return areas;
+    public Set<County> getChildren() {
+        return children;
     }
 
-    public void setAreas(Set<County> areas) {
-        this.areas = areas;
+    public void setChildren(Set<County> children) {
+        this.children = children;
     }
 
     public Province getProvince() {

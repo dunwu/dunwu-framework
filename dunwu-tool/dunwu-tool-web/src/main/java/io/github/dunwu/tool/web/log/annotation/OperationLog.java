@@ -2,7 +2,12 @@ package io.github.dunwu.tool.web.log.annotation;
 
 import io.github.dunwu.tool.web.log.constant.OperationType;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 操作日志注解
@@ -21,6 +26,9 @@ public @interface OperationLog {
 
     /** 业务类型 */
     String bizType() default "";
+
+    /** 更新实体 */
+    String entity() default "";
 
     /** 操作类型 */
     OperationType operation() default OperationType.OTHER;

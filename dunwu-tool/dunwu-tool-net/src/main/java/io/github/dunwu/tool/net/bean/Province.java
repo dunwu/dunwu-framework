@@ -26,10 +26,10 @@ public class Province implements Comparable<Province>, Serializable {
     /**
      * 下辖城市
      */
-    private Set<City> areas;
+    private Set<City> children;
 
     public Province() {
-        areas = new TreeSet<>();
+        children = new TreeSet<>();
     }
 
     @Override
@@ -74,12 +74,12 @@ public class Province implements Comparable<Province>, Serializable {
         this.name = name;
     }
 
-    public Set<City> getAreas() {
-        return areas;
+    public Set<City> getChildren() {
+        return children;
     }
 
-    public void setAreas(Set<City> areas) {
-        this.areas = areas;
+    public void setChildren(Set<City> children) {
+        this.children = children;
     }
 
 }

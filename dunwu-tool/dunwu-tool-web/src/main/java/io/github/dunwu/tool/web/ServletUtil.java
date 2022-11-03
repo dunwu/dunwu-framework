@@ -19,10 +19,20 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.WebContentGenerator;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -176,7 +186,7 @@ public class ServletUtil {
         RequestIdentityInfo requestIdentityInfo = new RequestIdentityInfo();
         try {
             requestIdentityInfo.setIp(getRealRemoteAddr(request));
-            requestIdentityInfo.setLocation(IpUtil.getRegionName(requestIdentityInfo.getIp()));
+            requestIdentityInfo.setLocation(IpUtil.getRegion(requestIdentityInfo.getIp()));
             StringBuilder userAgent = new StringBuilder("[");
             userAgent.append(request.getHeader("User-Agent"));
             userAgent.append("]");

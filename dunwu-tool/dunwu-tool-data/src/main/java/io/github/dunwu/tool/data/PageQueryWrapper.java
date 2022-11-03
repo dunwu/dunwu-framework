@@ -5,7 +5,6 @@ import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,8 +16,8 @@ import java.util.List;
  */
 @Data
 @ToString
-@SuppressWarnings({"serial", "unchecked"})
-public class PageQueryWrapper<T> extends PageQuery implements Serializable {
+@SuppressWarnings({ "serial", "unchecked" })
+public class PageQueryWrapper<T> extends PageQuery {
 
     /**
      * 是否分页
@@ -35,7 +34,7 @@ public class PageQueryWrapper<T> extends PageQuery implements Serializable {
      */
     private Class<T> entityClass;
 
-    public PageQueryWrapper() {}
+    public PageQueryWrapper() { }
 
     public static <T> PageQueryWrapper<T> build(T entity) {
         return build(1, 10, Collections.singletonList("id,asc"), entity, false);
@@ -49,7 +48,7 @@ public class PageQueryWrapper<T> extends PageQuery implements Serializable {
         if (entity == null) {
             throw new DefaultException(ResultStatus.PARAMS_ERROR, "entity 不能为 null");
         }
-        return build(doPage, page, pageSize, sort, entity, (Class<T>)entity.getClass());
+        return build(doPage, page, pageSize, sort, entity, (Class<T>) entity.getClass());
     }
 
     public static <T> PageQueryWrapper<T> build(int page, int pageSize, List<String> sort, Class<T> clazz) {
@@ -75,4 +74,5 @@ public class PageQueryWrapper<T> extends PageQuery implements Serializable {
         pageQueryWrapper.setEntityClass(clazz);
         return pageQueryWrapper;
     }
+
 }

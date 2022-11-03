@@ -3,6 +3,9 @@ package io.github.dunwu.tool.data;
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import lombok.Data;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -13,6 +16,9 @@ import java.util.Collection;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-21
  */
+@Data
+@ToString
+@Accessors(chain = true)
 public class Result implements Status, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +58,7 @@ public class Result implements Status, Serializable {
      * 根据 {@link Status} 构造 {@link Result}
      *
      * @param status {@link Status}（应答状态）
-     * @param msg 响应信息
+     * @param msg    响应信息
      */
     public Result(final Status status, final String msg) {
         this(status.getCode(), msg);
@@ -117,32 +123,6 @@ public class Result implements Status, Serializable {
      */
     public boolean isOk() {
         return this.code == ResultStatus.OK.getCode();
-    }
-
-    @Override
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    @Override
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public String getToast() {
-        return toast;
-    }
-
-    public void setToast(String toast) {
-        this.toast = toast;
     }
 
 }
