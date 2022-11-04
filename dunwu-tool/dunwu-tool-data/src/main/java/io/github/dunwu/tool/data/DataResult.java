@@ -24,11 +24,6 @@ public class DataResult<T> extends Result implements Status, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据实体
-     */
-    protected T data;
-
-    /**
      * 默认构造方法
      */
     public DataResult() {
@@ -267,6 +262,12 @@ public class DataResult<T> extends Result implements Status, Serializable {
      */
     public static <T> DataResult<T> ok(final T data, final String msg, final String toast) {
         return new DataResult<>(data, msg, toast);
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public T getData() {
+        return (T) data;
     }
 
 }

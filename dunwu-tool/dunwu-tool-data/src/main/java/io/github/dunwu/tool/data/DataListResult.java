@@ -24,11 +24,6 @@ public class DataListResult<T> extends Result implements Status, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据实体
-     */
-    protected Collection<T> data;
-
-    /**
      * 默认构造方法
      */
     public DataListResult() {
@@ -267,6 +262,12 @@ public class DataListResult<T> extends Result implements Status, Serializable {
      */
     public static <T> DataListResult<T> ok(final Collection<T> data, final String msg, final String toast) {
         return new DataListResult<>(data, msg, toast);
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public Collection<T> getData() {
+        return (Collection<T>) data;
     }
 
 }

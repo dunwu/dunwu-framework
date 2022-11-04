@@ -4,7 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.bean.support.NamingStrategy;
-import io.github.dunwu.tool.data.constant.enums.QueryJudgeType;
+import io.github.dunwu.tool.data.constant.QueryJudgeType;
 import io.github.dunwu.tool.data.elasticsearch.annotation.QueryDocument;
 import io.github.dunwu.tool.data.elasticsearch.annotation.QueryField;
 import org.elasticsearch.index.query.QueryBuilder;

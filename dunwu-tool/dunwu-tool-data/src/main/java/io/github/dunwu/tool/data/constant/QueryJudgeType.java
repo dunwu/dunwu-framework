@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data.constant.enums;
+package io.github.dunwu.tool.data.constant;
 
 /**
  * 查询条件判断类型

@@ -25,11 +25,6 @@ public class PageResult<T> extends Result implements Status, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据实体
-     */
-    protected PageImpl<T> data;
-
-    /**
      * 默认构造方法
      */
     public PageResult() {
@@ -268,6 +263,12 @@ public class PageResult<T> extends Result implements Status, Serializable {
      */
     public static <T> PageResult<T> ok(final Page<T> data, final String msg, final String toast) {
         return new PageResult<>(PageImpl.of(data), msg, toast);
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public PageImpl<T> getData() {
+        return (PageImpl<T>) data;
     }
 
 }

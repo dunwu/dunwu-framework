@@ -77,7 +77,7 @@
         <!-- ========================================================
              Special tools Versions
         ========================================================= -->
-        <poi.version>5.0.0</poi.version>
+        <poi.version>4.1.2</poi.version>
         <disruptor.version>3.4.2</disruptor.version>
         <drools.version>7.11.0.Final</drools.version>
         <jjwt.version>0.11.1</jjwt.version>

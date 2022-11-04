@@ -25,11 +25,6 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     private static final long serialVersionUID = 4812047024509186421L;
 
     /**
-     * 数据实体
-     */
-    private Map<K, V> data;
-
-    /**
      * 默认构造方法
      */
     public MapResult() {
@@ -279,6 +274,12 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String msg, final String toast) {
         return new MapResult<>(data, msg, toast);
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public Map<K, V> getData() {
+        return (Map<K, V>) data;
     }
 
 }

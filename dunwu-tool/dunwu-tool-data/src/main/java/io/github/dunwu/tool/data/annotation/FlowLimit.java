@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.data.annotation;
 
-import io.github.dunwu.tool.data.constant.enums.FlowLimitType;
+import io.github.dunwu.tool.data.constant.FlowLimitType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -39,6 +39,11 @@ public class Result implements Status, Serializable {
     protected String toast;
 
     /**
+     * 数据实体
+     */
+    protected Object data;
+
+    /**
      * 默认构造方法
      */
     public Result() {
@@ -52,6 +57,15 @@ public class Result implements Status, Serializable {
      */
     public Result(final Status status) {
         this(status.getCode(), status.getMsg());
+    }
+
+    /**
+     * 根据另一个 {@link Result} 构造 {@link Result}
+     *
+     * @param result {@link Result}
+     */
+    public Result(final Result result) {
+        this(result.getData(), result.getCode(), result.getMsg());
     }
 
     /**
@@ -114,6 +128,63 @@ public class Result implements Status, Serializable {
         this.code = code;
         this.msg = msg;
         this.toast = toast;
+    }
+
+    /**
+     * 构造成功的 {@link Result}
+     *
+     * @param data   数据实体
+     * @param status {@link Status}（应答状态）
+     */
+    public Result(final Object data, final Status status) {
+        this(data, status.getCode(), status.getMsg());
+    }
+
+    /**
+     * 构造成功的 {@link Result}
+     *
+     * @param data 数据实体
+     * @param msg  响应信息
+     */
+    public Result(final Object data, final String msg) {
+        this(data, ResultStatus.OK.getCode(), msg);
+    }
+
+    /**
+     * 构造成功的 {@link Result}
+     *
+     * @param data  数据实体
+     * @param msg   响应信息
+     * @param toast 响应信息
+     */
+    public Result(final Object data, final String msg, final String toast) {
+        this(data, ResultStatus.OK.getCode(), msg, toast);
+    }
+
+    /**
+     * 构造 {@link Result}
+     *
+     * @param data 数据实体
+     * @param code 状态码 {@link Status}
+     * @param msg  响应信息
+     */
+    public Result(final Object data, final int code, final String msg) {
+        this(data, code, msg, null);
+    }
+
+    /**
+     * 构造 {@link Result}
+     *
+     * @param data  数据实体
+     * @param code  状态码 {@link Status}
+     * @param msg   响应信息
+     * @param toast 提示信息
+     */
+    public Result(final Object data, final int code, final String msg, final String toast) {
+        this.code = code;
+        this.msg = msg;
+        this.toast = toast;
+        this.data = data;
     }
 
     /**

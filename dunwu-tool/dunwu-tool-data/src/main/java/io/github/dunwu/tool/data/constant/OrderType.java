@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data.constant.enums;
+package io.github.dunwu.tool.data.constant;
 
 import java.util.Locale;
 import java.util.Optional;
