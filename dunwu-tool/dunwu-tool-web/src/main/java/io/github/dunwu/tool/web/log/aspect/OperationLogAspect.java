@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.net.IpUtil;
+import io.github.dunwu.tool.net.ip.IpUtil;
 import io.github.dunwu.tool.web.ServletUtil;
 import io.github.dunwu.tool.web.log.annotation.OperationLog;
 import io.github.dunwu.tool.web.log.entity.LogRecord;

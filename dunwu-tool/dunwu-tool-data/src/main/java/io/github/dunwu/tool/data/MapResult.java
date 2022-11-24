@@ -3,9 +3,9 @@ package io.github.dunwu.tool.data;
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,10 +19,9 @@ import java.util.Map;
  */
 @Data
 @ToString
-@Accessors(chain = true)
 public class MapResult<K, V> extends Result implements Status, Serializable {
 
-    private static final long serialVersionUID = 4812047024509186421L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 默认构造方法
@@ -32,12 +31,12 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link MapResult}
+     * 构造成功的 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param data 数据实体
      */
-    public MapResult(final Status status) {
-        this(status.getCode(), status.getMsg());
+    public MapResult(final Map<K, V> data) {
+        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), null, data);
     }
 
     /**
@@ -46,7 +45,40 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @param result {@link MapResult}
      */
     public MapResult(final MapResult<K, V> result) {
-        this(result.getData(), result.getCode(), result.getMsg());
+        if (result == null) {
+            throw new DefaultException(ResultStatus.PARAMS_ERROR, "参数不能为 null！");
+        }
+        init(result.getCode(), result.getMsg(), result.getToast(), result.getData());
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link MapResult}
+     *
+     * @param status {@link Status}（应答状态）
+     */
+    public MapResult(final Status status) {
+        this(status.getCode(), status.getMsg(), null, null);
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link MapResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg    响应信息
+     */
+    public MapResult(final Status status, final String msg) {
+        this(status.getCode(), msg, null, null);
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link MapResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg    响应信息
+     * @param toast  提示信息
+     */
+    public MapResult(final Status status, final String msg, final String toast) {
+        this(status.getCode(), msg, toast, null);
     }
 
     /**
@@ -56,7 +88,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @param msg  响应信息
      */
     public MapResult(final int code, final String msg) {
-        this(null, code, msg);
+        this(code, msg, null, null);
     }
 
     /**
@@ -66,7 +98,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @param messages 响应信息列表
      */
     public MapResult(final int code, final Collection<String> messages) {
-        this(null, code, CollectionUtil.join(messages, ","));
+        this(code, CollectionUtil.join(messages, ","), null, null);
     }
 
     /**
@@ -77,59 +109,18 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @param toast 提示信息
      */
     public MapResult(final int code, final String msg, final String toast) {
-        this(null, code, msg, toast);
-    }
-
-    /**
-     * 构造成功的 {@link MapResult}
-     *
-     * @param data 数据实体
-     */
-    public MapResult(final Map<K, V> data) {
-        this(data, ResultStatus.OK.getCode(), ResultStatus.OK.getMsg());
-    }
-
-    /**
-     * 构造成功的 {@link MapResult}
-     *
-     * @param data 数据实体
-     * @param msg  响应信息
-     */
-    public MapResult(final Map<K, V> data, final String msg) {
-        this(data, ResultStatus.OK.getCode(), msg);
-    }
-
-    /**
-     * 构造成功的 {@link MapResult}
-     *
-     * @param data  数据实体
-     * @param msg   响应信息
-     * @param toast 响应信息
-     */
-    public MapResult(final Map<K, V> data, final String msg, final String toast) {
-        this(data, ResultStatus.OK.getCode(), msg, toast);
+        this(code, msg, toast, null);
     }
 
     /**
      * 构造 {@link MapResult}
      *
-     * @param data 数据实体
-     * @param code 状态码 {@link Status}
-     * @param msg  响应信息
-     */
-    public MapResult(final Map<K, V> data, final int code, final String msg) {
-        this(data, code, msg, null);
-    }
-
-    /**
-     * 构造 {@link MapResult}
-     *
-     * @param data  数据实体
      * @param code  状态码 {@link Status}
      * @param msg   响应信息
      * @param toast 提示信息
+     * @param data  数据实体
      */
-    public MapResult(final Map<K, V> data, final int code, final String msg, final String toast) {
+    public MapResult(final int code, final String msg, final String toast, final Map<K, V> data) {
         this.code = code;
         this.msg = msg;
         this.toast = toast;
@@ -246,7 +237,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data) {
-        return new MapResult<>(data);
+        return new MapResult<>(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), null, data);
     }
 
     /**
@@ -259,7 +250,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String msg) {
-        return new MapResult<>(data, msg);
+        return new MapResult<>(ResultStatus.OK.getCode(), msg, null, data);
     }
 
     /**
@@ -273,7 +264,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
      * @return {@link MapResult}
      */
     public static <K, V> MapResult<K, V> ok(final Map<K, V> data, final String msg, final String toast) {
-        return new MapResult<>(data, msg, toast);
+        return new MapResult<>(ResultStatus.OK.getCode(), msg, toast, data);
     }
 
     @Override

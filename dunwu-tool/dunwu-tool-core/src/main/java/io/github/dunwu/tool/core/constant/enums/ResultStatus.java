@@ -13,12 +13,15 @@ import java.util.stream.Stream;
  * @see <a href="http://wiki.open.qq.com/wiki/%E9%94%99%E8%AF%AF%E7%A0%81">腾讯开放平台错误码</a>
  * @see <a href="https://open.weibo.com/wiki/Error_code">新浪开放平台错误码</a>
  * @see <a href= "https://docs.open.alipay.com/api_1/alipay.trade.order.settle/">支付宝开放平台API</a>
- * @see <a href= "https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
+ * @see <a href=
+ * "https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
  * @since 2019-04-11
  */
 public enum ResultStatus implements Status {
 
     OK(0, "成功"),
+
+    PART_OK(1, "部分成功"),
 
     FAIL(-1, "失败"),
 
@@ -44,11 +47,12 @@ public enum ResultStatus implements Status {
     // 系统级错误码
     // -----------------------------------------------------
 
-    SYSTEM_ERROR(1000, "系统错误"),
+    SERVER_ERROR(10000, "服务器错误"),
 
     TASK_ERROR(1001, "调度任务错误"),
 
     PARAMS_ERROR(1002, "参数错误"),
+    CONFIG_ERROR(1002, "配置错误"),
 
     REQUEST_ERROR(2000, "请求错误"),
 
@@ -57,6 +61,8 @@ public enum ResultStatus implements Status {
     AUTH_ERROR(4000, "权限错误"),
 
     DATA_ERROR(5000, "数据库错误"),
+
+    CLIENT_ERROR(20000, "客户端错误"),
 
     RESOURCE_ERROR(6000, "资源错误");
 

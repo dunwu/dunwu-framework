@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.net;
+package io.github.dunwu.tool.net.ip;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
@@ -6,7 +6,6 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.AnsiColorUtil;
-import io.github.dunwu.tool.net.ip.Searcher;
 import io.github.dunwu.tool.util.ValidatorUtil;
 
 import java.io.File;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
  * <p>
  * 先将字符串传换为 byte[] 再用 InetAddress.getByAddress(byte[])，避免了 InetAddress.getByName(ip) 可能引起的 DNS 访问.
  * <p>
- * 根据 IP 获取地域相关方法需要加载 17monipdb.dat（来自于 IPIP.net 的数据文件），可以考虑缓存。
+ * 根据 IP 获取地域相关方法需要加载 ip2region.xdb（来自于 IPIP.net 的数据文件），可以考虑缓存。
  * <p>
  * InetAddress 与 String 的转换其实消耗不小，如果是有限的地址，建议进行缓存。
  *

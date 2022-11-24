@@ -3,9 +3,9 @@ package io.github.dunwu.tool.data;
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
@@ -19,7 +19,6 @@ import java.util.Collection;
  */
 @Data
 @ToString
-@Accessors(chain = true)
 public class PageResult<T> extends Result implements Status, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,12 +31,12 @@ public class PageResult<T> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link PageResult}
+     * 构造成功的 {@link PageResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param data 数据实体
      */
-    public PageResult(final Status status) {
-        this(null, status.getCode(), status.getMsg());
+    public PageResult(final PageImpl<T> data) {
+        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), null, data);
     }
 
     /**
@@ -46,7 +45,40 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param result {@link PageResult}
      */
     public PageResult(final PageResult<T> result) {
-        this(result.getData(), result.getCode(), result.getMsg());
+        if (result == null) {
+            throw new DefaultException(ResultStatus.PARAMS_ERROR, "参数不能为 null！");
+        }
+        init(result.getCode(), result.getMsg(), result.getToast(), result.getData());
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link PageResult}
+     *
+     * @param status {@link Status}（应答状态）
+     */
+    public PageResult(final Status status) {
+        this(status.getCode(), status.getMsg(), null, null);
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link PageResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg    响应信息
+     */
+    public PageResult(final Status status, final String msg) {
+        this(status.getCode(), msg, null, null);
+    }
+
+    /**
+     * 根据 {@link Status} 构造 {@link PageResult}
+     *
+     * @param status {@link Status}（应答状态）
+     * @param msg    响应信息
+     * @param toast  提示信息
+     */
+    public PageResult(final Status status, final String msg, final String toast) {
+        this(status.getCode(), msg, toast, null);
     }
 
     /**
@@ -56,7 +88,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param msg  响应信息
      */
     public PageResult(final int code, final String msg) {
-        this(null, code, msg);
+        this(code, msg, null, null);
     }
 
     /**
@@ -66,7 +98,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param messages 响应信息列表
      */
     public PageResult(final int code, final Collection<String> messages) {
-        this(null, code, CollectionUtil.join(messages, ","));
+        this(code, CollectionUtil.join(messages, ","), null, null);
     }
 
     /**
@@ -77,59 +109,18 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @param toast 提示信息
      */
     public PageResult(final int code, final String msg, final String toast) {
-        this(null, code, msg, toast);
-    }
-
-    /**
-     * 构造成功的 {@link PageResult}
-     *
-     * @param data 数据实体
-     */
-    public PageResult(final PageImpl<T> data) {
-        this(data, ResultStatus.OK.getCode(), ResultStatus.OK.getMsg());
-    }
-
-    /**
-     * 构造成功的 {@link PageResult}
-     *
-     * @param data 数据实体
-     * @param msg  响应信息
-     */
-    public PageResult(final PageImpl<T> data, final String msg) {
-        this(data, ResultStatus.OK.getCode(), msg);
-    }
-
-    /**
-     * 构造成功的 {@link PageResult}
-     *
-     * @param data  数据实体
-     * @param msg   响应信息
-     * @param toast 响应信息
-     */
-    public PageResult(final PageImpl<T> data, final String msg, final String toast) {
-        this(data, ResultStatus.OK.getCode(), msg, toast);
+        this(code, msg, toast, null);
     }
 
     /**
      * 构造 {@link PageResult}
      *
-     * @param data 数据实体
-     * @param code 状态码 {@link Status}
-     * @param msg  响应信息
-     */
-    public PageResult(final PageImpl<T> data, final int code, final String msg) {
-        this(data, code, msg, null);
-    }
-
-    /**
-     * 构造 {@link PageResult}
-     *
-     * @param data  数据实体
      * @param code  状态码 {@link Status}
      * @param msg   响应信息
      * @param toast 提示信息
+     * @param data  数据实体
      */
-    public PageResult(final PageImpl<T> data, final int code, final String msg, final String toast) {
+    public PageResult(final int code, final String msg, final String toast, final PageImpl<T> data) {
         this.code = code;
         this.msg = msg;
         this.toast = toast;
@@ -249,7 +240,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> ok(final Page<T> data, final String msg) {
-        return new PageResult<>(PageImpl.of(data), msg);
+        return new PageResult<>(ResultStatus.OK.getCode(), msg, null, PageImpl.of(data));
     }
 
     /**
@@ -262,7 +253,7 @@ public class PageResult<T> extends Result implements Status, Serializable {
      * @return {@link PageResult}
      */
     public static <T> PageResult<T> ok(final Page<T> data, final String msg, final String toast) {
-        return new PageResult<>(PageImpl.of(data), msg, toast);
+        return new PageResult<>(ResultStatus.OK.getCode(), msg, toast, PageImpl.of(data));
     }
 
     @Override

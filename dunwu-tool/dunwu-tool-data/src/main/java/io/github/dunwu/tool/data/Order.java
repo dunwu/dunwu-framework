@@ -2,9 +2,8 @@ package io.github.dunwu.tool.data;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
@@ -18,11 +17,10 @@ import java.util.Objects;
  * @date 2022-08-22
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class Order implements Serializable {
 
-    private static final long serialVersionUID = 942008637590762831L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 排序字段
@@ -33,6 +31,13 @@ public class Order implements Serializable {
      * 是否为正序排序
      */
     private Direction direction;
+
+    public Order() { }
+
+    public Order(String field, Direction direction) {
+        this.field = field;
+        this.direction = direction;
+    }
 
     public enum Direction {
         asc,
@@ -58,7 +63,7 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return this.field + "," + direction.name();
+        return this.field + "," + this.direction.name();
     }
 
     public String getClause() {

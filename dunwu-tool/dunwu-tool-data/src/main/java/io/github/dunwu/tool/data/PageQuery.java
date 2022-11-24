@@ -7,7 +7,6 @@ import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,10 +33,9 @@ import java.util.stream.Stream;
  */
 @Data
 @ToString
-@Accessors(chain = true)
 public class PageQuery implements Serializable {
 
-    private static final long serialVersionUID = 7704551086334591374L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 当前查询页

@@ -1,10 +1,7 @@
-package io.github.dunwu.tool.net;
+package io.github.dunwu.tool.net.region;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.AnsiColorUtil;
-import io.github.dunwu.tool.net.bean.City;
-import io.github.dunwu.tool.net.bean.County;
-import io.github.dunwu.tool.net.bean.Province;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

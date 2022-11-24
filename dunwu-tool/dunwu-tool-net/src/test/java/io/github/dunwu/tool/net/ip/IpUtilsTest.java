@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.net;
+package io.github.dunwu.tool.net.ip;
 
 import io.github.dunwu.tool.io.AnsiColorUtil;
 import org.junit.jupiter.api.Test;
@@ -35,8 +35,8 @@ class IpUtilsTest {
     @Test
     void ipv4StringToInt() {
 
-        assertThat(IpUtil.ipv4StrToInt("192.168.0.1")).isEqualTo(-1062731775);
-        assertThat(IpUtil.ipv4StrToInt("192.168.0.2")).isEqualTo(-1062731774);
+        assertThat(IpUtil.ipv4StrToInt("192.168.0.1")).isEqualTo(16820416);
+        assertThat(IpUtil.ipv4StrToInt("192.168.0.2")).isEqualTo(33597632);
 
         assertThat(IpUtil.intToIpv4Str(-1062731775)).isEqualTo("192.168.0.1");
         assertThat(IpUtil.intToIpv4Str(-1062731774)).isEqualTo("192.168.0.2");

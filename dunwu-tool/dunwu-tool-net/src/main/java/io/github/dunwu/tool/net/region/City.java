@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.net.bean;
+package io.github.dunwu.tool.net.region;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,9 +9,9 @@ import java.util.TreeSet;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2018-12-11
  */
-public class Province implements Comparable<Province>, Serializable {
+public class City implements Comparable<City>, Serializable {
 
-    private static final long serialVersionUID = 4767006458888002150L;
+    private static final long serialVersionUID = -4489647518591298590L;
 
     /**
      * 编码
@@ -24,16 +24,21 @@ public class Province implements Comparable<Province>, Serializable {
     private String name;
 
     /**
-     * 下辖城市
+     * 下辖区/县
      */
-    private Set<City> children;
+    private Set<County> children;
 
-    public Province() {
+    /**
+     * 所属省
+     */
+    private Province province;
+
+    public City() {
         children = new TreeSet<>();
     }
 
     @Override
-    public int compareTo(Province o) {
+    public int compareTo(City o) {
         return this.getCode().compareToIgnoreCase(o.getCode());
     }
 
@@ -53,14 +58,14 @@ public class Province implements Comparable<Province>, Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
-        if (!(o instanceof Province)) { return false; }
-        Province province = (Province) o;
-        return code.equals(province.getCode());
+        if (!(o instanceof City)) { return false; }
+        City city = (City) o;
+        return code.equals(city.getCode());
     }
 
     @Override
     public String toString() {
-        return "Province{" +
+        return "City{" +
             "code='" + code + '\'' +
             ", name='" + name + '\'' +
             '}';
@@ -74,12 +79,20 @@ public class Province implements Comparable<Province>, Serializable {
         this.name = name;
     }
 
-    public Set<City> getChildren() {
+    public Set<County> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<City> children) {
+    public void setChildren(Set<County> children) {
         this.children = children;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
     }
 
 }

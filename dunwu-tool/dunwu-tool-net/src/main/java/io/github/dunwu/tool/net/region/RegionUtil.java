@@ -1,11 +1,8 @@
-package io.github.dunwu.tool.net;
+package io.github.dunwu.tool.net.region;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.net.bean.City;
-import io.github.dunwu.tool.net.bean.County;
-import io.github.dunwu.tool.net.bean.Province;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;

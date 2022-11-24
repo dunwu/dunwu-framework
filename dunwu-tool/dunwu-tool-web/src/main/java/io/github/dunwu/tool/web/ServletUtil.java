@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
-import io.github.dunwu.tool.net.IpUtil;
+import io.github.dunwu.tool.net.ip.IpUtil;
 import io.github.dunwu.tool.util.SystemUtil;
 import io.github.dunwu.tool.web.constant.HttpHeaders;
 import io.github.dunwu.tool.web.constant.WebConstant;
