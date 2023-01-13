@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.web.interceptor;
+package io.github.dunwu.tool.web.aop;
 
 import io.github.dunwu.tool.web.ServletUtil;
 import org.slf4j.Logger;

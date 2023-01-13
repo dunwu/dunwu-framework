@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.web.log.support;
 
-import io.github.dunwu.tool.web.log.entity.MethodInfo;
+import io.github.dunwu.tool.web.aop.entity.MethodInfo;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.expression.AnnotatedElementKey;
@@ -25,10 +25,8 @@ public class LogRecordExpressionEvaluator extends CachedExpressionEvaluator {
 
     private final Map<AnnotatedElementKey, Method> targetMethodCache = new ConcurrentHashMap<>(64);
 
-    public String parseExpression(String conditionExp, AnnotatedElementKey methodKey, EvaluationContext evalContext) {
-        Object value = getExpression(this.expressionCache, methodKey, conditionExp)
-            .getValue(evalContext, Object.class);
-        return value == null ? "" : value.toString();
+    public Object parseExpression(String expression, AnnotatedElementKey methodKey, EvaluationContext context) {
+        return getExpression(this.expressionCache, methodKey, expression).getValue(context);
     }
 
     /**

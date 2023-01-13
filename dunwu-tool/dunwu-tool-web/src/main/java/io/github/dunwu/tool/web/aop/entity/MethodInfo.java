@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.web.log.entity;
+package io.github.dunwu.tool.web.aop.entity;
 
 import lombok.Builder;
 import lombok.Data;

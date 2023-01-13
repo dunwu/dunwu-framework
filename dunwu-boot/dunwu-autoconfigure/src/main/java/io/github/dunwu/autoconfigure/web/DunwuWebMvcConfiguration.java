@@ -2,11 +2,11 @@ package io.github.dunwu.autoconfigure.web;
 
 import cn.hutool.core.map.MapUtil;
 import io.github.dunwu.tool.web.SpringUtil;
+import io.github.dunwu.tool.web.aop.HttpDebugInterceptor;
 import io.github.dunwu.tool.web.converter.DateConverter;
 import io.github.dunwu.tool.web.converter.DateTimeConverter;
 import io.github.dunwu.tool.web.converter.LocalDateConverter;
 import io.github.dunwu.tool.web.converter.LocalDateTimeConverter;
-import io.github.dunwu.tool.web.interceptor.HttpDebugInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

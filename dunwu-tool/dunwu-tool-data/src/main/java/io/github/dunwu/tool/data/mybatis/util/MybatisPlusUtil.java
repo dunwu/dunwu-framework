@@ -4,11 +4,17 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.TypeUtil;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.github.dunwu.tool.data.annotation.QueryField;
+import io.github.dunwu.tool.data.mybatis.BaseExtDaoImpl;
+import io.github.dunwu.tool.data.mybatis.DaoInfo;
+import io.github.dunwu.tool.data.util.ReflectionUtil;
 import io.github.dunwu.tool.util.DateUtil;
+import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +22,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Mybatis Plus 工具类
@@ -28,7 +41,15 @@ import java.util.*;
 @Slf4j
 public class MybatisPlusUtil {
 
-    private MybatisPlusUtil() {}
+    private static final Set<Class<? extends BaseExtDaoImpl>> DAO_SET;
+    private static final Map<String, DaoInfo> DAO_INFO_MAP;
+
+    static {
+        DAO_SET = ReflectionUtil.getSubTypesOf(BaseExtDaoImpl.class);
+        DAO_INFO_MAP = getDaoInfoMap();
+    }
+
+    private MybatisPlusUtil() { }
 
     public static <T> QueryWrapper<T> buildQueryWrapper(final Object queryBean) {
 
@@ -269,6 +290,10 @@ public class MybatisPlusUtil {
         return mybatisPlusPage;
     }
 
+    public static DaoInfo getDaoInfo(String tableName) {
+        return DAO_INFO_MAP.get(tableName);
+    }
+
     /**
      * 将 Mybatis Plus 分页信息转为 Spring Data 分页信息
      *
@@ -277,8 +302,57 @@ public class MybatisPlusUtil {
      * @return {@link PageImpl <T>}
      */
     public static <T> org.springframework.data.domain.Page<T> toSpringPage(Page<T> page) {
-        PageRequest pageRequest = PageRequest.of((int)(page.getCurrent() - 1), (int)page.getSize());
+        PageRequest pageRequest = PageRequest.of((int) (page.getCurrent() - 1), (int) page.getSize());
         return new PageImpl<>(page.getRecords(), pageRequest, page.getTotal());
+    }
+
+    private static Map<String, DaoInfo> getDaoInfoMap() {
+
+        if (CollectionUtil.isEmpty(DAO_SET)) {
+            return new HashMap<>(0);
+        }
+
+        Map<String, DaoInfo> map = new HashMap<>(DAO_SET.size());
+        for (Class<? extends BaseExtDaoImpl> clazz : DAO_SET) {
+            Type[] types = TypeUtil.getTypeArguments(clazz);
+            if (ArrayUtil.isEmpty(types) || types.length != 2) {
+                continue;
+            }
+
+            Type mapperType = types[0];
+            Type entityType = types[1];
+
+            DaoInfo daoInfo = new DaoInfo();
+
+            try {
+                Class<?> mapperClass = Class.forName(mapperType.getTypeName());
+                Class<?> entityClass = Class.forName(entityType.getTypeName());
+                daoInfo.setDaoClass(clazz);
+                daoInfo.setDaoClassName(clazz.getName());
+                daoInfo.setMapperClass(mapperClass);
+                daoInfo.setMapperClassName(mapperClass.getName());
+                daoInfo.setEntityClass(entityClass);
+                daoInfo.setEntityClassName(entityClass.getName());
+
+                TableName[] tableNames = entityClass.getAnnotationsByType(TableName.class);
+                if (ArrayUtil.isNotEmpty(tableNames)) {
+                    String tableName = tableNames[0].value();
+                    daoInfo.setTableName(tableName);
+                    map.put(tableName, daoInfo);
+                }
+
+                ApiModel[] apiModels = entityClass.getAnnotationsByType(ApiModel.class);
+                if (ArrayUtil.isNotEmpty(apiModels)) {
+                    daoInfo.setDescription(apiModels[0].description());
+                }
+
+                // AnsiColorUtil.BOLD_RED.println("daoInfo：" + JSONUtil.toJsonStr(daoInfo));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return map;
     }
 
 }

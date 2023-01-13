@@ -1,7 +1,11 @@
 package io.github.dunwu.tool.web.log.entity;
 
 import io.github.dunwu.tool.web.log.constant.OperationType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -18,7 +22,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogRecord {
+public class OperationLogRecord {
 
     /** ID */
     private Long id;

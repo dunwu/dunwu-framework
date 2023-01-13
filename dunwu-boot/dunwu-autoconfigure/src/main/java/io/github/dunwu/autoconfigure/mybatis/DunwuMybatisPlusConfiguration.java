@@ -1,21 +1,17 @@
 package io.github.dunwu.autoconfigure.mybatis;
 
-import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
-import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Spring Boot 集成 MyBatis-Plus 配置
@@ -36,15 +32,20 @@ public class DunwuMybatisPlusConfiguration {
         this.properties = properties;
     }
 
+    @Bean
+    public IdentifierGenerator defaultIdentifierGenerator() {
+        return new DefaultIdentifierGenerator();
+    }
+
     /**
-     * 注入乐观锁插件
-     *
-     * @see <a href="https://mybatis.plus/guide/optimistic-locker-plugin.html">乐观锁插件</a>
+     * 新版
      */
     @Bean
-    @ConditionalOnProperty(value = "dunwu.mybatis.optimisticLockerEnabled", havingValue = "true", matchIfMissing = true)
-    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-        return new OptimisticLockerInterceptor();
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        mybatisPlusInterceptor.addInnerInterceptor(paginationInterceptor());
+        return mybatisPlusInterceptor;
     }
 
     /**
@@ -54,24 +55,15 @@ public class DunwuMybatisPlusConfiguration {
      * @see <a href="https://mybatis.plus/guide/block-attack-sql-parser.html">攻击 SQL
      * 阻断解析器</a>
      */
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+    public PaginationInnerInterceptor paginationInterceptor() {
+        PaginationInnerInterceptor paginationInterceptor = new PaginationInnerInterceptor();
 
         // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
         paginationInterceptor.setOverflow(false);
         // 设置最大单页限制数量，默认 500 条，-1 不受限制
-        paginationInterceptor.setLimit(500);
+        paginationInterceptor.setMaxLimit(500L);
         // 开启 count 的 join 优化,只针对部分 left join
-        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
-
-        // 攻击 SQL 阻断解析器、加入解析链
-        if (properties.isBlockAttackEnabled()) {
-            List<ISqlParser> sqlParserList = new ArrayList<>();
-            sqlParserList.add(new BlockAttackSqlParser());
-            paginationInterceptor.setSqlParserList(sqlParserList);
-        }
-
+        paginationInterceptor.setOptimizeJoin(true);
         return paginationInterceptor;
     }
 

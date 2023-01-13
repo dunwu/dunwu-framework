@@ -1,5 +1,6 @@
 package io.github.dunwu.tool.web.log.support;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.web.log.annotation.OperationLog;
 import io.github.dunwu.tool.web.log.entity.OperationLogInfo;
@@ -10,7 +11,6 @@ import org.springframework.util.ClassUtils;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -21,7 +21,7 @@ import java.util.Collection;
  */
 public class OperationLogParser {
 
-    public static Collection<OperationLogInfo> parseLogRecordOpsList(Method method, Class<?> targetClass) {
+    public static OperationLogInfo parse(Method method, Class<?> targetClass) {
         // Don't allow no-public methods as required.
         if (!Modifier.isPublic(method.getModifiers())) {
             return null;
@@ -34,18 +34,17 @@ public class OperationLogParser {
         specificMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
 
         // First try is the method in the target class.
-        Collection<OperationLog> operationLogs =
+        Collection<OperationLog> logs =
             AnnotatedElementUtils.getAllMergedAnnotations(specificMethod, OperationLog.class);
-        Collection<OperationLogInfo> list = new ArrayList<>(1);
-        if (!operationLogs.isEmpty()) {
-            for (OperationLog annotation : operationLogs) {
-                list.add(parse(specificMethod, annotation));
+        if (CollectionUtil.isNotEmpty(logs)) {
+            for (OperationLog annotation : logs) {
+                return doParse(specificMethod, annotation);
             }
         }
-        return list;
+        return null;
     }
 
-    private static OperationLogInfo parse(AnnotatedElement ae, OperationLog annotation) {
+    private static OperationLogInfo doParse(AnnotatedElement element, OperationLog annotation) {
         OperationLogInfo logInfo = OperationLogInfo.builder()
                                                    .bizNo(annotation.bizNo())
                                                    .bizType(annotation.bizType())
@@ -58,7 +57,7 @@ public class OperationLogParser {
                                                    .condition(annotation.condition())
                                                    .build();
         if (StrUtil.isBlank(logInfo.getBizType())) {
-            throw new IllegalStateException(ae.toString() + " 上的 @OperationLog 注解没有配置 bizType 属性");
+            throw new IllegalStateException(element.toString() + " 上的 @OperationLog 注解没有配置 bizType 属性");
         }
         return logInfo;
     }

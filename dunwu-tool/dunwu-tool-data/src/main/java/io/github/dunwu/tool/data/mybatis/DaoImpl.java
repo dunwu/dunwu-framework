@@ -20,7 +20,13 @@ import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
+import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
+import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.ibatis.binding.MapperMethod;
@@ -34,7 +40,6 @@ import org.mybatis.spring.MyBatisExceptionTranslator;
 import org.mybatis.spring.SqlSessionHolder;
 import org.mybatis.spring.SqlSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.io.Serializable;
@@ -120,7 +125,6 @@ public class DaoImpl<M extends BaseMapper<T>, T> implements IDao<T> {
      * @param batchSize  ignore
      * @return ignore
      */
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean insertBatch(Collection<T> entityList, int batchSize) {
         String sqlStatement = sqlStatement(SqlMethod.INSERT_ONE);
@@ -133,7 +137,6 @@ public class DaoImpl<M extends BaseMapper<T>, T> implements IDao<T> {
      * @param entity 实体对象
      * @return boolean
      */
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean save(T entity) {
         if (null != entity) {
@@ -152,7 +155,6 @@ public class DaoImpl<M extends BaseMapper<T>, T> implements IDao<T> {
         return false;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveBatch(Collection<T> entityList, int batchSize) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
@@ -171,7 +173,6 @@ public class DaoImpl<M extends BaseMapper<T>, T> implements IDao<T> {
         });
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateBatchById(Collection<T> entityList, int batchSize) {
         String sqlStatement = sqlStatement(SqlMethod.UPDATE_BY_ID);

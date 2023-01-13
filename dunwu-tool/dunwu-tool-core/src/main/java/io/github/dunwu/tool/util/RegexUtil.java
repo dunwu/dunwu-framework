@@ -30,61 +30,61 @@ public class RegexUtil {
     /**
      * 最实用的正则
      */
-    private static final String REGEX_ONLY_CHINESE_CHAR = "^[\u4e00-\u9fa5]+$";
+    public static final String REGEX_ONLY_CHINESE_CHAR = "^[\u4e00-\u9fa5]+$";
 
-    private static final String REGEX_ID_CARD_15 =
+    public static final String REGEX_ID_CARD_15 =
         "^((1[1-5]|2[1-3]|3[1-7]|4[1-3]|5[0-4]|6[1-5])\\d{4})((\\d{2}((0[13578]|1[02])(0[1-9]|[12]\\d|3[01])|(0[13456789]|1[012])(0[1-9]|[12]\\d|30)|02(0[1-9]|1\\d|2[0-8])))|([02468][048]|[13579][26])0229)(\\d{3})$";
 
-    private static final String REGEX_ID_CARD_18 =
+    public static final String REGEX_ID_CARD_18 =
         "^((1[1-5]|2[1-3]|3[1-7]|4[1-3]|5[0-4]|6[1-5])\\d{4})((\\d{4}((0[13578]|1[02])(0[1-9]|[12]\\d|3[01])|(0[13456789]|1[012])(0[1-9]|[12]\\d|30)|02(0[1-9]|1\\d|2[0-8])))|([02468][048]|[13579][26])0229)(\\d{3}(\\d|X))$";
 
-    private static final String REGEX_USERNAME = "^[a-zA-Z]\\w{5,17}$";
+    public static final String REGEX_USERNAME = "^[a-zA-Z]\\w{5,17}$";
 
-    private static final String REGEX_EMAIL =
+    public static final String REGEX_EMAIL =
         "^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$";
 
-    private static final String REGEX_URI = "^(ht|f)(tp|tps)\\://[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3})?(/\\S*)?$";
+    public static final String REGEX_URI = "^(ht|f)(tp|tps)\\://[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3})?(/\\S*)?$";
 
-    private static final String REGEX_IPV4 =
+    public static final String REGEX_IPV4 =
         "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
-    private static final String REGEX_IPV6 =
+    public static final String REGEX_IPV6 =
         "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))";
 
-    private static final String REGEX_TIME = "^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$";
+    public static final String REGEX_TIME = "^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$";
 
-    private static final String REGEX_DATE =
+    public static final String REGEX_DATE =
         "^(?:(?!0000)[0-9]{4}([-/.]?)(?:(?:0?[1-9]|1[0-2])\\1(?:0?[1-9]|1[0-9]|2[0-8])|(?:0?[13-9]|1[0-2])\\1(?:29|30)|(?:0?[13578]|1[02])\\1(?:31))|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)([-/.]?)0?2\\2(?:29))$";
 
-    private static final String REGEX_MOBILE = "^((\\+)?86\\s*)?((13[0-9])|(15([0-3]|[5-9]))|(18[0,2,5-9]))\\d{8}$";
+    public static final String REGEX_MOBILE = "^((\\+)?86\\s*)?((13[0-9])|(15([0-3]|[5-9]))|(18[0,2,5-9]))\\d{8}$";
 
-    private static final String REGEX_PHONE = "^(010|02[0-9])(\\s|-)\\d{8}|(0[3-9]\\d{2})(\\s|-)\\d{7}$";
+    public static final String REGEX_PHONE = "^(010|02[0-9])(\\s|-)\\d{8}|(0[3-9]\\d{2})(\\s|-)\\d{7}$";
 
     /**
      * 特定数字
      */
-    private static final String REGEX_NUM_ALL = "^[\\d]*$";
+    public static final String REGEX_NUM_ALL = "^[\\d]*$";
 
-    private static final String REGEX_NUM_NONE = "^[\\D]*$";
+    public static final String REGEX_NUM_NONE = "^[\\D]*$";
 
-    private static final String REGEX_N_NUMBER = "^\\d{%d}$";
+    public static final String REGEX_N_NUMBER = "^\\d{%d}$";
 
-    private static final String REGEX_MORE_THAN_N_NUMBER = "^\\d{%d,}$";
+    public static final String REGEX_MORE_THAN_N_NUMBER = "^\\d{%d,}$";
 
-    private static final String REGEX_M_TO_N_NUMBER = "^\\d{%d,%d}$";
+    public static final String REGEX_M_TO_N_NUMBER = "^\\d{%d,%d}$";
 
     /**
      * 特定字符
      */
-    private static final String REGEX_CHAR_EN_ALL = "^[A-Za-z]+$";
+    public static final String REGEX_CHAR_EN_ALL = "^[A-Za-z]+$";
 
-    private static final String REGEX_CHAR_EN_UPPER_ALL = "^[A-Z]+$";
+    public static final String REGEX_CHAR_EN_UPPER_ALL = "^[A-Z]+$";
 
-    private static final String REGEX_CHAR_EN_LOWER_ALL = "^[a-z]+$";
+    public static final String REGEX_CHAR_EN_LOWER_ALL = "^[a-z]+$";
 
-    private static final String REGEX_CHAR_UNI_WORD_ALL = "^\\w+$";
+    public static final String REGEX_CHAR_UNI_WORD_ALL = "^\\w+$";
 
-    private static final String REGEX_CHAR_UNI_WORD_NONE = "^\\W+$";
+    public static final String REGEX_CHAR_UNI_WORD_NONE = "^\\W+$";
 
     // 字符类型正则表达式
     // -----------------------------------------------------------------------------

@@ -20,6 +20,10 @@
             <groupId>io.github.dunwu.tool</groupId>
             <artifactId>dunwu-tool-net</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.dunwu.tool</groupId>
+            <artifactId>dunwu-tool-data</artifactId>
+        </dependency>
 
         <!--javaee-->
         <dependency>
@@ -74,6 +78,7 @@
             <artifactId>easyexcel</artifactId>
             <version>3.1.1</version>
         </dependency>
+
 
         <dependency>
             <groupId>io.swagger</groupId>

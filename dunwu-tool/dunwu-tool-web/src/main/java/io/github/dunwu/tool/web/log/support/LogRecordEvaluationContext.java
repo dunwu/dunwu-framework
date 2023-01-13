@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class LogRecordEvaluationContext extends MethodBasedEvaluationContext {
 
-    public LogRecordEvaluationContext(Object obj, Method method, Object[] arguments,
+    public LogRecordEvaluationContext(Object rootObject, Method method, Object[] arguments,
         ParameterNameDiscoverer parameterNameDiscoverer, Object result, String error) {
-        super(obj, method, arguments, parameterNameDiscoverer);
+        super(rootObject, method, arguments, parameterNameDiscoverer);
         Map<String, Object> variables = LogRecordContext.getVariables();
         if (variables != null && variables.size() > 0) {
             for (Map.Entry<String, Object> entry : variables.entrySet()) {

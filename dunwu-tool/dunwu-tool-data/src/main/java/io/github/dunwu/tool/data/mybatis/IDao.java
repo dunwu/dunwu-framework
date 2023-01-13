@@ -68,6 +68,7 @@ public interface IDao<E> {
      * @param entityList 实体对象集合
      * @param batchSize  插入批次数量
      */
+    @Transactional(rollbackFor = Exception.class)
     boolean insertBatch(Collection<E> entityList, int batchSize);
 
     /**
@@ -86,6 +87,7 @@ public interface IDao<E> {
      * @param entityList 实体对象集合
      * @param batchSize  每次的数量
      */
+    @Transactional(rollbackFor = Exception.class)
     boolean saveBatch(Collection<E> entityList, int batchSize);
 
     /**
@@ -109,6 +111,7 @@ public interface IDao<E> {
      *
      * @param columnMap 表字段 map 对象
      */
+    @Transactional(rollbackFor = Exception.class)
     default boolean deleteByMap(Map<String, Object> columnMap) {
         Assert.notEmpty(columnMap, "error: columnMap must not be empty");
         return SqlHelper.retBool(getBaseMapper().deleteByMap(columnMap));
@@ -128,6 +131,7 @@ public interface IDao<E> {
      *
      * @param idList 主键ID列表
      */
+    @Transactional(rollbackFor = Exception.class)
     default boolean deleteBatchByIds(Collection<? extends Serializable> idList) {
         if (CollectionUtils.isEmpty(idList)) {
             return false;
@@ -179,6 +183,7 @@ public interface IDao<E> {
      * @param entityList 实体对象集合
      * @param batchSize  更新批次数量
      */
+    @Transactional(rollbackFor = Exception.class)
     boolean updateBatchById(Collection<E> entityList, int batchSize);
 
     /**

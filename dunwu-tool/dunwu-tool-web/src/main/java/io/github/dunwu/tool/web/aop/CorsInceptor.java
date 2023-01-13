@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.web.interceptor;
+package io.github.dunwu.tool.web.aop;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.web.constant.WebConstant;

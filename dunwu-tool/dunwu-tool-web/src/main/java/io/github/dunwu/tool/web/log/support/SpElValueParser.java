@@ -1,8 +1,8 @@
 package io.github.dunwu.tool.web.log.support;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
+import io.github.dunwu.tool.web.aop.entity.MethodInfo;
 import io.github.dunwu.tool.web.log.annotation.OperationLog;
-import io.github.dunwu.tool.web.log.entity.MethodInfo;
 import io.github.dunwu.tool.web.log.service.FunctionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
@@ -33,11 +33,10 @@ public class SpElValueParser implements BeanFactoryAware {
 
     private static final Pattern PATTERN = Pattern.compile("\\{\\s*(\\w*)\\s*\\{(.*?)}}");
 
-    public Map<String, String> processTemplate(Collection<String> templates, Object result,
-        MethodInfo methodInfo, String errorMsg,
-        Map<String, String> beforeFunctionNameAndReturnMap) {
+    public Map<String, String> parse(Collection<String> templates, Object result,
+        MethodInfo methodInfo, String errorMsg) {
         Map<String, String> expressionValues = new HashMap<>();
-        EvaluationContext evaluationContext =
+        EvaluationContext context =
             expressionEvaluator.createEvaluationContext(methodInfo, result, errorMsg, beanFactory);
 
         for (String expressionTemplate : templates) {
@@ -46,13 +45,17 @@ public class SpElValueParser implements BeanFactoryAware {
                 StringBuffer parsedStr = new StringBuffer();
                 while (matcher.find()) {
                     String expression = matcher.group(2);
-                    AnnotatedElementKey annotatedElementKey = new AnnotatedElementKey(methodInfo.getMethod(),
-                        methodInfo.getClass());
-                    String value =
-                        expressionEvaluator.parseExpression(expression, annotatedElementKey, evaluationContext);
-                    String functionReturnValue =
-                        getFunctionReturnValue(beforeFunctionNameAndReturnMap, value, matcher.group(1));
-                    matcher.appendReplacement(parsedStr, StrUtil.nullToEmpty(functionReturnValue));
+                    AnnotatedElementKey key = new AnnotatedElementKey(methodInfo.getMethod(), methodInfo.getClass());
+                    Object value = expressionEvaluator.parseExpression(expression, key, context);
+                    if (value != null) {
+                        if (value instanceof String) {
+                            matcher.appendReplacement(parsedStr, (String) value);
+                        } else if (value instanceof Number) {
+                            matcher.appendReplacement(parsedStr, String.valueOf(value));
+                        } else {
+                            matcher.appendReplacement(parsedStr, JSONUtil.toJsonStr(value));
+                        }
+                    }
                 }
                 matcher.appendTail(parsedStr);
                 expressionValues.put(expressionTemplate, parsedStr.toString());
@@ -65,41 +68,45 @@ public class SpElValueParser implements BeanFactoryAware {
 
     public Map<String, String> processBeforeExecuteFunctionTemplate(Collection<String> templates,
         MethodInfo methodInfo) {
-        Map<String, String> functionNameAndReturnValueMap = new HashMap<>();
-        EvaluationContext evaluationContext =
+        Map<String, String> expressionValues = new HashMap<>();
+        EvaluationContext context =
             expressionEvaluator.createEvaluationContext(methodInfo, null, null, beanFactory);
 
         for (String expressionTemplate : templates) {
             if (expressionTemplate.contains("{")) {
                 Matcher matcher = PATTERN.matcher(expressionTemplate);
+                StringBuffer parsedStr = new StringBuffer();
                 while (matcher.find()) {
                     String expression = matcher.group(2);
-                    if (expression.contains("#_result") || expression.contains("#_error")) {
-                        continue;
-                    }
-                    AnnotatedElementKey annotatedElementKey =
-                        new AnnotatedElementKey(methodInfo.getMethod(), methodInfo.getClass());
-                    String functionName = matcher.group(1);
-                    if (functionService.isBeforeFunction(functionName)) {
-                        String value =
-                            expressionEvaluator.parseExpression(expression, annotatedElementKey, evaluationContext);
-                        String functionReturnValue = getFunctionReturnValue(null, value, functionName);
-                        functionNameAndReturnValueMap.put(functionName, functionReturnValue);
+                    AnnotatedElementKey key = new AnnotatedElementKey(methodInfo.getMethod(), methodInfo.getClass());
+                    Object value = expressionEvaluator.parseExpression(expression, key, context);
+                    if (value != null) {
+                        if (value instanceof String) {
+                            matcher.appendReplacement(parsedStr, (String) value);
+                        } else if (value instanceof Number) {
+                            matcher.appendReplacement(parsedStr, String.valueOf(value));
+                        } else {
+                            matcher.appendReplacement(parsedStr, JSONUtil.toJsonStr(value));
+                        }
                     }
                 }
+                matcher.appendTail(parsedStr);
+                expressionValues.put(expressionTemplate, parsedStr.toString());
+            } else {
+                expressionValues.put(expressionTemplate, expressionTemplate);
             }
         }
-        return functionNameAndReturnValueMap;
+        return expressionValues;
     }
 
-    private String getFunctionReturnValue(Map<String, String> beforeFunctionNameAndReturnMap, String value,
+    private String getFunctionReturnValue(Map<String, String> beforeFunctionNameAndReturnMap, Object value,
         String functionName) {
         String functionReturnValue = "";
         if (beforeFunctionNameAndReturnMap != null) {
             functionReturnValue = beforeFunctionNameAndReturnMap.get(functionName);
         }
         if (StringUtils.isEmpty(functionReturnValue)) {
-            functionReturnValue = functionService.parse(functionName, value);
+            functionReturnValue = functionService.parse(functionName, (String) value);
         }
         return functionReturnValue;
     }

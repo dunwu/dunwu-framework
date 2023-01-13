@@ -15,8 +15,8 @@ public class DefaultFunctionServiceImpl implements FunctionService {
     private final ParseFunctionFactory parseFunctionFactory;
 
     @Override
-    public String parse(String functionName, String value) {
-        ParseFunction function = parseFunctionFactory.getFunction(functionName);
+    public String parse(String methodName, String value) {
+        ParseFunction function = parseFunctionFactory.getFunction(methodName);
         if (function == null) {
             return value;
         }
