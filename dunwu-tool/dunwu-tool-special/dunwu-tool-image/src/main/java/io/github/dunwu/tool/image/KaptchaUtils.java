@@ -85,7 +85,7 @@ public class KaptchaUtils {
             throw new IllegalArgumentException("config must not be null");
         }
         ImageProperties properties = kaptchaConfigToImageProperties(kaptcha.getConfig());
-        ImageUtils.toFile(kaptcha.getImage(), output, properties);
+        ImageUtil.toFile(kaptcha.getImage(), output, properties);
     }
 
     public static void toOutputStream(final Kaptcha kaptcha, final OutputStream output) throws IOException {
@@ -93,16 +93,15 @@ public class KaptchaUtils {
             throw new IllegalArgumentException("config must not be null");
         }
         ImageProperties properties = kaptchaConfigToImageProperties(kaptcha.getConfig());
-        ImageUtils.toOutputStream(kaptcha.getImage(), output, properties);
+        ImageUtil.toOutputStream(kaptcha.getImage(), output, properties);
     }
 
     private static ImageProperties kaptchaConfigToImageProperties(KaptchaConfig config) {
-        ImageProperties properties = new ImageProperties();
-        properties.setWidth(config.getWidth())
-                  .setHeight(config.getHeight())
-                  .setScale(config.getScale())
-                  .setFormat(config.getType());
-        return properties;
+        return ImageProperties.builder()
+                              .width(config.getWidth())
+                              .height(config.getHeight())
+                              .scale(config.getScale())
+                              .format(config.getType()).build();
     }
 
     public static class Kaptcha implements Serializable {

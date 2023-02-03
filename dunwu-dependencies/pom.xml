@@ -88,7 +88,7 @@
         <swagger.ui>2.9.2</swagger.ui>
         <swagger-annotations.version>1.5.22</swagger-annotations.version>
         <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
-        <thumbnailator.version>0.4.8</thumbnailator.version>
+        <thumbnailator.version>0.4.19</thumbnailator.version>
         <zxing.version>3.4.0</zxing.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <javaparser.version>3.24.0</javaparser.version>

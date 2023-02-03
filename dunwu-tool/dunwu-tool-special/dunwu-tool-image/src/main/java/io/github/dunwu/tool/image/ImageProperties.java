@@ -1,14 +1,27 @@
 package io.github.dunwu.tool.image;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 
 /**
+ * 图片处理参数
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-12-10
  */
+@Data
+@ToString
+@Builder
 public class ImageProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private Region source;
 
     /**
      * 图片宽度
@@ -19,6 +32,11 @@ public class ImageProperties implements Serializable {
      * 图片高度
      */
     private Integer height;
+
+    /**
+     * 按指定尺寸强制缩放
+     */
+    private Boolean keepAspectRatio;
 
     /**
      * 宽度比例
@@ -55,111 +73,16 @@ public class ImageProperties implements Serializable {
      */
     private ImageWaterMark imageWaterMark;
 
-    public ImageProperties() { }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Region {
 
-    public ImageProperties(Integer width, Integer height, Double scale, Double rotate,
-        Double quality, ImageType format, ImageWaterMark imageWaterMark) {
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.rotate = rotate;
-        this.quality = quality;
-        this.format = format;
-        this.imageWaterMark = imageWaterMark;
-    }
+        private Integer x;
+        private Integer y;
+        private Integer width;
+        private Integer height;
 
-    public ImageProperties(Integer width, Integer height, Double xscale, Double yscale,
-        Double rotate, Double quality, ImageType format,
-        ImageWaterMark imageWaterMark) {
-        this.width = width;
-        this.height = height;
-        this.xscale = xscale;
-        this.yscale = yscale;
-        this.rotate = rotate;
-        this.quality = quality;
-        this.format = format;
-        this.imageWaterMark = imageWaterMark;
-    }
-
-    public ImageType getFormat() {
-        return format;
-    }
-
-    public ImageProperties setFormat(ImageType format) {
-        this.format = format;
-        return this;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public ImageProperties setHeight(Integer height) {
-        this.height = height;
-        return this;
-    }
-
-    public Double getQuality() {
-        return quality;
-    }
-
-    public ImageProperties setQuality(Double quality) {
-        this.quality = quality;
-        return this;
-    }
-
-    public Double getRotate() {
-        return rotate;
-    }
-
-    public ImageProperties setRotate(Double rotate) {
-        this.rotate = rotate;
-        return this;
-    }
-
-    public Double getScale() {
-        return scale;
-    }
-
-    public ImageProperties setScale(Double scale) {
-        this.scale = scale;
-        return this;
-    }
-
-    public ImageWaterMark getImageWaterMark() {
-        return imageWaterMark;
-    }
-
-    public ImageProperties setImageWaterMark(ImageWaterMark imageWaterMark) {
-        this.imageWaterMark = imageWaterMark;
-        return this;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public ImageProperties setWidth(Integer width) {
-        this.width = width;
-        return this;
-    }
-
-    public Double getXscale() {
-        return xscale;
-    }
-
-    public ImageProperties setXscale(Double xscale) {
-        this.xscale = xscale;
-        return this;
-    }
-
-    public Double getYscale() {
-        return yscale;
-    }
-
-    public ImageProperties setYscale(Double yscale) {
-        this.yscale = yscale;
-        return this;
     }
 
 }
