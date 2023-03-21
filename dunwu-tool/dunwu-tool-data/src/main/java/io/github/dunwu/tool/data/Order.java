@@ -67,7 +67,7 @@ public class Order implements Serializable {
     }
 
     public String getClause() {
-        return this.getField() + " " + this.getDirection().name();
+        return this.getField() + "," + this.getDirection().name();
     }
 
     public static Order parse(String expression) {

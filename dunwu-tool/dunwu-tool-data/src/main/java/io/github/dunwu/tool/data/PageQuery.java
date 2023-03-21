@@ -27,6 +27,8 @@ import java.util.stream.Stream;
  * <li>自行将 {@link PageQuery} 转化为 {@link Pageable}</li>
  * <li>最后由 Mybatis Plus 扩展工具类使用 {@link Pageable} 进行分页</li>
  * </ol>
+ * <p>
+ * 此外，需注意：{@link PageQuery} 页码从 1 开始；{@link Pageable} 页码从 0 开始
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-03-24
@@ -38,12 +40,12 @@ public class PageQuery implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 当前查询页
+     * 当前页码
      */
     protected int page = 1;
 
     /**
-     * 每页展示记录数
+     * 每页记录数
      */
     protected int size = 10;
 
@@ -62,17 +64,32 @@ public class PageQuery implements Serializable {
      */
     private int start = getStart();
 
-    public PageQuery() { }
-
-    public PageQuery(int page, int size) {
-        this(page, size, new ArrayList<>());
+    /**
+     * 默认构造器方法
+     */
+    public PageQuery() {
+        init(1, 10, null);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param page 页号，必须大于 0
+     * @param size 每页数量，必须大于 0
+     */
+    public PageQuery(int page, int size) {
+        init(page, size, null);
+    }
+
+    /**
+     * 构造器方法
+     *
+     * @param page   页号，必须大于 0
+     * @param size   每页数量，必须大于 0
+     * @param orders 排序属性，可以为空
+     */
     public PageQuery(int page, int size, Collection<Order> orders) {
-        this.page = page;
-        this.size = size;
-        this.start = getStart();
-        setOrders(orders);
+        init(page, size, orders);
     }
 
     public int getStart() {
@@ -103,7 +120,7 @@ public class PageQuery implements Serializable {
         }
 
         List<String> list = this.getOrders().stream().map(Order::getClause).collect(Collectors.toList());
-        return CollectionUtil.join(list, ", ");
+        return CollectionUtil.join(list, ";");
     }
 
     public PageRequest toPageRequest() {
@@ -122,12 +139,25 @@ public class PageQuery implements Serializable {
 
     public void setOrders(Collection<Order> orders) {
         if (CollectionUtil.isNotEmpty(orders)) {
-            this.sort = orders.stream().map(Order::toString).collect(Collectors.toList());
+            this.sort = orders.stream().map(Order::getClause).collect(Collectors.toList());
             this.orders = new ArrayList<>(orders);
         } else {
             this.sort = new ArrayList<>();
             this.orders = new ArrayList<>();
         }
+    }
+
+    private void init(int page, int size, Collection<Order> orders) {
+        if (page < 1) {
+            throw new IllegalArgumentException("page 不能小于 1");
+        }
+        if (size < 1) {
+            throw new IllegalArgumentException("size 不能小于 1");
+        }
+        this.page = page;
+        this.size = size;
+        this.start = getStart();
+        setOrders(orders);
     }
 
     public static PageQuery of(int page, int size) {
@@ -148,10 +178,10 @@ public class PageQuery implements Serializable {
 
     public static PageQuery of(Pageable pageable) {
         if (pageable.getSort().isUnsorted()) {
-            return new PageQuery(pageable.getPageNumber(), pageable.getPageSize());
+            return new PageQuery(pageable.getPageNumber() + 1, pageable.getPageSize());
         }
-        List<Order> orders = pageable.getSort().stream().sorted().map(Order::parse).collect(Collectors.toList());
-        return new PageQuery(pageable.getPageNumber(), pageable.getPageSize(), orders);
+        List<Order> orders = pageable.getSort().stream().map(Order::parse).collect(Collectors.toList());
+        return new PageQuery(pageable.getPageNumber() + 1, pageable.getPageSize(), orders);
     }
 
     /**

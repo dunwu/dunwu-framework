@@ -1,8 +1,5 @@
 package io.github.dunwu.tool.parser.md;
 
-import java.io.File;
-import java.util.List;
-
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateException;
 import cn.hutool.core.date.DatePattern;
@@ -15,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
+import java.util.List;
+
 /**
  * Markdown 工具类
  *
@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
  * @date 2022-04-12
  */
 public class MarkdownUtil {
+
+    private static final String separator = System.getProperty("line.separator");
 
     public static FrontMatter getFrontMatterFromFile(File file) {
         List<String> lines = FileUtil.readUtf8Lines(file);
@@ -39,7 +41,7 @@ public class MarkdownUtil {
             for (int i = 1; i < lines.size(); i++) {
                 if ("---".equals(lines.get(i))) {
                     List<String> contentLines = lines.subList(1, i);
-                    String content = String.join("\r\n", contentLines);
+                    String content = String.join(separator, contentLines);
                     return new FrontMatter(0, i, content, contentLines);
                 }
             }
@@ -83,7 +85,6 @@ public class MarkdownUtil {
         // System.out.println(StrUtil.format("【{}】{}", filename, dateStr));
     }
 
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -95,7 +96,6 @@ public class MarkdownUtil {
         private List<String> contentLines;
 
     }
-
 
     @Data
     @AllArgsConstructor
@@ -113,38 +113,38 @@ public class MarkdownUtil {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("---").append("\r\n");
+            sb.append("---").append(separator);
             if (StrUtil.isNotBlank(title)) {
-                sb.append("title: ").append(title).append("\r\n");
+                sb.append("title: ").append(title).append(separator);
             }
             if (StrUtil.isNotBlank(date)) {
-                sb.append("date: ").append(date).append("\r\n");
+                sb.append("date: ").append(date).append(separator);
             }
             if (CollectionUtil.isNotEmpty(categories)) {
-                sb.append("categories:").append("\r\n");
+                sb.append("categories:").append(separator);
                 for (String category : categories) {
-                    sb.append("  - ").append(category).append("\r\n");
+                    sb.append("  - ").append(category).append(separator);
                 }
             }
             if (CollectionUtil.isNotEmpty(tags)) {
-                sb.append("tags:").append("\r\n");
+                sb.append("tags:").append(separator);
                 for (String tag : tags) {
-                    sb.append("  - ").append(tag).append("\r\n");
+                    sb.append("  - ").append(tag).append(separator);
                 }
             }
             if (StrUtil.isNotBlank(permalink)) {
-                sb.append("permalink: ").append(permalink).append("\r\n");
+                sb.append("permalink: ").append(permalink).append(separator);
             }
             if (StrUtil.isNotBlank(hidden)) {
-                sb.append("hidden: ").append(hidden).append("\r\n");
+                sb.append("hidden: ").append(hidden).append(separator);
             }
-            sb.append("---").append("\r\n");
+            sb.append("---").append(separator);
             return sb.toString();
         }
 
         public List<String> toLines() {
             String content = this.toString();
-            String[] array = content.split("\r\n");
+            String[] array = content.split(separator);
             return CollectionUtil.toList(array);
         }
 

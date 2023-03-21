@@ -1,5 +1,6 @@
 package io.github.dunwu.tool.data;
 
+import cn.hutool.core.collection.CollectionUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 
 /**
  * {@link Page} 扩展实现类，完全移植了 {@link PageImpl} 的能力
+ * <p>
+ * 注意：PageImpl 自身页码从 1 开始，内部会自动适配 Spring Data 页码从 0 开始的机制。
  *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @date 2022-09-02
@@ -30,82 +33,141 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
     private PageQuery pageQuery;
     private final List<T> content = new ArrayList<>();
 
+    /**
+     * 默认构造器方法
+     */
     public PageImpl() {
-        this.pageQuery = PageQuery.of(1, 10);
-        this.total = 0;
+        init(new ArrayList<>(), PageQuery.of(1, 10), 0L);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param content   当前分页的数据
+     * @param pageQuery 当前分页请求信息，注：{@link PageQuery} 的页码从 1 开始
+     */
     public PageImpl(List<T> content, PageQuery pageQuery) {
-        Assert.notNull(pageQuery, "PageRequest must not be null!");
-        this.content.addAll(content);
-        this.pageQuery = pageQuery;
+        init(content, pageQuery, 0L);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param content     当前分页的数据
+     * @param pageRequest 当前分页请求信息，注：{@link PageRequest} 的页码从 0 开始。PageImpl 内部会自动将页码转为从 1 开始
+     */
     public PageImpl(List<T> content, PageRequest pageRequest) {
-        Assert.notNull(pageRequest, "PageRequest must not be null!");
-        this.content.addAll(content);
-        this.pageQuery = PageQuery.of(pageRequest);
+        init(content, pageRequest, 0L);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param content   当前分页的数据
+     * @param pageQuery 当前分页请求信息，注：{@link PageQuery} 的页码从 1 开始
+     * @param total     总记录数
+     */
     public PageImpl(List<T> content, PageQuery pageQuery, long total) {
-        Assert.notNull(pageQuery, "PageQuery must not be null!");
-        this.content.addAll(content);
-        this.pageQuery = pageQuery;
-        PageRequest pageRequest = pageQuery.toPageRequest();
-        this.total = pageRequest.toOptional()
-                                .filter((it) -> !content.isEmpty())
-                                .filter((it) -> it.getOffset() + (long) it.getPageSize() > total)
-                                .map((it) -> it.getOffset() + (long) content.size())
-                                .orElse(total);
+        init(content, pageQuery, total);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param content     当前分页的数据
+     * @param pageRequest 当前分页请求信息，注：{@link PageRequest} 的页码从 0 开始。PageImpl 内部会自动将页码转为从 1 开始
+     * @param total       总记录数
+     */
     public PageImpl(List<T> content, PageRequest pageRequest, long total) {
-        Assert.notNull(pageRequest, "PageRequest must not be null!");
-        this.content.addAll(content);
-        this.pageQuery = PageQuery.of(pageRequest);
-        this.total = pageRequest.toOptional()
-                                .filter((it) -> !content.isEmpty())
-                                .filter((it) -> it.getOffset() + (long) it.getPageSize() > total)
-                                .map((it) -> it.getOffset() + (long) content.size())
-                                .orElse(total);
+        init(content, pageRequest, total);
     }
 
+    /**
+     * 构造器方法
+     *
+     * @param content 当前分页的数据
+     * @param page    当前页码
+     * @param size    每页记录数
+     * @param total   总记录数
+     */
     public PageImpl(List<T> content, int page, int size, long total) {
-        this.content.addAll(content);
-        this.pageQuery = PageQuery.of(page, size);
-        this.total = total;
+        init(content, PageQuery.of(page, size), total);
     }
 
+    private void init(List<T> content, PageQuery pageQuery, long total) {
+        Assert.notNull(pageQuery, "PageQuery must not be null!");
+        init(content, pageQuery.toPageRequest(), total);
+    }
+
+    private void init(List<T> content, PageRequest pageRequest, long total) {
+
+        if (pageRequest == null) {
+            throw new IllegalArgumentException("PageRequest must not be null!");
+        }
+
+        final List<T> list;
+        if (content == null) {
+            list = new ArrayList<>();
+        } else {
+            list = content;
+        }
+
+        this.pageQuery = PageQuery.of(pageRequest);
+        if (total != 0L) {
+            this.total = total;
+        } else {
+            this.total = pageRequest.toOptional()
+                                    .filter((it) -> !list.isEmpty())
+                                    .filter((it) -> it.getOffset() + (long) it.getPageSize() > total)
+                                    .map((it) -> it.getOffset() + (long) list.size())
+                                    .orElse(total);
+        }
+
+        if (this.total > pageRequest.getPageSize()) {
+            List<T> subList = CollectionUtil.sub(list, 0, pageRequest.getPageSize());
+            this.content.addAll(subList);
+        } else {
+            this.content.addAll(list);
+        }
+    }
+
+    @Override
     public int getNumber() {
         return this.pageQuery.getPage();
     }
 
+    @Override
     public int getSize() {
         return this.pageQuery.getSize();
     }
 
-    public int getNumberOfElements() {
-        return this.content.size();
+    @Override
+    public Sort getSort() {
+        return this.pageQuery.toPageRequest().getSort();
     }
 
+    public long getTotal() {
+        return this.total;
+    }
+
+    @Override
+    public long getTotalElements() {
+        return this.getTotal();
+    }
+
+    @Override
+    public int getTotalPages() {
+        return this.getSize() == 0 ? 0 : (int) Math.ceil((double) this.total / (double) this.getSize());
+    }
+
+    @Override
     public boolean hasNext() {
         return this.getNumber() + 1 < this.getTotalPages();
     }
 
+    @Override
     public boolean hasPrevious() {
-        return this.getNumber() > 0;
-    }
-
-    @Override
-    public Pageable nextPageable() {
-        PageRequest pageRequest = pageQuery.toPageRequest();
-        return hasNext() ? pageRequest.next() : Pageable.unpaged();
-    }
-
-    @Override
-    public Pageable previousPageable() {
-        PageRequest pageRequest = pageQuery.toPageRequest();
-        return hasPrevious() ? pageRequest.previousOrFirst() : Pageable.unpaged();
+        return this.getNumber() > 1;
     }
 
     public boolean isFirst() {
@@ -116,44 +178,50 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
         return !this.hasNext();
     }
 
+    @Override
+    public List<T> getContent() {
+        return Collections.unmodifiableList(this.content);
+    }
+
+    @Override
     public boolean hasContent() {
         return !this.content.isEmpty();
     }
 
     @Override
-    public Sort getSort() {
-        PageRequest pageRequest = pageQuery.toPageRequest();
-        return pageRequest.getSort();
+    public int getNumberOfElements() {
+        return this.content.size();
     }
 
-    public List<T> getContent() {
-        return Collections.unmodifiableList(this.content);
-    }
-
+    @Override
     public Iterator<T> iterator() {
         return this.content.iterator();
+    }
+
+    @Override
+    public Pageable getPageable() {
+        return this.pageQuery.toPageRequest();
+    }
+
+    @Override
+    public Pageable nextPageable() {
+        return hasNext() ? this.pageQuery.toPageRequest().next() : Pageable.unpaged();
+    }
+
+    @Override
+    public Pageable previousPageable() {
+        return hasPrevious() ? this.pageQuery.toPageRequest().previousOrFirst() : Pageable.unpaged();
+    }
+
+    @Override
+    public <U> Page<U> map(Function<? super T, ? extends U> converter) {
+        return new org.springframework.data.domain.PageImpl(this.getConvertedContent(converter), this.getPageable(),
+            this.total);
     }
 
     protected <U> List<U> getConvertedContent(Function<? super T, ? extends U> converter) {
         Assert.notNull(converter, "Function must not be null!");
         return this.stream().map(converter::apply).collect(Collectors.toList());
-    }
-
-    public int getTotalPages() {
-        return this.getSize() == 0 ? 1 : (int) Math.ceil((double) this.total / (double) this.getSize());
-    }
-
-    public long getTotalElements() {
-        return this.total;
-    }
-
-    public long getTotal() {
-        return this.total;
-    }
-
-    public <U> Page<U> map(Function<? super T, ? extends U> converter) {
-        return new org.springframework.data.domain.PageImpl(this.getConvertedContent(converter), this.getPageable(),
-            this.total);
     }
 
     public String toString() {
@@ -186,11 +254,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
     }
 
     public static <T> PageImpl<T> of() {
-        return new PageImpl<>(new ArrayList<>(), PageRequest.of(1, 10), 0);
-    }
-
-    public static <T> PageImpl<T> of(List<T> content) {
-        return new PageImpl<>(content, PageRequest.of(1, 10), null == content ? 0L : (long) content.size());
+        return new PageImpl<>(new ArrayList<>(), PageQuery.of(1, 10), 0);
     }
 
     public static <T> PageImpl<T> of(List<T> content, PageQuery pageQuery) {
@@ -213,7 +277,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
     }
 
     public static <T> PageImpl<T> of(List<T> content, int page, int size, long total) {
-        return new PageImpl<>(content, PageRequest.of(page, size), total);
+        return new PageImpl<>(content, PageQuery.of(page, size), total);
     }
 
     public static <T> PageImpl<T> of(Page<T> page) {

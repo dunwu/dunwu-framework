@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.Status;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -19,7 +18,6 @@ import java.util.Objects;
  * @since 2019-04-21
  */
 @Data
-@Builder
 @ToString
 public class Result implements Status, Serializable {
 
