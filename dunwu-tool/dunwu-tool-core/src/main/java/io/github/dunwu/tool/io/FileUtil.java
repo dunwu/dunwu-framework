@@ -2,15 +2,20 @@ package io.github.dunwu.tool.io;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,8 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * 格式化小数
      */
     private static final DecimalFormat DF = new DecimalFormat("0.00");
+
+    public static final String TEXT_SPLIT_CHAR = ",";
 
     public static final String IMAGE = "图片";
     public static final String TXT = "文档";
@@ -152,9 +159,9 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     /**
      * 获取指定路径下所有特定类型的文件
      *
-     * @param path 根目录
+     * @param path        根目录
      * @param ignoredDirs 忽略的目录
-     * @param ext 文件类型后缀名
+     * @param ext         文件类型后缀名
      * @return 子文件列表
      */
     public static List<File> getAllExtFiles(String path, String[] ignoredDirs, String ext) {
@@ -186,12 +193,65 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                     }
                 }
             }
-
         } else {
             String extensionName = getExtensionName(file.getName());
             if (ext.equalsIgnoreCase(extensionName)) {
                 resultFiles.add(file);
             }
+        }
+    }
+
+    public static void binaryToText(String srcBinaryFile, String targetTextFile) {
+
+        if (!FileUtil.exist(srcBinaryFile)) {
+            System.err.println("待转换的二进制文件不存在！");
+            return;
+        }
+
+        BufferedInputStream input = null;
+        try {
+            input = FileUtil.getInputStream(srcBinaryFile);
+
+            StringBuilder builder = new StringBuilder();
+            int i = 0;
+            while ((i = input.read()) != -1) {
+                builder.append(i).append(TEXT_SPLIT_CHAR);
+            }
+            String encoder = builder.toString();
+            if (StrUtil.isNotBlank(encoder)) {
+                FileUtil.writeUtf8String(encoder, targetTextFile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IoUtil.close(input);
+        }
+    }
+
+    public static void textToBinary(String srcTextFile, String targetBinaryFile) {
+
+        if (!FileUtil.exist(srcTextFile)) {
+            System.err.println("待转换的文本文件不存在！");
+            return;
+        }
+
+        BufferedReader reader = null;
+        BufferedOutputStream output = null;
+
+        try {
+            reader = FileUtil.getReader(srcTextFile, StandardCharsets.UTF_8);
+            output = FileUtil.getOutputStream(targetBinaryFile);
+
+            String[] lines = reader.readLine().split(TEXT_SPLIT_CHAR);
+            for (int j = 0; j < lines.length; j++) {
+                output.write(Integer.parseInt(lines[j]));
+            }
+            output.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IoUtil.close(output);
+            IoUtil.close(reader);
         }
     }
 
