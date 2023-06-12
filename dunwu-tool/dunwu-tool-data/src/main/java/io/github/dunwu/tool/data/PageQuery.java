@@ -39,15 +39,18 @@ public class PageQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int FIRST_PAGE = 1;
+    public static final int DEFAULT_SIZE = 10;
+
     /**
      * 当前页码
      */
-    protected int page = 1;
+    protected int page = FIRST_PAGE;
 
     /**
      * 每页记录数
      */
-    protected int size = 10;
+    protected int size = DEFAULT_SIZE;
 
     /**
      * 排序字符串表达式列表，形式如：id,asc
@@ -68,7 +71,7 @@ public class PageQuery implements Serializable {
      * 默认构造器方法
      */
     public PageQuery() {
-        init(1, 10, null);
+        init(FIRST_PAGE, DEFAULT_SIZE, null);
     }
 
     /**
@@ -93,7 +96,7 @@ public class PageQuery implements Serializable {
     }
 
     public int getStart() {
-        if (page > 1) {
+        if (page > FIRST_PAGE) {
             return (page - 1) * size;
         }
         return 0;
@@ -104,7 +107,7 @@ public class PageQuery implements Serializable {
     }
 
     public PageQuery previous() {
-        return this.getPage() <= 1 ? this : new PageQuery(this.getPage() - 1, this.getSize(), this.getOrders());
+        return this.getPage() <= FIRST_PAGE ? this : new PageQuery(this.getPage() - 1, this.getSize(), this.getOrders());
     }
 
     public Sort getSpringSort() {
@@ -148,11 +151,11 @@ public class PageQuery implements Serializable {
     }
 
     private void init(int page, int size, Collection<Order> orders) {
-        if (page < 1) {
+        if (page < FIRST_PAGE) {
             throw new IllegalArgumentException("page 不能小于 1");
         }
-        if (size < 1) {
-            throw new IllegalArgumentException("size 不能小于 1");
+        if (size <= 0) {
+            throw new IllegalArgumentException("size 必须大于 0");
         }
         this.page = page;
         this.size = size;
@@ -185,7 +188,7 @@ public class PageQuery implements Serializable {
     }
 
     /**
-     * 通过字符串表达式解析为 {@link org.springframework.data.domain.Sort.Order}
+     * 通过字符串表达式解析为 {@link Sort.Order}
      *
      * @param expression 字符串表达式，形式如：id,asc
      * @return /
@@ -202,7 +205,7 @@ public class PageQuery implements Serializable {
     }
 
     /**
-     * 通过字符串表达式数组解析为 {@link org.springframework.data.domain.Sort.Order} 列表
+     * 通过字符串表达式数组解析为 {@link Sort.Order} 列表
      *
      * @param expressions 字符串表达式列表，形式如：id,asc
      * @return /
@@ -221,7 +224,7 @@ public class PageQuery implements Serializable {
     }
 
     /**
-     * 通过字符串表达式数组解析为 {@link org.springframework.data.domain.Sort}
+     * 通过字符串表达式数组解析为 {@link Sort}
      *
      * @param expressions 字符串表达式列表，形式如：id,asc
      * @return /
@@ -237,7 +240,7 @@ public class PageQuery implements Serializable {
     public static PageRequest toPageRequest(PageQuery query) {
 
         int page = 0;
-        if (query.getPage() > 1) {
+        if (query.getPage() > FIRST_PAGE) {
             page = query.getPage() - 1;
         }
 

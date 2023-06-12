@@ -1,13 +1,13 @@
 package io.github.dunwu.tool.data;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,459 +21,31 @@ import java.util.List;
  */
 public class PageImplTests {
 
-    private static final List<Integer> data = new ArrayList<>();
+    public static final int QUERY_FIRST_PAGE = 1;
+    public static final int REQUEST_FIRST_PAGE = 0;
+    public static final int SIZE = 10;
+    public static final int TOTAL;
+    private static final List<Integer> DATA = new ArrayList<>();
 
-    @BeforeAll
-    public static void init() {
+    static {
         for (int i = 0; i < 100; i++) {
-            data.add(i);
+            DATA.add(i + 1);
         }
+        TOTAL = DATA.size();
     }
 
     @Nested
-    @DisplayName("构造器方法测试")
-    class ConstructMethod {
+    @DisplayName("构造 PageImpl 测试")
+    class NewInstanceTest {
 
         @Test
-        @DisplayName("默认构造方法")
-        public void testPageImpl() {
-
-            PageImpl<?> page = new PageImpl<>();
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(10);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(0);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(0);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(0);
-
-            Assertions.assertThat(page.getContent()).isEmpty();
-            Assertions.assertThat(page.hasContent()).isFalse();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(0);
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("构造方法二")
-        public void testPageImpl2() {
-
-            PageImpl<Integer> page = new PageImpl<>(data, PageQuery.of(1, 10));
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(10);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("构造方法三")
-        public void testPageImpl3() {
-
-            // 数据总量刚好一页
-            PageImpl<Integer> page = new PageImpl<>(data, PageRequest.of(0, 100));
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = new PageImpl<>(data, PageRequest.of(0, 101));
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(101);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(101);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = new PageImpl<>(data, PageRequest.of(0, 10));
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("构造方法四")
-        public void testPageImpl4() {
-
-            // 数据总量刚好一页
-            PageImpl<Integer> page = new PageImpl<>(data, PageQuery.of(1, 100), 100);
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = new PageImpl<>(data, PageQuery.of(1, 100), 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为第一页
-            PageImpl<Integer> page3 = new PageImpl<>(data, PageQuery.of(1, 10), 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = new PageImpl<>(data, PageQuery.of(10, 10), 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("构造方法五")
-        public void testPageImpl5() {
-
-            // 数据总量刚好一页
-            PageImpl<Integer> page = new PageImpl<>(data, PageRequest.of(0, 100), 100);
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = new PageImpl<>(data, PageRequest.of(0, 100), 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = new PageImpl<>(data, PageRequest.of(0, 10), 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = new PageImpl<>(data, PageRequest.of(9, 10), 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("构造方法六")
-        public void testPageImpl6() {
-
-            // 数据总量刚好一页
-            PageImpl<Integer> page = new PageImpl<>(data, 1, 100, 100);
-
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = new PageImpl<>(data, 1, 100, 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = new PageImpl<>(data, 1, 10, 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = new PageImpl<>(data, 10, 10, 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
-        }
-
-    }
-
-    @Nested
-    @DisplayName("静态构造方法测试")
-    class OfMethod {
-
-        @Test
-        @DisplayName("PageImpl.of 测试一")
-        public void testOf1() {
+        @DisplayName("of()")
+        public void test00() {
 
             PageImpl<?> page = PageImpl.of();
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(10);
+            Assertions.assertThat(page.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(page.getSize()).isEqualTo(SIZE);
             Assertions.assertThat(page.getSort()).isEmpty();
             Assertions.assertThat(page.getTotal()).isEqualTo(0);
             Assertions.assertThat(page.getTotalElements()).isEqualTo(0);
@@ -483,413 +55,146 @@ public class PageImplTests {
             Assertions.assertThat(page.hasContent()).isFalse();
             Assertions.assertThat(page.getNumberOfElements()).isEqualTo(0);
 
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(10);
+            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(SIZE);
             Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
             Assertions.assertThat(page.getPageable().getSort()).isEmpty();
         }
 
         @Test
-        @DisplayName("PageImpl.of 测试二")
-        public void testOf2() {
+        @DisplayName("of(List<T> content, int page, int size, long total)")
+        public void test01() {
 
-            PageImpl<Integer> page = PageImpl.of(data, PageQuery.of(1, 10));
+            List<Integer> list = getDataByPage(QUERY_FIRST_PAGE);
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(10);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(10);
+            PageImpl<Integer> pageImpl = PageImpl.of(list, QUERY_FIRST_PAGE, SIZE, TOTAL);
 
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
+
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
         @Test
-        @DisplayName("PageImpl.of 测试三")
-        public void testOf3() {
+        @DisplayName("of(List<T> content, PageQuery pageQuery)")
+        public void test02() {
 
-            // 数据总量刚好一页
-            PageImpl<Integer> page = PageImpl.of(data, PageRequest.of(0, 100));
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+            PageImpl<Integer> pageImpl = PageImpl.of(DATA, PageQuery.of(QUERY_FIRST_PAGE, SIZE));
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
 
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = PageImpl.of(data, PageRequest.of(0, 101));
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(101);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(1);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(101);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = PageImpl.of(data, PageRequest.of(0, 10));
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
         @Test
-        @DisplayName("PageImpl.of 测试四")
-        public void testOf4() {
+        @DisplayName("of(List<T> content, PageQuery pageQuery, long total)")
+        public void test03() {
 
-            // 数据总量刚好一页
-            PageImpl<Integer> page = PageImpl.of(data, PageQuery.of(1, 100), 100);
+            List<Integer> list = getDataByPage(QUERY_FIRST_PAGE);
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(QUERY_FIRST_PAGE, SIZE), TOTAL);
 
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
 
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = PageImpl.of(data, PageQuery.of(1, 100), 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为第一页
-            PageImpl<Integer> page3 = PageImpl.of(data, PageQuery.of(1, 10), 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = PageImpl.of(data, PageQuery.of(10, 10), 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
         @Test
-        @DisplayName("PageImpl.of 测试五")
-        public void testOf5() {
+        @DisplayName("of(List<T> content, Pageable pageable)")
+        public void test04() {
 
-            // 数据总量刚好一页
-            PageImpl<Integer> page = PageImpl.of(data, PageRequest.of(0, 100), 100);
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+            PageImpl<Integer> pageImpl = PageImpl.of(DATA, PageRequest.of(REQUEST_FIRST_PAGE, SIZE));
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
 
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
-
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = PageImpl.of(data, PageRequest.of(0, 100), 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = PageImpl.of(data, PageRequest.of(0, 10), 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = PageImpl.of(data, PageRequest.of(9, 10), 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
         @Test
-        @DisplayName("PageImpl.of 测试六")
-        public void testOf6() {
+        @DisplayName("of(List<T> content, Pageable pageable, long total)")
+        public void test05() {
 
-            // 数据总量刚好一页
-            PageImpl<Integer> page = PageImpl.of(data, 1, 100, 100);
+            List<Integer> list = getDataByPage(QUERY_FIRST_PAGE);
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
 
-            Assertions.assertThat(page.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page.getSize()).isEqualTo(100);
-            Assertions.assertThat(page.getSort()).isEmpty();
-            Assertions.assertThat(page.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page.getTotalPages()).isEqualTo(1);
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageRequest.of(REQUEST_FIRST_PAGE, SIZE), TOTAL);
 
-            Assertions.assertThat(page.getContent()).isNotEmpty();
-            Assertions.assertThat(page.hasContent()).isTrue();
-            Assertions.assertThat(page.getNumberOfElements()).isEqualTo(100);
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(QUERY_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-            Assertions.assertThat(page.hasPrevious()).isFalse();
-            Assertions.assertThat(page.hasNext()).isFalse();
-            Assertions.assertThat(page.isFirst()).isTrue();
-            Assertions.assertThat(page.isLast()).isTrue();
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
 
-            Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getSort()).isEmpty();
-
-            // 数据总量不足一页
-            PageImpl<Integer> page2 = PageImpl.of(data, 1, 100, 101);
-
-            Assertions.assertThat(page2.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page2.getSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getSort()).isEmpty();
-            Assertions.assertThat(page2.getTotal()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalElements()).isEqualTo(101L);
-            Assertions.assertThat(page2.getTotalPages()).isEqualTo(2);
-
-            Assertions.assertThat(page2.getContent()).isNotEmpty();
-            Assertions.assertThat(page2.hasContent()).isTrue();
-            Assertions.assertThat(page2.getNumberOfElements()).isEqualTo(100);
-
-            Assertions.assertThat(page2.hasPrevious()).isFalse();
-            Assertions.assertThat(page2.hasNext()).isFalse();
-            Assertions.assertThat(page2.isFirst()).isTrue();
-            Assertions.assertThat(page2.isLast()).isTrue();
-
-            Assertions.assertThat(page2.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getPageSize()).isEqualTo(100);
-            Assertions.assertThat(page2.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page2.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页
-            PageImpl<Integer> page3 = PageImpl.of(data, 1, 10, 100);
-
-            Assertions.assertThat(page3.getNumber()).isEqualTo(1);
-            Assertions.assertThat(page3.getSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getSort()).isEmpty();
-            Assertions.assertThat(page3.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page3.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page3.getContent()).isNotEmpty();
-            Assertions.assertThat(page3.hasContent()).isTrue();
-            Assertions.assertThat(page3.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page3.hasPrevious()).isFalse();
-            Assertions.assertThat(page3.hasNext()).isTrue();
-            Assertions.assertThat(page3.isFirst()).isTrue();
-            Assertions.assertThat(page3.isLast()).isFalse();
-
-            Assertions.assertThat(page3.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page3.getPageable().getOffset()).isEqualTo(0);
-            Assertions.assertThat(page3.getPageable().getSort()).isEmpty();
-
-            // 数据总量超过一页，并且为最后一页
-            PageImpl<Integer> page4 = new PageImpl<>(data, 10, 10, 100);
-
-            Assertions.assertThat(page4.getNumber()).isEqualTo(10);
-            Assertions.assertThat(page4.getSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getSort()).isEmpty();
-            Assertions.assertThat(page4.getTotal()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalElements()).isEqualTo(100L);
-            Assertions.assertThat(page4.getTotalPages()).isEqualTo(10);
-
-            Assertions.assertThat(page4.getContent()).isNotEmpty();
-            Assertions.assertThat(page4.hasContent()).isTrue();
-            Assertions.assertThat(page4.getNumberOfElements()).isEqualTo(10);
-
-            Assertions.assertThat(page4.hasPrevious()).isTrue();
-            Assertions.assertThat(page4.hasNext()).isFalse();
-            Assertions.assertThat(page4.isFirst()).isFalse();
-            Assertions.assertThat(page4.isLast()).isTrue();
-
-            Assertions.assertThat(page4.getPageable().getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(page4.getPageable().getPageSize()).isEqualTo(10);
-            Assertions.assertThat(page4.getPageable().getOffset()).isEqualTo(90);
-            Assertions.assertThat(page4.getPageable().getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(REQUEST_FIRST_PAGE);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
     }
@@ -901,7 +206,7 @@ public class PageImplTests {
         @Test
         @DisplayName("map 方法")
         public void testMap() {
-            PageImpl<Integer> pageImpl = PageImpl.of(data, PageQuery.of(1, 10));
+            PageImpl<Integer> pageImpl = PageImpl.of(DATA, PageQuery.of(1, 10));
 
             Page<Long> page = pageImpl.map(value -> {
                 if (value == null) {
@@ -911,7 +216,7 @@ public class PageImplTests {
             });
 
             Assertions.assertThat(page.getNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getSize()).isEqualTo(10);
+            Assertions.assertThat(page.getSize()).isEqualTo(SIZE);
             Assertions.assertThat(page.getSort()).isEmpty();
             Assertions.assertThat(page.getTotalElements()).isEqualTo(100L);
             Assertions.assertThat(page.getTotalPages()).isEqualTo(10);
@@ -926,60 +231,214 @@ public class PageImplTests {
             Assertions.assertThat(page.isLast()).isFalse();
 
             Assertions.assertThat(page.getPageable().getPageNumber()).isEqualTo(0);
-            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(10);
+            Assertions.assertThat(page.getPageable().getPageSize()).isEqualTo(SIZE);
             Assertions.assertThat(page.getPageable().getOffset()).isEqualTo(0);
             Assertions.assertThat(page.getPageable().getSort()).isEmpty();
         }
 
+    }
+
+    @Nested
+    @DisplayName("模拟翻页")
+    class PagingTest {
+
         @Test
-        @DisplayName("getPageable 方法")
-        public void testGetPageable() {
-            PageImpl<Integer> page1 = PageImpl.of(data, PageQuery.of(1, 10), 100);
-            Pageable previousPageable1 = page1.previousPageable();
-            Assertions.assertThat(previousPageable1).isEqualTo(Pageable.unpaged());
-            Pageable nextPageable1 = page1.nextPageable();
-            Assertions.assertThat(nextPageable1.getPageNumber()).isEqualTo(1);
-            Assertions.assertThat(nextPageable1.getPageNumber()).isEqualTo(1);
-            Assertions.assertThat(nextPageable1.getPageSize()).isEqualTo(10);
-            Assertions.assertThat(nextPageable1.getOffset()).isEqualTo(10);
-            Assertions.assertThat(nextPageable1.getSort()).isEmpty();
+        @DisplayName("第一页")
+        public void test01() {
 
-            PageImpl<Integer> page2 = PageImpl.of(data, PageQuery.of(10, 10), 100);
-            Pageable nextPageable2 = page2.nextPageable();
-            Assertions.assertThat(nextPageable2).isEqualTo(Pageable.unpaged());
-            Pageable pageable2 = page2.getPageable();
-            Assertions.assertThat(pageable2.getPageNumber()).isEqualTo(9);
-            Assertions.assertThat(pageable2.getPageSize()).isEqualTo(10);
-            Assertions.assertThat(pageable2.getOffset()).isEqualTo(90);
-            Assertions.assertThat(pageable2.getSort()).isEmpty();
+            int page = 1;
+            List<Integer> list = getDataByPage(page);
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), TOTAL);
+
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(page);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
+
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(false);
+
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(page - 1);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
 
-    }
+        @Test
+        @DisplayName("最后一页")
+        public void test02() {
 
-    @Test
-    @DisplayName("hasPrevious 和 hasNext 方法")
-    public void testHasPreviousAndHasNext() {
-        PageImpl<Integer> page = PageImpl.of(data, 1, 10, 100);
-        Assertions.assertThat(page.hasPrevious()).isFalse();
-        Assertions.assertThat(page.hasNext()).isTrue();
+            int page = 10;
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+            int offset = (page - 1) * SIZE;
+            List<Integer> list = getDataByPage(page);
 
-        PageImpl<Integer> page2 = PageImpl.of(data, 5, 10, 100);
-        Assertions.assertThat(page2.hasPrevious()).isTrue();
-        Assertions.assertThat(page2.hasNext()).isTrue();
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), TOTAL);
 
-        PageImpl<Integer> page3 = PageImpl.of(data, 10, 10, 100);
-        Assertions.assertThat(page3.hasPrevious()).isTrue();
-        Assertions.assertThat(page3.hasNext()).isFalse();
-    }
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(page);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
 
-    @Test
-    @DisplayName("previous 方法")
-    public void testPrevious() {
-        PageQuery query = new PageQuery(10, 10);
-        for (int i = 9; i > 1; i--) {
-            query = query.previous();
-            Assertions.assertThat(query.getPage()).isEqualTo(i);
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(false);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(true);
+
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(page - 1);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(offset);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
         }
+
+        @Test
+        @DisplayName("中间页")
+        public void test03() {
+
+            int page = 5;
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+            int offset = (page - 1) * SIZE;
+            List<Integer> list = getDataByPage(page);
+
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), TOTAL);
+
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(page);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
+
+            Assertions.assertThat(pageImpl.getContent()).isNotEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isTrue();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(10);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(true);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(true);
+
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(page - 1);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(offset);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("不存在的页")
+        public void test04() {
+
+            int page = 11;
+            int totalPages = TOTAL / SIZE + (TOTAL % SIZE == 0 ? 0 : 1);
+            int offset = (page - 1) * SIZE;
+
+            PageImpl<Integer> pageImpl = PageImpl.of(new ArrayList<>(), PageQuery.of(page, SIZE), TOTAL);
+
+            Assertions.assertThat(pageImpl.getNumber()).isEqualTo(page);
+            Assertions.assertThat(pageImpl.getSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getSort()).isEmpty();
+            Assertions.assertThat(pageImpl.getTotal()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalElements()).isEqualTo(TOTAL);
+            Assertions.assertThat(pageImpl.getTotalPages()).isEqualTo(totalPages);
+
+            Assertions.assertThat(pageImpl.getContent()).isEmpty();
+            Assertions.assertThat(pageImpl.hasContent()).isFalse();
+            Assertions.assertThat(pageImpl.getNumberOfElements()).isEqualTo(0);
+            Assertions.assertThat(pageImpl.hasNext()).isEqualTo(false);
+            Assertions.assertThat(pageImpl.hasPrevious()).isEqualTo(true);
+
+            Assertions.assertThat(pageImpl.getPageable().getPageNumber()).isEqualTo(page - 1);
+            Assertions.assertThat(pageImpl.getPageable().getPageSize()).isEqualTo(SIZE);
+            Assertions.assertThat(pageImpl.getPageable().getOffset()).isEqualTo(offset);
+            Assertions.assertThat(pageImpl.getPageable().getSort()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("hasPrevious 和 hasNext 方法")
+        public void testHasPreviousAndHasNext() {
+
+            PageImpl<Integer> page1 = PageImpl.of(getDataByPage(1), 1, 10, 100);
+            Assertions.assertThat(page1.hasPrevious()).isFalse();
+            Assertions.assertThat(page1.hasNext()).isTrue();
+            Assertions.assertThat(page1.hasContent()).isTrue();
+            Assertions.assertThat(page1.isFirst()).isEqualTo(true);
+            Assertions.assertThat(page1.isLast()).isEqualTo(false);
+
+            PageImpl<Integer> page5 = PageImpl.of(getDataByPage(5), 5, 10, 100);
+            Assertions.assertThat(page5.hasPrevious()).isTrue();
+            Assertions.assertThat(page5.hasNext()).isTrue();
+            Assertions.assertThat(page5.hasContent()).isTrue();
+            Assertions.assertThat(page5.isFirst()).isEqualTo(false);
+            Assertions.assertThat(page5.isLast()).isEqualTo(false);
+
+            PageImpl<Integer> page9 = PageImpl.of(getDataByPage(9), 9, 10, 100);
+            Assertions.assertThat(page9.hasPrevious()).isTrue();
+            Assertions.assertThat(page9.hasNext()).isTrue();
+            Assertions.assertThat(page9.hasContent()).isTrue();
+            Assertions.assertThat(page9.isFirst()).isEqualTo(false);
+            Assertions.assertThat(page9.isLast()).isEqualTo(false);
+
+            PageImpl<Integer> page10 = PageImpl.of(getDataByPage(10), 10, 10, 100);
+            Assertions.assertThat(page10.hasPrevious()).isTrue();
+            Assertions.assertThat(page10.hasNext()).isFalse();
+            Assertions.assertThat(page10.hasContent()).isTrue();
+            Assertions.assertThat(page10.isFirst()).isEqualTo(false);
+            Assertions.assertThat(page10.isLast()).isEqualTo(true);
+
+            PageImpl<Integer> page11 = PageImpl.of(getDataByPage(11), 11, 10, 100);
+            Assertions.assertThat(page11.hasPrevious()).isTrue();
+            Assertions.assertThat(page11.hasNext()).isFalse();
+            Assertions.assertThat(page11.hasContent()).isFalse();
+            Assertions.assertThat(page11.isFirst()).isEqualTo(false);
+            Assertions.assertThat(page11.isLast()).isEqualTo(true);
+
+            PageImpl<Integer> page12 = PageImpl.of(getDataByPage(12), 12, 10, 100);
+            Assertions.assertThat(page12.hasPrevious()).isFalse();
+            Assertions.assertThat(page12.hasNext()).isFalse();
+            Assertions.assertThat(page12.hasContent()).isFalse();
+            Assertions.assertThat(page12.isFirst()).isEqualTo(false);
+            Assertions.assertThat(page12.isLast()).isEqualTo(true);
+        }
+
+        @Test
+        @DisplayName("模拟向前翻页")
+        public void testPrevious() {
+            int page = 11;
+            List<Integer> list = getDataByPage(page);
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), DATA.size());
+            System.out.println(StrUtil.format("[{}] list: {}", page, list));
+
+            while (pageImpl.hasPrevious()) {
+                page -= 1;
+                list = getDataByPage(page);
+                pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), DATA.size());
+                System.out.println(StrUtil.format("[{}] list: {}", page, list));
+            }
+        }
+
+        @Test
+        @DisplayName("模拟根据 hasNext 翻页")
+        public void testNext() {
+            int page = 1;
+            List<Integer> list = getDataByPage(page);
+            PageImpl<Integer> pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), DATA.size());
+            System.out.println(StrUtil.format("[{}] list: {}", page, list));
+
+            while (pageImpl.hasNext()) {
+                page += 1;
+                list = getDataByPage(page);
+                pageImpl = PageImpl.of(list, PageQuery.of(page, SIZE), DATA.size());
+                System.out.println(StrUtil.format("[{}] list: {}", page, list));
+            }
+        }
+
     }
 
     @Test
@@ -991,6 +450,15 @@ public class PageImplTests {
         PageQuery query = new PageQuery(1, 10, orders);
         Assertions.assertThat(query.getOrderClause()).isEqualTo("id,asc;update_time,desc");
         System.out.println(query.getOrderClause());
+    }
+
+    private static List<Integer> getDataByPage(int page) {
+        List<List<Integer>> groupList = CollectionUtil.split(DATA, SIZE);
+        int totalPages = groupList.size();
+        if (page > totalPages || page <= 0) {
+            return new ArrayList<>();
+        }
+        return groupList.get(page - 1);
     }
 
 }

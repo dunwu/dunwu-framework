@@ -37,7 +37,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
      * 默认构造器方法
      */
     public PageImpl() {
-        init(new ArrayList<>(), PageQuery.of(1, 10), 0L);
+        init(new ArrayList<>(), PageQuery.of(PageQuery.FIRST_PAGE, PageQuery.DEFAULT_SIZE), 0L);
     }
 
     /**
@@ -101,9 +101,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
 
     private void init(List<T> content, PageRequest pageRequest, long total) {
 
-        if (pageRequest == null) {
-            throw new IllegalArgumentException("PageRequest must not be null!");
-        }
+        Assert.notNull(pageRequest, "PageRequest must not be null!");
 
         final List<T> list;
         if (content == null) {
@@ -162,18 +160,20 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
 
     @Override
     public boolean hasNext() {
-        return this.getNumber() + 1 < this.getTotalPages();
+        return this.getNumber() < this.getTotalPages();
     }
 
     @Override
     public boolean hasPrevious() {
-        return this.getNumber() > 1;
+        return (this.getNumber() > PageQuery.FIRST_PAGE) && (this.getNumber() <= this.getTotalPages() + 1);
     }
 
+    @Override
     public boolean isFirst() {
-        return !this.hasPrevious();
+        return this.getNumber() == PageQuery.FIRST_PAGE;
     }
 
+    @Override
     public boolean isLast() {
         return !this.hasNext();
     }
@@ -219,11 +219,16 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
             this.total);
     }
 
+    public PageQuery getPageQuery() {
+        return pageQuery;
+    }
+
     protected <U> List<U> getConvertedContent(Function<? super T, ? extends U> converter) {
         Assert.notNull(converter, "Function must not be null!");
         return this.stream().map(converter::apply).collect(Collectors.toList());
     }
 
+    @Override
     public String toString() {
         String contentType = "UNKNOWN";
         List<T> content = this.getContent();
@@ -235,6 +240,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
             contentType);
     }
 
+    @Override
     public boolean equals(@Nullable Object obj) {
         if (this == obj) {
             return true;
@@ -246,6 +252,7 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
         }
     }
 
+    @Override
     public int hashCode() {
         int result = 17;
         result += 31 * (int) (this.total ^ this.total >>> 32);
@@ -254,15 +261,15 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
     }
 
     public static <T> PageImpl<T> of() {
-        return new PageImpl<>(new ArrayList<>(), PageQuery.of(1, 10), 0);
+        return of(new ArrayList<>(), PageQuery.FIRST_PAGE, PageQuery.DEFAULT_SIZE, 0);
+    }
+
+    public static <T> PageImpl<T> of(List<T> content, int page, int size, long total) {
+        return of(content, PageQuery.of(page, size), total);
     }
 
     public static <T> PageImpl<T> of(List<T> content, PageQuery pageQuery) {
-        return new PageImpl<>(content, pageQuery);
-    }
-
-    public static <T> PageImpl<T> of(List<T> content, Pageable pageable) {
-        return new PageImpl<>(content, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return of(content, pageQuery, 0L);
     }
 
     public static <T> PageImpl<T> of(List<T> content, PageQuery pageQuery, long total) {
@@ -272,12 +279,12 @@ public class PageImpl<T> implements Page<T>, Slice<T>, Serializable {
         return new PageImpl<>(content, pageRequest, total);
     }
 
-    public static <T> PageImpl<T> of(List<T> content, Pageable pageable, long total) {
-        return new PageImpl<>(content, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), total);
+    public static <T> PageImpl<T> of(List<T> content, Pageable pageable) {
+        return of(content, pageable, 0L);
     }
 
-    public static <T> PageImpl<T> of(List<T> content, int page, int size, long total) {
-        return new PageImpl<>(content, PageQuery.of(page, size), total);
+    public static <T> PageImpl<T> of(List<T> content, Pageable pageable, long total) {
+        return new PageImpl<>(content, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), total);
     }
 
     public static <T> PageImpl<T> of(Page<T> page) {
