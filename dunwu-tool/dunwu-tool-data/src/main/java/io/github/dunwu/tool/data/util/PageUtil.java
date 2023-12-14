@@ -5,12 +5,16 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
-import io.github.dunwu.tool.data.PageQuery;
+import io.github.dunwu.tool.data.request.PageQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 分页工具类

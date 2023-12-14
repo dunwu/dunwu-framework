@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.request;
 
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;

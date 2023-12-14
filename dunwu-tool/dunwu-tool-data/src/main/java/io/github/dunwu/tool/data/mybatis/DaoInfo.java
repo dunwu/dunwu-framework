@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * Dao 信息实体
  *
- * @author 11123558
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @date 2022-12-14
  */
 @Data

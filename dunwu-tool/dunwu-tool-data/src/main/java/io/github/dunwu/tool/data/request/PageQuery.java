@@ -1,10 +1,11 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.request;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
+import io.github.dunwu.tool.data.response.Order;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,7 @@ public class PageQuery implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final int FIRST_PAGE = 1;
+
     public static final int DEFAULT_SIZE = 10;
 
     /**

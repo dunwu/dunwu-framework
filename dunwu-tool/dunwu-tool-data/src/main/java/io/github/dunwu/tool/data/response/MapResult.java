@@ -1,11 +1,12 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.response;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,7 +20,8 @@ import java.util.Map;
  */
 @Data
 @ToString
-public class MapResult<K, V> extends Result implements Status, Serializable {
+@Accessors(chain = true)
+public class MapResult<K, V> extends Result implements CodeMsg, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,39 +54,39 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link MapResult}
+     * 根据 {@link CodeMsg} 构造 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      */
-    public MapResult(final Status status) {
-        this(status.getCode(), status.getMsg(), null, null);
+    public MapResult(final CodeMsg codeMsg) {
+        this(codeMsg.getCode(), codeMsg.getMsg(), null, null);
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link MapResult}
+     * 根据 {@link CodeMsg} 构造 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      */
-    public MapResult(final Status status, final String msg) {
-        this(status.getCode(), msg, null, null);
+    public MapResult(final CodeMsg codeMsg, final String msg) {
+        this(codeMsg.getCode(), msg, null, null);
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link MapResult}
+     * 根据 {@link CodeMsg} 构造 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param toast  提示信息
      */
-    public MapResult(final Status status, final String msg, final String toast) {
-        this(status.getCode(), msg, toast, null);
+    public MapResult(final CodeMsg codeMsg, final String msg, final String toast) {
+        this(codeMsg.getCode(), msg, toast, null);
     }
 
     /**
      * 构造 {@link MapResult}
      *
-     * @param code 状态码 {@link Status}
+     * @param code 状态码 {@link CodeMsg}
      * @param msg  响应信息
      */
     public MapResult(final int code, final String msg) {
@@ -104,7 +106,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     /**
      * 构造 {@link MapResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      */
@@ -115,7 +117,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     /**
      * 构造 {@link MapResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      * @param data  数据实体
@@ -139,48 +141,48 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link MapResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param <K>    Key 数据类型
      * @param <V>    Value 数据类型
      * @return {@link MapResult}
      */
-    public static <K, V> MapResult<K, V> fail(final Status status) {
-        return new MapResult<>(status);
+    public static <K, V> MapResult<K, V> fail(final CodeMsg codeMsg) {
+        return new MapResult<>(codeMsg);
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link MapResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param <K>    Key 数据类型
      * @param <V>    Value 数据类型
      * @return {@link MapResult}
      */
-    public static <K, V> MapResult<K, V> fail(final Status status, final String msg) {
-        return new MapResult<>(status.getCode(), msg);
+    public static <K, V> MapResult<K, V> fail(final CodeMsg codeMsg, final String msg) {
+        return new MapResult<>(codeMsg.getCode(), msg);
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link MapResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link MapResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param toast  提示信息
      * @param <K>    Key 数据类型
      * @param <V>    Value 数据类型
      * @return {@link MapResult}
      */
-    public static <K, V> MapResult<K, V> fail(final Status status, final String msg, final String toast) {
-        return new MapResult<>(status.getCode(), msg, toast);
+    public static <K, V> MapResult<K, V> fail(final CodeMsg codeMsg, final String msg, final String toast) {
+        return new MapResult<>(codeMsg.getCode(), msg, toast);
     }
 
     /**
      * 根据参数返回失败的 {@link MapResult}
      *
-     * @param code 状态码 {@link Status}
+     * @param code 状态码 {@link CodeMsg}
      * @param msg  响应信息
      * @param <K>  Key 数据类型
      * @param <V>  Value 数据类型
@@ -193,7 +195,7 @@ public class MapResult<K, V> extends Result implements Status, Serializable {
     /**
      * 根据参数返回失败的 {@link MapResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      * @param <K>   Key 数据类型

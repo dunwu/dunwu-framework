@@ -1,36 +1,44 @@
 package io.github.dunwu.tool.io;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.system.SystemUtil;
+import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.exception.DefaultException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
+ * 文件工具类
+ *
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-04-08
  */
+@Slf4j
 public class FileUtil extends cn.hutool.core.io.FileUtil {
 
-    /**
-     * 文件分隔符
-     */
-    public static final String FILE_SEPARATOR = SystemUtil.get(SystemUtil.FILE_SEPARATOR);
+    private static final Set<String> ALLOW_TYPES =
+        Stream.of("bmp,jpg,png,gif,jpeg").collect(Collectors.toSet());
+
     /**
      * 系统临时目录
      * <br>
@@ -61,63 +69,73 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     public static final String TEXT_SPLIT_CHAR = ",";
 
-    public static final String IMAGE = "图片";
-    public static final String TXT = "文档";
-    public static final String MUSIC = "音乐";
-    public static final String VIDEO = "视频";
-    public static final String OTHER = "其他";
-
     /**
-     * 读取文件所有数据<br> 文件的长度不能超过Integer.MAX_VALUE
+     * 获取文件的扩展类型
      *
-     * @param filePath 文件路径
-     * @return 字节码
-     * @throws IORuntimeException IO异常
-     * @since 3.2.0
+     * @param filename 文件名
+     * @return 返回文件类型，形式如：jpg、txt、png
      */
-    public static byte[] readBytes(String filePath) throws IORuntimeException {
-        return readBytes(file(filePath));
+    public static String getExtension(String filename) {
+        return getExtension(filename, false);
     }
 
     /**
-     * 读取文件所有数据<br> 文件的长度不能超过Integer.MAX_VALUE
+     * 获取文件的扩展类型
      *
-     * @param file 文件
-     * @return 字节码
-     * @throws IORuntimeException IO异常
+     * @param filename 文件名
+     * @param withDot  是否包含 .
+     * @return 返回文件类型，形式如：.jpg、.txt、.png
      */
-    public static byte[] readBytes(File file) throws IORuntimeException {
-        return FileReader.create(file).readBytes();
-    }
-
-    /**
-     * 获取文件扩展名，不带 .
-     */
-    public static String getExtensionName(String filename) {
+    public static String getExtension(String filename, boolean withDot) {
         if ((filename != null) && (filename.length() > 0)) {
             int dot = filename.lastIndexOf('.');
             if ((dot > -1) && (dot < (filename.length() - 1))) {
-                return filename.substring(dot + 1);
+                if (withDot) {
+                    return filename.substring(dot);
+                } else {
+                    return filename.substring(dot + 1);
+                }
             }
         }
         return filename;
     }
 
     /**
-     * Java文件操作 获取不带扩展名的文件名
+     * 获取网络资源文件后缀
+     *
+     * @param url 网络资源地址
+     * @return 返回文件类型，形式如：jpg、txt、png
      */
-    public static String getFileNameNoEx(String filename) {
-        if ((filename != null) && (filename.length() > 0)) {
-            int dot = filename.lastIndexOf('.');
-            if ((dot > -1) && (dot < (filename.length()))) {
-                return filename.substring(0, dot);
-            }
-        }
-        return filename;
+    public static String getExtensionFromUrl(String url) throws DefaultException {
+        return getExtensionFromUrl(url, false);
     }
 
     /**
-     * 文件大小转换
+     * 获取网络资源文件后缀
+     *
+     * @param url     网络资源地址
+     * @param withDot 是否包含 .
+     * @return 返回文件类型，形式如：.jpg、.txt、.png
+     */
+    public static String getExtensionFromUrl(String url, boolean withDot) throws DefaultException {
+
+        if (StrUtil.isBlank(url)) {
+            throw new DefaultException(ResultStatus.PARAMS_ERROR, "url 不能为空！");
+        }
+
+        String realUrl;
+        int end = url.lastIndexOf("?");
+        if (end != -1) {
+            realUrl = url.substring(0, end);
+        } else {
+            realUrl = url;
+        }
+
+        return getExtension(realUrl, withDot);
+    }
+
+    /**
+     * 文件大小格式化转换
      */
     public static String getFormatSize(long size) {
         String resultSize;
@@ -137,22 +155,21 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     }
 
     /**
-     * inputStream 转 File
+     * 根据 InputStream 获取 File 对象
+     *
+     * @param is   InputStream 对象
+     * @param name 文件名
+     * @return /
      */
-    static File inputStreamToFile(InputStream ins, String name) throws Exception {
+    static File toFile(InputStream is, String name) throws FileNotFoundException {
         File file = new File(SYS_TEM_DIR + name);
         if (file.exists()) {
             return file;
         }
         OutputStream os = new FileOutputStream(file);
-        int bytesRead;
-        int len = 8192;
-        byte[] buffer = new byte[len];
-        while ((bytesRead = ins.read(buffer, 0, len)) != -1) {
-            os.write(buffer, 0, bytesRead);
-        }
-        os.close();
-        ins.close();
+        IoUtil.copy(is, os);
+        IoUtil.close(os);
+        IoUtil.close(is);
         return file;
     }
 
@@ -160,21 +177,20 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * 获取指定路径下所有特定类型的文件
      *
      * @param path        根目录
-     * @param ignoredDirs 忽略的目录
      * @param ext         文件类型后缀名
+     * @param ignoredDirs 忽略的目录
      * @return 子文件列表
      */
-    public static List<File> getAllExtFiles(String path, String[] ignoredDirs, String ext) {
+    public static List<File> getFiles(String path, String ext, String... ignoredDirs) {
         List<File> files = new ArrayList<>();
         getChildrenFiles(path, ignoredDirs, ext, files);
         if (CollectionUtil.isNotEmpty(files)) {
             return files.stream().distinct().collect(Collectors.toList());
         }
-
         return files;
     }
 
-    static void getChildrenFiles(String path, String[] blackList, String ext, List<File> resultFiles) {
+    private static void getChildrenFiles(String path, String[] blackList, String ext, List<File> resultFiles) {
         File file = new File(path);
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -186,7 +202,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                         }
                         getChildrenFiles(f.getAbsolutePath(), blackList, ext, resultFiles);
                     } else {
-                        String extensionName = getExtensionName(f.getName());
+                        String extensionName = getExtension(f.getName());
                         if (ext.equalsIgnoreCase(extensionName)) {
                             resultFiles.add(f);
                         }
@@ -194,7 +210,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                 }
             }
         } else {
-            String extensionName = getExtensionName(file.getName());
+            String extensionName = getExtension(file.getName());
             if (ext.equalsIgnoreCase(extensionName)) {
                 resultFiles.add(file);
             }
@@ -253,6 +269,97 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             IoUtil.close(output);
             IoUtil.close(reader);
         }
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param url      网络资源 URL
+     * @param dirPath  下载存放的本地目录
+     * @param fileName 下载的文件名
+     * @return /
+     */
+    public static File download(String url, String dirPath, String fileName) throws IOException {
+
+        String path = null;
+        try {
+            path = FileUtil.getValidPath(dirPath, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            boolean isOk = dir.mkdirs();
+            if (!isOk) {
+                throw new IOException("dir " + dirPath + " is not exists and try to create it failed.");
+            }
+        }
+
+        File file = new File(path);
+        InputStream inputStream = null;
+        FileOutputStream fos = null;
+        try {
+            URL httpUrl = new URL(url);
+            inputStream = httpUrl.openStream();
+            fos = new FileOutputStream(file);
+            IoUtil.copy(inputStream, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IoUtil.close(fos);
+            IoUtil.close(inputStream);
+        }
+        return file;
+    }
+
+    public static File download(String url) throws IOException {
+        String extension = getExtensionFromUrl(url, true);
+        String filename = IdUtil.fastSimpleUUID() + extension;
+        return download(url, SYS_TEM_DIR, filename);
+    }
+
+    public static String getValidPath(String dirPath, String fileName) throws IOException, IllegalAccessException {
+
+        StringBuilder sb = new StringBuilder();
+
+        if (StrUtil.isNotBlank(dirPath)) {
+            sb.append(dirPath);
+        }
+        if (StrUtil.isNotBlank(fileName)) {
+            sb.append(fileName);
+        }
+
+        String path = sb.toString();
+        if (path.contains("..")) {
+            path = path.replaceAll("..", "");
+        }
+        try {
+            path = new File(path).getCanonicalPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        String suffix = getExtensionFromUrl(path);
+        if (StrUtil.isNotBlank(suffix)) {
+            suffix = suffix.toLowerCase();
+        }
+        if (!ALLOW_TYPES.contains(suffix)) {
+            throw new IllegalAccessException("文件后缀不合法");
+        }
+        return path;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        for (int i = 1; i <= 4; i++) {
+            FileUtil.binaryToText(StrUtil.format("F:\\Output\\backup.part0{}.rar", i),
+                StrUtil.format("F:\\Output\\temp{}.txt", i));
+        }
+        FileUtil.binaryToText("F:\\Output\\Output.rar", "F:\\Output\\Output.txt");
+        FileUtil.textToBinary("D:\\Output\\note.txt", "D:\\Output\\note.rar");
     }
 
 }

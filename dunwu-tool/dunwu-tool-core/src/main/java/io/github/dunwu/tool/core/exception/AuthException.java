@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.core.exception;
 
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 
 /**
@@ -16,16 +16,16 @@ public class AuthException extends CodeMsgException {
         this(ResultStatus.AUTH_ERROR);
     }
 
-    public AuthException(Status status) {
-        this(status.getCode(), status.getMsg());
+    public AuthException(CodeMsg codeMsg) {
+        this(codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public AuthException(Status status, String msg) {
-        this(status.getCode(), msg, null);
+    public AuthException(CodeMsg codeMsg, String msg) {
+        this(codeMsg.getCode(), msg, null);
     }
 
-    public AuthException(Status status, String msg, String toast) {
-        this(status.getCode(), msg, toast);
+    public AuthException(CodeMsg codeMsg, String msg, String toast) {
+        this(codeMsg.getCode(), msg, toast);
     }
 
     public AuthException(String msg) {
@@ -48,16 +48,16 @@ public class AuthException extends CodeMsgException {
         this(cause, ResultStatus.AUTH_ERROR, msg);
     }
 
-    public AuthException(Throwable cause, Status status) {
-        this(cause, status.getCode(), status.getMsg());
+    public AuthException(Throwable cause, CodeMsg codeMsg) {
+        this(cause, codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public AuthException(Throwable cause, Status status, String msg) {
-        this(cause, status.getCode(), msg, null);
+    public AuthException(Throwable cause, CodeMsg codeMsg, String msg) {
+        this(cause, codeMsg.getCode(), msg, null);
     }
 
-    public AuthException(Throwable cause, Status status, String msg, String toast) {
-        this(cause, status.getCode(), msg, toast);
+    public AuthException(Throwable cause, CodeMsg codeMsg, String msg, String toast) {
+        this(cause, codeMsg.getCode(), msg, toast);
     }
 
     public AuthException(Throwable cause, int code, String msg) {

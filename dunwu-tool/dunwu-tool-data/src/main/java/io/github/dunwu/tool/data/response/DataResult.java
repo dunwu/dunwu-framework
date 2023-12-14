@@ -1,11 +1,12 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.response;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,7 +19,8 @@ import java.util.Collection;
  */
 @Data
 @ToString
-public class DataResult<T> extends Result implements Status, Serializable {
+@Accessors(chain = true)
+public class DataResult<T> extends Result implements CodeMsg, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,39 +53,39 @@ public class DataResult<T> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link DataResult}
+     * 根据 {@link CodeMsg} 构造 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      */
-    public DataResult(final Status status) {
-        this(status.getCode(), status.getMsg(), null, null);
+    public DataResult(final CodeMsg codeMsg) {
+        this(codeMsg.getCode(), codeMsg.getMsg(), null, null);
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link DataResult}
+     * 根据 {@link CodeMsg} 构造 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      */
-    public DataResult(final Status status, final String msg) {
-        this(status.getCode(), msg, null, null);
+    public DataResult(final CodeMsg codeMsg, final String msg) {
+        this(codeMsg.getCode(), msg, null, null);
     }
 
     /**
-     * 根据 {@link Status} 构造 {@link DataResult}
+     * 根据 {@link CodeMsg} 构造 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param toast  提示信息
      */
-    public DataResult(final Status status, final String msg, final String toast) {
-        this(status.getCode(), msg, toast, null);
+    public DataResult(final CodeMsg codeMsg, final String msg, final String toast) {
+        this(codeMsg.getCode(), msg, toast, null);
     }
 
     /**
      * 构造 {@link DataResult}
      *
-     * @param code 状态码 {@link Status}
+     * @param code 状态码 {@link CodeMsg}
      * @param msg  响应信息
      */
     public DataResult(final int code, final String msg) {
@@ -103,7 +105,7 @@ public class DataResult<T> extends Result implements Status, Serializable {
     /**
      * 构造 {@link DataResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      */
@@ -114,7 +116,7 @@ public class DataResult<T> extends Result implements Status, Serializable {
     /**
      * 构造 {@link DataResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      * @param data  数据实体
@@ -137,45 +139,45 @@ public class DataResult<T> extends Result implements Status, Serializable {
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link DataResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param <T>    数据类型
      * @return {@link DataResult}
      */
-    public static <T> DataResult<T> fail(final Status status) {
-        return new DataResult<>(status);
+    public static <T> DataResult<T> fail(final CodeMsg codeMsg) {
+        return new DataResult<>(codeMsg);
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link DataResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param <T>    数据类型
      * @return {@link DataResult}
      */
-    public static <T> DataResult<T> fail(final Status status, final String msg) {
-        return new DataResult<>(status.getCode(), msg);
+    public static <T> DataResult<T> fail(final CodeMsg codeMsg, final String msg) {
+        return new DataResult<>(codeMsg.getCode(), msg);
     }
 
     /**
-     * 根据 {@link Status} 返回失败的 {@link DataResult}
+     * 根据 {@link CodeMsg} 返回失败的 {@link DataResult}
      *
-     * @param status {@link Status}（应答状态）
+     * @param codeMsg {@link CodeMsg}（应答状态）
      * @param msg    响应信息
      * @param toast  提示信息
      * @param <T>    数据类型
      * @return {@link DataResult}
      */
-    public static <T> DataResult<T> fail(final Status status, final String msg, final String toast) {
-        return new DataResult<>(status.getCode(), msg, toast);
+    public static <T> DataResult<T> fail(final CodeMsg codeMsg, final String msg, final String toast) {
+        return new DataResult<>(codeMsg.getCode(), msg, toast);
     }
 
     /**
      * 根据参数返回失败的 {@link DataResult}
      *
-     * @param code 状态码 {@link Status}
+     * @param code 状态码 {@link CodeMsg}
      * @param msg  响应信息
      * @param <T>  数据类型
      * @return {@link DataResult}
@@ -187,7 +189,7 @@ public class DataResult<T> extends Result implements Status, Serializable {
     /**
      * 根据参数返回失败的 {@link DataResult}
      *
-     * @param code  状态码 {@link Status}
+     * @param code  状态码 {@link CodeMsg}
      * @param msg   响应信息
      * @param toast 提示信息
      * @param <T>   数据类型

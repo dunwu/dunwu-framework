@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateException;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.FileUtil;
 import io.github.dunwu.tool.parser.git.GitUtil;
@@ -13,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -91,8 +94,11 @@ public class MarkdownUtil {
     public static class FrontMatter {
 
         private int startLine;
+
         private int endLine;
+
         private String content;
+
         private List<String> contentLines;
 
     }
@@ -102,41 +108,65 @@ public class MarkdownUtil {
     @NoArgsConstructor
     public static class HexoFrontMatter {
 
+        private static Field[] fields =
+            ReflectUtil.getFields(HexoFrontMatter.class, field -> !Modifier.isStatic(field.getModifiers()));
+
+        private String home;
+
+        private String layout;
+
+        private String icon;
+
         private String title;
+
+        private String heroFullScreen;
+
+        private String heroImage;
+
+        private String heroText;
+
+        private String tagline;
+
+        private String bgImage;
+
+        private String cover;
+
         private String date;
+
+        private String order;
+
         private List<String> categories;
+
         private List<String> tags;
+
         private String permalink;
+
         private String abbrlink;
+
         private String hidden;
+
+        private String index;
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("---").append(separator);
-            if (StrUtil.isNotBlank(title)) {
-                sb.append("title: ").append(title).append(separator);
-            }
-            if (StrUtil.isNotBlank(date)) {
-                sb.append("date: ").append(date).append(separator);
-            }
-            if (CollectionUtil.isNotEmpty(categories)) {
-                sb.append("categories:").append(separator);
-                for (String category : categories) {
-                    sb.append("  - ").append(category).append(separator);
+
+            for (Field f : fields) {
+                if (f.getGenericType() == String.class) {
+                    String value = (String) ReflectUtil.getFieldValue(this, f);
+                    if (StrUtil.isNotBlank(value)) {
+                        sb.append(f.getName() + ": ").append(value).append(separator);
+                    }
+                } else {
+                    List<String> list = (List<String>) ReflectUtil.getFieldValue(this, f);
+                    if (CollectionUtil.isNotEmpty(list)) {
+                        sb.append(f.getName() + ":").append(separator);
+                        for (String value : list) {
+                            sb.append("  - ").append(value).append(separator);
+                        }
+                    }
                 }
-            }
-            if (CollectionUtil.isNotEmpty(tags)) {
-                sb.append("tags:").append(separator);
-                for (String tag : tags) {
-                    sb.append("  - ").append(tag).append(separator);
-                }
-            }
-            if (StrUtil.isNotBlank(permalink)) {
-                sb.append("permalink: ").append(permalink).append(separator);
-            }
-            if (StrUtil.isNotBlank(hidden)) {
-                sb.append("hidden: ").append(hidden).append(separator);
             }
             sb.append("---").append(separator);
             return sb.toString();

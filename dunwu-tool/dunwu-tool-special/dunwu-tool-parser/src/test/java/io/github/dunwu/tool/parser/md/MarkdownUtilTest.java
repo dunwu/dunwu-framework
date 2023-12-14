@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.FileUtil;
 import io.github.dunwu.tool.parser.yaml.YamlUtil;
 import io.github.dunwu.tool.util.RegexUtil;
@@ -30,11 +31,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MarkdownUtilTest {
 
     public static final String MARKDOWN_EXT = "md";
+
     // 忽略的目录
     public static final String[] IGNORED_DIR_LIST = { ".git", ".idea", ".temp", "node_modules", "assets", ".github",
         "scripts", "settings", "scaffolds", "@pages" };
 
     private static final boolean IS_BLOG = false;
+
     private static final int SPAN = 20;
 
     private static final ExecutorService EXECUTOR = ExecutorBuilder.create()
@@ -47,10 +50,10 @@ public class MarkdownUtilTest {
 
     @ParameterizedTest
     @DisplayName("刷新指定项目路径下的md文档的创建时间")
-    @ValueSource(strings = { "D:\\Codes\\zp\\ztutorial\\zp-cs\\waterdrop\\" })
+    @ValueSource(strings = { "D:\\Codes\\zp\\ztutorial\\zpcs\\waterdrop\\" })
     public void test(String projectPath) {
         String docsDir = projectPath + "docs";
-        List<File> files = FileUtil.getAllExtFiles(docsDir, IGNORED_DIR_LIST, MARKDOWN_EXT);
+        List<File> files = FileUtil.getFiles(docsDir, MARKDOWN_EXT, IGNORED_DIR_LIST);
         if (CollectionUtil.isEmpty(files)) {
             return;
         }
@@ -80,7 +83,6 @@ public class MarkdownUtilTest {
                 resolveMarkdownFile(projectPath, f);
             }
         }
-
     }
 
     private static void resolveMarkdownFile(String projectPath, File f) {
@@ -109,6 +111,15 @@ public class MarkdownUtilTest {
 
         if (filename.endsWith("README.md")) {
             hexoFrontMatter.setHidden("true");
+            hexoFrontMatter.setIndex("false");
+        } else {
+            if (StrUtil.isBlank(hexoFrontMatter.getOrder())) {
+                String str = FileUtil.getName(filename);
+                String order = RegexUtil.getFirst(str, "\\d{2}");
+                if (StrUtil.isNotBlank(order)) {
+                    hexoFrontMatter.setOrder(order);
+                }
+            }
         }
 
         // 格式化时间
@@ -126,11 +137,11 @@ public class MarkdownUtilTest {
         }
 
         // 根据是否为 hexo 博客，选择删除 permalink 或 abbrlink 属性
-        // if (IS_BLOG) {
-        //     hexoFrontMatter.setPermalink(null);
-        // } else {
-        //     hexoFrontMatter.setAbbrlink(null);
-        // }
+        if (IS_BLOG) {
+            hexoFrontMatter.setPermalink(null);
+        } else {
+            hexoFrontMatter.setAbbrlink(null);
+        }
 
         List<String> textLines;
         if (frontMatter.getEndLine() != 0) {
@@ -141,6 +152,8 @@ public class MarkdownUtilTest {
 
         List<String> finalLines = new ArrayList<>(hexoFrontMatter.toLines());
         finalLines.addAll(textLines);
+        // int last = finalLines.size() - 1;
+        // String lastLine = finalLines.get(last);
         FileUtil.writeUtf8Lines(finalLines, f);
     }
 
@@ -150,9 +163,13 @@ public class MarkdownUtilTest {
     public static class Task implements Runnable {
 
         private int start;
+
         private int size;
+
         private String projectPath;
+
         private CountDownLatch latch;
+
         private List<File> files;
 
         @Override
@@ -169,6 +186,5 @@ public class MarkdownUtilTest {
         }
 
     }
-
 
 }

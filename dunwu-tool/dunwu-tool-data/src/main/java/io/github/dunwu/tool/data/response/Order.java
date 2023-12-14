@@ -1,4 +1,4 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.response;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;

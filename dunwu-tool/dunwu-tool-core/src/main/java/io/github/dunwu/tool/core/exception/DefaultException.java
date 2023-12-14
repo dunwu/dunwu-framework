@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.core.exception;
 
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 
 /**
@@ -16,16 +16,16 @@ public class DefaultException extends CodeMsgException {
         this(ResultStatus.FAIL);
     }
 
-    public DefaultException(Status status) {
-        this(status.getCode(), status.getMsg());
+    public DefaultException(CodeMsg codeMsg) {
+        this(codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public DefaultException(Status status, String msg) {
-        this(status.getCode(), msg, null);
+    public DefaultException(CodeMsg codeMsg, String msg) {
+        this(codeMsg.getCode(), msg, null);
     }
 
-    public DefaultException(Status status, String msg, String toast) {
-        this(status.getCode(), msg, toast);
+    public DefaultException(CodeMsg codeMsg, String msg, String toast) {
+        this(codeMsg.getCode(), msg, toast);
     }
 
     public DefaultException(String msg) {
@@ -48,16 +48,16 @@ public class DefaultException extends CodeMsgException {
         this(cause, ResultStatus.FAIL, msg);
     }
 
-    public DefaultException(Throwable cause, Status status) {
-        this(cause, status.getCode(), status.getMsg());
+    public DefaultException(Throwable cause, CodeMsg codeMsg) {
+        this(cause, codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public DefaultException(Throwable cause, Status status, String msg) {
-        this(cause, status.getCode(), msg, null);
+    public DefaultException(Throwable cause, CodeMsg codeMsg, String msg) {
+        this(cause, codeMsg.getCode(), msg, null);
     }
 
-    public DefaultException(Throwable cause, Status status, String msg, String toast) {
-        this(cause, status.getCode(), msg, toast);
+    public DefaultException(Throwable cause, CodeMsg codeMsg, String msg, String toast) {
+        this(cause, codeMsg.getCode(), msg, toast);
     }
 
     public DefaultException(Throwable cause, int code, String msg) {

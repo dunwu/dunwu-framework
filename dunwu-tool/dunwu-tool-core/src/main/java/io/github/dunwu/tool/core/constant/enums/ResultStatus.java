@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.core.constant.enums;
 
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 
 import java.util.stream.Stream;
 
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * "https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
  * @since 2019-04-11
  */
-public enum ResultStatus implements Status {
+public enum ResultStatus implements CodeMsg {
 
     OK(0, "成功"),
 

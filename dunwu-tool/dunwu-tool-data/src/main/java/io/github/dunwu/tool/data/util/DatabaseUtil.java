@@ -2,12 +2,13 @@ package io.github.dunwu.tool.data.util;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.data.PageImpl;
 import io.github.dunwu.tool.data.entity.TableColumnInfo;
 import io.github.dunwu.tool.data.entity.TableInfo;
+import io.github.dunwu.tool.data.response.PageImpl;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.springframework.data.domain.PageRequest;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class DatabaseUtil {
                                                          .fetchInto(TableInfo.class));
 
         // 组装分页展示数据
-        return new PageImpl<>(list, page, size, total);
+        return PageImpl.of(list, PageRequest.of(page, size), total);
     }
 
 }

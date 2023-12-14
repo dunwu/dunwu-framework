@@ -28,7 +28,7 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import io.github.dunwu.tool.data.PageResult;
+import io.github.dunwu.tool.data.response.PageResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;

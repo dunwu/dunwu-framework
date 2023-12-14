@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.data.mybatis;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.github.dunwu.tool.data.PageQuery;
+import io.github.dunwu.tool.data.request.PageQuery;
 import io.github.dunwu.tool.data.util.PageUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

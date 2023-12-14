@@ -1,6 +1,7 @@
-package io.github.dunwu.tool.data;
+package io.github.dunwu.tool.data.response;
 
 import cn.hutool.core.collection.CollectionUtil;
+import io.github.dunwu.tool.data.request.PageQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

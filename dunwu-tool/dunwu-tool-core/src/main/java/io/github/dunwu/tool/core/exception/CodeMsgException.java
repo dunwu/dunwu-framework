@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.core.exception;
 
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.core.constant.Status;
+import io.github.dunwu.tool.core.constant.CodeMsg;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 
 /**
@@ -9,7 +9,7 @@ import io.github.dunwu.tool.core.constant.enums.ResultStatus;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2021-09-25
  */
-public class CodeMsgException extends RuntimeException implements Status {
+public class CodeMsgException extends RuntimeException implements CodeMsg {
 
     private static final long serialVersionUID = 6146660782281445735L;
 
@@ -32,16 +32,16 @@ public class CodeMsgException extends RuntimeException implements Status {
         this(ResultStatus.FAIL);
     }
 
-    public CodeMsgException(Status status) {
-        this(status.getCode(), status.getMsg());
+    public CodeMsgException(CodeMsg codeMsg) {
+        this(codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public CodeMsgException(Status status, String msg) {
-        this(status.getCode(), msg, null);
+    public CodeMsgException(CodeMsg codeMsg, String msg) {
+        this(codeMsg.getCode(), msg, null);
     }
 
-    public CodeMsgException(Status status, String msg, String toast) {
-        this(status.getCode(), msg, toast);
+    public CodeMsgException(CodeMsg codeMsg, String msg, String toast) {
+        this(codeMsg.getCode(), msg, toast);
     }
 
     public CodeMsgException(String msg) {
@@ -67,16 +67,16 @@ public class CodeMsgException extends RuntimeException implements Status {
         this(cause, ResultStatus.FAIL, msg);
     }
 
-    public CodeMsgException(Throwable cause, Status status) {
-        this(cause, status.getCode(), status.getMsg());
+    public CodeMsgException(Throwable cause, CodeMsg codeMsg) {
+        this(cause, codeMsg.getCode(), codeMsg.getMsg());
     }
 
-    public CodeMsgException(Throwable cause, Status status, String msg) {
-        this(cause, status.getCode(), msg, null);
+    public CodeMsgException(Throwable cause, CodeMsg codeMsg, String msg) {
+        this(cause, codeMsg.getCode(), msg, null);
     }
 
-    public CodeMsgException(Throwable cause, Status status, String msg, String toast) {
-        this(cause, status.getCode(), msg, toast);
+    public CodeMsgException(Throwable cause, CodeMsg codeMsg, String msg, String toast) {
+        this(cause, codeMsg.getCode(), msg, toast);
     }
 
     public CodeMsgException(Throwable cause, int code, String msg) {

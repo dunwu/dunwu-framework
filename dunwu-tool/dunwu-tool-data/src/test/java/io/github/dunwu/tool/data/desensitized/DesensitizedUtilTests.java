@@ -1,12 +1,12 @@
 package io.github.dunwu.tool.data.desensitized;
 
 import cn.hutool.json.JSONUtil;
-import io.github.dunwu.tool.data.PageImpl;
-import io.github.dunwu.tool.data.PageQuery;
-import io.github.dunwu.tool.data.Result;
 import io.github.dunwu.tool.data.desensitized.annotation.Desensitized;
 import io.github.dunwu.tool.data.desensitized.annotation.NeedDesensitized;
 import io.github.dunwu.tool.data.desensitized.constant.SensitiveTypeEnum;
+import io.github.dunwu.tool.data.request.PageQuery;
+import io.github.dunwu.tool.data.response.PageImpl;
+import io.github.dunwu.tool.data.response.Result;
 import io.github.dunwu.tool.io.AnsiColorUtil;
 import lombok.Builder;
 import lombok.Data;
