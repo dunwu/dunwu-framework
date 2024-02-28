@@ -1,7 +1,7 @@
 package ${package.Controller};
 
 import io.github.dunwu.tool.data.DataListResult;
-import io.github.dunwu.tool.data.DataResult;
+import io.github.dunwu.tool.data.response.DataResult;
 import io.github.dunwu.tool.data.PageResult;
 import io.github.dunwu.tool.data.validator.annotation.AddCheck;
 import io.github.dunwu.tool.data.validator.annotation.EditCheck;
