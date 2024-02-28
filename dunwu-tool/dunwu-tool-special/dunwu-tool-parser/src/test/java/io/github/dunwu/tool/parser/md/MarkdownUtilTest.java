@@ -12,12 +12,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,7 +40,7 @@ public class MarkdownUtilTest {
     public static final String[] IGNORED_DIR_LIST = { ".git", ".idea", ".temp", "node_modules", "assets", ".github",
         "scripts", "settings", "scaffolds", "@pages" };
 
-    private static final boolean IS_BLOG = false;
+    private static final boolean IS_BLOG = true;
 
     private static final int SPAN = 20;
 
@@ -83,6 +87,67 @@ public class MarkdownUtilTest {
                 resolveMarkdownFile(projectPath, f);
             }
         }
+    }
+
+    @Test
+    @DisplayName("清理markdown文件中未使用的图片")
+    public void test2() {
+
+        String imageProjDir = "D:\\Codes\\zp\\images\\";
+        Set<File> realImages = new LinkedHashSet<>();
+        realImages.addAll(FileUtil.loopFiles(imageProjDir + "common"));
+        realImages.addAll(FileUtil.loopFiles(imageProjDir + "cs"));
+        realImages.addAll(FileUtil.loopFiles(imageProjDir + "snap"));
+        System.out.println("实际文件数：" + realImages.size());
+
+        Set<File> images = new LinkedHashSet<>();
+        String root = "D:\\Codes\\zp\\ztutorial";
+        List<File> files = FileUtil.getFiles(root, "md", ".idea", ".git", "assets", "node_modules");
+        for (File file : files) {
+            List<String> lines = FileUtil.readUtf8Lines(file);
+            for (String line : lines) {
+                if (line.contains("https://raw.githubusercontent.com/dunwu/images/")) {
+                    String url = RegexUtil.getFirst(line, "https://raw.githubusercontent.com/dunwu/image[\\S]*");
+                    if (url.contains("\"")) {
+                        url = StrUtil.sub(url, 0, url.indexOf("\""));
+                    } else if (url.contains(")")) {
+                        url = StrUtil.sub(url, 0, url.indexOf(")"));
+                    }
+
+                    String imageFile = null;
+                    if (url.contains("https://raw.githubusercontent.com/dunwu/images/master/")) {
+                        imageFile =
+                            StrUtil.subAfter(url, "https://raw.githubusercontent.com/dunwu/images/master/", false);
+                    }
+                    if (imageFile == null) {
+                        continue;
+                    }
+                    imageFile = imageProjDir + imageFile;
+                    File image = new File(imageFile);
+                    images.add(image);
+                }
+            }
+        }
+        System.out.println("引用文件数：" + images.size());
+
+        for (File file : realImages) {
+            if (images.contains(file)) {
+                // System.out.println("存在文件：" + file.getAbsolutePath());
+            } else {
+                // System.out.println("不存在文件：" + file.getAbsolutePath());
+                FileUtil.del(file);
+            }
+        }
+    }
+
+    @Test
+    public void test3() {
+        List<File> realImages = new LinkedList<>();
+        realImages.addAll(FileUtil.loopFiles("D:\\Codes\\zp\\images\\common"));
+        realImages.addAll(FileUtil.loopFiles("D:\\Codes\\zp\\images\\cs"));
+        realImages.addAll(FileUtil.loopFiles("D:\\Codes\\zp\\images\\snap"));
+        System.out.println("实际文件数：" + realImages.size());
+        realImages.forEach(System.out::println);
     }
 
     private static void resolveMarkdownFile(String projectPath, File f) {

@@ -6,10 +6,8 @@
 
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-framework</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.2</version>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
-    <description>dunwu-framework</description>
     <url>https://github.com/dunwu/dunwu-framework</url>
 
     <properties>
@@ -40,7 +38,6 @@
         <module>dunwu-dependencies</module>
         <module>dunwu-parent</module>
         <module>dunwu-tool</module>
-        <module>dunwu-boot</module>
     </modules>
 
     <build>

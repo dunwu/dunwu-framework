@@ -6,7 +6,7 @@
 
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-parent</artifactId>
-    <version>1.1.1-RC1-SNAPSHOT</version>
+    <version>1.1.2</version>
     <packaging>pom</packaging>
     <description>dunwu 通用 pom</description>
     <url>https://github.com/dunwu/dunwu-framework/dunwu-parent</url>
@@ -71,7 +71,7 @@
             <dependency>
                 <groupId>io.github.dunwu</groupId>
                 <artifactId>dunwu-dependencies</artifactId>
-                <version>1.1.1-RC1-SNAPSHOT</version>
+                <version>1.1.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

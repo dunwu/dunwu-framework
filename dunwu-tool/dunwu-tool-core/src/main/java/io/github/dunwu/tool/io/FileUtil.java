@@ -7,7 +7,6 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.core.constant.enums.ResultStatus;
 import io.github.dunwu.tool.core.exception.DefaultException;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -33,7 +32,6 @@ import java.util.stream.Stream;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2020-04-08
  */
-@Slf4j
 public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     private static final Set<String> ALLOW_TYPES =

@@ -6,7 +6,7 @@
 
     <groupId>io.github.dunwu</groupId>
     <artifactId>dunwu-dependencies</artifactId>
-    <version>1.1.1-RC1-SNAPSHOT</version>
+    <version>1.1.2</version>
     <packaging>pom</packaging>
     <description>dunwu 通用依赖 pom</description>
     <url>https://github.com/dunwu/dunwu-framework/dunwu-dependencies</url>
