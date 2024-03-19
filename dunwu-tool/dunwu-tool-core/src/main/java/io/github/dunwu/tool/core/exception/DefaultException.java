@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.core.exception;
 
 import io.github.dunwu.tool.core.constant.CodeMsg;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 
 /**
  * 默认异常
@@ -13,7 +13,7 @@ public class DefaultException extends CodeMsgException {
     private static final long serialVersionUID = -7027578114976830416L;
 
     public DefaultException() {
-        this(ResultStatus.FAIL);
+        this(ResultCode.FAIL);
     }
 
     public DefaultException(CodeMsg codeMsg) {
@@ -29,7 +29,7 @@ public class DefaultException extends CodeMsgException {
     }
 
     public DefaultException(String msg) {
-        this(ResultStatus.FAIL, msg);
+        this(ResultCode.FAIL, msg);
     }
 
     public DefaultException(int code, String msg) {
@@ -41,11 +41,11 @@ public class DefaultException extends CodeMsgException {
     }
 
     public DefaultException(Throwable cause) {
-        this(cause, ResultStatus.FAIL);
+        this(cause, ResultCode.FAIL);
     }
 
     public DefaultException(Throwable cause, String msg) {
-        this(cause, ResultStatus.FAIL, msg);
+        this(cause, ResultCode.FAIL, msg);
     }
 
     public DefaultException(Throwable cause, CodeMsg codeMsg) {

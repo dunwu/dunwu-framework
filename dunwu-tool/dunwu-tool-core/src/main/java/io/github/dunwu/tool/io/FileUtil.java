@@ -5,7 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.DefaultException;
 
 import java.io.BufferedInputStream;
@@ -118,7 +118,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     public static String getExtensionFromUrl(String url, boolean withDot) throws DefaultException {
 
         if (StrUtil.isBlank(url)) {
-            throw new DefaultException(ResultStatus.PARAMS_ERROR, "url 不能为空！");
+            throw new DefaultException(ResultCode.PARAMS_ERROR, "url 不能为空！");
         }
 
         String realUrl;

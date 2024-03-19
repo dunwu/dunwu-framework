@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.data.exception;
 
 import io.github.dunwu.tool.core.constant.CodeMsg;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.CodeMsgException;
 
 /**
@@ -14,7 +14,7 @@ public class DataException extends CodeMsgException {
     private static final long serialVersionUID = -7027578114976830416L;
 
     public DataException() {
-        this(ResultStatus.DATA_ERROR);
+        this(ResultCode.DATA_ERROR);
     }
 
     public DataException(CodeMsg codeMsg) {
@@ -30,7 +30,7 @@ public class DataException extends CodeMsgException {
     }
 
     public DataException(String msg) {
-        this(ResultStatus.DATA_ERROR, msg);
+        this(ResultCode.DATA_ERROR, msg);
     }
 
     public DataException(int code, String msg) {
@@ -42,11 +42,11 @@ public class DataException extends CodeMsgException {
     }
 
     public DataException(Throwable cause) {
-        this(cause, ResultStatus.DATA_ERROR);
+        this(cause, ResultCode.DATA_ERROR);
     }
 
     public DataException(Throwable cause, String msg) {
-        this(cause, ResultStatus.DATA_ERROR, msg);
+        this(cause, ResultCode.DATA_ERROR, msg);
     }
 
     public DataException(Throwable cause, CodeMsg codeMsg) {

@@ -3,7 +3,7 @@ package io.github.dunwu.tool.data.request;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import io.github.dunwu.tool.data.response.Order;
 import lombok.Data;
@@ -198,7 +198,7 @@ public class PageQuery implements Serializable {
     public static Sort.Order getSpringOrder(String expression) {
         List<String> list = StrUtil.split(expression, ',');
         if (CollectionUtil.isEmpty(list) || list.size() != 2) {
-            throw new DefaultException(ResultStatus.PARAMS_ERROR);
+            throw new DefaultException(ResultCode.PARAMS_ERROR);
         }
 
         String filed = list.get(0);

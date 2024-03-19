@@ -1,12 +1,13 @@
 package io.github.dunwu.tool.data.desensitized;
 
+import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
 import io.github.dunwu.tool.data.desensitized.annotation.Desensitized;
 import io.github.dunwu.tool.data.desensitized.annotation.NeedDesensitized;
 import io.github.dunwu.tool.data.desensitized.constant.SensitiveTypeEnum;
 import io.github.dunwu.tool.data.request.PageQuery;
+import io.github.dunwu.tool.data.response.DataResult;
 import io.github.dunwu.tool.data.response.PageImpl;
-import io.github.dunwu.tool.data.response.Result;
 import io.github.dunwu.tool.io.AnsiColorUtil;
 import lombok.Builder;
 import lombok.Data;
@@ -107,8 +108,20 @@ public class DesensitizedUtilTests {
         job = new Job("工程师", 10000.0);
         user = new SuperUser();
         admin = new Admin();
-        user.setPrivilege("特权").setId(1L).setUserId(10000L).setName("张三").setAge(30).setPassword("123456").setJob(job);
-        admin.setPrivilege("特权").setId(1L).setUserId(10000L).setName("张三").setAge(30).setPassword("123456").setJob(job);
+        user.setPrivilege("特权")
+            .setId(1L)
+            .setUserId(10000L)
+            .setName("张三")
+            .setAge(30)
+            .setPassword("123456")
+            .setJob(job);
+        admin.setPrivilege("特权")
+             .setId(1L)
+             .setUserId(10000L)
+             .setName("张三")
+             .setAge(30)
+             .setPassword("123456")
+             .setJob(job);
     }
 
     @Test
@@ -194,21 +207,21 @@ public class DesensitizedUtilTests {
     @Test
     @DisplayName("测试对 Result 类型进行脱敏")
     void testResult() {
-        Result userResult = new Result();
-        userResult.setData(user);
+        DataResult<SuperUser> userResult = DataResult.ok(user);
         DesensitizedUtil.doDesensitized(userResult);
-        AnsiColorUtil.BOLD_BLUE.println("userResult:\n" + JSONUtil.toJsonStr(userResult));
+        AnsiColorUtil.BOLD_BLUE.println("userResult:\n" +
+            JSONUtil.toJsonStr(userResult, JSONConfig.create().setNatureKeyComparator()));
         Assertions.assertEquals(
-            "{\"code\":0,\"msg\":\"成功\",\"data\":{\"privilege\":\"**\",\"id\":1,\"name\":\"张*\",\"password\":\"******\",\"age\":30}}",
-            JSONUtil.toJsonStr(userResult));
+            "{\"code\":0,\"data\":{\"age\":30,\"id\":1,\"name\":\"张*\",\"password\":\"******\",\"privilege\":\"**\"},\"msg\":\"成功\"}",
+            JSONUtil.toJsonStr(userResult, JSONConfig.create().setNatureKeyComparator()));
 
-        Result adminResult = new Result();
-        adminResult.setData(admin);
+        DataResult<Admin> adminResult = DataResult.ok(admin);
         DesensitizedUtil.doDesensitized(adminResult);
-        AnsiColorUtil.BOLD_BLUE.println("adminResult:\n" + JSONUtil.toJsonStr(adminResult));
+        AnsiColorUtil.BOLD_BLUE.println("adminResult:\n" +
+            JSONUtil.toJsonStr(adminResult, JSONConfig.create().setNatureKeyComparator()));
         Assertions.assertEquals(
-            "{\"code\":0,\"msg\":\"成功\",\"data\":{\"privilege\":\"特权\",\"id\":1,\"userId\":10000,\"name\":\"张三\",\"password\":\"123456\",\"age\":30,\"job\":{\"name\":\"工程师\",\"salary\":10000}}}",
-            JSONUtil.toJsonStr(adminResult));
+            "{\"code\":0,\"data\":{\"age\":30,\"id\":1,\"job\":{\"name\":\"工程师\",\"salary\":10000},\"name\":\"张三\",\"password\":\"123456\",\"privilege\":\"特权\",\"userId\":10000},\"msg\":\"成功\"}",
+            JSONUtil.toJsonStr(adminResult, JSONConfig.create().setNatureKeyComparator()));
     }
 
     @Test

@@ -1,6 +1,6 @@
 package io.github.dunwu.tool.data.request;
 
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import lombok.Data;
 import lombok.ToString;
@@ -46,7 +46,7 @@ public class PageQueryWrapper<T> extends PageQuery {
 
     public static <T> PageQueryWrapper<T> build(int page, int pageSize, List<String> sort, T entity, boolean doPage) {
         if (entity == null) {
-            throw new DefaultException(ResultStatus.PARAMS_ERROR, "entity 不能为 null");
+            throw new DefaultException(ResultCode.PARAMS_ERROR, "entity 不能为 null");
         }
         return build(doPage, page, pageSize, sort, entity, (Class<T>) entity.getClass());
     }
@@ -58,7 +58,7 @@ public class PageQueryWrapper<T> extends PageQuery {
     public static <T> PageQueryWrapper<T> build(int page, int pageSize, List<String> sort, Class<T> clazz,
         boolean doPage) {
         if (clazz == null) {
-            throw new DefaultException(ResultStatus.PARAMS_ERROR, "clazz 不能为 null");
+            throw new DefaultException(ResultCode.PARAMS_ERROR, "clazz 不能为 null");
         }
         return build(doPage, page, pageSize, sort, null, clazz);
     }

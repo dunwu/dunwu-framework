@@ -1,7 +1,7 @@
 package io.github.dunwu.tool.core.exception;
 
 import io.github.dunwu.tool.core.constant.CodeMsg;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 
 /**
  * 认证异常
@@ -13,7 +13,7 @@ public class AuthException extends CodeMsgException {
     private static final long serialVersionUID = -7027578114976830416L;
 
     public AuthException() {
-        this(ResultStatus.AUTH_ERROR);
+        this(ResultCode.AUTH_ERROR);
     }
 
     public AuthException(CodeMsg codeMsg) {
@@ -29,7 +29,7 @@ public class AuthException extends CodeMsgException {
     }
 
     public AuthException(String msg) {
-        this(ResultStatus.AUTH_ERROR, msg);
+        this(ResultCode.AUTH_ERROR, msg);
     }
 
     public AuthException(int code, String msg) {
@@ -41,11 +41,11 @@ public class AuthException extends CodeMsgException {
     }
 
     public AuthException(Throwable cause) {
-        this(cause, ResultStatus.AUTH_ERROR);
+        this(cause, ResultCode.AUTH_ERROR);
     }
 
     public AuthException(Throwable cause, String msg) {
-        this(cause, ResultStatus.AUTH_ERROR, msg);
+        this(cause, ResultCode.AUTH_ERROR, msg);
     }
 
     public AuthException(Throwable cause, CodeMsg codeMsg) {

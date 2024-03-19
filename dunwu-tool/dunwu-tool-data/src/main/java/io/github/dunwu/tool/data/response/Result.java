@@ -2,9 +2,10 @@ package io.github.dunwu.tool.data.response;
 
 import cn.hutool.core.collection.CollectionUtil;
 import io.github.dunwu.tool.core.constant.CodeMsg;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.DefaultException;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -18,7 +19,8 @@ import java.util.Objects;
  * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
  * @since 2019-04-21
  */
-@Data
+@Getter
+@Setter
 @ToString
 @Accessors(chain = true)
 public class Result implements CodeMsg, Serializable {
@@ -41,24 +43,10 @@ public class Result implements CodeMsg, Serializable {
     protected String toast;
 
     /**
-     * 数据实体
-     */
-    protected Object data;
-
-    /**
      * 默认构造方法
      */
     public Result() {
-        this(ResultStatus.OK);
-    }
-
-    /**
-     * 构造成功的 {@link Result}
-     *
-     * @param data 数据实体
-     */
-    public Result(final Object data) {
-        this(ResultStatus.OK.getCode(), ResultStatus.OK.getMsg(), null, data);
+        init(ResultCode.OK.getCode(), ResultCode.OK.getMsg(), null);
     }
 
     /**
@@ -68,9 +56,9 @@ public class Result implements CodeMsg, Serializable {
      */
     public Result(final Result result) {
         if (result == null) {
-            throw new DefaultException(ResultStatus.PARAMS_ERROR, "参数不能为 null！");
+            throw new DefaultException(ResultCode.PARAMS_ERROR, "参数不能为 null！");
         }
-        init(result.getCode(), result.getMsg(), result.getToast(), result.getData());
+        init(result.getCode(), result.getMsg(), result.getToast());
     }
 
     /**
@@ -79,7 +67,7 @@ public class Result implements CodeMsg, Serializable {
      * @param codeMsg {@link CodeMsg}（应答状态）
      */
     public Result(final CodeMsg codeMsg) {
-        this(codeMsg.getCode(), codeMsg.getMsg());
+        init(codeMsg.getCode(), codeMsg.getMsg(), null);
     }
 
     /**
@@ -89,7 +77,7 @@ public class Result implements CodeMsg, Serializable {
      * @param msg     响应信息
      */
     public Result(final CodeMsg codeMsg, final String msg) {
-        this(codeMsg.getCode(), msg);
+        init(codeMsg.getCode(), msg, null);
     }
 
     /**
@@ -100,7 +88,7 @@ public class Result implements CodeMsg, Serializable {
      * @param toast   提示信息
      */
     public Result(final CodeMsg codeMsg, final String msg, final String toast) {
-        this(codeMsg.getCode(), msg, toast);
+        init(codeMsg.getCode(), msg, toast);
     }
 
     /**
@@ -110,7 +98,7 @@ public class Result implements CodeMsg, Serializable {
      * @param toast 响应信息
      */
     public Result(final String msg, final String toast) {
-        this(ResultStatus.OK.getCode(), msg, toast);
+        init(ResultCode.OK.getCode(), msg, toast);
     }
 
     /**
@@ -120,7 +108,7 @@ public class Result implements CodeMsg, Serializable {
      * @param msg  响应信息
      */
     public Result(final int code, final String msg) {
-        this(code, msg, null);
+        init(code, msg, null);
     }
 
     /**
@@ -130,7 +118,7 @@ public class Result implements CodeMsg, Serializable {
      * @param messages 响应信息列表
      */
     public Result(final int code, final Collection<String> messages) {
-        this(code, CollectionUtil.join(messages, ","), null, null);
+        init(code, CollectionUtil.join(messages, ","), toast);
     }
 
     /**
@@ -141,79 +129,7 @@ public class Result implements CodeMsg, Serializable {
      * @param toast 提示信息
      */
     public Result(final int code, final String msg, final String toast) {
-        this(code, msg, toast, null);
-    }
-
-    /**
-     * 构造 {@link Result}
-     *
-     * @param code  状态码 {@link CodeMsg}
-     * @param msg   响应信息
-     * @param toast 提示信息
-     * @param data  数据实体
-     */
-    public Result(final int code, final String msg, final String toast, final Object data) {
-        this.code = code;
-        this.msg = msg;
-        this.toast = toast;
-        this.data = data;
-    }
-
-    /**
-     * 构造成功的 {@link Result}
-     *
-     * @param data    数据实体
-     * @param codeMsg {@link CodeMsg}（应答状态）
-     */
-    public Result(final Object data, final CodeMsg codeMsg) {
-        this(data, codeMsg.getCode(), codeMsg.getMsg());
-    }
-
-    /**
-     * 构造成功的 {@link Result}
-     *
-     * @param data 数据实体
-     * @param msg  响应信息
-     */
-    public Result(final Object data, final String msg) {
-        this(data, ResultStatus.OK.getCode(), msg);
-    }
-
-    /**
-     * 构造成功的 {@link Result}
-     *
-     * @param data  数据实体
-     * @param msg   响应信息
-     * @param toast 响应信息
-     */
-    public Result(final Object data, final String msg, final String toast) {
-        this(data, ResultStatus.OK.getCode(), msg, toast);
-    }
-
-    /**
-     * 构造 {@link Result}
-     *
-     * @param data 数据实体
-     * @param code 状态码 {@link CodeMsg}
-     * @param msg  响应信息
-     */
-    public Result(final Object data, final int code, final String msg) {
-        this(data, code, msg, null);
-    }
-
-    /**
-     * 构造 {@link Result}
-     *
-     * @param data  数据实体
-     * @param code  状态码 {@link CodeMsg}
-     * @param msg   响应信息
-     * @param toast 提示信息
-     */
-    public Result(final Object data, final int code, final String msg, final String toast) {
-        this.code = code;
-        this.msg = msg;
-        this.toast = toast;
-        this.data = data;
+        init(code, msg, toast);
     }
 
     @Override
@@ -225,13 +141,12 @@ public class Result implements CodeMsg, Serializable {
             return false;
         }
         Result result = (Result) o;
-        return code == result.code && Objects.equals(msg, result.msg) && Objects.equals(toast, result.toast)
-            && Objects.equals(data, result.data);
+        return code == result.code && Objects.equals(msg, result.msg) && Objects.equals(toast, result.toast);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, msg, toast, data);
+        return Objects.hash(code, msg, toast);
     }
 
     /**
@@ -240,14 +155,17 @@ public class Result implements CodeMsg, Serializable {
      * @return true / false
      */
     public boolean isOk() {
-        return this.code == ResultStatus.OK.getCode();
+        return this.code == ResultCode.OK.getCode();
     }
 
-    protected void init(final int code, final String msg, final String toast, final Object data) {
+    public Object getData() {
+        return null;
+    }
+
+    protected void init(final int code, final String msg, final String toast) {
         this.code = code;
         this.msg = msg;
         this.toast = toast;
-        this.data = data;
     }
 
 }

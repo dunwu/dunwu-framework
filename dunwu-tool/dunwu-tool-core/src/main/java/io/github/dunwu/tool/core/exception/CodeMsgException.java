@@ -2,7 +2,7 @@ package io.github.dunwu.tool.core.exception;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.core.constant.CodeMsg;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 
 /**
  * 基础异常
@@ -29,7 +29,7 @@ public class CodeMsgException extends RuntimeException implements CodeMsg {
     protected String toast;
 
     public CodeMsgException() {
-        this(ResultStatus.FAIL);
+        this(ResultCode.FAIL);
     }
 
     public CodeMsgException(CodeMsg codeMsg) {
@@ -45,7 +45,7 @@ public class CodeMsgException extends RuntimeException implements CodeMsg {
     }
 
     public CodeMsgException(String msg) {
-        this(ResultStatus.FAIL, msg);
+        this(ResultCode.FAIL, msg);
     }
 
     public CodeMsgException(int code, String msg) {
@@ -60,11 +60,11 @@ public class CodeMsgException extends RuntimeException implements CodeMsg {
     }
 
     public CodeMsgException(Throwable cause) {
-        this(cause, ResultStatus.FAIL);
+        this(cause, ResultCode.FAIL);
     }
 
     public CodeMsgException(Throwable cause, String msg) {
-        this(cause, ResultStatus.FAIL, msg);
+        this(cause, ResultCode.FAIL, msg);
     }
 
     public CodeMsgException(Throwable cause, CodeMsg codeMsg) {

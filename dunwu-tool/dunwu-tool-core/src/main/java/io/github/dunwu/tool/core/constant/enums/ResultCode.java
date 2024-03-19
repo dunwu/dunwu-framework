@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * "https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318634&token=&lang=zh_CN">微信开放平台错误码</a>
  * @since 2019-04-11
  */
-public enum ResultStatus implements CodeMsg {
+public enum ResultCode implements CodeMsg {
 
     OK(0, "成功"),
 
@@ -26,51 +26,44 @@ public enum ResultStatus implements CodeMsg {
     FAIL(-1, "失败"),
 
     // -----------------------------------------------------
-    // HTTP 错误
-    // -----------------------------------------------------
-
-    HTTP_OK(200, "HTTP 请求成功"),
-
-    HTTP_REDIRECTION(300, "HTTP 重定向"),
-
-    HTTP_BAD_REQUEST(400, "错误的请求"),
-
-    HTTP_UNAUTHORIZED(401, "未授权访问资源"),
-
-    HTTP_FORBIDDEN(403, "禁止访问"),
-
-    HTTP_NOT_FOUND(404, "要访问的资源不存在"),
-
-    HTTP_SERVER_ERROR(500, "HTTP 服务器错误"),
-
-    // -----------------------------------------------------
     // 系统级错误码
     // -----------------------------------------------------
 
-    SERVER_ERROR(10000, "服务器错误"),
+    SERVER_ERROR(1000, "服务器错误"),
+
+    PARAMS_ERROR(1001, "参数错误"),
 
     TASK_ERROR(1001, "调度任务错误"),
 
-    PARAMS_ERROR(1002, "参数错误"),
-    CONFIG_ERROR(1002, "配置错误"),
+    CONFIG_ERROR(1003, "配置错误"),
 
-    REQUEST_ERROR(2000, "请求错误"),
+    REQUEST_ERROR(1004, "请求错误"),
 
-    IO_ERROR(3000, "IO 错误"),
+    IO_ERROR(1005, "IO 错误"),
 
-    AUTH_ERROR(4000, "权限错误"),
+    // -----------------------------------------------------
+    // 2000 ~ 2999 数据库错误
+    // -----------------------------------------------------
 
-    DATA_ERROR(5000, "数据库错误"),
+    DATA_ERROR(2000, "数据库错误"),
 
-    CLIENT_ERROR(20000, "客户端错误"),
+    // -----------------------------------------------------
+    // 3000 ~ 3999 三方错误
+    // -----------------------------------------------------
 
-    RESOURCE_ERROR(6000, "资源错误");
+    THIRD_PART_ERROR(3000, "三方错误"),
+
+    // -----------------------------------------------------
+    // 3000 ~ 3999 认证错误
+    // -----------------------------------------------------
+
+    AUTH_ERROR(4000, "认证错误");
 
     private final int code;
 
     private final String msg;
 
-    ResultStatus(int code, String msg) {
+    ResultCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -86,18 +79,18 @@ public enum ResultStatus implements CodeMsg {
     }
 
     public static String getNameByCode(int code) {
-        return Stream.of(ResultStatus.values()).filter(item -> item.getCode() == code).findFirst()
-                     .map(ResultStatus::getMsg).orElse("");
+        return Stream.of(ResultCode.values()).filter(item -> item.getCode() == code).findFirst()
+                     .map(ResultCode::getMsg).orElse("");
     }
 
-    public static ResultStatus getEnumByCode(int code) {
-        return Stream.of(ResultStatus.values()).filter(item -> item.getCode() == code).findFirst().orElse(null);
+    public static ResultCode getEnumByCode(int code) {
+        return Stream.of(ResultCode.values()).filter(item -> item.getCode() == code).findFirst().orElse(null);
     }
 
     public static String getTypeInfo() {
         StringBuilder sb = new StringBuilder();
-        ResultStatus[] types = ResultStatus.values();
-        for (ResultStatus type : types) {
+        ResultCode[] types = ResultCode.values();
+        for (ResultCode type : types) {
             sb.append(StrUtil.format("{}:{}, ", type.getCode(), type.getMsg()));
         }
         return sb.toString();

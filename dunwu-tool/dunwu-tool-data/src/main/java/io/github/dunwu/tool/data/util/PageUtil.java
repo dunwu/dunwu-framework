@@ -3,7 +3,7 @@ package io.github.dunwu.tool.data.util;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.dunwu.tool.core.constant.enums.ResultStatus;
+import io.github.dunwu.tool.core.constant.enums.ResultCode;
 import io.github.dunwu.tool.core.exception.DefaultException;
 import io.github.dunwu.tool.data.request.PageQuery;
 import org.springframework.data.domain.Page;
@@ -70,7 +70,7 @@ public class PageUtil extends cn.hutool.core.util.PageUtil {
     public static Sort.Order getOrder(String expression) {
         List<String> list = StrUtil.split(expression, ',');
         if (CollectionUtil.isEmpty(list) || list.size() != 2) {
-            throw new DefaultException(ResultStatus.REQUEST_ERROR);
+            throw new DefaultException(ResultCode.REQUEST_ERROR);
         }
 
         String filed = list.get(0);
