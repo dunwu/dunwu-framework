@@ -5,6 +5,8 @@ import cn.hutool.core.date.DateException;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.HashUtil;
+import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.dunwu.tool.io.FileUtil;
@@ -52,7 +54,7 @@ public class MarkdownUtil {
         return null;
     }
 
-    public static void formatDate(String path, String filename, MarkdownUtil.HexoFrontMatter hexoFrontMatter) {
+    public static void formatDate(String path, String filename, HexoFrontMatter hexoFrontMatter) {
         DateTime newDate;
         String firstGitTime = GitUtil.getFileFirstGitPushTime(path, filename);
         if (StrUtil.isNotBlank(firstGitTime)) {
@@ -86,6 +88,11 @@ public class MarkdownUtil {
 
         hexoFrontMatter.setDate(dateStr);
         // System.out.println(StrUtil.format("【{}】{}", filename, dateStr));
+    }
+
+    public static String createPermalink(String path) {
+        int hash = HashUtil.murmur32(path.getBytes());
+        return "/pages/" + StrUtil.padPre(HexUtil.toHex(hash), 8, "0") + "/";
     }
 
     @Data
@@ -141,11 +148,11 @@ public class MarkdownUtil {
 
         private String permalink;
 
-        private String abbrlink;
-
         private String hidden;
 
         private String index;
+
+        private HexoDirFrontMatter dir;
 
         @Override
         public String toString() {
@@ -153,6 +160,16 @@ public class MarkdownUtil {
             sb.append("---").append(separator);
 
             for (Field f : fields) {
+                if (f.getName().equals("dir")) {
+                    HexoDirFrontMatter dir = (HexoDirFrontMatter) ReflectUtil.getFieldValue(this, f);
+                    if (dir != null) {
+                        sb.append("dir:").append(separator)
+                          .append("  order: ").append(dir.getOrder()).append(separator)
+                          .append("  link: ").append(dir.getLink()).append(separator);
+                    }
+                    continue;
+                }
+
                 if (f.getGenericType() == String.class) {
                     String value = (String) ReflectUtil.getFieldValue(this, f);
                     if (StrUtil.isNotBlank(value)) {
@@ -177,6 +194,16 @@ public class MarkdownUtil {
             String[] array = content.split(separator);
             return CollectionUtil.toList(array);
         }
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class HexoDirFrontMatter {
+
+        private String order;
+        private String link;
 
     }
 
