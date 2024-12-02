@@ -43,7 +43,7 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <mybatis-spring.version>2.0.2</mybatis-spring.version>
         <mybatis.mapper.version>4.0.4</mybatis.mapper.version>
-        <mybatis.pagehelper.version>5.1.8</mybatis.pagehelper.version>
+        <mybatis.pagehelper.version>5.3.1</mybatis.pagehelper.version>
         <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
         <p6spy.version>3.8.7</p6spy.version>
 
