@@ -1,0 +1,1134 @@
+package io.github.dunwu.common.dal.generator.config.builder;
+
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+
+import io.github.dunwu.common.dal.generator.InjectionConfig;
+import io.github.dunwu.common.dal.generator.config.*;
+import io.github.dunwu.common.dal.generator.config.po.TableField;
+import io.github.dunwu.common.dal.generator.config.po.TableFill;
+import io.github.dunwu.common.dal.generator.config.po.TableInfo;
+import io.github.dunwu.common.dal.generator.config.querys.H2Query;
+import io.github.dunwu.common.dal.generator.config.rules.FileType;
+import io.github.dunwu.common.dal.generator.config.rules.FormType;
+import io.github.dunwu.common.dal.generator.config.rules.NamingStrategy;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+/**
+ * 代码生成器配置构建器
+ * <p>
+ * 负责汇总所有配置信息（数据源、全局、策略、模板、包路径等），
+ * 并将其传递给文件生成工具。同时提供查询数据库表信息、处理字段映射等功能。
+ *
+ * @author YangHu, tangguo, hubin
+ * @since 2016-08-30
+ */
+public class ConfigBuilder {
+
+    /**
+     * 表名过滤正则表达式
+     * <p>
+     * 用于过滤包含特殊字符的非法表名
+     */
+    private static final Pattern REGX = Pattern.compile("[~!/@#$%^&*()-_=+\\\\|[{}];:\\'\\\",<.>/?]+");
+
+    // =========================================================
+    // 配置元数据
+    // =========================================================
+
+    /**
+     * 数据库配置信息
+     */
+    private final DataSourceConfig dataSourceConfig;
+
+    /**
+     * 全局配置信息
+     */
+    private final GlobalConfig globalConfig;
+
+    /**
+     * 策略配置信息
+     */
+    private final StrategyConfig strategyConfig;
+
+    /**
+     * 模板路径配置信息
+     */
+    private final TemplateConfig templateConfig;
+
+    /**
+     * 注入配置信息（用于自定义模板变量）
+     */
+    private InjectionConfig injectionConfig;
+
+    /**
+     * 数据库表信息列表
+     */
+    private Collection<TableInfo> tableInfoList;
+
+    /**
+     * 包配置信息
+     */
+    private Map<String, String> packageInfo;
+
+    /**
+     * 路径配置信息
+     */
+    private Map<String, String> pathInfoMap;
+
+    /**
+     * 自定义实体父类全限定名
+     */
+    private String superEntityClass;
+
+    /**
+     * 自定义 Mapper 父类全限定名
+     */
+    private String superMapperClass;
+
+    /**
+     * 自定义 DAO 父类全限定名
+     */
+    private String superDaoClass;
+
+    /**
+     * 自定义 DAO 实现类父类全限定名
+     */
+    private String superDaoImplClass;
+
+    /**
+     * 自定义 Service 父类全限定名
+     */
+    private String superServiceClass;
+
+    /**
+     * 自定义 Service 实现类父类全限定名
+     */
+    private String superServiceImplClass;
+
+    /**
+     * 自定义 Controller 父类全限定名
+     */
+    private String superControllerClass;
+
+    /**
+     * 构造方法
+     * <p>
+     * 在构造器中初始化并处理所有配置信息。
+     *
+     * @param dataSourceConfig 数据源配置
+     * @param globalConfig     全局配置
+     * @param packageConfig    包配置
+     * @param strategyConfig   策略配置
+     * @param templateConfig   模板配置
+     */
+    public ConfigBuilder(DataSourceConfig dataSourceConfig, GlobalConfig globalConfig, PackageConfig packageConfig,
+        StrategyConfig strategyConfig, TemplateConfig templateConfig) {
+
+        // 数据源配置
+        this.dataSourceConfig = dataSourceConfig;
+        // SQLITE 数据库不支持注释获取
+        this.dataSourceConfig.setCommentSupported(!dataSourceConfig.getDbType().equals(DbType.SQLITE));
+
+        // 全局配置
+        if (null == globalConfig) {
+            this.globalConfig = new GlobalConfig();
+        } else {
+            this.globalConfig = globalConfig;
+        }
+
+        // 策略配置
+        if (null == strategyConfig) {
+            this.strategyConfig = new StrategyConfig();
+        } else {
+            this.strategyConfig = strategyConfig;
+        }
+
+        // 模板配置
+        if (null == templateConfig) {
+            this.templateConfig = new TemplateConfig();
+        } else {
+            this.templateConfig = templateConfig;
+        }
+
+        // 包配置
+        if (null == packageConfig) {
+            handlerPackage(this.globalConfig, new PackageConfig(), this.templateConfig);
+        } else {
+            handlerPackage(this.globalConfig, packageConfig, this.templateConfig);
+        }
+
+        processTypes(this.strategyConfig);
+    }
+
+    /**
+     * 处理包配置信息
+     * <p>
+     * 根据全局配置、包配置和模板配置，生成最终的包路径和文件输出路径。
+     *
+     * @param globalConfig   全局配置
+     * @param packageConfig  包配置
+     * @param templateConfig 模板配置
+     */
+    private void handlerPackage(GlobalConfig globalConfig, PackageConfig packageConfig, TemplateConfig templateConfig) {
+        // 包信息
+        // @formatter:off
+        packageInfo = new HashMap<>(11);
+        packageInfo.put(ConstVal.MODULE_NAME, packageConfig.getModuleName());
+        packageInfo.put(FileType.XML.getCode(), packageConfig.getXml() + (StrUtil.isBlank(packageConfig.getModuleName()) ? "" : StringPool.SLASH + packageConfig.getModuleName()));
+        packageInfo.put(FileType.ENTITY.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getEntity()));
+        packageInfo.put(FileType.DTO.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDto()));
+        packageInfo.put(FileType.QUERY.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getQuery()));
+        packageInfo.put(FileType.MAPPER.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getMapper()));
+        packageInfo.put(FileType.DAO.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDao()));
+        packageInfo.put(FileType.DAO_IMPL.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getDaoImpl()));
+        packageInfo.put(FileType.SERVICE.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getService()));
+        packageInfo.put(FileType.SERVICE_IMPL.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getServiceImpl()));
+        packageInfo.put(FileType.CONTROLLER.getCode(), joinPackage(packageConfig.getParent(), packageConfig.getController()));
+        // @formatter:on
+
+        // 自定义路径
+        Map<String, String> configPathInfo = packageConfig.getPathInfo();
+        if (null != configPathInfo) {
+            pathInfoMap = configPathInfo;
+        } else {
+            // 生成路径信息
+            pathInfoMap = new HashMap<>(11);
+
+            // 设置 MyBatis Plus 各个 java 文件的包路径
+            // @formatter:off
+            String javaDir = globalConfig.getBackendDir() + ConstVal.JAVA_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getEntity(), javaDir, FileType.ENTITY.getFilePath(), FileType.ENTITY.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDto(), javaDir, FileType.DTO.getFilePath(), FileType.DTO.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getQuery(), javaDir, FileType.QUERY.getFilePath(), FileType.QUERY.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getMapper(), javaDir, FileType.MAPPER.getFilePath(), FileType.MAPPER.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDao(), javaDir, FileType.DAO.getFilePath(), FileType.DAO.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getDaoImpl(), javaDir, FileType.DAO_IMPL.getFilePath(), FileType.DAO_IMPL.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getService(), javaDir, FileType.SERVICE.getFilePath(), FileType.SERVICE.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getServiceImpl(), javaDir, FileType.SERVICE_IMPL.getFilePath(), FileType.SERVICE_IMPL.getCode());
+            addPathInfo(pathInfoMap, templateConfig.getController(), javaDir, FileType.CONTROLLER.getFilePath(), FileType.CONTROLLER.getCode());
+            // @formatter:on
+
+            // 设置 MyBatis Plus 的 Mapper.xml 文件的包路径
+            String resourcesDir = globalConfig.getBackendDir() + ConstVal.RESOURCES_PATH.replaceAll("//",
+                StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getXml(), resourcesDir, FileType.XML.getFilePath(),
+                FileType.XML.getCode());
+
+            // 设置前端文件的包路径
+            String viewsDir = globalConfig.getFrontendDir() +
+                ConstVal.VIEWS_PATH.replaceAll("//", StringPool.BACK_SLASH + File.separator);
+            addPathInfo(pathInfoMap, templateConfig.getApi(), viewsDir, FileType.API.getFilePath(),
+                ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getList(), viewsDir, FileType.LIST.getFilePath(),
+                ConstVal.MODULE_NAME);
+            addPathInfo(pathInfoMap, templateConfig.getForm(), viewsDir, FileType.FORM.getFilePath(),
+                ConstVal.MODULE_NAME);
+        }
+    }
+
+    /**
+     * 获取全局配置信息
+     *
+     * @return 全局配置对象
+     */
+    public GlobalConfig getGlobalConfig() {
+        return globalConfig;
+    }
+
+    // =====================================================================
+    // 获取配置信息
+    // =====================================================================
+
+    /**
+     * 添加路径配置信息
+     *
+     * @param pathInfo  路径配置 Map
+     * @param template  模板路径
+     * @param outputDir 输出目录
+     * @param path      路径 Key
+     * @param module    模块名
+     */
+    private void addPathInfo(Map<String, String> pathInfo, String template, String outputDir, String path,
+        String module) {
+        if (StringUtils.isNotBlank(template)) {
+            pathInfo.put(path, joinPath(outputDir, packageInfo.get(module)));
+        }
+    }
+
+    /**
+     * 连接路径字符串
+     *
+     * @param parentDir   父目录路径
+     * @param packageName 包名
+     * @return 连接后的完整路径
+     */
+    private String joinPath(String parentDir, String packageName) {
+        if (StringUtils.isBlank(parentDir)) {
+            parentDir = System.getProperty(ConstVal.JAVA_TMPDIR);
+        }
+        if (!StringUtils.endsWith(parentDir, File.separator)) {
+            parentDir += File.separator;
+        }
+
+        if (StrUtil.isNotBlank(packageName)) {
+            packageName = packageName.replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
+            return parentDir + packageName;
+        }
+        return parentDir;
+    }
+
+    /**
+     * 连接父子包名
+     *
+     * @param parent     父包名
+     * @param subPackage 子包名
+     * @return 连接后的完整包名
+     */
+    private String joinPackage(String parent, String subPackage) {
+        if (StringUtils.isBlank(parent)) {
+            return subPackage;
+        }
+        return parent + StringPool.DOT + subPackage;
+    }
+
+    /**
+     * 处理超类及 ID 策略配置
+     *
+     * @param config 策略配置
+     */
+    private void processTypes(StrategyConfig config) {
+        if (StringUtils.isBlank(config.getSuperDaoClass())) {
+            superDaoClass = ConstVal.SUPER_DAO_CLASS;
+        } else {
+            superDaoClass = config.getSuperDaoClass();
+        }
+        if (StringUtils.isBlank(config.getSuperDaoImplClass())) {
+            superDaoImplClass = ConstVal.SUPER_DAO_IMPL_CLASS;
+        } else {
+            superDaoImplClass = config.getSuperDaoImplClass();
+        }
+        if (StringUtils.isBlank(config.getSuperServiceClass())) {
+            superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
+        } else {
+            superServiceClass = config.getSuperServiceClass();
+        }
+        if (StringUtils.isBlank(config.getSuperServiceImplClass())) {
+            superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
+        } else {
+            superServiceImplClass = config.getSuperServiceImplClass();
+        }
+        if (StringUtils.isBlank(config.getSuperMapperClass())) {
+            superMapperClass = ConstVal.SUPER_MAPPER_CLASS;
+        } else {
+            superMapperClass = config.getSuperMapperClass();
+        }
+        superEntityClass = config.getSuperEntityClass();
+        superControllerClass = config.getSuperControllerClass();
+    }
+
+    /**
+     * 查询数据库表信息列表
+     * <p>
+     * 根据策略配置中的包含/排除规则，从数据库中获取需要生成代码的表信息。
+     *
+     * @return 表信息列表
+     */
+    public List<TableInfo> queryTableInfoList() {
+
+        checkConfig();
+
+        boolean isInclude = (null != strategyConfig.getInclude() && strategyConfig.getInclude().length > 0);
+        boolean isExclude = (null != strategyConfig.getExclude() && strategyConfig.getExclude().length > 0);
+        if (isInclude && isExclude) {
+            throw new RuntimeException("<strategy> 标签中 <include> 与 <exclude> 只能配置一项！");
+        }
+        if (strategyConfig.getNotLikeTable() != null && strategyConfig.getLikeTable() != null) {
+            throw new RuntimeException("<strategy> 标签中 <likeTable> 与 <notLikeTable> 只能配置一项！");
+        }
+
+        //所有的表信息
+        List<TableInfo> tableList = new ArrayList<>();
+
+        //需要反向生成或排除的表信息
+        List<TableInfo> includeTableList = new ArrayList<>();
+        List<TableInfo> excludeTableList = new ArrayList<>();
+
+        //不存在的表名
+        Set<String> notExistTables = new HashSet<>();
+        try {
+            String sql = getSearchTableSql(dataSourceConfig, strategyConfig, isInclude, isExclude);
+
+            TableInfo tableInfo;
+            try (PreparedStatement preparedStatement = dataSourceConfig.getConn().prepareStatement(sql);
+                 ResultSet results = preparedStatement.executeQuery()) {
+                while (results.next()) {
+                    String tableName = results.getString(dataSourceConfig.getDbQuery().tableName());
+                    if (StringUtils.isBlank(tableName)) {
+                        System.err.println("当前数据库为空！！！");
+                        continue;
+                    }
+
+                    tableInfo = new TableInfo();
+                    tableInfo.setSchemaName(dataSourceConfig.getSchemaName()).setTableName(tableName);
+
+                    if (dataSourceConfig.isCommentSupported()) {
+                        String tableComment = results.getString(dataSourceConfig.getDbQuery().tableComment());
+                        if (strategyConfig.isSkipView() && "VIEW".equals(tableComment)) {
+                            // 跳过视图
+                            continue;
+                        }
+                        tableInfo.setComment(tableComment);
+                    }
+
+                    if (isInclude) {
+                        for (String includeTable : strategyConfig.getInclude()) {
+                            // 忽略大小写等于 或 正则 true
+                            if (tableNameMatches(includeTable, tableName)) {
+                                includeTableList.add(tableInfo);
+                            } else {
+                                //过滤正则表名
+                                if (!REGX.matcher(includeTable).find()) {
+                                    notExistTables.add(includeTable);
+                                }
+                            }
+                        }
+                    } else if (isExclude) {
+                        for (String excludeTable : strategyConfig.getExclude()) {
+                            // 忽略大小写等于 或 正则 true
+                            if (tableNameMatches(excludeTable, tableName)) {
+                                excludeTableList.add(tableInfo);
+                            } else {
+                                //过滤正则表名
+                                if (!REGX.matcher(excludeTable).find()) {
+                                    notExistTables.add(excludeTable);
+                                }
+                            }
+                        }
+                    }
+                    tableList.add(tableInfo);
+                }
+            }
+
+            // 将已经存在的表移除，获取配置中数据库不存在的表
+            for (TableInfo tabInfo : tableList) {
+                notExistTables.remove(tabInfo.getTableName());
+            }
+            if (notExistTables.size() > 0) {
+                System.err.println("表 " + notExistTables + " 在数据库中不存在！！！");
+            }
+
+            // 需要反向生成的表信息
+            if (isExclude) {
+                tableList.removeAll(excludeTableList);
+                includeTableList = tableList;
+            }
+            if (!isInclude && !isExclude) {
+                includeTableList = tableList;
+            }
+
+            for (TableInfo table : includeTableList) {
+                processTable(table);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return includeTableList;
+    }
+
+    /**
+     * 处理表信息并生成对应的类名
+     * <p>
+     * 根据配置项，动态填充字段信息，并计算 Entity, Mapper, Service 等类的名称。
+     *
+     * @param tableInfo 表信息
+     * @return 处理后的表信息对象
+     */
+    public TableInfo processTable(TableInfo tableInfo) {
+
+        // 校验必要配置项
+        checkConfig();
+        // 根据配置项，动态填充字段部分相关属性
+        convertTableFields(tableInfo, globalConfig, strategyConfig, dataSourceConfig);
+        // 将字段根据是否出现在 列表、表单、查询、排序、校验 进行分组
+        groupTableFields(tableInfo);
+
+        String entityName;
+        INameConvert nameConvert = strategyConfig.getNameConvert();
+        if (null != nameConvert) {
+            // 自定义处理实体名称
+            entityName = nameConvert.entityNameConvert(tableInfo);
+        } else {
+            entityName = NamingStrategy.capitalFirst(
+                processName(tableInfo.getTableName(), strategyConfig.getNaming(), strategyConfig.getTablePrefix()));
+        }
+        if (StringUtils.isNotBlank(globalConfig.getEntityName())) {
+            tableInfo.setConvert(true);
+            tableInfo.setEntityName(String.format(globalConfig.getEntityName(), entityName));
+        } else {
+            tableInfo.setEntityName(strategyConfig, entityName);
+        }
+        if (StringUtils.isNotBlank(globalConfig.getMapperName())) {
+            tableInfo.setMapperName(String.format(globalConfig.getMapperName(), entityName));
+        } else {
+            tableInfo.setMapperName(entityName + FileType.MAPPER.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getDaoName())) {
+            tableInfo.setDaoName(String.format(globalConfig.getDaoName(), entityName));
+        } else {
+            tableInfo.setDaoName(entityName + FileType.DAO.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getDaoImplName())) {
+            tableInfo.setDaoImplName(String.format(globalConfig.getDaoImplName(), entityName));
+        } else {
+            tableInfo.setDaoImplName(entityName + FileType.DAO_IMPL.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getServiceName())) {
+            tableInfo.setServiceName(String.format(globalConfig.getServiceName(), entityName));
+        } else {
+            tableInfo.setServiceName(entityName + FileType.SERVICE.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getServiceImplName())) {
+            tableInfo.setServiceImplName(String.format(globalConfig.getServiceImplName(), entityName));
+        } else {
+            tableInfo.setServiceImplName(entityName + FileType.SERVICE_IMPL.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getControllerName())) {
+            tableInfo.setControllerName(String.format(globalConfig.getControllerName(), entityName));
+        } else {
+            tableInfo.setControllerName(entityName + FileType.CONTROLLER.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getXmlName())) {
+            tableInfo.setXmlName(String.format(globalConfig.getXmlName(), entityName));
+        } else {
+            tableInfo.setXmlName(entityName + FileType.MAPPER.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getApiName())) {
+            tableInfo.setApiName(String.format(globalConfig.getApiName(), entityName));
+        } else {
+            tableInfo.setApiName(entityName + FileType.API.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getListName())) {
+            tableInfo.setListName(String.format(globalConfig.getListName(), entityName));
+        } else {
+            tableInfo.setListName(entityName + FileType.LIST.getCode());
+        }
+        if (StringUtils.isNotBlank(globalConfig.getFormName())) {
+            tableInfo.setFormName(String.format(globalConfig.getFormName(), entityName));
+        } else {
+            tableInfo.setFormName(entityName + FileType.FORM.getCode());
+        }
+        // 检测导入包
+        checkImportPackages(tableInfo, globalConfig, strategyConfig);
+        return tableInfo;
+    }
+
+    /**
+     * 检测并添加必要的导入包
+     *
+     * @param tableInfo 表信息对象
+     * @param global    全局配置
+     * @param strategy  策略配置
+     */
+    private void checkImportPackages(TableInfo tableInfo, GlobalConfig global, StrategyConfig strategy) {
+        if (StringUtils.isNotBlank(strategy.getSuperEntityClass())) {
+            // 自定义父类
+            tableInfo.getImportPackages().add(strategy.getSuperEntityClass());
+        } else if (global.isEnableActiveRecord()) {
+            // 无父类开启 AR 模式
+            tableInfo.getImportPackages()
+                     .add(com.baomidou.mybatisplus.extension.activerecord.Model.class.getCanonicalName());
+        }
+        if (null != global.getIdType()) {
+            // 指定需要 IdType 场景
+            tableInfo.getImportPackages().add(com.baomidou.mybatisplus.annotation.IdType.class.getCanonicalName());
+            tableInfo.getImportPackages().add(com.baomidou.mybatisplus.annotation.TableId.class.getCanonicalName());
+        }
+        if (StringUtils.isNotBlank(strategy.getVersionFieldName())
+            && CollectionUtils.isNotEmpty(tableInfo.getFields())) {
+            tableInfo.getFields().forEach(f -> {
+                if (strategy.getVersionFieldName().equals(f.getFieldName())) {
+                    tableInfo.getImportPackages()
+                             .add(com.baomidou.mybatisplus.annotation.Version.class.getCanonicalName());
+                }
+            });
+        }
+    }
+
+    /**
+     * 将字段信息与表信息关联
+     * <p>
+     * 查询数据库获取表的字段列表，并根据策略配置转换为 Java 属性信息。
+     *
+     * @param tableInfo  表信息
+     * @param global     全局配置
+     * @param strategy   策略配置
+     * @param dataSource 数据源配置
+     * @return 处理后的表信息
+     */
+    private TableInfo convertTableFields(TableInfo tableInfo,
+        GlobalConfig global, StrategyConfig strategy, DataSourceConfig dataSource) {
+        List<TableField> fieldList = new ArrayList<>();
+        List<TableField> commonFieldList = new ArrayList<>();
+        DbType dbType = dataSource.getDbType();
+        IDbQuery dbQuery = dataSource.getDbQuery();
+        Connection connection = dataSource.getConn();
+        String tableName = tableInfo.getTableName();
+        Map<String, TableField> fieldMap = tableInfo.getFieldMap();
+        try {
+            String tableFieldsSql = dbQuery.tableFieldsSql();
+            Set<String> h2PkColumns = new HashSet<>();
+
+            // 根据不同 SQL 类型，组织查询 SQL
+            switch (dbType) {
+                case POSTGRE_SQL:
+                case KINGBASE_ES:
+                case DB2:
+                    tableFieldsSql = String.format(tableFieldsSql, dataSource.getSchemaName(), tableName);
+                    break;
+                case ORACLE:
+                    tableName = tableName.toUpperCase();
+                    tableFieldsSql = String.format(tableFieldsSql.replace("#schema", dataSource.getSchemaName()),
+                        tableName);
+                    break;
+                case DM:
+                    tableName = tableName.toUpperCase();
+                    tableFieldsSql = String.format(tableFieldsSql, tableName);
+                    break;
+                case H2:
+                    tableName = tableName.toUpperCase();
+                    try (PreparedStatement pkQueryStmt = connection.prepareStatement(
+                        String.format(H2Query.PK_QUERY_SQL, tableName));
+                         ResultSet pkResults = pkQueryStmt.executeQuery()) {
+                        while (pkResults.next()) {
+                            String primaryKey = pkResults.getString(dbQuery.fieldKey());
+                            if (Boolean.parseBoolean(primaryKey)) {
+                                h2PkColumns.add(pkResults.getString(dbQuery.fieldName()));
+                            }
+                        }
+                    }
+                    tableFieldsSql = String.format(tableFieldsSql, tableName);
+                    break;
+                default:
+                    tableFieldsSql = String.format(tableFieldsSql, tableName);
+                    break;
+            }
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(tableFieldsSql);
+                 ResultSet results = preparedStatement.executeQuery()) {
+                while (results.next()) {
+                    String columnName = results.getString(dbQuery.fieldName());
+                    TableField field = null;
+                    if (MapUtil.isNotEmpty(fieldMap)) {
+                        field = fieldMap.get(columnName);
+                    }
+
+                    if (field == null) {
+                        field = new TableField();
+                    }
+
+                    field.setSchemaName(dataSource.getSchemaName())
+                         .setTableName(tableInfo.getTableName());
+
+                    // 是否允许为空
+                    String nullAble = results.getString(dbQuery.nullAble());
+                    field.setNotNull("NO".equalsIgnoreCase(nullAble));
+
+                    // 避免多重主键设置，目前只取第一个找到ID，并放到list中的索引为0的位置
+                    boolean isPk;
+                    if (DbType.H2 == dbType) {
+                        isPk = h2PkColumns.contains(columnName);
+                    } else {
+                        String key = results.getString(dbQuery.fieldKey());
+                        field.setKeyType(key);
+
+                        if (DbType.DB2 == dbType || DbType.SQLITE == dbType) {
+                            isPk = StringUtils.isNotBlank(key) && "1".equals(key);
+                        } else {
+                            isPk = StringUtils.isNotBlank(key) && "PRI".equals(key.toUpperCase());
+                        }
+                    }
+
+                    // 处理ID
+                    if (isPk) {
+                        field.setKeyFlag(true);
+                        field.setEnableForm(false);
+                        field.setEnableSort(true);
+                        field.setSortType("asc");
+                        if (DbType.H2 == dbType || DbType.SQLITE == dbType || dbQuery.isKeyIdentity(results)) {
+                            field.setKeyIdentityFlag(true);
+                        } else {
+                            field.setKeyIdentityFlag(true);
+                        }
+                    } else {
+                        field.setKeyFlag(false);
+                    }
+
+                    // 自定义字段查询
+                    String[] fcs = dbQuery.fieldCustom();
+                    if (null != fcs) {
+                        Map<String, Object> customMap = new HashMap<>(fcs.length);
+                        for (String fc : fcs) {
+                            customMap.put(fc, results.getObject(fc));
+                        }
+                        field.setCustomMap(customMap);
+                    }
+                    // 处理其它信息
+                    field.setFieldName(columnName);
+                    field.setType(results.getString(dbQuery.fieldType()));
+
+                    INameConvert nameConvert = strategy.getNameConvert();
+                    if (null != nameConvert) {
+                        field.setPropertyName(nameConvert.propertyNameConvert(field));
+                    } else {
+                        field.setPropertyName(strategy,
+                            processName(field.getFieldName(), strategy.getNaming(), strategy));
+                    }
+                    field.setJavaType(dataSource.getTypeConvert().processTypeConvert(global, field));
+                    if (field.getFormType() == null) {
+                        field.setFormType(getDefaultFormTypeByJavaType(field.getJavaType().getType()));
+                    }
+                    field.setValidateType(field.getValidateType());
+
+                    if (dataSource.isCommentSupported()) {
+                        field.setComment(results.getString(dbQuery.fieldComment()));
+                    }
+                    if (strategy.includeSuperEntityColumns(field.getFieldName())) {
+                        // 跳过公共字段
+                        commonFieldList.add(field);
+                        continue;
+                    }
+                    // 填充逻辑判断
+                    List<TableFill> tableFillList = getStrategyConfig().getTableFillList();
+                    if (null != tableFillList) {
+                        // 忽略大写字段问题
+                        for (TableFill tableFill : tableFillList) {
+                            if (tableFill.getFieldName().equalsIgnoreCase(field.getFieldName())) {
+                                field.setFill(tableFill.getFieldFill().name());
+                                break;
+                            }
+                        }
+                    }
+                    fieldList.add(field);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception：" + e.getMessage());
+        }
+        tableInfo.setFields(fieldList);
+        tableInfo.setCommonFields(commonFieldList);
+        return tableInfo;
+    }
+
+    /**
+     * 获取策略配置
+     *
+     * @return 策略配置对象
+     */
+    public StrategyConfig getStrategyConfig() {
+        return strategyConfig;
+    }
+
+    // =====================================================================
+    // 获取超类定义
+    // =====================================================================
+
+    /**
+     * 处理字段名称
+     *
+     * @param name           原始名称
+     * @param namingStrategy 命名策略
+     * @param strategy       策略配置
+     * @return 根据策略返回处理后的名称
+     */
+    private String processName(String name, NamingStrategy namingStrategy, StrategyConfig strategy) {
+        return processName(name, namingStrategy, strategy.getFieldPrefix());
+    }
+
+    /**
+     * 处理表/字段名称
+     *
+     * @param name     原始名称
+     * @param strategy 命名策略
+     * @param prefix   前缀列表
+     * @return 根据策略返回处理后的名称
+     */
+    private String processName(String name, NamingStrategy strategy, String[] prefix) {
+        boolean removePrefix = false;
+        if (prefix != null && prefix.length != 0) {
+            removePrefix = true;
+        }
+        String propertyName;
+        if (removePrefix) {
+            if (strategy == NamingStrategy.underline_to_camel) {
+                // 删除前缀、下划线转驼峰
+                propertyName = NamingStrategy.removePrefixAndCamel(name, prefix);
+            } else {
+                // 删除前缀
+                propertyName = NamingStrategy.removePrefix(name, prefix);
+            }
+        } else if (strategy == NamingStrategy.underline_to_camel) {
+            // 下划线转驼峰
+            propertyName = NamingStrategy.underlineToCamel(name);
+        } else {
+            // 不处理
+            propertyName = name;
+        }
+        return propertyName;
+    }
+
+    /**
+     * 根据 Java 类型获取默认的表单组件类型
+     *
+     * @param javaType Java 类型名称
+     * @return 表单组件类型代码
+     */
+    public static String getDefaultFormTypeByJavaType(String javaType) {
+        switch (javaType) {
+            case "LocalDate":
+            case "LocalTime":
+            case "Year":
+            case "YearMonth":
+            case "LocalDateTime":
+            case "Date":
+            case "Time":
+            case "Timestamp":
+                return FormType.DateTimePicker.getCode();
+            case "Boolean":
+                return FormType.Switch.getCode();
+            default:
+                return FormType.Input.getCode();
+        }
+    }
+
+    /**
+     * 对表字段进行分组
+     * <p>
+     * 将字段根据是否出现在列表、表单、查询、排序、字典等场景进行分组，方便模板渲染。
+     *
+     * @param tableInfo 表信息对象
+     */
+    public void groupTableFields(TableInfo tableInfo) {
+        if (tableInfo == null || CollectionUtil.isEmpty(tableInfo.getFields())) {
+            return;
+        }
+
+        List<TableField> listFields = new ArrayList<>();
+        List<TableField> formFields = new ArrayList<>();
+        List<TableField> queryFields = new ArrayList<>();
+        List<TableField> queryExtFields = new ArrayList<>();
+        List<TableField> sortFields = new ArrayList<>();
+        List<TableField> dictFields = new ArrayList<>();
+
+        for (TableField field : tableInfo.getFields()) {
+            if (field.isEnableList()) {
+                listFields.add(field);
+            }
+
+            if (field.isEnableForm()) {
+                formFields.add(field);
+            }
+
+            if (field.isEnableQuery()) {
+                if (queryFields.size() < 3) {
+                    queryFields.add(field);
+                } else {
+                    queryExtFields.add(field);
+                }
+            }
+
+            if (field.isEnableSort()) {
+                sortFields.add(field);
+            }
+
+            if (StrUtil.isNotBlank(field.getDictCode())) {
+                dictFields.add(field);
+            }
+        }
+
+        tableInfo.setListFields(listFields)
+                 .setFormFields(formFields)
+                 .setQueryFields(queryFields)
+                 .setQueryExtFields(queryExtFields)
+                 .setSortFields(sortFields)
+                 .setDictFields(dictFields);
+    }
+
+    /**
+     * 组装查询表信息的 SQL
+     *
+     * @param dataSource 数据源配置
+     * @param config     策略配置
+     * @param isInclude  是否配置了包含表
+     * @param isExclude  是否配置了排除表
+     * @return 查询表信息的 SQL 语句
+     */
+    private String getSearchTableSql(DataSourceConfig dataSource, StrategyConfig config,
+        boolean isInclude, boolean isExclude) {
+
+        IDbQuery dbQuery = dataSource.getDbQuery();
+        String tablesSql = dbQuery.tablesSql();
+
+        if (DbType.POSTGRE_SQL == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //pg 默认 schema=public
+                schema = "public";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        } else if (DbType.KINGBASE_ES == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //kingbase 默认 schema=PUBLIC
+                schema = "PUBLIC";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        } else if (DbType.DB2 == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            if (schema == null) {
+                //db2 默认 schema=current schema
+                schema = "current schema";
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        }
+        //oracle数据库表太多，出现最大游标错误
+        else if (DbType.ORACLE == dataSource.getDbType()) {
+            String schema = dataSource.getSchemaName();
+            //oracle 默认 schema=username
+            if (schema == null) {
+                schema = dataSource.getUsername().toUpperCase();
+                dataSource.setSchemaName(schema);
+            }
+            tablesSql = String.format(tablesSql, schema);
+        }
+        StringBuilder sql = new StringBuilder(tablesSql);
+        if (config.isEnableSqlFilter()) {
+            if (config.getLikeTable() != null) {
+                sql.append(" AND ")
+                   .append(dbQuery.tableName())
+                   .append(" LIKE '")
+                   .append(config.getLikeTable().getValue())
+                   .append("'");
+            } else if (config.getNotLikeTable() != null) {
+                sql.append(" AND ")
+                   .append(dbQuery.tableName())
+                   .append(" NOT LIKE '")
+                   .append(config.getNotLikeTable().getValue())
+                   .append("'");
+            }
+            if (isInclude) {
+                sql.append(" AND ").append(dbQuery.tableName()).append(" IN (")
+                   .append(Arrays.stream(config.getInclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
+            } else if (isExclude) {
+                sql.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (")
+                   .append(Arrays.stream(config.getExclude())
+                                 .map(tb -> "'" + tb + "'")
+                                 .collect(Collectors.joining(","))).append(")");
+            }
+        }
+        return sql.toString();
+    }
+
+    /**
+     * 判断表名是否匹配
+     *
+     * @param setTableName 配置的表名
+     * @param dbTableName  数据库中的表名
+     * @return 如果匹配返回 true
+     */
+    private boolean tableNameMatches(String setTableName, String dbTableName) {
+        return setTableName.equalsIgnoreCase(dbTableName)
+            || StringUtils.matches(setTableName, dbTableName);
+    }
+
+    /**
+     * 校验配置是否完整
+     *
+     * @throws RuntimeException 如果任何必要配置缺失
+     */
+    private void checkConfig() {
+
+        if (this.globalConfig == null) {
+            throw new RuntimeException("globalConfig 未配置");
+        }
+
+        if (this.dataSourceConfig == null) {
+            throw new RuntimeException("dataSourceConfig 未配置");
+        }
+
+        if (this.strategyConfig == null) {
+            throw new RuntimeException("strategyConfig 未配置");
+        }
+
+        if (this.templateConfig == null) {
+            throw new RuntimeException("templateConfig 未配置");
+        }
+
+        if (MapUtil.isEmpty(this.packageInfo)) {
+            throw new RuntimeException("packageInfo 未配置");
+        }
+    }
+
+    // =====================================================================
+    // 私有方法
+    // =====================================================================
+
+    /**
+     * 获取数据源配置
+     *
+     * @return 数据源配置对象
+     */
+    public DataSourceConfig getDataSourceConfig() {
+        return dataSourceConfig;
+    }
+
+    /**
+     * 获取模板路径配置信息
+     *
+     * @return 模板配置对象
+     */
+    public TemplateConfig getTemplateConfig() {
+        return templateConfig == null ? new TemplateConfig() : templateConfig;
+    }
+
+    /**
+     * 获取注入配置信息
+     *
+     * @return 注入配置对象
+     */
+    public InjectionConfig getInjectionConfig() {
+        return injectionConfig;
+    }
+
+    /**
+     * 设置注入配置信息
+     *
+     * @param injectionConfig 注入配置对象
+     * @return 当前 ConfigBuilder 实例
+     */
+    public ConfigBuilder setInjectionConfig(InjectionConfig injectionConfig) {
+        this.injectionConfig = injectionConfig;
+        return this;
+    }
+
+    /**
+     * 获取所有包配置信息
+     *
+     * @return 包配置 Map
+     */
+    public Map<String, String> getPackageInfo() {
+        return packageInfo;
+    }
+
+    /**
+     * 获取所有路径配置信息
+     *
+     * @return 路径配置 Map
+     */
+    public Map<String, String> getPathInfoMap() {
+        return pathInfoMap;
+    }
+
+    /**
+     * 获取数据库表信息列表
+     *
+     * @return 表信息集合
+     */
+    public Collection<TableInfo> getTableInfoList() {
+        return tableInfoList;
+    }
+
+    /**
+     * 设置数据库表信息列表
+     *
+     * @param tableInfoList 表信息集合
+     * @return 当前 ConfigBuilder 实例
+     */
+    public ConfigBuilder setTableInfoList(Collection<TableInfo> tableInfoList) {
+        this.tableInfoList = tableInfoList;
+        return this;
+    }
+
+    /**
+     * 获取自定义实体父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperEntityClass() {
+        return superEntityClass;
+    }
+
+    /**
+     * 获取自定义 Mapper 父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperMapperClass() {
+        return superMapperClass;
+    }
+
+    /**
+     * 获取自定义 DAO 父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperDaoClass() {
+        return superDaoClass;
+    }
+
+    /**
+     * 获取自定义 DAO 实现类父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperDaoImplClass() {
+        return superDaoImplClass;
+    }
+
+    /**
+     * 获取自定义 Service 父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperServiceClass() {
+        return superServiceClass;
+    }
+
+    /**
+     * 获取自定义 Service 实现类父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperServiceImplClass() {
+        return superServiceImplClass;
+    }
+
+    /**
+     * 获取自定义 Controller 父类全限定名
+     *
+     * @return 父类全限定名
+     */
+    public String getSuperControllerClass() {
+        return superControllerClass;
+    }
+
+}

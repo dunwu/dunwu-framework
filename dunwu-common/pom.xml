@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.github.dunwu</groupId>
+        <artifactId>dunwu-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../dunwu-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>io.github.dunwu</groupId>
+    <artifactId>dunwu-common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>dunwu 工具</description>
+    <url>https://github.com/dunwu/dunwu-framework/dunwu-common</url>
+
+    <modules>
+        <module>dunwu-common-core</module>
+        <module>dunwu-common-dal</module>
+        <module>dunwu-common-doc</module>
+        <module>dunwu-common-web</module>
+        <module>dunwu-common-component</module>
+    </modules>
+</project>

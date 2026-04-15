@@ -1,0 +1,170 @@
+package io.github.dunwu.common.encode;
+
+import cn.hutool.core.codec.Base64;
+
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.security.Key;
+import java.security.SecureRandom;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.IvParameterSpec;
+
+/**
+ * DESede（3DES）安全编码，是 DES 的升级版，支持更长的密钥，基本算法不变。
+ *
+ * @author <a href="mailto:forbreak@163.com">Zhang Peng</a>
+ * @since 2016-07-20
+ */
+public class DesedeEncode implements SymmetricEncode {
+
+    /** DESede 密钥算法 */
+    public static final String KEY_ALGORITHM = "DESede";
+    /** ECB 模式，PKCS5Padding 补码 */
+    public static final String CIPHER_DESEDE_ECB_PKCS5PADDING = "DESede/ECB/PKCS5Padding";
+    /** CBC 模式，PKCS5Padding 补码 */
+    public static final String CIPHER_DESEDE_CBC_PKCS5PADDING = "DESede/CBC/PKCS5Padding";
+    /** CBC 模式，无补码 */
+    public static final String CIPHER_DESEDE_CBC_NOPADDING = "DESede/CBC/NoPadding";
+    /** 用于生成随机数的种子 */
+    private static final String DEFAULT_SEED = "芝麻开门";
+    /** 用于生成 Iv 参数 */
+    private static final String DEFAULT_IV = "01234567";
+
+    private Key key;
+    private Cipher cipher;
+    private String type;
+    private byte[] ivBytes;
+
+    /**
+     * 使用默认 ECB 模式构造 DESede 编码器
+     *
+     * @throws GeneralSecurityException 初始化过程中发生安全异常
+     */
+    public DesedeEncode() throws GeneralSecurityException {
+        this.key = initKey(DEFAULT_SEED);
+        this.cipher = Cipher.getInstance(CIPHER_DESEDE_ECB_PKCS5PADDING);
+    }
+
+    /**
+     * 使用指定枚举类型构造 DESede 编码器
+     *
+     * @param type DESede 加密类型枚举
+     * @throws GeneralSecurityException 初始化过程中发生安全异常
+     */
+    public DesedeEncode(Type type) throws GeneralSecurityException {
+        this(type.getKey());
+    }
+
+    /**
+     * 使用指定算法类型字符串构造 DESede 编码器
+     *
+     * @param type 算法/模式/补码方式字符串
+     * @throws GeneralSecurityException 初始化过程中发生安全异常
+     */
+    public DesedeEncode(String type) throws GeneralSecurityException {
+        this(type, DEFAULT_SEED, DEFAULT_IV);
+    }
+
+    /**
+     * 使用指定算法类型字符串、随机数种子和 IV 构造 DESede 编码器
+     *
+     * @param type 算法/模式/补码方式字符串
+     * @param seed 随机数种子
+     * @param iv   初始化向量（CBC 模式下必须为 8 字节）
+     * @throws GeneralSecurityException 初始化过程中发生安全异常
+     */
+    public DesedeEncode(String type, String seed, String iv) throws GeneralSecurityException {
+        this.type = type;
+        this.key = initKey(seed);
+        this.ivBytes = iv.getBytes(StandardCharsets.UTF_8);
+        this.cipher = Cipher.getInstance(type);
+    }
+
+    /**
+     * 演示 DESede 加密和解密
+     *
+     * @param args 命令行参数
+     * @throws Exception 加解密过程中发生异常
+     */
+    public static void main(String[] args) throws Exception {
+        DesedeEncode desede = new DesedeEncode();
+        String message = "Hello World!";
+        byte[] ciphertext = desede.encode(message.getBytes());
+        System.out.println(Base64.encodeUrlSafe(ciphertext));
+
+        byte[] plaintext = desede.decode(ciphertext);
+        System.out.println(new String(plaintext));
+    }
+
+    @Override
+    public byte[] encode(byte[] plaintext) throws GeneralSecurityException {
+        if (type.equals(CIPHER_DESEDE_CBC_PKCS5PADDING) || type.equals(CIPHER_DESEDE_CBC_NOPADDING)) {
+            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(ivBytes));
+        } else {
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+        }
+        return cipher.doFinal(plaintext);
+    }
+
+    @Override
+    public byte[] decode(byte[] ciphertext) throws GeneralSecurityException {
+        if (type.equals(CIPHER_DESEDE_CBC_PKCS5PADDING) || type.equals(CIPHER_DESEDE_CBC_NOPADDING)) {
+            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(ivBytes));
+        } else {
+            cipher.init(Cipher.DECRYPT_MODE, key);
+        }
+        return cipher.doFinal(ciphertext);
+    }
+
+    /**
+     * 根据随机数种子生成一个 DESede 密钥
+     *
+     * @param seed 随机数种子
+     * @return 生成的密钥
+     * @throws GeneralSecurityException 密钥生成过程中发生安全异常
+     */
+    private Key initKey(String seed) throws GeneralSecurityException {
+        // 根据种子生成一个安全的随机数
+        SecureRandom secureRandom = new SecureRandom(seed.getBytes());
+
+        // 标准的密钥生成
+        KeyGenerator keyGen = KeyGenerator.getInstance(KEY_ALGORITHM);
+        keyGen.init(112, secureRandom);
+
+        // 标准的密钥生成不支持128位。如果要使用，需引入Bouncy Castle的加密算法，方法如下
+        // Security.addProvider(new BouncyCastleProvider());
+        // KeyGenerator keyGen = KeyGenerator.getInstance(KEY_ALGORITHM, "BC");
+        // keyGen.init(128, secureRandom);
+        return keyGen.generateKey();
+    }
+
+    /**
+     * DESede 加密类型枚举
+     */
+    public enum Type {
+
+        /** ECB 模式，PKCS5Padding 补码 */
+        ECB_PKCS5PADDING(CIPHER_DESEDE_ECB_PKCS5PADDING),
+        /** CBC 模式，PKCS5Padding 补码 */
+        CBC_PKCS5PADDING(CIPHER_DESEDE_CBC_PKCS5PADDING),
+        /** CBC 模式，无补码 */
+        CBC_NOPADDING(CIPHER_DESEDE_CBC_NOPADDING);
+
+        private final String key;
+
+        Type(String key) {
+            this.key = key;
+        }
+
+        /**
+         * 获取算法/模式/补码方式字符串
+         *
+         * @return 算法类型字符串
+         */
+        public String getKey() {
+            return key;
+        }
+    }
+
+}
